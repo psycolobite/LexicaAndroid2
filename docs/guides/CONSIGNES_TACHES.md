@@ -333,6 +333,139 @@ Fusionner `_searchQuery` + `searchType` dans un seul `StateFlow<Pair>` puis `.de
 
 ---
 
+## TACHE_S2 - Ameliorer le Moteur de Recherche (API + robustesse)
+- **Scope estime:** ~80 000 tokens
+- **Packages touches:**
+  - `presentation/search/` — `SearchViewModel.kt` (bugfix + logique API)
+  - `data/repository/SearchRepositoryImpl.kt` (trim + normalisation)
+  - `data/local/FlashcardDao.kt` (normalisation SQL si necessaire)
+  - Nouveau fichier : `data/remote/WiktionnaireApiService.kt` ou `data/remote/DictionaryApiService.kt`
+- **Prerequis :** TACHE_S1 terminee (bug Job non annule corrige)
+
+### Problemes a corriger (3 bugs urgents dans les fichiers existants)
+
+**Bug 1 — Espace(s) en fin de saisie → 0 resultat**
+Dans `SearchRepositoryImpl.kt`, toutes les methodes `searchBy*` doivent appeler `.trim()` sur `query` avant de passer au DAO :
+```kotlin
+// AVANT
+dao.searchByWord(query, limit)
+
+// APRES
+dao.searchByWord(query.trim(), limit)
+```
+Faire de meme dans `SearchViewModel.kt` dans `onSearchQueryChanged` : nettoyer avant de mettre dans `_searchQuery`.
+
+**Bug 2 — Accents / diacritiques**
+Les requetes SQL LIKE ne sont pas insensibles aux accents sur Android/SQLite (ex: "etude" ne trouve pas "étude").
+Solution : ajouter une colonne `mot_normalized` (sans accents, en minuscules) dans `FlashcardEntity` et indexer dessus, OU utiliser une fonction de normalisation Kotlin avant la requete et matcher sur la colonne normalisee.
+- Pattern recommande : `java.text.Normalizer.normalize(str, NFD).replace(Regex("\\p{M}"), "").lowercase()`
+- Passer par `integration_pending/search_s2_pr.md` pour la migration Room (si ajout colonne)
+
+**Bug 3 — Casse (majuscule/minuscule)**
+SQL LIKE avec `LOWER()` est deja present dans les requetes DAO → verifier que la normalisation Kotlin en amont utilise aussi `.lowercase()` avant envoi
+
+### Nouvelle fonctionnalite : Recherche externe si mot absent de la liste
+
+Quand la recherche locale retourne 0 resultats (apres debounce + trim), lancer automatiquement une requete vers une API de dictionnaire et afficher les resultats dans une section separee "🌐 Resultats du dictionnaire".
+
+**API recommandee (gratuite, sans cle) :**
+- **Free Dictionary API** : `https://api.dictionaryapi.dev/api/v2/entries/en/<word>`
+  - Pas de cle API
+  - Retourne definitions, phonetique, exemples
+  - Deja utilisee dans de nombreux projets open source Android
+  - Limite : anglais uniquement → voir alternative pour le francais
+
+- **Alternative francais — Wiktionnaire MediaWiki API** :
+  - `https://fr.wiktionary.org/w/api.php?action=query&titles=<mot>&prop=extracts&format=json`
+  - Gratuite, pas de cle, couvre le francais complet
+  - Parsing JSON manuel necessaire (extraire le premier paragraphe)
+
+**Architecture recommandee :**
+1. `data/remote/DictionaryApiService.kt` — interface Retrofit avec 1 methode `getDefinition(word: String)`
+2. `data/remote/DictionaryApiServiceImpl.kt` — configure OkHttp + Gson/Moshi
+3. `domain/repository/SearchRepository.kt` — ajouter `suspend fun searchExternal(word: String): ExternalSearchResult?`
+4. `SearchRepositoryImpl.kt` — implementer avec fallback gracieux (catch IOException)
+5. `SearchViewModel.kt` — si `results.isEmpty()` apres 300ms debounce → appeler `searchExternal(query.trim())`
+6. `SearchScreen.kt` — section separee "🌐 Dictionnaire" en bas des resultats locaux
+
+**Dependances Gradle a ajouter (via PR):**
+```
+implementation("com.squareup.retrofit2:retrofit:2.9.0")
+implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+implementation("com.squareup.okhttp3:okhttp:4.12.0")
+```
+Deja peut-etre presents — verifier `build.gradle.kts` avant d'ajouter.
+
+**Permission Internet dans Manifest (via PR):**
+```xml
+<uses-permission android:name="android.permission.INTERNET" />
+```
+
+### Inspiration open source
+- **Now in Android** (Google) : `github.com/android/nowinandroid` — architecture repository offline-first + remote fallback propre
+- **Dictionary App Compose** : `github.com/philipplackner/DictionaryApp` — exemple complet Retrofit + Clean Architecture + Compose pour une appli de dictionnaire, ARCHITECTURE IDENTIQUE AU BESOIN, licence MIT. **Lire ce projet en entier avant de coder.**
+- **Free Dictionary API client** : `github.com/yamin8000/freeDictionary` — client Kotlin pour cette meme API, peut servir de base
+- **Retrofit Android Guide** : `github.com/square/retrofit` — reference officielle
+
+### Livrables
+- `SearchViewModel.kt` bugfixe (trim + normalisation + fallback API)
+- `SearchRepositoryImpl.kt` avec trim et normalisation
+- `data/remote/DictionaryApiService.kt` + impl
+- `integration_pending/search_s2_pr.md` avec : ajout dependances Gradle, permission Manifest, migration Room si colonne normalisee ajoutee
+
+### Contraintes
+- Resultats externes NE DOIVENT PAS etre sauvegardes automatiquement dans Room (affichage only)
+- Ajouter un bouton "Ajouter a ma liste" sur le resultat externe qui, lui, sauvegarde
+- Ne pas modifier `LexicaApp.kt` directement
+- Fichier integration attendu : `integration_pending/search_s2_pr.md`
+
+---
+
+## TACHE_11 - Menu Profil Utilisateur (icone top-right dashboard)
+- **Scope estime:** ~50 000 tokens
+- **Packages isoles:**
+  - `presentation/profile/` ← agent cree les fichiers ici
+  - `presentation/common/LexicaTopAppBar.kt` ← NE PAS MODIFIER, passer par PR
+- **Objectif :** Un icone de profil (👤) dans le coin superieur droit du Dashboard ouvre un ecran de profil complet
+
+### Comportement attendu
+1. Sur l'ecran Dashboard uniquement, afficher un `IconButton` avec `Icons.Default.AccountCircle` dans la `TopAppBar` (action de droite)
+2. Cliquer sur l'icone navigue vers `Screen.Profile` (route `"profile"`)
+3. L'ecran Profil affiche :
+   - Avatar / initiales de l'utilisateur (si auth Firebase connecte, sinon "Invit\u00e9")
+   - Niveau actuel + XP courante (barre de progression `XpProgressBar` existante)
+   - Streak (serie de jours consecutifs)
+   - Statistiques : total mots appris, nombre de parties jouees par type de jeu
+   - Bouton "Se connecter / Se deconnecter" (hook vers `AuthRepository`)
+
+### Architecture
+```
+ProfileViewModel.kt  — collecte UserStatsRepository + AuthRepository
+ProfileScreen.kt     — ecran Compose avec les sections ci-dessus
+```
+
+### Integration cœur requise (via PR)
+- `LexicaApp.kt` :
+  - Ajouter `Screen.Profile` dans `sealed class Screen`
+  - Ajouter `composable("profile") { ProfileScreen(...) }`
+  - Modifier la `Scaffold.topBar` pour passer `onProfileClick` au `DashboardScreen`
+  - OU ajouter directement une action dans la `LexicaTopAppBar` quand `currentRoute == Dashboard`
+- `DashboardScreen.kt` : recevoir `onNavigateToProfile: () -> Unit` et l'appeler depuis le bouton profil
+
+### Inspiration open source
+- **Now in Android** (Google) : `github.com/android/nowinandroid` → ecran Settings avec profil utilisateur en top bar, pattern exact recherche
+- **Tivi** (Chris Banes) : `github.com/chrisbanes/tivi` → `AccountUiScreen.kt` — gestion connexion/deconnexion dans un profil lateral, UI tres propre Material3
+- **Jetpack Compose Samples** : `github.com/android/compose-samples` → `Jetchat` — icone de profil circulaire dans la TopAppBar avec navigation
+- Pour l'avatar initiales : `github.com/IlyaPavlovskii/whatsapp-android-compose` — composable `AvatarImage` avec fallback initiales
+
+### Contraintes
+- Ne pas modifier `LexicaApp.kt`, `LexicaTopAppBar.kt`, `DashboardScreen.kt` directement
+- Tout passer par `integration_pending/profile_pr.md`
+- Utiliser `XpProgressBar.kt` et `GamificationViewModel` existants (ne pas recoder)
+- Fichier integration attendu : `integration_pending/profile_pr.md`
+
+---
+
 Quand une tache est ajoutee, utiliser ce format:
 ```markdown
 ## TACHE_XX - Titre
