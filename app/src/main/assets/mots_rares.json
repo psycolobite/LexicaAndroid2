@@ -1,0 +1,802 @@
+[
+  {
+    "id": "mr_1",
+    "mot": "Abnégation",
+    "definition": "Sacrifice volontaire de soi-même, de son intérêt, de son amour-propre.",
+    "categorie": "Nom féminin",
+    "synonymes": ["dévouement", "sacrifice"],
+    "exemples": ["Faire preuve d'abnégation."]
+  },
+  {
+    "id": "mr_2",
+    "mot": "Bile",
+    "definition": "Humeur secrétée par le foie. Au sens figuré : colère, inquiétude.",
+    "categorie": "Nom féminin",
+    "synonymes": ["colère", "humeur"],
+    "exemples": ["Se faire de la bile."]
+  },
+  {
+    "id": "mr_3",
+    "mot": "Concupiscence",
+    "definition": "Désir violent des plaisirs sensuels.",
+    "categorie": "Nom féminin",
+    "synonymes": ["désir", "luxure"],
+    "exemples": []
+  },
+  {
+    "id": "mr_4",
+    "mot": "Dithyrambique",
+    "definition": "Très élogieux, parfois à l'excès.",
+    "categorie": "Adjectif",
+    "synonymes": ["élogieux", "enthousiaste"],
+    "exemples": ["Une critique dithyrambique."]
+  },
+  {
+    "id": "mr_5",
+    "mot": "Ébullition",
+    "definition": "État d'un liquide qui bout ; agitation intense.",
+    "categorie": "Nom féminin",
+    "synonymes": ["agitation", "bouillonnement"],
+    "exemples": ["La salle était en ébullition."]
+  },
+  {
+    "id": "mr_6",
+    "mot": "Farouche",
+    "definition": "Qui fuit la société ; qui a un caractère sauvage.",
+    "categorie": "Adjectif",
+    "synonymes": ["sauvage", "indompté"],
+    "exemples": ["Un regard farouche."]
+  },
+  {
+    "id": "mr_7",
+    "mot": "Gredin",
+    "definition": "Personne malhonnête, sans scrupules.",
+    "categorie": "Nom masculin",
+    "synonymes": ["canaille", "voyou"],
+    "exemples": ["Quel gredin !"]
+  },
+  {
+    "id": "mr_8",
+    "mot": "Harangue",
+    "definition": "Discours prononcé pour exhorter ou convaincre.",
+    "categorie": "Nom féminin",
+    "synonymes": ["discours", "allocution"],
+    "exemples": ["Une harangue enflammée."]
+  },
+  {
+    "id": "mr_9",
+    "mot": "Ineffable",
+    "definition": "Qui ne peut être exprimé par des mots.",
+    "categorie": "Adjectif",
+    "synonymes": ["indicible", "inexprimable"],
+    "exemples": ["Un bonheur ineffable."]
+  },
+  {
+    "id": "mr_10",
+    "mot": "Jactance",
+    "definition": "Attitude d'une personne qui se vante.",
+    "categorie": "Nom féminin",
+    "synonymes": ["fanfaronnade", "vanité"],
+    "exemples": ["Il parle avec jactance."]
+  },
+  {
+    "id": "mr_11",
+    "mot": "Kermesse",
+    "definition": "Fête populaire avec stands et animations.",
+    "categorie": "Nom féminin",
+    "synonymes": ["fête", "foire"],
+    "exemples": ["La kermesse du village."]
+  },
+  {
+    "id": "mr_12",
+    "mot": "Lénifiant",
+    "definition": "Qui adoucit, qui apaise.",
+    "categorie": "Adjectif",
+    "synonymes": ["apaisant", "douceâtre"],
+    "exemples": ["Un discours lénifiant."]
+  },
+  {
+    "id": "mr_13",
+    "mot": "Munificence",
+    "definition": "Générosité ample et noble.",
+    "categorie": "Nom féminin",
+    "synonymes": ["générosité", "largesse"],
+    "exemples": ["Agir avec munificence."]
+  },
+  {
+    "id": "mr_14",
+    "mot": "Nitescence",
+    "definition": "Éclat doux ; lumière qui brille.",
+    "categorie": "Nom féminin",
+    "synonymes": ["éclat", "lueur"],
+    "exemples": ["La nitescence de l'aube."]
+  },
+  {
+    "id": "mr_15",
+    "mot": "Obnubiler",
+    "definition": "Troubler, obscurcir l'esprit.",
+    "categorie": "Verbe",
+    "synonymes": ["assombrir", "troubler"],
+    "exemples": ["La colère l'obnubilait."]
+  },
+  {
+    "id": "mr_16",
+    "mot": "Panacée",
+    "definition": "Remède supposé efficace pour tous les maux.",
+    "categorie": "Nom féminin",
+    "synonymes": ["remède", "solution"],
+    "exemples": ["Ce n'est pas une panacée."]
+  },
+  {
+    "id": "mr_17",
+    "mot": "Quérulence",
+    "definition": "Tendance à se plaindre de façon excessive.",
+    "categorie": "Nom féminin",
+    "synonymes": ["plainte", "plaintivité"],
+    "exemples": ["Sa quérulence fatigue l'équipe."]
+  },
+  {
+    "id": "mr_18",
+    "mot": "Ratiociner",
+    "definition": "Raisonner de manière subtile et souvent stérile.",
+    "categorie": "Verbe",
+    "synonymes": ["arguer", "chicaner"],
+    "exemples": ["Il aime ratiociner."]
+  },
+  {
+    "id": "mr_19",
+    "mot": "Sémillant",
+    "definition": "Vif, plein d'entrain.",
+    "categorie": "Adjectif",
+    "synonymes": ["vif", "alerte"],
+    "exemples": ["Un enfant sémillant."]
+  },
+  {
+    "id": "mr_20",
+    "mot": "Taciturne",
+    "definition": "Qui parle peu, renfermé.",
+    "categorie": "Adjectif",
+    "synonymes": ["silencieux", "réservé"],
+    "exemples": ["Un voisin taciturne."]
+  },
+  {
+    "id": "mr_21",
+    "mot": "Ubiquité",
+    "definition": "Fait d'être présent en plusieurs lieux à la fois.",
+    "categorie": "Nom féminin",
+    "synonymes": ["omniprésence"],
+    "exemples": ["Il donne une impression d'ubiquité."]
+  },
+  {
+    "id": "mr_22",
+    "mot": "Véridique",
+    "definition": "Conforme à la vérité.",
+    "categorie": "Adjectif",
+    "synonymes": ["vrai", "authentique"],
+    "exemples": ["Un récit véridique."]
+  },
+  {
+    "id": "mr_23",
+    "mot": "Wapiti",
+    "definition": "Grand cervidé d'Amérique du Nord.",
+    "categorie": "Nom masculin",
+    "synonymes": ["cervidé"],
+    "exemples": ["Un wapiti traverse la clairière."]
+  },
+  {
+    "id": "mr_24",
+    "mot": "Xylophage",
+    "definition": "Qui se nourrit de bois.",
+    "categorie": "Adjectif",
+    "synonymes": ["mangeur de bois"],
+    "exemples": ["Un insecte xylophage."]
+  },
+  {
+    "id": "mr_25",
+    "mot": "Ypérite",
+    "definition": "Substance chimique toxique de guerre.",
+    "categorie": "Nom féminin",
+    "synonymes": ["gaz moutarde"],
+    "exemples": []
+  },
+  {
+    "id": "mr_26",
+    "mot": "Zélateur",
+    "definition": "Partisan fervent d'une cause ou d'une personne.",
+    "categorie": "Nom masculin",
+    "synonymes": ["adepte", "partisan"],
+    "exemples": ["Un zélateur convaincu."]
+  },
+  {
+    "id": "mr_27",
+    "mot": "Apathie",
+    "definition": "Absence ou grande faiblesse de réaction émotionnelle.",
+    "categorie": "Nom féminin",
+    "synonymes": ["indifférence", "torpeur"],
+    "exemples": ["Une profonde apathie."]
+  },
+  {
+    "id": "mr_28",
+    "mot": "Bravoure",
+    "definition": "Qualité d'une personne courageuse.",
+    "categorie": "Nom féminin",
+    "synonymes": ["courage", "vaillance"],
+    "exemples": ["Il fit preuve de bravoure."]
+  },
+  {
+    "id": "mr_29",
+    "mot": "Candeur",
+    "definition": "Simplicité d'esprit, absence de malice.",
+    "categorie": "Nom féminin",
+    "synonymes": ["innocence", "naïveté"],
+    "exemples": ["La candeur d'un enfant."]
+  },
+  {
+    "id": "mr_30",
+    "mot": "Déférence",
+    "definition": "Respect marqué envers quelqu'un.",
+    "categorie": "Nom féminin",
+    "synonymes": ["respect", "égard"],
+    "exemples": ["Parler avec déférence."]
+  },
+  {
+    "id": "mr_31",
+    "mot": "Effluve",
+    "definition": "Émanation légère d'une odeur.",
+    "categorie": "Nom masculin",
+    "synonymes": ["exhalaison", "parfum"],
+    "exemples": ["Des effluves de café."]
+  },
+  {
+    "id": "mr_32",
+    "mot": "Fulgurance",
+    "definition": "Éclat soudain et intense ; rapidité.",
+    "categorie": "Nom féminin",
+    "synonymes": ["éclair", "brillance"],
+    "exemples": ["Une fulgurance d'esprit."]
+  },
+  {
+    "id": "mr_33",
+    "mot": "Gloire",
+    "definition": "Renommée due à de grands exploits.",
+    "categorie": "Nom féminin",
+    "synonymes": ["renommée", "prestige"],
+    "exemples": ["Accéder à la gloire."]
+  },
+  {
+    "id": "mr_34",
+    "mot": "Hérésie",
+    "definition": "Doctrine contraire aux dogmes établis.",
+    "categorie": "Nom féminin",
+    "synonymes": ["doctrine", "erreur"],
+    "exemples": ["Une hérésie théologique."]
+  },
+  {
+    "id": "mr_35",
+    "mot": "Incantation",
+    "definition": "Formule magique récitée pour produire un effet.",
+    "categorie": "Nom féminin",
+    "synonymes": ["sortilège", "formule"],
+    "exemples": ["Une incantation ancienne."]
+  },
+  {
+    "id": "mr_36",
+    "mot": "Jovial",
+    "definition": "Qui manifeste une humeur joyeuse et enjouée.",
+    "categorie": "Adjectif",
+    "synonymes": ["gai", "enjoué"],
+    "exemples": ["Un accueil jovial."]
+  },
+  {
+    "id": "mr_37",
+    "mot": "Laconique",
+    "definition": "Qui s'exprime en peu de mots.",
+    "categorie": "Adjectif",
+    "synonymes": ["concis", "bref"],
+    "exemples": ["Une réponse laconique."]
+  },
+  {
+    "id": "mr_38",
+    "mot": "Magnanimité",
+    "definition": "Générosité d'âme, indulgence.",
+    "categorie": "Nom féminin",
+    "synonymes": ["grandeur d'âme", "noblesse"],
+    "exemples": ["Faire preuve de magnanimité."]
+  },
+  {
+    "id": "mr_39",
+    "mot": "Népotisme",
+    "definition": "Favoritisme envers les proches ou la famille.",
+    "categorie": "Nom masculin",
+    "synonymes": ["favoritisme", "clientélisme"],
+    "exemples": ["Le népotisme mine la confiance."]
+  },
+  {
+    "id": "mr_40",
+    "mot": "Oisiveté",
+    "definition": "État d'une personne sans occupation.",
+    "categorie": "Nom féminin",
+    "synonymes": ["inactivité", "farniente"],
+    "exemples": ["L'oisiveté du dimanche."]
+  },
+  {
+    "id": "mr_41",
+    "mot": "Pérégrination",
+    "definition": "Voyage long et souvent aventureux.",
+    "categorie": "Nom féminin",
+    "synonymes": ["voyage", "errance"],
+    "exemples": ["Une longue pérégrination."]
+  },
+  {
+    "id": "mr_42",
+    "mot": "Querelle",
+    "definition": "Dispute vive et prolongée.",
+    "categorie": "Nom féminin",
+    "synonymes": ["dispute", "conflit"],
+    "exemples": ["Une querelle de voisinage."]
+  },
+  {
+    "id": "mr_43",
+    "mot": "Récif",
+    "definition": "Écueil rocheux dangereux en mer.",
+    "categorie": "Nom masculin",
+    "synonymes": ["écueil", "rocher"],
+    "exemples": ["Éviter les récifs."]
+  },
+  {
+    "id": "mr_44",
+    "mot": "Sagace",
+    "definition": "Qui a le jugement sûr et pénétrant.",
+    "categorie": "Adjectif",
+    "synonymes": ["perspicace", "avisé"],
+    "exemples": ["Un esprit sagace."]
+  },
+  {
+    "id": "mr_45",
+    "mot": "Téméraire",
+    "definition": "Qui agit sans prudence, avec audace excessive.",
+    "categorie": "Adjectif",
+    "synonymes": ["audacieux", "imprudent"],
+    "exemples": ["Un geste téméraire."]
+  },
+  {
+    "id": "mr_46",
+    "mot": "Usure",
+    "definition": "Altération progressive par le frottement ou le temps.",
+    "categorie": "Nom féminin",
+    "synonymes": ["détérioration", "érosion"],
+    "exemples": ["L'usure des matériaux."]
+  },
+  {
+    "id": "mr_47",
+    "mot": "Velléité",
+    "definition": "Volonté faible, intention sans suite.",
+    "categorie": "Nom féminin",
+    "synonymes": ["intention", "ébauche"],
+    "exemples": ["Une velléité d'action."]
+  },
+  {
+    "id": "mr_48",
+    "mot": "Wadi",
+    "definition": "Lit d'un cours d'eau temporaire en zone aride.",
+    "categorie": "Nom masculin",
+    "synonymes": ["ravin", "oued"],
+    "exemples": ["Un wadi asséché."]
+  },
+  {
+    "id": "mr_49",
+    "mot": "Xénon",
+    "definition": "Gaz noble utilisé notamment dans certaines lampes.",
+    "categorie": "Nom masculin",
+    "synonymes": ["gaz noble"],
+    "exemples": ["Une lampe au xénon."]
+  },
+  {
+    "id": "mr_50",
+    "mot": "Zénith",
+    "definition": "Point culminant dans le ciel ; apogée.",
+    "categorie": "Nom masculin",
+    "synonymes": ["apogée", "sommet"],
+    "exemples": ["Atteindre le zénith."]
+  },
+  {
+    "id": "mr_51",
+    "mot": "Acariâtre",
+    "definition": "De mauvaise humeur ; difficile à vivre.",
+    "categorie": "Adjectif",
+    "synonymes": ["revêche", "grincheux"],
+    "exemples": ["Un voisin acariâtre."]
+  },
+  {
+    "id": "mr_52",
+    "mot": "Affidé",
+    "definition": "Personne de confiance ; complice.",
+    "categorie": "Nom masculin",
+    "synonymes": ["complice", "confident"],
+    "exemples": ["Il agit avec son affidé."]
+  },
+  {
+    "id": "mr_53",
+    "mot": "Alacrité",
+    "definition": "Empressement vif et joyeux.",
+    "categorie": "Nom féminin",
+    "synonymes": ["entrain", "vivacité"],
+    "exemples": ["Elle répondit avec alacrité."]
+  },
+  {
+    "id": "mr_54",
+    "mot": "Alopécie",
+    "definition": "Perte partielle ou totale des cheveux.",
+    "categorie": "Nom féminin",
+    "synonymes": ["calvitie"],
+    "exemples": ["Une alopécie diffuse."]
+  },
+  {
+    "id": "mr_55",
+    "mot": "Amène",
+    "definition": "Agréable, courtois et affable.",
+    "categorie": "Adjectif",
+    "synonymes": ["affable", "aimable"],
+    "exemples": ["Un accueil amène."]
+  },
+  {
+    "id": "mr_56",
+    "mot": "Anachronisme",
+    "definition": "Erreur de datation ; mélange d'époques.",
+    "categorie": "Nom masculin",
+    "synonymes": ["contre-sens", "incohérence"],
+    "exemples": ["Un anachronisme historique."]
+  },
+  {
+    "id": "mr_57",
+    "mot": "Andropause",
+    "definition": "Baisse hormonale liée à l'âge chez l'homme.",
+    "categorie": "Nom féminin",
+    "synonymes": ["ménopause masculine"],
+    "exemples": ["Les symptômes d'andropause."]
+  },
+  {
+    "id": "mr_58",
+    "mot": "Anisotrope",
+    "definition": "Qui a des propriétés différentes selon la direction.",
+    "categorie": "Adjectif",
+    "synonymes": ["directionnel"],
+    "exemples": ["Un matériau anisotrope."]
+  },
+  {
+    "id": "mr_59",
+    "mot": "Annales",
+    "definition": "Récit historique année par année.",
+    "categorie": "Nom féminin pluriel",
+    "synonymes": ["chroniques", "archives"],
+    "exemples": ["Les annales d'un royaume."]
+  },
+  {
+    "id": "mr_60",
+    "mot": "Antédiluvien",
+    "definition": "Très ancien, d'une époque lointaine.",
+    "categorie": "Adjectif",
+    "synonymes": ["archaïque", "vétuste"],
+    "exemples": ["Un logiciel antédiluvien."]
+  },
+  {
+    "id": "mr_61",
+    "mot": "Antonomase",
+    "definition": "Figure qui remplace un nom par un autre.",
+    "categorie": "Nom féminin",
+    "synonymes": ["tournure", "figure"],
+    "exemples": ["Dire un don Juan."]
+  },
+  {
+    "id": "mr_62",
+    "mot": "Antre",
+    "definition": "Caverne, repaire retiré.",
+    "categorie": "Nom masculin",
+    "synonymes": ["caverne", "repaire"],
+    "exemples": ["L'antre de la sorcière."]
+  },
+  {
+    "id": "mr_63",
+    "mot": "Apanage",
+    "definition": "Privilège exclusif ; attribut réservé.",
+    "categorie": "Nom masculin",
+    "synonymes": ["privilège", "prérogative"],
+    "exemples": ["Le courage est son apanage."]
+  },
+  {
+    "id": "mr_64",
+    "mot": "Apartheid",
+    "definition": "Système de ségrégation raciale institutionnalisé.",
+    "categorie": "Nom masculin",
+    "synonymes": ["ségrégation"],
+    "exemples": ["La fin de l'apartheid."]
+  },
+  {
+    "id": "mr_65",
+    "mot": "Apendre",
+    "definition": "Préparer ; disposer pour l'usage.",
+    "categorie": "Verbe",
+    "synonymes": ["préparer", "arranger"],
+    "exemples": ["Apendre un repas."]
+  },
+  {
+    "id": "mr_66",
+    "mot": "Apéritif",
+    "definition": "Boisson prise avant le repas.",
+    "categorie": "Nom masculin",
+    "synonymes": ["pré-dîner"],
+    "exemples": ["Prendre l'apéritif."]
+  },
+  {
+    "id": "mr_67",
+    "mot": "Aphasie",
+    "definition": "Perte partielle ou totale du langage.",
+    "categorie": "Nom féminin",
+    "synonymes": ["mutisme"],
+    "exemples": ["Une aphasie post-AVC."]
+  },
+  {
+    "id": "mr_68",
+    "mot": "Aphorisme",
+    "definition": "Maxime brève et frappante.",
+    "categorie": "Nom masculin",
+    "synonymes": ["maxime", "sentence"],
+    "exemples": ["Un aphorisme célèbre."]
+  },
+  {
+    "id": "mr_69",
+    "mot": "Apiculture",
+    "definition": "Élevage des abeilles.",
+    "categorie": "Nom féminin",
+    "synonymes": ["élevage"],
+    "exemples": ["Une ferme d'apiculture."]
+  },
+  {
+    "id": "mr_70",
+    "mot": "Aplomb",
+    "definition": "Assurance ; équilibre dans l'attitude.",
+    "categorie": "Nom masculin",
+    "synonymes": ["assurance", "sang-froid"],
+    "exemples": ["Répondre avec aplomb."]
+  },
+  {
+    "id": "mr_71",
+    "mot": "Apocalypse",
+    "definition": "Catastrophe totale ; fin du monde.",
+    "categorie": "Nom féminin",
+    "synonymes": ["cataclysme", "catastrophe"],
+    "exemples": ["Un scénario d'apocalypse."]
+  },
+  {
+    "id": "mr_72",
+    "mot": "Apocope",
+    "definition": "Suppression d'une syllabe finale.",
+    "categorie": "Nom féminin",
+    "synonymes": ["abréviation"],
+    "exemples": ["Photo pour photographie."]
+  },
+  {
+    "id": "mr_73",
+    "mot": "Apocryphe",
+    "definition": "D'origine douteuse ; non authentique.",
+    "categorie": "Adjectif",
+    "synonymes": ["douteux", "contesté"],
+    "exemples": ["Un texte apocryphe."]
+  },
+  {
+    "id": "mr_74",
+    "mot": "Apodictique",
+    "definition": "Qui s'impose comme évident.",
+    "categorie": "Adjectif",
+    "synonymes": ["péremptoire", "indiscutable"],
+    "exemples": ["Un ton apodictique."]
+  },
+  {
+    "id": "mr_75",
+    "mot": "Apologétique",
+    "definition": "Qui défend une doctrine ou une cause.",
+    "categorie": "Adjectif",
+    "synonymes": ["défensif", "justificatif"],
+    "exemples": ["Un discours apologétique."]
+  },
+  {
+    "id": "mr_76",
+    "mot": "Apologie",
+    "definition": "Défense ou justification d'une personne ou idée.",
+    "categorie": "Nom féminin",
+    "synonymes": ["éloge", "justification"],
+    "exemples": ["Une apologie de la liberté."]
+  },
+  {
+    "id": "mr_77",
+    "mot": "Apoptose",
+    "definition": "Mort cellulaire programmée.",
+    "categorie": "Nom féminin",
+    "synonymes": ["autodestruction"],
+    "exemples": ["L'apoptose des cellules."]
+  },
+  {
+    "id": "mr_78",
+    "mot": "Apostat",
+    "definition": "Personne qui renonce à sa foi.",
+    "categorie": "Nom masculin",
+    "synonymes": ["renégat", "déserteur"],
+    "exemples": ["Il fut traité d'apostat."]
+  },
+  {
+    "id": "mr_79",
+    "mot": "Apostasie",
+    "definition": "Abandon d'une religion ou d'une doctrine.",
+    "categorie": "Nom féminin",
+    "synonymes": ["renoncement", "désertion"],
+    "exemples": ["Une apostasie publique."]
+  },
+  {
+    "id": "mr_80",
+    "mot": "Apostille",
+    "definition": "Note ajoutée en marge d'un texte.",
+    "categorie": "Nom féminin",
+    "synonymes": ["annotation", "note"],
+    "exemples": ["Ajouter une apostille."]
+  },
+  {
+    "id": "mr_81",
+    "mot": "Apostolat",
+    "definition": "Mission de propagation d'une foi.",
+    "categorie": "Nom masculin",
+    "synonymes": ["mission", "ministère"],
+    "exemples": ["Se consacrer à l'apostolat."]
+  },
+  {
+    "id": "mr_82",
+    "mot": "Apostrophe",
+    "definition": "Interpellation directe dans un discours.",
+    "categorie": "Nom féminin",
+    "synonymes": ["interpellation", "adresse"],
+    "exemples": ["Une apostrophe vive."]
+  },
+  {
+    "id": "mr_83",
+    "mot": "Apothéose",
+    "definition": "Consécration suprême ; point culminant.",
+    "categorie": "Nom féminin",
+    "synonymes": ["apogée", "sommet"],
+    "exemples": ["Le concert fut une apothéose."]
+  },
+  {
+    "id": "mr_84",
+    "mot": "Appréhension",
+    "definition": "Crainte mêlée d'incertitude.",
+    "categorie": "Nom féminin",
+    "synonymes": ["crainte", "inquiétude"],
+    "exemples": ["Ressentir de l'appréhension."]
+  },
+  {
+    "id": "mr_85",
+    "mot": "Apprêt",
+    "definition": "Préparation ou manière affectée.",
+    "categorie": "Nom masculin",
+    "synonymes": ["préparation", "affectation"],
+    "exemples": ["Un style sans apprêt."]
+  },
+  {
+    "id": "mr_86",
+    "mot": "Apprentissage",
+    "definition": "Formation par la pratique.",
+    "categorie": "Nom masculin",
+    "synonymes": ["formation", "initiation"],
+    "exemples": ["Un apprentissage long."]
+  },
+  {
+    "id": "mr_87",
+    "mot": "Apprêts",
+    "definition": "Préparatifs nécessaires à une action.",
+    "categorie": "Nom masculin pluriel",
+    "synonymes": ["préparatifs", "dispositions"],
+    "exemples": ["Les apprêts du voyage."]
+  },
+  {
+    "id": "mr_88",
+    "mot": "Appui",
+    "definition": "Soutien matériel ou moral.",
+    "categorie": "Nom masculin",
+    "synonymes": ["soutien", "support"],
+    "exemples": ["Chercher un appui."]
+  },
+  {
+    "id": "mr_89",
+    "mot": "Appuyer",
+    "definition": "Soutenir ou exercer une pression.",
+    "categorie": "Verbe",
+    "synonymes": ["soutenir", "presser"],
+    "exemples": ["Appuyer sur le bouton."]
+  },
+  {
+    "id": "mr_90",
+    "mot": "Âpreté",
+    "definition": "Dureté au toucher ou dans le caractère.",
+    "categorie": "Nom féminin",
+    "synonymes": ["rudesse", "dureté"],
+    "exemples": ["L'âpreté du tissu."]
+  },
+  {
+    "id": "mr_91",
+    "mot": "Après-demain",
+    "definition": "Le jour qui suit demain.",
+    "categorie": "Adverbe",
+    "synonymes": ["dans deux jours"],
+    "exemples": ["Nous partons après-demain."]
+  },
+  {
+    "id": "mr_92",
+    "mot": "Après-guerre",
+    "definition": "Période qui suit un conflit armé.",
+    "categorie": "Nom masculin",
+    "synonymes": ["post-conflit"],
+    "exemples": ["L'après-guerre est difficile."]
+  },
+  {
+    "id": "mr_93",
+    "mot": "Aptitude",
+    "definition": "Capacité à faire quelque chose.",
+    "categorie": "Nom féminin",
+    "synonymes": ["capacité", "disposition"],
+    "exemples": ["Montrer une aptitude."]
+  },
+  {
+    "id": "mr_94",
+    "mot": "Apureur",
+    "definition": "Personne chargée de vérifier des comptes.",
+    "categorie": "Nom masculin",
+    "synonymes": ["contrôleur", "vérificateur"],
+    "exemples": ["Un apureur des comptes."]
+  },
+  {
+    "id": "mr_95",
+    "mot": "Apus",
+    "definition": "Constellation australe.",
+    "categorie": "Nom masculin",
+    "synonymes": ["constellation"],
+    "exemples": ["Observer Apus dans le ciel du sud."]
+  },
+  {
+    "id": "mr_96",
+    "mot": "Apyreticité",
+    "definition": "Absence de fièvre.",
+    "categorie": "Nom féminin",
+    "synonymes": ["apyrexie"],
+    "exemples": ["Revenir à l'apyreticité."]
+  },
+  {
+    "id": "mr_97",
+    "mot": "Aquarelle",
+    "definition": "Peinture à l'eau sur papier.",
+    "categorie": "Nom féminin",
+    "synonymes": ["aquarelle"],
+    "exemples": ["Peindre à l'aquarelle."]
+  },
+  {
+    "id": "mr_98",
+    "mot": "Aquarium",
+    "definition": "Bassin d'eau pour maintenir des poissons.",
+    "categorie": "Nom masculin",
+    "synonymes": ["vivier"],
+    "exemples": ["Nettoyer un aquarium."]
+  },
+  {
+    "id": "mr_99",
+    "mot": "Aquatile",
+    "definition": "Qui vit ou pousse dans l'eau.",
+    "categorie": "Adjectif",
+    "synonymes": ["aquatique"],
+    "exemples": ["Une plante aquatile."]
+  },
+  {
+    "id": "mr_100",
+    "mot": "Aquatinte",
+    "definition": "Technique de gravure à l'eau-forte.",
+    "categorie": "Nom féminin",
+    "synonymes": ["gravure"],
+    "exemples": ["Une estampe en aquatinte."]
+  }
+]

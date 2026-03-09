@@ -1,0 +1,92 @@
+Je veux que tu m'aides.
+J'ai codé un logiciel en python avec un peu de jave et kv pour le design, Après avoir tenter de résoudre le problème qui m'empèche de le faire passer en version mobile (apk créé avec buildozer mais qui ne se lance pas sur l'appareil). Donc tout recoder (projet assez conséquent le main.py avec le kv fait plus de 7000 lignes, en Kotlin. Je vais faire ça avec un agent github sur Android studio et je veux que tu m'aides à le prompter et me conseille sur la manière de l'orienter et le diriger pour que nous menions le projet à terme.
+Si tu as besoin je te met à disposition certains documents du projet en python.
+J'ai fait une première tentative de passage à Kotlin sur android studio mais on a été bloqué assez vite, je peux te mettre à disposition certains éléments si besoin.
+Le but est de faire un premier prototype assez simple, et d'ajouter les fonctionnalites au fur et à mesure.
+La refonte est aussi l'occasion d'optimiser largement le code de l'application.
+Certaines choses doivent être modifié, certains éléments expliqué dans le "read-me" du python ne sont plus d'actualité car ont été modifié sans que les read-me aient été mis à jour.
+
+J'ai remarqué que les agents se mettent parfois a planter sur une tache qui échou et à refaire la même chose en boucle. Ton role c'est de garder de la distance, a avoir une vue plus globale du problème pour guider l'agent et qu'il de se mette pas à pédaler dans le vide. Même si je doit dire que l'agent github est vraiment impressionnant.
+
+On va utiliser le modèle moderne du MVVM.
+
+N'oublie pas, ton role c'est la supervision, la guidance, l'orientation, pas de faire le travail à la place de l'agent. Je suis là pour te donner les éléments dont tu as besoin pour faire ton travail, et toi tu es là pour me guider dans la manière de les utiliser pour faire avancer le projet.
+
+
+
+
+
+
+
+Voilà les documents les plus important de mon py. Je t'ai aussi mis un TODO pour le kotlin, que j'avais fait quand j'ai commencer à traduire le projet. Le but était de commencer par une version simplifié puis si ça marche d'ajouter les fonctionnalitées de cette liste.
+ok ok bon pour les fonctionnalités ça va être un peu long mais tu as raison il faut le faire. Mais avant de commencer tu préfères que je te dises exactement comment elles sont dans l'appli ou comment je veux qu'elles soint dans l'appli final ? Violà les fonctinnalitées, j'indique lorsque c'est ce que je veux qu'il soit dans l'appli final mais qui n'est pas dans l'appli py.
+Objectif : apprendre du vocabulaire français avancé dans un but littéraire, de manière ludique et efficace. L'apprentissage se fait principalement grâce a des flascards dont le système ressemble à l'application Duocards.
+Premier lancement : l'utilisateur se voit présenté un tutoriel du fonctionnement de l'application.
+Ensuite il a la possibilité de se connecter/créer un compte, s'il ne le fait pas il pourra le faire plus tard. S'il se connecte plus tard, soit le compte auquel il se connecte est vierge et sa progression est sauvegardé dessus ce qui lui permet de la retrouver sur d'autres appareils, soit il tente de se connecter a un compte qui a déjà une progression, dans ce cas il s'affiche une notification qui lui demande de choisir entre sa progression actuel (local) ou la progression de son compte.
+Sur l'écran d'accueil l'utilisateur a plusieurs information, 3 compteurs lui indique le nombre de mots dans les catégories "à apprendre", "en cours d'apprentissage" et 'connu". S'il clique sur l'un de ces compteurs on passe à la page de la liste de mots présent dans cette catégorie. Depuis cette liste il peut supprimer les mots qui y sont ou les ajouter à ces favoris ou les consulter.
+Sur la page d'acueil il y a aussi un bouton "commencer à s'entrainer" qui lance l'entrainement avec les mots qui sont dans la catégorie "à apprendre", les mots que l'on vient d'ajouter sont dans cette catégorie. Pour l'instant on va utiliser un algo d'apprentissage simple SM-2 c'est à dire que chaque mots par de 0, si on le réussit une fois il mettra 1 jour avant d'être représenté, si on réussi il le temps double avant la prochaine présentation sinon ça le réinitialise.
+Mais au fait, il y a énormément de fonctionnalité, peux tu essayer de les décripter pour me simplifier la tache et je te corrige, complète ?
+Oui on est surJetpack compose.
+c'est quoi model-viex-viewmodel ? ça a l'air bien.
+Dans ces consignes il faut aussi mettre qu'il doit tenir une documentation des fonctionnalité de l'appli à jour (ce qui évitera d'avoir à faire le travail que nous allons faire maintenant consistant à lister les fonctionnalitées.
+Pour buildozer je pense que c'est la lourdeur du projet, entre le firebase pour la connexion, les multiples fonctionnalitées, l'utilisation de word embenddings et d'APi c'était trop pour lui. Malgrès beaucoup d'essai et de temps passer à analyser les logs on a pas réussi à identifier le problème.
+En kotlin on a essayer de faire un test d'importation du JSON qui contient les mots de l'appli et ça a pas marché.
+
+
+Tu es un développeur senior qui va m'aider à administrer et gérer un projet, on va travailler avec un agent IA qui va s'oppucer du codage, nous on vas s'assurer qu'il ne se mette pas à boucler ou planter. Assure toi aussi qu'ilo tienne bien à jour la documentation.
+le dossier est en local mais tu peux aussi y accéder avec 
+c:\Users\r0xef\AndroidStudioProjects\LexicaAndroid2
+
+on à vait fait une première tentative partie en sucette (l'apk ne se lançait pas sur montel) c:\Users\r0xef\AndroidStudioProjects\LexicaAndroid
+
+Depuis on fait des tests après chaques ajout de fonctionnalité, d'ailleur on devrait commencer par un test, prompt le pour que je l'envoi à l'agent sur android studio. 
+
+La version original en python et KV bien trop préhistorique : 
+c:\Users\r0xef\Documents\FlashcardsApp
+
+Si tu as des questions dit moi.
+
+
+
+
+
+
+
+
+
+
+
+J'ai codé un logiciel en python avec un peu de javascript et kv pour le design, Après avoir tenter de résoudre le problème qui m'empèche de le faire passer en version mobile (apk créé avec buildozer mais qui ne se lance pas sur l'appareil). Donc tout recoder (projet assez conséquent le main.py avec le kv fait plus de 7000 lignes, en Kotlin.
+Ton role à toi ça va être de me guider pour qu'on accomplisse le projet de manière professionnel, comme une société de dévelopement informatique.
+ Si tu as besoins je peux te mettre à disposition mes précédentes tentatives, et la version python.
+ Tu peux voir l'état actuelle avec le fichier etat et la docmentation.
+On va séparer le projet en différentes taches que l'on va donner à faire à des agents gemini, gpt, claude ect, comme à des équipes de développeur, nus on est les chefs d'orchestre, développeurs séniors, et on orchestre tout ça. Il faut confier des taches limités en matière d'énergie pour chaques agent, je croient qu'ils peuvent gérer au total 100 000 - 150 000 tokens par agents.
+Il faut aussi bien tenir la documentation à jour et éviter les problèmes de syncronisation (plusieurs agents modifient en même temps le même fichier). Maintenir un espace de travail propre, mettre par exemple les documentation, etat guidelines ect dans un dossier dédier, les logs dans un dossier dédié ect. Travail professionnel. N'oublie pas que tu es toi même limité en token, limite au maximum ton intervention sur le code pour te concentrer sur l'administration du projet, délègue les taches aux autres agents.
+Tester le build e lancer l'appli après chaques modifications, pour savoirs quels fonctionnalités pose problème.
+
+je ne sais pas de quel manière attribué le travail de manière optimal. Je ne suis pas sûr que de mettre 1 agent par fonctionnalité soit une très bonne idée, à cause de problème de syncronisaion, dis moi ce que tu en penses.
+Les fonctionnalité à implémenter sont :
+- Système de connexion (firebase si gratuit)
+- Système de (défi sémantique et orthographique)
+- mini jeux fonctionnels (+ mini jeu orthographe à partir de vocal)
+- système d'expérience
+- système de recherche par l'utilisateur et de proposition automatique de mots.
+- Système de mot en ligne (future fonction)
+Par exemple si un agent crée un fichier qui doit être appelé par des fichiers principaux qu'il ne peut pas modifier par soucis de problème de syncronisation, il cré un fichier qui repertorie les modifications à effectuer et un agent qui s'occupe de ce genre de tache.
+TON ROLE EST D'assigner les taches aux agents de manière optimisé et de m'aider à prompter.
+
+1. L'Architecture Organisationnelle : "Hierarchical AI-Agent Swarm" (Essaim d'Agents Hiérarchisé)
+C'est le nom technique de votre organisation de travail.
+Concept : Vous (le "Chef d'Orchestre") êtes le Superviseur. Vous déléguez des tâches spécifiques à des "travailleurs" spécialisés (les Agents dans VS Code, Android Studio, etc.) qui ne se marchent pas dessus.
+Le Pattern : C'est un "Hub-and-Spoke" (Moyeu et Rayons). Vous êtes le moyeu central, et chaque éditeur ouvert est un rayon qui traite une tâche en parallèle avant de ramener le résultat vers vous.
+2. Le Workflow : "Feature Branch Workflow" (piloté par la Doc)
+C'est la méthode que nous utilisons pour gérer le code.
+Concept : On ne touche jamais à la branche principale (main) directement. Chaque nouvelle fonctionnalité (le "Quoi") est d'abord une branche ou un fichier de spécification (le "Comment") avant d'être fusionnée.
+Spécificité ici : C'est du "Documentation-Driven Development" (DDD). On écrit d'abord la doc (features.md, specs) et le code n'est qu'une conséquence de la documentation.
+3. L'Architecture de l'Application : "Clean Architecture + MVVM"
+C'est la structure des dossiers dans votre code Android (data, domain, presentation).
+Clean Architecture : Séparation stricte en couches (Couche de Données, Couche Domaine/Métier, Couche Présentation/UI). Cela rend l'appli testable et robuste.
+MVVM (Model-View-ViewModel) : La façon dont l'interface (Compose) parle aux données sans se mélanger les pinceaux.
+En résumé
+Vous avez construit une "Clean Architecture Android" développée via un workflow "Documentation-Driven" orchestré par un système "Multi-Agents Supervisé".
+C'est une approche très avant-gardiste pour un développeur seul, car elle simule la puissance d'une équipe complète ! 🚀

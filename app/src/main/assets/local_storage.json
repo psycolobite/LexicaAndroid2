@@ -1,0 +1,807 @@
+{
+  "cartes": {
+    "a86c34b9701e": {
+      "id": "a86c34b9701e",
+      "mot": "séraphin",
+      "definition": "Ange du rang le plus élevé dans la hiérarchie céleste.",
+      "synonymes": [
+        "ange",
+        "chérubin",
+        "esprit céleste"
+      ],
+      "exemples": [
+        "Les séraphins aux six ailes."
+      ],
+      "categorie_grammaticale": "nom masculin",
+      "registre": "religieux",
+      "etymologie": "De l'hébreu seraphim « brûlants »",
+      "date_ajout": "2026-01-25T01:33:25.878588",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 3,
+        "ease_factor": 1.5000000000000002,
+        "repetitions": 2,
+        "next_review": "2026-02-02T20:15:08.904148",
+        "last_review": "2026-01-30T20:15:08.904127",
+        "total_reviews": 10,
+        "correct_reviews": 2,
+        "lapses": 8
+      },
+      "sm2_def_vers_mot": {
+        "interval": 3,
+        "ease_factor": 2.7,
+        "repetitions": 2,
+        "next_review": "2026-02-01T10:23:00.569181",
+        "last_review": "2026-01-29T10:23:00.569173",
+        "total_reviews": 2,
+        "correct_reviews": 2,
+        "lapses": 0
+      }
+    },
+    "6ccc4adf284f": {
+      "id": "6ccc4adf284f",
+      "mot": "idiosyncrasie",
+      "definition": "Tempérament particulier à chaque individu, manière d'être propre à quelqu'un.",
+      "synonymes": [
+        "particularité",
+        "singularité",
+        "originalité",
+        "caractère"
+      ],
+      "exemples": [
+        "C'est une de ses idiosyncrasies."
+      ],
+      "categorie_grammaticale": "nom féminin",
+      "registre": "littéraire",
+      "etymologie": "Du grec idios « propre » et synkrasis « mélange »",
+      "date_ajout": "2026-01-29T09:22:25.293268",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 1,
+        "ease_factor": 1.9999999999999998,
+        "repetitions": 1,
+        "next_review": "2026-01-31T21:27:03.656283",
+        "last_review": "2026-01-30T21:27:03.656269",
+        "total_reviews": 4,
+        "correct_reviews": 1,
+        "lapses": 3
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 1.7999999999999998,
+        "repetitions": 1,
+        "next_review": "2026-01-31T20:42:07.480261",
+        "last_review": "2026-01-30T20:42:07.480248",
+        "total_reviews": 5,
+        "correct_reviews": 1,
+        "lapses": 4
+      }
+    },
+    "c6c5812d1209": {
+      "id": "c6c5812d1209",
+      "mot": "turpitude",
+      "definition": "Ignominie qui résulte de quelque action honteuse.",
+      "synonymes": [
+        "&nbsp;dévergondage&nbsp;",
+        "ignominie",
+        "horreur",
+        "dérèglement",
+        "stupre"
+      ],
+      "exemples": [
+        "Quelles causes profondes, quelles turpitudes amenèrent donc l'annihilation de ce qui est une riante bourgade&nbsp;",
+        "À l’exemple de Juvénal, je ne suis pas descendu dans la sentine des vices pour la remuer, j’ai plutôt passé gaiement en revue les ridicules que les turpitudes. —&nbsp;",
+        "Lorsqu’il était à Claquebue, il lui fallait à chaque instant rougir des turpitudes qu’il découvrait dans la famille de son frère. —&nbsp;"
+      ],
+      "categorie_grammaticale": "nom",
+      "registre": "courant",
+      "etymologie": "",
+      "date_ajout": "2026-01-29T09:22:26.147209",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.0999999999999996,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:14:39.163288",
+        "last_review": "2026-01-30T22:04:39.163265",
+        "total_reviews": 5,
+        "correct_reviews": 2,
+        "lapses": 3
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 1.6999999999999997,
+        "repetitions": 0,
+        "next_review": "2026-01-30T21:15:05.399515",
+        "last_review": "2026-01-30T21:05:05.399501",
+        "total_reviews": 4,
+        "correct_reviews": 0,
+        "lapses": 4
+      }
+    },
+    "bf8520fe6b1d": {
+      "id": "bf8520fe6b1d",
+      "mot": "apodictique",
+      "definition": "Qui a une évidence absolue, qui ne souffre pas de contradiction.",
+      "synonymes": [
+        "évident",
+        "indiscutable",
+        "irréfutable",
+        "certain"
+      ],
+      "exemples": [
+        "Une vérité apodictique."
+      ],
+      "categorie_grammaticale": "adjectif",
+      "registre": "philosophique",
+      "etymologie": "Du grec apodeiktikos « démonstratif »",
+      "date_ajout": "2026-01-29T09:22:27.186983",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 3,
+        "ease_factor": 2.3,
+        "repetitions": 2,
+        "next_review": "2026-02-02T21:05:02.262992",
+        "last_review": "2026-01-30T21:05:02.262979",
+        "total_reviews": 4,
+        "correct_reviews": 2,
+        "lapses": 2
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 1.9999999999999998,
+        "repetitions": 1,
+        "next_review": "2026-01-31T21:04:57.454433",
+        "last_review": "2026-01-30T21:04:57.454420",
+        "total_reviews": 4,
+        "correct_reviews": 1,
+        "lapses": 3
+      }
+    },
+    "6857ea03df17": {
+      "id": "6857ea03df17",
+      "mot": "exsangue",
+      "definition": "Qui a perdu beaucoup de sang ; pâle ; épuisé de ses forces.",
+      "synonymes": [
+        "pâle",
+        "blême",
+        "livide",
+        "affaibli"
+      ],
+      "exemples": [
+        "Un visage exsangue."
+      ],
+      "categorie_grammaticale": "adjectif",
+      "registre": "soutenu",
+      "etymologie": "Du latin exsanguis, de ex- et sanguis « sang »",
+      "date_ajout": "2026-01-29T09:22:28.272786",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 1,
+        "ease_factor": 1.6,
+        "repetitions": 1,
+        "next_review": "2026-01-31T20:42:20.441785",
+        "last_review": "2026-01-30T20:42:20.441772",
+        "total_reviews": 9,
+        "correct_reviews": 3,
+        "lapses": 6
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 2.1999999999999997,
+        "repetitions": 1,
+        "next_review": "2026-01-31T21:27:00.416867",
+        "last_review": "2026-01-30T21:27:00.416851",
+        "total_reviews": 3,
+        "correct_reviews": 1,
+        "lapses": 2
+      }
+    },
+    "28319f55f947": {
+      "id": "28319f55f947",
+      "mot": "sotériologie",
+      "definition": "Partie de la théologie qui traite du salut de l'homme.",
+      "synonymes": [
+        "doctrine du salut"
+      ],
+      "exemples": [
+        "La sotériologie paulinienne."
+      ],
+      "categorie_grammaticale": "nom féminin",
+      "registre": "religieux",
+      "etymologie": "Du grec sōtēr « sauveur » et logos « étude »",
+      "date_ajout": "2026-01-30T22:10:02.670700",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 1,
+        "ease_factor": 2.4,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:50:41.631333",
+        "last_review": "2026-01-30T22:50:41.631307",
+        "total_reviews": 2,
+        "correct_reviews": 1,
+        "lapses": 1
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 2.4,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:50:37.485602",
+        "last_review": "2026-01-30T22:50:37.485593",
+        "total_reviews": 2,
+        "correct_reviews": 1,
+        "lapses": 1
+      }
+    },
+    "0fd41b51bd68": {
+      "id": "0fd41b51bd68",
+      "mot": "syncrétisme",
+      "definition": "Fusion de doctrines, de systèmes différents, souvent inconciliables au départ.",
+      "synonymes": [
+        "mélange",
+        "fusion",
+        "amalgame",
+        "synthèse"
+      ],
+      "exemples": [
+        "Le syncrétisme religieux du Brésil."
+      ],
+      "categorie_grammaticale": "nom masculin",
+      "registre": "philosophique",
+      "etymologie": "Du grec synkretismos « union des Crétois »",
+      "date_ajout": "2026-01-30T22:10:03.287844",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 1,
+        "ease_factor": 2.6,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:20:34.156285",
+        "last_review": "2026-01-30T22:20:34.156256",
+        "total_reviews": 1,
+        "correct_reviews": 1,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 2.6,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:50:33.219438",
+        "last_review": "2026-01-30T22:50:33.219430",
+        "total_reviews": 1,
+        "correct_reviews": 1,
+        "lapses": 0
+      }
+    },
+    "81332efe734e": {
+      "id": "81332efe734e",
+      "mot": "obséquieux",
+      "definition": "Qui porte à l'excès les marques de politesse, de respect, par servilité ou hypocrisie.",
+      "synonymes": [
+        "servile",
+        "flagorneur",
+        "adulateur",
+        "courtisan",
+        "rampant"
+      ],
+      "exemples": [
+        "Il se montrait obséquieux envers ses supérieurs."
+      ],
+      "categorie_grammaticale": "adjectif",
+      "registre": "soutenu",
+      "etymologie": "Du latin obsequiosus, de obsequi « se conformer à »",
+      "date_ajout": "2026-01-30T22:10:03.904533",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.0999999999999996,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:55:05.479734",
+        "last_review": "2026-01-30T22:45:05.479712",
+        "total_reviews": 2,
+        "correct_reviews": 0,
+        "lapses": 2
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.0999999999999996,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:55.240831",
+        "last_review": "2026-01-30T22:44:55.240824",
+        "total_reviews": 2,
+        "correct_reviews": 0,
+        "lapses": 2
+      }
+    },
+    "bfd4768bd99f": {
+      "id": "bfd4768bd99f",
+      "mot": "inextinguible",
+      "definition": "Qui ne peut être éteint, apaisé ou satisfait.",
+      "synonymes": [
+        "inépuisable",
+        "insatiable",
+        "perpétuel"
+      ],
+      "exemples": [
+        "Une soif inextinguible de savoir."
+      ],
+      "categorie_grammaticale": "adjectif",
+      "registre": "soutenu",
+      "etymologie": "Du latin inextinguibilis, de extinguere « éteindre »",
+      "date_ajout": "2026-01-30T22:10:04.746937",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.0999999999999996,
+        "repetitions": 0,
+        "next_review": "2026-01-30T23:07:33.903955",
+        "last_review": "2026-01-30T22:57:33.903948",
+        "total_reviews": 2,
+        "correct_reviews": 0,
+        "lapses": 2
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 2.6,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:44:51.142029",
+        "last_review": "2026-01-30T22:44:51.142016",
+        "total_reviews": 1,
+        "correct_reviews": 1,
+        "lapses": 0
+      }
+    },
+    "53c69101de37": {
+      "id": "53c69101de37",
+      "mot": "aphérèse",
+      "definition": "Chute d'une ou plusieurs lettres ou syllabes au début d'un mot.",
+      "synonymes": [
+        "abréviation initiale",
+        "troncation"
+      ],
+      "exemples": [
+        "Bus pour autobus est une aphérèse."
+      ],
+      "categorie_grammaticale": "nom féminin",
+      "registre": "linguistique",
+      "etymologie": "Du grec aphairesis « action d'enlever »",
+      "date_ajout": "2026-01-30T22:54:26.644030",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:26.644033",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:26.644035",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      }
+    },
+    "6dd5b3a757d5": {
+      "id": "6dd5b3a757d5",
+      "mot": "synesthésie",
+      "definition": "Association spontanée entre sensations de nature différente.",
+      "synonymes": [
+        "correspondance sensorielle",
+        "perception croisée"
+      ],
+      "exemples": [
+        "Voir des couleurs en entendant de la musique."
+      ],
+      "categorie_grammaticale": "nom féminin",
+      "registre": "scientifique/littéraire",
+      "etymologie": "Du grec syn « ensemble » et aisthēsis « sensation »",
+      "date_ajout": "2026-01-30T22:54:27.408986",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:27.408990",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 2.6,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:55:02.626257",
+        "last_review": "2026-01-30T22:55:02.626237",
+        "total_reviews": 1,
+        "correct_reviews": 1,
+        "lapses": 0
+      }
+    },
+    "52100b25efe4": {
+      "id": "52100b25efe4",
+      "mot": "mansuétude",
+      "definition": "Disposition d'esprit qui incline à la patience, au pardon, à l'indulgence.",
+      "synonymes": [
+        "douceur",
+        "bienveillance",
+        "clémence",
+        "bonté",
+        "indulgence"
+      ],
+      "exemples": [
+        "Faire preuve de mansuétude envers les faibles."
+      ],
+      "categorie_grammaticale": "nom féminin",
+      "registre": "littéraire",
+      "etymologie": "Du latin mansuetudo, de mansuetus « apprivoisé »",
+      "date_ajout": "2026-01-30T22:54:27.924862",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 1,
+        "ease_factor": 2.6,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:57:35.947686",
+        "last_review": "2026-01-30T22:57:35.947678",
+        "total_reviews": 1,
+        "correct_reviews": 1,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:27.924869",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      }
+    },
+    "ca79ccef63f4": {
+      "id": "ca79ccef63f4",
+      "mot": "épistémologie",
+      "definition": "Étude critique des sciences, destinée à déterminer leur origine, leur valeur et leur portée.",
+      "synonymes": [
+        "philosophie des sciences",
+        "théorie de la connaissance"
+      ],
+      "exemples": [
+        "L'épistémologie de Bachelard."
+      ],
+      "categorie_grammaticale": "nom féminin",
+      "registre": "philosophique",
+      "etymologie": "Du grec episteme « science » et logos « étude »",
+      "date_ajout": "2026-01-30T22:54:31.030641",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:31.030644",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:31.030646",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      }
+    },
+    "9d91a9dd8ed1": {
+      "id": "9d91a9dd8ed1",
+      "mot": "spécieux",
+      "definition": "Qui a une apparence de vérité ou de justice sans l'être réellement.",
+      "synonymes": [
+        "fallacieux",
+        "captieux",
+        "trompeur",
+        "apparent"
+      ],
+      "exemples": [
+        "Un argument spécieux."
+      ],
+      "categorie_grammaticale": "adjectif",
+      "registre": "soutenu",
+      "etymologie": "Du latin speciosus « beau, brillant »",
+      "date_ajout": "2026-01-30T22:54:32.694547",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:32.694550",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 1,
+        "ease_factor": 2.6,
+        "repetitions": 1,
+        "next_review": "2026-01-31T22:55:00.240127",
+        "last_review": "2026-01-30T22:55:00.240114",
+        "total_reviews": 1,
+        "correct_reviews": 1,
+        "lapses": 0
+      }
+    },
+    "cf732263fb26": {
+      "id": "cf732263fb26",
+      "mot": "oxymoron",
+      "definition": "Figure alliant deux termes de sens contradictoire.",
+      "synonymes": [
+        "alliance de mots",
+        "antithèse"
+      ],
+      "exemples": [
+        "Un silence éloquent ; une obscure clarté."
+      ],
+      "categorie_grammaticale": "nom masculin",
+      "registre": "rhétorique",
+      "etymologie": "Du grec oxymōron, de oxys « aigu » et mōros « émoussé »",
+      "date_ajout": "2026-01-30T22:54:34.793594",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.3,
+        "repetitions": 0,
+        "next_review": "2026-01-30T23:17:10.107806",
+        "last_review": "2026-01-30T23:07:10.107783",
+        "total_reviews": 1,
+        "correct_reviews": 0,
+        "lapses": 1
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:34.793611",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      }
+    },
+    "9fd9fff9edab": {
+      "id": "9fd9fff9edab",
+      "mot": "procrastiner",
+      "definition": "Remettre au lendemain, différer, ajourner une action, une décision.",
+      "synonymes": [
+        "temporiser",
+        "atermoyer",
+        "tergiverser",
+        "différer",
+        "reporter"
+      ],
+      "exemples": [
+        "Il procrastine sans cesse au lieu de travailler."
+      ],
+      "categorie_grammaticale": "verbe",
+      "registre": "courant",
+      "etymologie": "Du latin procrastinare, de pro « en avant » et crastinus « du lendemain »",
+      "date_ajout": "2026-01-30T22:54:35.491871",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:35.491875",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:35.491878",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      }
+    },
+    "9310e48ca142": {
+      "id": "9310e48ca142",
+      "mot": "apagogique",
+      "definition": "Qui procède par l'absurde, en démontrant l'impossibilité du contraire.",
+      "synonymes": [
+        "par l'absurde",
+        "indirect"
+      ],
+      "exemples": [
+        "Un raisonnement apagogique."
+      ],
+      "categorie_grammaticale": "adjectif",
+      "registre": "logique/philosophique",
+      "etymologie": "Du grec apagōgē « détournement »",
+      "date_ajout": "2026-01-30T22:54:36.902362",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:36.902366",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.3,
+        "repetitions": 0,
+        "next_review": "2026-01-30T23:05:57.293717",
+        "last_review": "2026-01-30T22:55:57.293705",
+        "total_reviews": 1,
+        "correct_reviews": 0,
+        "lapses": 1
+      }
+    },
+    "94b0fb360426": {
+      "id": "94b0fb360426",
+      "mot": "hérésiarque",
+      "definition": "Chef d'une hérésie, auteur d'une doctrine contraire au dogme.",
+      "synonymes": [
+        "fondateur d'hérésie",
+        "dissident"
+      ],
+      "exemples": [
+        "Arius, hérésiarque condamné à Nicée."
+      ],
+      "categorie_grammaticale": "nom masculin",
+      "registre": "religieux",
+      "etymologie": "Du grec hairesiarchēs « chef de secte »",
+      "date_ajout": "2026-01-30T22:54:39.140902",
+      "favori": false,
+      "notes_personnelles": "",
+      "sm2_mot_vers_def": {
+        "interval": 0,
+        "ease_factor": 2.5,
+        "repetitions": 0,
+        "next_review": "2026-01-30T22:54:39.140906",
+        "last_review": null,
+        "total_reviews": 0,
+        "correct_reviews": 0,
+        "lapses": 0
+      },
+      "sm2_def_vers_mot": {
+        "interval": 0,
+        "ease_factor": 2.3,
+        "repetitions": 0,
+        "next_review": "2026-01-30T23:05:55.091571",
+        "last_review": "2026-01-30T22:55:55.091563",
+        "total_reviews": 1,
+        "correct_reviews": 0,
+        "lapses": 1
+      }
+    }
+  },
+  "utilisateur": {
+    "profile": {
+      "uid": "eiIV0cpRHlP3RcB6DP2j4ZNKxy32",
+      "email": "r0x.ef@outlook.fr",
+      "nom": "r0xef",
+      "date_inscription": "2026-01-25T01:25:43.987296",
+      "preferences": {
+        "notifications_actives": true,
+        "heure_notification": 9,
+        "cartes_par_session": 20,
+        "afficher_synonymes": true,
+        "afficher_exemples": true,
+        "afficher_etymologie": false,
+        "theme_sombre": false,
+        "taille_police": "medium",
+        "categories_actives": [
+          "apprendre",
+          "connu",
+          "appris"
+        ],
+        "tuto_vu": false,
+        "admin_force_definition_questions": false,
+        "admin_enable_challenges": false
+      },
+      "stats": {
+        "total_cartes": 0,
+        "cartes_apprendre": 0,
+        "cartes_connu": 0,
+        "cartes_appris": 0,
+        "total_revisions": 38,
+        "revisions_correctes": 18,
+        "mots_appris_cette_semaine": 0,
+        "temps_etude_total_minutes": 0,
+        "revisions_par_jour": {
+          "2026-01-25": 3,
+          "2026-01-29": 15,
+          "2026-01-30": 20
+        }
+      },
+      "progression": {
+        "xp_total": 120051,
+        "niveau": 50,
+        "niveaux_minijeux": {
+          "correspondance": 1,
+          "qcm": 1,
+          "pendu": 1,
+          "anagrammes": 1,
+          "chrono": 1,
+          "memory": 1
+        },
+        "xp_minijeux": {
+          "correspondance": 0,
+          "qcm": 0,
+          "pendu": 0,
+          "anagrammes": 0,
+          "chrono": 0,
+          "memory": 0
+        },
+        "parties_minijeux": {
+          "correspondance": 0,
+          "qcm": 0,
+          "pendu": 0,
+          "anagrammes": 0,
+          "chrono": 0,
+          "memory": 0
+        },
+        "recompenses_obtenues": [],
+        "themes_debloques": [
+          "default"
+        ],
+        "badges_obtenus": [],
+        "titres_obtenus": [
+          "debutant"
+        ],
+        "titre_actif": "debutant",
+        "theme_actif": "default",
+        "recompenses_non_vues": []
+      },
+      "favoris": [],
+      "historique_sessions": [
+        "2026-01-25"
+      ],
+      "serie_actuelle": 1,
+      "meilleure_serie": 1,
+      "derniere_session": "2026-01-25"
+    }
+  },
+  "session": {
+    "active": true,
+    "mode": "firebase",
+    "uid": "eiIV0cpRHlP3RcB6DP2j4ZNKxy32",
+    "timestamp": "2026-01-29T09:22:03.301691"
+  }
+}
+

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1000182679544",
+    "project_id": "lexica-6d59a",
+    "storage_bucket": "lexica-6d59a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000182679544:android:d407f9c6371002325c780d",
+        "android_client_info": {
+          "package_name": "com.example.lexicaandroid2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-3DHBm9eOuc7FpDiTkUmc2Y6z9eqXcYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
