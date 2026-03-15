@@ -7,6 +7,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -23,6 +24,9 @@ import com.example.lexicaandroid2.presentation.review.ReviewScreen
 import com.example.lexicaandroid2.presentation.review.ReviewViewModel
 import com.example.lexicaandroid2.presentation.wordlist.WordListScreen
 import com.example.lexicaandroid2.presentation.wordlist.WordListViewModel
+import com.example.lexicaandroid2.presentation.wordlist.WordDetailScreen
+import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModel
+import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModelFactory
 import com.example.lexicaandroid2.presentation.addwords.AddWordsScreen
 import com.example.lexicaandroid2.presentation.addwords.AddWordsViewModel
 import com.example.lexicaandroid2.presentation.games.MiniGamesScreen
@@ -32,6 +36,36 @@ import com.example.lexicaandroid2.presentation.games.hangman.HangmanScreen
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.features.gamification.ui.GamificationDemoScreen
 import com.example.lexicaandroid2.features.gamification.ui.GamificationViewModel
+import com.example.lexicaandroid2.features.gamification.domain.UserStatsRepository
+import com.example.lexicaandroid2.features.auth.domain.repository.AuthRepository
+import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
+import com.example.lexicaandroid2.presentation.games.anagrams.AnagramsScreen
+import com.example.lexicaandroid2.presentation.games.chrono.ChronoScreen
+import com.example.lexicaandroid2.presentation.games.memory.MemoryScreen
+import com.example.lexicaandroid2.presentation.games.fillword.FillWordScreen
+import com.example.lexicaandroid2.presentation.games.semantic.SemanticScreen
+import com.example.lexicaandroid2.presentation.games.spellingadvanced.SpellingAdvancedScreen
+import com.example.lexicaandroid2.presentation.games.qcm.SpellingGameScreen
+import com.example.lexicaandroid2.presentation.profile.ProfileScreen
+import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeScreen
+import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeViewModel
+import com.example.lexicaandroid2.presentation.dailychallenge.GameType
+import com.example.lexicaandroid2.features.auth.presentation.login.LoginScreen
+import com.example.lexicaandroid2.features.auth.presentation.login.LoginViewModel
+import com.example.lexicaandroid2.features.auth.presentation.register.RegisterScreen
+import com.example.lexicaandroid2.features.auth.presentation.register.RegisterViewModel
+import com.example.lexicaandroid2.presentation.admin.AdminScreen
+import com.example.lexicaandroid2.presentation.admin.AdminViewModel
+import com.example.lexicaandroid2.presentation.games.MiniGamesViewModel
+import com.example.lexicaandroid2.presentation.settings.SettingsScreen
+import com.example.lexicaandroid2.presentation.settings.SettingsViewModel
+import com.example.lexicaandroid2.presentation.common.LexicaBottomNavBar
+import com.example.lexicaandroid2.presentation.common.shouldShowBottomBar
+import com.example.lexicaandroid2.presentation.online.OnlineScreen
+import com.example.lexicaandroid2.features.sync.SyncViewModel
+import com.example.lexicaandroid2.features.sync.SyncUiState
+import com.example.lexicaandroid2.features.sync.SyncConfirmDialog
+import kotlinx.coroutines.flow.MutableStateFlow
 
 sealed class Screen(val route: String) {
     data object Dashboard : Screen("dashboard")
@@ -45,6 +79,23 @@ sealed class Screen(val route: String) {
     data object QcmGame : Screen("game_qcm")
     data object HangmanGame : Screen("game_hangman")
     data object Gamification : Screen("gamification")
+    data object SpellingGame : Screen("game_spelling")
+    data object AnagramsGame : Screen("game_anagrams")
+    data object ChronoGame : Screen("game_chrono")
+    data object MemoryGame : Screen("game_memory")
+    data object FillWordGame : Screen("game_fillword")
+    data object SemanticGame : Screen("game_semantic")
+    data object SpellingAdvancedGame : Screen("game_spelling_advanced")
+    data object Profile : Screen("profile")
+    data object DailyChallenge : Screen("daily_challenge")
+    data object Login : Screen("login")
+    data object Register : Screen("register")
+    data object Admin : Screen("admin")
+    data object Settings : Screen("settings")
+    data object Online : Screen("online")
+    data class WordDetail(val cardId: String = "") : Screen("word/{cardId}") {
+        fun createRoute(cardId: String) = "word/$cardId"
+    }
 }
 
 @Composable
@@ -54,11 +105,26 @@ fun LexicaApp(
     wordListViewModel: WordListViewModel,
     addWordsViewModel: AddWordsViewModel,
     gamificationViewModel: GamificationViewModel,
+    miniGamesViewModel: MiniGamesViewModel,
     repository: FlashcardRepository,
+    userStatsRepository: UserStatsRepository,
+    authRepository: AuthRepository,
+    dailyChallengeViewModel: DailyChallengeViewModel,
+    loginViewModel: LoginViewModel,
+    registerViewModel: RegisterViewModel,
+    adminViewModel: AdminViewModel,
+    settingsViewModel: SettingsViewModel,
+    syncViewModel: SyncViewModel? = null,
+    appVersion: String = "1.0",
+    isInitiallyAuthenticated: Boolean = false,
+    dailyReviewStatDao: DailyReviewStatDao? = null,
     navController: NavHostController = rememberNavController()
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
+
+    // Auth state pour la navigation conditionnelle
+    val currentAuthUser by authRepository.currentUser.collectAsState(initial = null)
 
     // Review State for Title
     val reviewUiState by reviewViewModel.uiState.collectAsState()
@@ -72,26 +138,88 @@ fun LexicaApp(
         Screen.QcmGame.route -> "QCM"
         Screen.HangmanGame.route -> "Pendu"
         Screen.Gamification.route -> "Progression"
-        else -> "Lexica"
+        Screen.SpellingGame.route -> "Dictée"
+        Screen.AnagramsGame.route -> "Anagrammes"
+        Screen.ChronoGame.route -> "Mode Chrono"
+        Screen.MemoryGame.route -> "Memory"
+        Screen.FillWordGame.route -> "Définition à Compléter"
+        Screen.SemanticGame.route -> "Associations Sémantiques"
+        Screen.SpellingAdvancedGame.route -> "Spelling Avancé"
+        Screen.Profile.route -> "Mon Profil"
+        Screen.DailyChallenge.route -> "Défi du Jour"
+        Screen.Login.route -> "Connexion"
+        Screen.Register.route -> "Inscription"
+        Screen.Admin.route -> "⚙️ Mode Admin"
+        Screen.Settings.route -> "Réglages"
+        Screen.Online.route -> "Mode En Ligne"
+        else -> if (currentRoute?.startsWith("word/") == true) "Détail du mot" else "Lexica"
     }
 
     val canNavigateBack = currentRoute == Screen.Review.route || currentRoute == Screen.WordList.route ||
                          currentRoute == Screen.MiniGames.route || currentRoute == Screen.MatchingGame.route ||
                          currentRoute == Screen.QcmGame.route || currentRoute == Screen.HangmanGame.route ||
-                         currentRoute == Screen.Gamification.route
+                         currentRoute == Screen.Gamification.route || currentRoute == Screen.SpellingGame.route ||
+                         currentRoute == Screen.AnagramsGame.route || currentRoute == Screen.ChronoGame.route ||
+                         currentRoute == Screen.MemoryGame.route || currentRoute == Screen.FillWordGame.route ||
+                         currentRoute == Screen.SemanticGame.route || currentRoute == Screen.SpellingAdvancedGame.route ||
+                         currentRoute == Screen.Profile.route || currentRoute == Screen.DailyChallenge.route ||
+                         currentRoute == Screen.Login.route || currentRoute == Screen.Register.route ||
+                         currentRoute == Screen.Admin.route ||
+                         currentRoute == Screen.Settings.route ||
+                         currentRoute == Screen.Online.route ||
+                         currentRoute?.startsWith("word/") == true
+
+    val syncUiState by remember(syncViewModel) {
+        syncViewModel?.uiState ?: MutableStateFlow(SyncUiState.Idle)
+    }.collectAsState()
+
+    val pendingConflict = syncUiState as? SyncUiState.PendingConflict
+    if (pendingConflict != null) {
+        SyncConfirmDialog(
+            conflictState = pendingConflict,
+            onKeepLocal = { syncViewModel?.keepLocal(pendingConflict.uid) },
+            onReplaceLocal = { syncViewModel?.confirmReplaceWithCloud(pendingConflict.uid, pendingConflict.cloud) }
+        )
+    }
 
     Scaffold(
         topBar = {
             LexicaTopAppBar(
                 title = topBarTitle,
                 canNavigateBack = canNavigateBack,
-                navigateUp = { navController.navigateUp() }
+                navigateUp = { navController.navigateUp() },
+                onProfileClick = if (currentRoute == Screen.Dashboard.route) {
+                    {
+                        if (currentAuthUser != null) {
+                            navController.navigate(Screen.Profile.route)
+                        } else {
+                            navController.navigate(Screen.Login.route)
+                        }
+                    }
+                } else null,
+                onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
+                    { navController.navigate(Screen.Settings.route) }
+                } else null
             )
+        },
+        bottomBar = {
+            if (shouldShowBottomBar(currentRoute)) {
+                LexicaBottomNavBar(
+                    currentRoute = currentRoute,
+                    onNavigate = { route ->
+                        navController.navigate(route) {
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+            }
         }
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.Dashboard.route,
+            startDestination = if (isInitiallyAuthenticated) Screen.Dashboard.route else Screen.Login.route,
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(
@@ -119,6 +247,9 @@ fun LexicaApp(
                     },
                     onNavigateToMiniGames = {
                         navController.navigate(Screen.MiniGames.route)
+                    },
+                    onNavigateToDailyChallenge = {
+                        navController.navigate(Screen.DailyChallenge.route)
                     }
                 )
             }
@@ -179,6 +310,7 @@ fun LexicaApp(
                 }
             ) {
                 MiniGamesScreen(
+                    viewModel = miniGamesViewModel,
                     onGameSelected = { gameRoute ->
                         navController.navigate(gameRoute)
                     },
@@ -198,8 +330,10 @@ fun LexicaApp(
             ) {
                 MatchingScreen(
                     repository = repository,
-                    onBack = {
-                        navController.navigateUp()
+                    onBack = { navController.navigateUp() },
+                    onAwardXp = { amount -> gamificationViewModel.addXp(amount) },
+                    onGameCompleted = { score ->
+                        dailyChallengeViewModel.tryCompleteFromGame(GameType.MATCHING, score)
                     }
                 )
             }
@@ -214,8 +348,10 @@ fun LexicaApp(
             ) {
                 QcmScreen(
                     repository = repository,
-                    onBack = {
-                        navController.navigateUp()
+                    onBack = { navController.navigateUp() },
+                    onAwardXp = { amount -> gamificationViewModel.addXp(amount) },
+                    onGameCompleted = { score ->
+                        dailyChallengeViewModel.tryCompleteFromGame(GameType.QCM, score)
                     }
                 )
             }
@@ -230,8 +366,10 @@ fun LexicaApp(
             ) {
                 HangmanScreen(
                     repository = repository,
-                    onBack = {
-                        navController.navigateUp()
+                    onBack = { navController.navigateUp() },
+                    onAwardXp = { amount -> gamificationViewModel.addXp(amount) },
+                    onGameCompleted = { score ->
+                        dailyChallengeViewModel.tryCompleteFromGame(GameType.HANGMAN, score)
                     }
                 )
             }
@@ -249,6 +387,129 @@ fun LexicaApp(
                     userStats = userStats,
                     onAddXp = { amount -> gamificationViewModel.addXp(amount) }
                 )
+            }
+            composable(route = Screen.SpellingGame.route) {
+                SpellingGameScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() },
+                    onAwardXp = { amount -> gamificationViewModel.addXp(amount) },
+                    onGameCompleted = { score ->
+                        dailyChallengeViewModel.tryCompleteFromGame(GameType.SPELLING, score)
+                    }
+                )
+            }
+            composable(route = Screen.AnagramsGame.route) {
+                AnagramsScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.ChronoGame.route) {
+                ChronoScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.MemoryGame.route) {
+                MemoryScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.FillWordGame.route) {
+                FillWordScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.SemanticGame.route) {
+                SemanticScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.SpellingAdvancedGame.route) {
+                SpellingAdvancedScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.Profile.route) {
+                ProfileScreen(
+                    flashcardRepository = repository,
+                    userStatsRepository = userStatsRepository,
+                    authRepository = authRepository,
+                    onBack = { navController.navigateUp() },
+                    onSignInRequested = { navController.navigate(Screen.Login.route) },
+                    onNavigateToAdmin = { navController.navigate(Screen.Admin.route) },
+                    syncViewModel = syncViewModel,
+                    dailyReviewStatDao = dailyReviewStatDao
+                )
+            }
+            composable(route = Screen.Admin.route) {
+                AdminScreen(
+                    viewModel = adminViewModel,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.Login.route) {
+                LoginScreen(
+                    viewModel = loginViewModel,
+                    onNavigateToRegister = { navController.navigate(Screen.Register.route) },
+                    onLoginSuccess = {
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+            composable(route = Screen.Register.route) {
+                RegisterScreen(
+                    viewModel = registerViewModel,
+                    onNavigateToLogin = { navController.popBackStack() },
+                    onRegisterSuccess = {
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+            composable(
+                route = "word/{cardId}",
+                arguments = listOf(navArgument("cardId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val cardId = backStackEntry.arguments?.getString("cardId") ?: return@composable
+                val factory = WordDetailViewModelFactory(cardId, repository)
+                val detailViewModel: WordDetailViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory)
+                WordDetailScreen(
+                    cardId = cardId,
+                    viewModel = detailViewModel,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.DailyChallenge.route) {
+                val dcUiState by dailyChallengeViewModel.uiState.collectAsState()
+                DailyChallengeScreen(
+                    uiState = dcUiState,
+                    onStartChallenge = { gameType ->
+                        dailyChallengeViewModel.markChallengeStarted(gameType)
+                        when (gameType) {
+                            GameType.MATCHING -> navController.navigate(Screen.MatchingGame.route)
+                            GameType.QCM -> navController.navigate(Screen.QcmGame.route)
+                            GameType.HANGMAN -> navController.navigate(Screen.HangmanGame.route)
+                            GameType.SPELLING -> navController.navigate(Screen.SpellingGame.route)
+                        }
+                    }
+                )
+            }
+            composable(route = Screen.Settings.route) {
+                SettingsScreen(
+                    viewModel = settingsViewModel,
+                    appVersion = appVersion
+                )
+            }
+            composable(route = Screen.Online.route) {
+                OnlineScreen()
             }
         }
     }

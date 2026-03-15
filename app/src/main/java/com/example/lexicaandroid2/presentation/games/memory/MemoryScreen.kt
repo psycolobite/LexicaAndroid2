@@ -5,8 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,7 +35,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.presentation.games.common.GameButton
 import com.example.lexicaandroid2.presentation.games.common.GameHeader
-import com.example.lexicaandroid2.presentation.games.common.SelectableButton
 
 @Composable
 fun MemoryScreen(
@@ -104,31 +106,43 @@ fun MemoryScreen(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Text(
-                        text = "Paires trouvées: ${uiState.matchedPairs}/${uiState.totalPairs}",
-                        fontSize = 13.sp,
-                        color = Color.Gray
-                    )
-                    Text(
-                        text = "Tentatives: ${uiState.attempts}",
-                        fontSize = 13.sp,
-                        color = Color.Gray
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(6.dp)
+                    ) {
+                        uiState.availableConfigs.forEach { config ->
+                            val selected = config == uiState.selectedConfig
+                            FilterChip(
+                                selected = selected,
+                                onClick = { viewModel.loadGame(config) },
+                                label = { Text("${config.columns}×${config.rows}", fontSize = 12.sp) },
+                                enabled = !uiState.isCheckingPair,
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
 
-                    uiState.availableConfigs.forEach { config ->
-                        val selected = config == uiState.selectedConfig
-                        SelectableButton(
-                            text = "Grille ${config.columns}x${config.rows}",
-                            isSelected = selected,
-                            onClick = { viewModel.loadGame(config) },
-                            modifier = Modifier.fillMaxWidth(),
-                            enabled = !uiState.isCheckingPair
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = "Paires: ${uiState.matchedPairs}/${uiState.totalPairs}",
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
+                        Text(
+                            text = "Essais: ${uiState.attempts}",
+                            fontSize = 12.sp,
+                            color = Color.Gray
                         )
                     }
 
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(uiState.selectedConfig.columns),
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {

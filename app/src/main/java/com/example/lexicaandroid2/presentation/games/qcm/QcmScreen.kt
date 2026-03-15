@@ -13,6 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +33,8 @@ import com.example.lexicaandroid2.presentation.games.common.SelectableButton
 fun QcmScreen(
     repository: FlashcardRepository,
     onBack: () -> Unit,
+    onAwardXp: (Int) -> Unit = {},
+    onGameCompleted: (Int) -> Unit = {},
     viewModel: QcmViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
@@ -37,10 +43,32 @@ fun QcmScreen(
     })
 ) {
     val uiState = viewModel.uiState.collectAsState().value
+    var xpSent by remember { mutableStateOf(false) }
+    var completionSent by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (uiState.isLoading && uiState.flashcards.isEmpty()) {
             viewModel.loadGame()
+        }
+    }
+
+    LaunchedEffect(uiState.gameOver, uiState.score, uiState.flashcards.size) {
+        if (uiState.gameOver && !xpSent) {
+            onAwardXp(calculateGameXp(uiState.score, uiState.flashcards.size))
+            xpSent = true
+        }
+        if (!uiState.gameOver) {
+            xpSent = false
+        }
+    }
+
+    LaunchedEffect(uiState.gameOver, uiState.score) {
+        if (uiState.gameOver && !completionSent) {
+            onGameCompleted(uiState.score)
+            completionSent = true
+        }
+        if (!uiState.gameOver) {
+            completionSent = false
         }
     }
 
@@ -61,7 +89,7 @@ fun QcmScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = uiState.error!!, color = Color.Red)
+                Text(text = uiState.error ?: "Erreur inconnue", color = Color.Red)
                 Button(onClick = onBack) {
                     Text("Retour")
                 }
@@ -70,6 +98,7 @@ fun QcmScreen(
             GameOverQcmScreen(
                 score = uiState.score,
                 total = uiState.flashcards.size,
+                xpEarned = calculateGameXp(uiState.score, uiState.flashcards.size),
                 onRestart = { viewModel.resetGame() },
                 onBack = onBack
             )
@@ -168,10 +197,21 @@ fun QcmScreen(
     }
 }
 
+private fun calculateGameXp(score: Int, total: Int): Int {
+    if (total <= 0) return 5
+    val percent = (score * 100) / total
+    return when {
+        score == total -> 25
+        percent >= 50 -> 15
+        else -> 5
+    }
+}
+
 @Composable
 fun GameOverQcmScreen(
     score: Int,
     total: Int,
+    xpEarned: Int,
     onRestart: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -196,6 +236,12 @@ fun GameOverQcmScreen(
         )
         Text(
             text = "${(score * 100) / maxOf(1, total)}%",
+            fontSize = 16.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Text(
+            text = "XP gagné: $xpEarned",
             fontSize = 16.sp,
             color = Color.Gray,
             modifier = Modifier.padding(bottom = 32.dp)

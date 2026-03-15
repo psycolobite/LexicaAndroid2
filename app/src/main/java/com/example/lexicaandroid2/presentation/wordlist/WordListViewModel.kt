@@ -64,6 +64,20 @@ class WordListViewModel(
         }
     }
 
+    fun toggleFavorite(card: Flashcard) {
+        viewModelScope.launch {
+            repository.setFavorite(card.id, !card.favori)
+            loadWords()
+        }
+    }
+
+    fun deleteCard(cardId: String) {
+        viewModelScope.launch {
+            repository.deleteCard(cardId)
+            loadWords()
+        }
+    }
+
     // API Search Logic
     fun searchOnline(query: String) {
         if (query.isBlank()) return

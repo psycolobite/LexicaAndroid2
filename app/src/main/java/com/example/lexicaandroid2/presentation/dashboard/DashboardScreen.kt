@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.presentation.dashboard
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun DashboardScreen(
@@ -36,7 +39,8 @@ fun DashboardScreen(
     onNavigateToWordList: () -> Unit,
     onNavigateToWordListFiltered: (String) -> Unit,
     onNavigateToAddWords: () -> Unit,
-    onNavigateToMiniGames: () -> Unit
+    onNavigateToMiniGames: () -> Unit,
+    onNavigateToDailyChallenge: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -79,7 +83,8 @@ fun DashboardScreen(
                 onNavigateToWordList = onNavigateToWordList,
                 onNavigateToWordListFiltered = onNavigateToWordListFiltered,
                 onNavigateToAddWords = onNavigateToAddWords,
-                onNavigateToMiniGames = onNavigateToMiniGames
+                onNavigateToMiniGames = onNavigateToMiniGames,
+                onNavigateToDailyChallenge = onNavigateToDailyChallenge
             )
         }
     }
@@ -92,11 +97,22 @@ private fun DashboardContent(
     onNavigateToWordList: () -> Unit,
     onNavigateToWordListFiltered: (String) -> Unit,
     onNavigateToAddWords: () -> Unit,
-    onNavigateToMiniGames: () -> Unit
+    onNavigateToMiniGames: () -> Unit,
+    onNavigateToDailyChallenge: () -> Unit
 ) {
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(16.dp))
 
-    // Stat Cards
+    // Section titre : mes mots
+    Text(
+        text = "Mes mots",
+        style = MaterialTheme.typography.titleMedium,
+        fontWeight = FontWeight.SemiBold,
+        color = MaterialTheme.colorScheme.onSurface,
+        modifier = Modifier.fillMaxWidth()
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+
+    // Cartes stats — les 3 catégories filtrent, "Tous" ouvre la liste complète
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -105,111 +121,105 @@ private fun DashboardContent(
             modifier = Modifier.weight(1f),
             title = "À apprendre",
             count = uiState.newCount,
-            color = Color(0xFFA7C7E7), // Pastel Blue
-            textColor = Color(0xFF424242), // Dark Gray
+            color = Color(0xFFA7C7E7),
+            textColor = Color(0xFF424242),
             onClick = { onNavigateToWordListFiltered("TO_LEARN") }
         )
         StatCard(
             modifier = Modifier.weight(1f),
-            title = "En Cours",
+            title = "En cours",
             count = uiState.learningCount,
-            color = Color(0xFFFFB347), // Pastel Orange
+            color = Color(0xFFFFB347),
             textColor = Color(0xFF424242),
             onClick = { onNavigateToWordListFiltered("LEARNING") }
         )
-    }
-
-    Spacer(modifier = Modifier.height(8.dp))
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
         StatCard(
             modifier = Modifier.weight(1f),
             title = "Connus",
             count = uiState.knownCount,
-            color = Color(0xFFB2D8B2), // Pastel Green
+            color = Color(0xFFB2D8B2),
             textColor = Color(0xFF424242),
             onClick = { onNavigateToWordListFiltered("KNOWN") }
         )
-        StatCard(
-            modifier = Modifier.weight(1f),
-            title = "Total",
-            count = uiState.totalCount,
-            color = MaterialTheme.colorScheme.surfaceVariant,
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            onClick = onNavigateToWordList
+    }
+    // Ligne "Tous les mots" sous les cartes — évite le doublon avec le bouton
+    Text(
+        text = "Voir tous les mots (${uiState.totalCount})",
+        style = MaterialTheme.typography.bodySmall,
+        color = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onNavigateToWordList() }
+            .padding(top = 6.dp, bottom = 4.dp),
+        textAlign = TextAlign.End
+    )
+
+    Spacer(modifier = Modifier.height(24.dp))
+
+    // CTA principal — Révision
+    Button(
+        onClick = onNavigateToReview,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp),
+        enabled = uiState.totalCount > 0,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF6750A4),
+            contentColor = Color.White
+        )
+    ) {
+        Text(
+            text = "🚀  COMMENCER LA RÉVISION",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 
-    Spacer(modifier = Modifier.height(32.dp))
+    Spacer(modifier = Modifier.height(12.dp))
 
-    // Navigation Buttons
-    Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+    // Actions secondaires : Mini-Jeux + Défi du Jour côte à côte
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        Button(
-            onClick = onNavigateToAddWords,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-             colors = ButtonDefaults.buttonColors(
-                 containerColor = Color(0xFF6750A4), // Primary purple
-                 contentColor = Color.White
-             )
-        ) {
-            Text(
-                text = "AJOUTER DES MOTS",
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
-
-        Button(
-            onClick = onNavigateToWordList,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-             colors = ButtonDefaults.buttonColors(
-                 containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                 contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-             )
-        ) {
-            Text(
-                text = "PARCOURIR MES MOTS",
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
-
-        Button(
-            onClick = onNavigateToReview,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
-            enabled = uiState.totalCount > 0
-        ) {
-            Text(
-                text = "COMMENCER RÉVISION",
-                style = MaterialTheme.typography.titleMedium
-            )
-        }
-
         Button(
             onClick = onNavigateToMiniGames,
             modifier = Modifier
-                .fillMaxWidth()
-                .height(56.dp),
+                .weight(1f)
+                .height(52.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF6CA6CD), // Pastel Blue
+                containerColor = Color(0xFF6CA6CD),
                 contentColor = Color.White
             )
         ) {
-            Text(
-                text = "🎮 MINI-JEUX",
-                style = MaterialTheme.typography.titleMedium
+            Text(text = "🎮 Mini-Jeux", fontWeight = FontWeight.SemiBold)
+        }
+        Button(
+            onClick = onNavigateToDailyChallenge,
+            modifier = Modifier
+                .weight(1f)
+                .height(52.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFFB347),
+                contentColor = Color.White
             )
+        ) {
+            Text(text = "📅 Défi du Jour", fontWeight = FontWeight.SemiBold)
         }
     }
+
+    Spacer(modifier = Modifier.height(20.dp))
+
+    // Action tertiaire — Ajouter des mots (outlined, moins imposant)
+    OutlinedButton(
+        onClick = onNavigateToAddWords,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+    ) {
+        Text(text = "+ Ajouter des mots", fontWeight = FontWeight.Medium)
+    }
+
     Spacer(modifier = Modifier.height(16.dp))
 }
 

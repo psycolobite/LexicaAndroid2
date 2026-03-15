@@ -1,0 +1,53 @@
+﻿> Task :app:checkKotlinGradlePluginConfigurationErrors
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:processDebugGoogleServices UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+> Task :app:processDebugMainManifest UP-TO-DATE
+> Task :app:processDebugManifest UP-TO-DATE
+> Task :app:processDebugManifestForPackage UP-TO-DATE
+> Task :app:processDebugResources UP-TO-DATE
+> Task :app:kspDebugKotlin
+
+> Task :app:compileDebugKotlin
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/data/local/LexicaDatabase.kt:27:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/data/local/LexicaDatabase.kt:43:34 The corresponding parameter in the supertype 'Migration' is named 'db'. This may cause problems when calling this function with named arguments.
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/features/gamification/ui/GamificationDemoScreen.kt:48:9 'Divider(Modifier = ..., Dp = ..., Color = ...): Unit' is deprecated. Renamed to HorizontalDivider
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/features/gamification/ui/GamificationDemoScreen.kt:57:13 'Divider(Modifier = ..., Dp = ..., Color = ...): Unit' is deprecated. Renamed to HorizontalDivider
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/features/gamification/ui/GamificationDemoScreen.kt:62:13 'Divider(Modifier = ..., Dp = ..., Color = ...): Unit' is deprecated. Renamed to HorizontalDivider
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/features/gamification/ui/GamificationDemoScreen.kt:240:13 'Divider(Modifier = ..., Dp = ..., Color = ...): Unit' is deprecated. Renamed to HorizontalDivider
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/features/gamification/ui/XpProgressBar.kt:24:9 Variable 'currentLevelXp' is never used
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/features/gamification/ui/XpProgressBar.kt:45:9 'LinearProgressIndicator(Float, Modifier = ..., Color = ..., Color = ..., StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/games/common/GameComposables.kt:64:9 'LinearProgressIndicator(Float, Modifier = ..., Color = ..., Color = ..., StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/games/hangman/HangmanScreen.kt:87:43 Elvis operator (?:) always returns the left operand of non-nullable type String?
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/games/matching/MatchingScreen.kt:83:43 Elvis operator (?:) always returns the left operand of non-nullable type String?
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/games/qcm/QcmScreen.kt:80:43 Elvis operator (?:) always returns the left operand of non-nullable type String?
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/games/qcm/SpellingGameScreen.kt:160:57 'VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeUp
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/games/qcm/SpellingGameViewModel.kt:121:17 'speak(String!, Int, HashMap<String!, String!>!): Int' is deprecated. Deprecated in Java
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/games/spellingadvanced/SpellingAdvancedScreen.kt:141:48 'VolumeUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.VolumeUp
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/review/ReviewScreen.kt:111:17 Variable 'current' is never used
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/review/ReviewViewModel.kt:179:43 Parameter 'qualityUsedForXp' is never used
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/review/challenge/ModelDownloadUI.kt:132:13 'LinearProgressIndicator(Float, Modifier = ..., Color = ..., Color = ..., StrokeCap = ...): Unit' is deprecated. Use the overload that takes `progress` as a lambda
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/search/SearchScreen.kt:144:49 'ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordDetailScreen.kt:104:56 Unchecked cast: WordDetailViewModel to T
+w: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordDetailScreen.kt:111:5 Parameter 'cardId' is never used
+
+[Incubating] Problems report is available at: file:///C:/Users/r0xef/AndroidStudioProjects/LexicaAndroid2/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.1.0/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 21s
+17 actionable tasks: 3 executed, 14 up-to-date
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.1.0/userguide/configuration_cache_enabling.html

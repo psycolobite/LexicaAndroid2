@@ -61,6 +61,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import androidx.navigation.NavController
+import com.example.lexicaandroid2.presentation.review.challenge.ChallengeOverlay
+import com.example.lexicaandroid2.presentation.review.challenge.ChallengeResultOverlay
+import com.example.lexicaandroid2.presentation.review.challenge.ChallengeType
+import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,8 +81,7 @@ fun ReviewScreen(
     }
 
     LaunchedEffect(viewModel) {
-        viewModel.snackbarEvents.collect { message ->
-            snackbarHostState.currentSnackbarData?.dismiss()
+        viewModel.snackbarEvents.collectLatest { message ->
             snackbarHostState.showSnackbar(
                 message = message,
                 duration = SnackbarDuration.Short
@@ -89,234 +92,251 @@ fun ReviewScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { padding ->
-        Column(
+        BoxWithConstraints(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(16.dp)
         ) {
-            if (uiState.isSessionFinished) {
-                SessionCompleteView(
-                    studiedCount = uiState.studiedCount,
-                    onReturnToMenu = { navController.popBackStack() }
-                )
-                return@Column
-            }
-
-            val current = uiState.currentCard
-            AnimatedContent(targetState = uiState.currentCard, label = "cardTransition") { targetCard ->
-                if (targetCard == null) {
-                    Text(
-                        text = "Aucune carte a reviser",
-                        style = MaterialTheme.typography.titleMedium
+            val isLandscape = maxWidth > maxHeight
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Top
+            ) {
+                if (uiState.isSessionFinished) {
+                    SessionCompleteView(
+                        studiedCount = uiState.studiedCount,
+                        onReturnToMenu = { navController.popBackStack() }
                     )
-                    return@AnimatedContent
+                    return@Column
                 }
 
-                var showDetails by rememberSaveable(targetCard.id) { mutableStateOf(false) }
-                val rotation by animateFloatAsState(
-                    targetValue = if (uiState.isAnswerRevealed) 180f else 0f,
-                    animationSpec = tween(durationMillis = 420),
-                    label = "flip"
-                )
-                val isFront = rotation <= 90f
-                val density = LocalDensity.current.density
-
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 4.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
+                val current = uiState.currentCard
+                AnimatedContent(targetState = uiState.currentCard, label = "cardTransition") { targetCard ->
+                    if (targetCard == null) {
                         Text(
-                            text = "Carte",
-                            style = MaterialTheme.typography.titleSmall
+                            text = "Aucune carte a reviser",
+                            style = MaterialTheme.typography.titleMedium
                         )
-                        Row {
-                            IconButton(onClick = { viewModel.toggleFavorite() }) {
-                                if (targetCard.favori) {
-                                    Icon(
-                                        imageVector = Icons.Filled.Favorite,
-                                        contentDescription = "Retirer des favoris"
-                                    )
-                                } else {
-                                    Icon(
-                                        imageVector = Icons.Outlined.FavoriteBorder,
-                                        contentDescription = "Ajouter aux favoris"
-                                    )
-                                }
-                            }
-                            IconButton(onClick = { showDeleteDialog = true }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Delete,
-                                    contentDescription = "Supprimer la carte"
+                        return@AnimatedContent
+                    }
+
+                    var showDetails by rememberSaveable(targetCard.id) { mutableStateOf(false) }
+                    val rotation by animateFloatAsState(
+                        targetValue = if (uiState.isAnswerRevealed) 180f else 0f,
+                        animationSpec = tween(durationMillis = 420),
+                        label = "flip"
+                    )
+                    val isFront = rotation <= 90f
+                    val density = LocalDensity.current.density
+                    val activeChallengeType = uiState.activeChallengeType
+
+                    if (activeChallengeType != null) {
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            when (val result = uiState.challengeResult) {
+                                null -> ChallengeOverlay(
+                                    challengeType = activeChallengeType,
+                                    cardRecto = targetCard.recto,
+                                    cardVerso = targetCard.verso,
+                                    challengeInput = uiState.challengeInput,
+                                    onInputChange = { viewModel.onChallengeInputChanged(it) },
+                                    onValidate = { viewModel.validateChallenge() },
+                                    onAbandon = { viewModel.dismissChallenge() }
+                                )
+
+                                else -> ChallengeResultOverlay(
+                                    result = result,
+                                    onContinue = { viewModel.dismissChallenge() },
+                                    correctAnswer = when (activeChallengeType) {
+                                        ChallengeType.SPELLING -> targetCard.recto
+                                        ChallengeType.SEMANTIC -> targetCard.verso
+                                        null -> ""
+                                    }
                                 )
                             }
                         }
+                        return@AnimatedContent
                     }
 
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
-                        ),
-                        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .graphicsLayer {
-                                    rotationY = rotation
-                                    cameraDistance = 12 * density
-                                }
+                    // Layout normal de révision (sans défi)
+                    if (isLandscape) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.Top,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            if (isFront) {
-                                Column(
-                                    modifier = Modifier.padding(24.dp),
-                                    horizontalAlignment = Alignment.CenterHorizontally
-                                ) {
-                                    Text(
-                                        text = targetCard.recto,
-                                        style = MaterialTheme.typography.displaySmall.copy(
-                                            fontFamily = FontFamily.Serif
-                                        ),
-                                        fontWeight = FontWeight.Bold,
-                                        textAlign = TextAlign.Center
-                                    )
-                                }
-                            } else {
-                                Column(
+                            // Carte à gauche
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                                ),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+                            ) {
+                                Box(
                                     modifier = Modifier
-                                        .padding(24.dp)
-                                        .graphicsLayer { rotationY = 180f },
-                                    horizontalAlignment = Alignment.CenterHorizontally
+                                        .fillMaxWidth()
+                                        .graphicsLayer {
+                                            rotationY = rotation
+                                            cameraDistance = 12 * density
+                                        }
                                 ) {
-                                    Text(
-                                        text = targetCard.recto,
-                                        style = MaterialTheme.typography.titleMedium,
-                                        fontWeight = FontWeight.Medium,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Spacer(modifier = Modifier.height(12.dp))
-                                    HorizontalDivider()
-                                    Spacer(modifier = Modifier.height(12.dp))
-                                    Text(
-                                        text = targetCard.verso,
-                                        style = MaterialTheme.typography.bodyLarge,
-                                        textAlign = TextAlign.Center
-                                    )
-                                    Spacer(modifier = Modifier.height(8.dp))
-                                    TextButton(onClick = { showDetails = !showDetails }) {
-                                        Text(text = if (showDetails) "-" else "+")
-                                    }
-                                    if (showDetails) {
-                                        val detailsColor =
-                                            MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
-                                        if (targetCard.categorieGrammaticale.isNotBlank()) {
+                                    if (isFront) {
+                                        Column(
+                                            modifier = Modifier.padding(24.dp),
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
                                             Text(
-                                                text = "Nature: ${targetCard.categorieGrammaticale}",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = detailsColor
+                                                text = targetCard.recto,
+                                                style = MaterialTheme.typography.displaySmall.copy(
+                                                    fontFamily = FontFamily.Serif
+                                                ),
+                                                fontWeight = FontWeight.Bold,
+                                                textAlign = TextAlign.Center
                                             )
                                         }
-                                        if (targetCard.synonymes.isNotEmpty()) {
+                                    } else {
+                                        Column(
+                                            modifier = Modifier
+                                                .padding(24.dp)
+                                                .graphicsLayer { rotationY = 180f },
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
                                             Text(
-                                                text = "Synonymes: ${targetCard.synonymes.joinToString(", ")}",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                fontStyle = FontStyle.Italic,
-                                                color = detailsColor
+                                                text = targetCard.recto,
+                                                style = MaterialTheme.typography.titleMedium,
+                                                fontWeight = FontWeight.Medium,
+                                                textAlign = TextAlign.Center
                                             )
-                                        }
-                                        val exemple = targetCard.exemples.firstOrNull()
-                                        if (!exemple.isNullOrBlank()) {
+                                            Spacer(modifier = Modifier.height(12.dp))
+                                            HorizontalDivider()
+                                            Spacer(modifier = Modifier.height(12.dp))
                                             Text(
-                                                text = "Exemple: $exemple",
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = detailsColor
+                                                text = targetCard.verso,
+                                                style = MaterialTheme.typography.bodyLarge,
+                                                textAlign = TextAlign.Center
                                             )
+                                            // ...existing code...
                                         }
                                     }
                                 }
                             }
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    if (!uiState.isAnswerRevealed) {
-                        Button(
-                            onClick = { viewModel.revealAnswer() },
-                            contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
-                        ) {
-                            Text(text = "VOIR REPONSE")
+                            // Boutons à droite
+                            Column(
+                                modifier = Modifier.weight(1f),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Spacer(modifier = Modifier.height(24.dp))
+                                if (!uiState.isAnswerRevealed) {
+                                    Button(
+                                        onClick = { viewModel.revealAnswer() },
+                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
+                                    ) {
+                                        Text(text = "VOIR REPONSE")
+                                    }
+                                } else {
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        // ...existing code...
+                                    }
+                                }
+                            }
                         }
                     } else {
-                        BoxWithConstraints(
-                            modifier = Modifier.fillMaxWidth()
+                        // Portrait : disposition classique
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            val buttonTextSize =
-                                (maxWidth.value / 16f).coerceIn(10f, 13f).sp
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            // ...existing code...
+                            Card(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(8.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                colors = CardDefaults.cardColors(
+                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                                ),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
                             ) {
-                                val errorColor = MaterialTheme.colorScheme.errorContainer
-                                val okColor = MaterialTheme.colorScheme.tertiaryContainer
-                                val easyColor = MaterialTheme.colorScheme.primaryContainer
-
-                                Button(
-                                    modifier = Modifier.weight(1f),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = errorColor,
-                                        contentColor = contentColorFor(errorColor)
-                                    ),
-                                    onClick = { viewModel.gradeCard(0) }
+                                Box(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .graphicsLayer {
+                                            rotationY = rotation
+                                            cameraDistance = 12 * density
+                                        }
                                 ) {
-                                    Text(
-                                        text = "A REVOIR",
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        fontSize = buttonTextSize
-                                    )
+                                    if (isFront) {
+                                        Column(
+                                            modifier = Modifier.padding(24.dp),
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            Text(
+                                                text = targetCard.recto,
+                                                style = MaterialTheme.typography.displaySmall.copy(
+                                                    fontFamily = FontFamily.Serif
+                                                ),
+                                                fontWeight = FontWeight.Bold,
+                                                textAlign = TextAlign.Center
+                                            )
+                                        }
+                                    } else {
+                                        Column(
+                                            modifier = Modifier
+                                                .padding(24.dp)
+                                                .graphicsLayer { rotationY = 180f },
+                                            horizontalAlignment = Alignment.CenterHorizontally
+                                        ) {
+                                            Text(
+                                                text = targetCard.recto,
+                                                style = MaterialTheme.typography.titleMedium,
+                                                fontWeight = FontWeight.Medium,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            Spacer(modifier = Modifier.height(12.dp))
+                                            HorizontalDivider()
+                                            Spacer(modifier = Modifier.height(12.dp))
+                                            Text(
+                                                text = targetCard.verso,
+                                                style = MaterialTheme.typography.bodyLarge,
+                                                textAlign = TextAlign.Center
+                                            )
+                                            // ...existing code...
+                                        }
+                                    }
                                 }
+                            }
+                            Spacer(modifier = Modifier.height(24.dp))
+                            if (!uiState.isAnswerRevealed) {
                                 Button(
-                                    modifier = Modifier.weight(1f),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = okColor,
-                                        contentColor = contentColorFor(okColor)
-                                    ),
-                                    onClick = { viewModel.gradeCard(4) }
+                                    onClick = { viewModel.revealAnswer() },
+                                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
                                 ) {
-                                    Text(
-                                        text = "JE L'AI",
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        fontSize = buttonTextSize
-                                    )
+                                    Text(text = "VOIR REPONSE")
                                 }
-                                Button(
-                                    modifier = Modifier.weight(1f),
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = easyColor,
-                                        contentColor = contentColorFor(easyColor)
-                                    ),
-                                    onClick = { viewModel.gradeCard(5) }
+                            } else {
+                                BoxWithConstraints(
+                                    modifier = Modifier.fillMaxWidth()
                                 ) {
-                                    Text(
-                                        text = "TROP FACILE",
-                                        maxLines = 1,
-                                        overflow = TextOverflow.Ellipsis,
-                                        fontSize = buttonTextSize
-                                    )
+                                    val buttonTextSize =
+                                        (maxWidth.value / 16f).coerceIn(10f, 13f).sp
+                                    Row(
+                                        modifier = Modifier.fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                    ) {
+                                        // ...existing code...
+                                    }
                                 }
                             }
                         }
@@ -356,29 +376,21 @@ private fun SessionCompleteView(
     onReturnToMenu: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "✓",
-            style = MaterialTheme.typography.displayLarge,
-            color = Color(0xFF2E7D32)
+            text = "🎉 Bravo !",
+            style = MaterialTheme.typography.displaySmall
         )
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Session terminee !",
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
+            text = "Vous avez révisé $studiedCount cartes",
+            style = MaterialTheme.typography.bodyLarge
         )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = "$studiedCount cartes etudiees",
-            style = MaterialTheme.typography.bodyMedium
-        )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         Button(onClick = onReturnToMenu) {
-            Text(text = "Retour au Menu")
+            Text("Retour au menu")
         }
     }
 }

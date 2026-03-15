@@ -1,7 +1,7 @@
 # ✅ FEATURES - Lexica Android 2 - Master Checklist
 
-**Dernière mise à jour:** 2026-03-04  
-**Statut global:** 🟢 En bonne santé (4/10 mini-jeux, gamification ✅, search ✅, auth+firebase ✅)
+**Dernière mise à jour:** 2026-03-12  
+**Statut global:** 🟢 En bonne santé — TACHE_09 ✅ TACHE_10 ✅ TACHE_11 ✅ TACHE_12 ✅ TACHE_13 ✅ TACHE_14 ✅ TACHE_14b ✅ TACHE_15 ✅ TACHE_17 ✅ TACHE_18 ✅ TACHE_19 ✅ TACHE_20 ✅ TACHE_21 ✅ TACHE_22 ✅ TACHE_23 ✅
 
 ---
 
@@ -17,7 +17,7 @@
 
 ## 🎮 MINI-JEUX (10 TOTAL)
 
-### ✅ TERMINÉS (4/10)
+### ✅ TERMINÉS (10/10)
 
 - [x] **Jeu de Correspondance (Matching)**
   - [x] MatchingViewModel.kt
@@ -56,84 +56,35 @@
 
 ---
 
-### ⏳ EN PRIORITÉ 1 (À faire Sprint 2 - Semaine 2)
+### ⏳ EN PRIORITÉ 1 (En cours)
 
-- [ ] **Anagrammes** 🔤
-  - [ ] AnagramsViewModel.kt
-  - [ ] AnagramsScreen.kt
-  - [ ] Générateur d'anagrammes
-  - [ ] Validation solution
-  - [ ] UI composables
-  - [ ] Tests unitaires
-  - [ ] Tests fonctionnels
-  - **Estimé:** 50k tokens, 2-3 jours
-  - **Assignation:** À définir
-  - **Priority:** 🔴 HAUTE
-
-- [ ] **Mode Chrono (Speed Challenge)** ⏱️
-  - [ ] ChronoViewModel.kt
-  - [ ] ChronoScreen.kt
-  - [ ] Timer countdown réactif
-  - [ ] Sélection durée (30s, 1min, 5min)
-  - [ ] Questions rapides
-  - [ ] Résultats scores
-  - [ ] Animations timer
-  - **Estimé:** 60k tokens, 3-4 jours
-  - **Assignation:** À définir
-  - **Priority:** 🔴 HAUTE
-
-- [ ] **Memory (Jeu de Mémorisation)** 🧠
-  - [ ] MemoryViewModel.kt
-  - [ ] MemoryScreen.kt
-  - [ ] Grille cartes retournées
-  - [ ] Logique paires
-  - [ ] Animations flip
-  - [ ] Multi-niveaux (4x4, 5x4, 6x4)
-  - [ ] Best score sauvegardé
-  - **Estimé:** 55k tokens, 2-3 jours
-  - **Assignation:** À définir
-  - **Priority:** 🟡 MOYENNE
+- [x] **Fix Recherche** — TACHE_S1 + TACHE_S2 : bug écran blanc, accents et fallback API ✅
+- [x] **Menu Profil** 👤 — TACHE_11 : icône + nom app "Lexica" ✅
+- [x] **Actions liste de mots** — TACHE_12 : supprimer / favoris / détail carte ✅
+- [x] **Statistiques Profil (Anki-style)** — TACHE_13 : `DailyReviewStat` + graphe 7 jours ✅
+- [x] **Défis intégrés dans la révision** — TACHE_14 : défi ortho + sémantique (Jaccard) ✅
+- [x] **Validation sémantique TFLite MiniLM** — TACHE_14b : `TFLiteSemanticValidator` + fallback Jaccard ✅
+- [x] **Barre "Ajouter un mot" intelligente** — TACHE_15 : UX recherche locale + API + apercu ✅
 
 ---
 
-### ⏳ EN PRIORITÉ 2 (À faire Sprint 3 - Semaine 3)
+### ⏳ EN PRIORITÉ 2 (Backlog)
 
-- [ ] **Spelling Avancé (avec Phonétique)** 🎤
-  - [ ] SpellingAdvancedScreen.kt
-  - [ ] PhoneticValidator.kt
-  - [ ] Entendre définition + mot
-  - [ ] Validation phonétique
-  - [ ] Correction accents/pluriels
-  - [ ] System de jokers
-  - [ ] Feedback détaillé erreurs
-  - **Estimé:** 40k tokens, 2 jours
-  - **Dépend de:** Spelling Game ✅
-  - **Priority:** 🔴 HAUTE
-
-- [ ] **Associations Sémantiques** 🔗
-  - [ ] SemanticViewModel.kt
-  - [ ] SemanticScreen.kt
-  - [ ] Synonymes/Antonymes/Relations
-  - [ ] 4 choix (1 correct + 3 distracteurs)
-  - [ ] Scoring
-  - [ ] UI moderne
-  - **Estimé:** 70k tokens, 3-4 jours
-  - **Dépend de:** Base synonymes enrichie
-  - **Priority:** 🟡 MOYENNE
-
-- [ ] **Définition à Compléter** ✍️
-  - [ ] FillWordViewModel.kt
-  - [ ] FillWordScreen.kt
-  - [ ] Génération trous définition
-  - [ ] 4 choix de mots
-  - [ ] Validation
-  - [ ] UI intuitive
-  - **Estimé:** 30k tokens, 1-2 jours
-  - **Priority:** 🟢 BASSE
+- [x] **Connexion XP aux mini-jeux** — TACHE_10 ✅
+- [x] **Daily Challenge** 📅 — TACHE_09 ✅
+- [x] **Déverrouillage progressif des jeux par XP** — TACHE_20 ✅
+- [ ] **Spelling avancé (phonetique)** — voir TACHE_06 (Spelling Avance)
 
 ---
 
 ### ⏳ BACKLOG FUTUR (À faire Sprint 4+)
+
+- [x] **Barre de navigation inférieure (Bottom Nav)** — TACHE_21 ✅
+- [x] **Mode En Ligne (placeholder + UI)** — TACHE_21 ✅
+- [x] **Page Réglages (thème, police, notifications)** — TACHE_19 ✅
+- [x] **Icône app moderne** — TACHE_22 ✅
+- [x] **Sync données Firebase (progression cloud)** — TACHE_23 ✅
+- [x] **Mode Administrateur** — TACHE_17 ✅
 
 - [ ] **Jeu de Prononciation** 🗣️
   - Speech Recognition Android
@@ -144,11 +95,6 @@
   - Fire base Realtime
   - Duels temps réel
   - Leaderboard
-
-- [ ] **Daily Challenge** 📅
-  - 1 jeu par jour
-  - Récompenses spéciales
-  - Streak bonus
 
 ---
 
@@ -177,19 +123,29 @@
   - 📄 Documentation: `integration_pending/search_pr.md` (archives)
   - **Status:** ✅ INTÉGRÉ (Audit 2026-03-04)
 
-### ⏳ EN COURS (1/3)
+### ✅ COMPLÉTÉS (3/3)
 
-- [ ] **Authentification Firebase** 🔐
-  - [ ] LoginScreen + RegisterScreen
-  - [ ] AuthRepository interface
-  - [ ] Firebase Auth SDK integration
-  - [ ] Firestore sync users
-  - [ ] Session management
-  - **Status:** ⏳ NON COMMENCÉ
-  - **Priority:** 🔴 HAUTE (Sprint 2)
-  - **Assignation:** À définir (DEV_AUTH)
-  - **Estimé:** 80k tokens, 3-4 jours
+- [x] **Authentification Firebase** 🔐
+  - [x] LoginScreen + RegisterScreen
+  - [x] AuthRepository interface
+  - [x] Firebase Auth SDK integration
+  - [x] Firestore sync users
+  - [x] Session management (Flow currentUser)
+  - [x] Navigation Login/Register activée
+  - **Status:** ✅ INTÉGRÉ (TACHE_18 + TACHE_23) — ⚠️ Vérifier Email/Password, SHA-1/SHA-256 et règles Firestore côté Firebase Console
+  - 📁 Location: `features/auth/`
 
+- [x] **Mode Administrateur** ⚙️
+  - [x] `AdminConfig.kt` — détection email admin
+  - [x] `AdminPrefsRepository.kt` — SharedPreferences (sessionSize, reviewMode, défis, jeux)
+  - [x] `AdminViewModel.kt` + `AdminScreen.kt` — panneau de contrôle complet
+  - [x] Bouton admin conditionnel dans ProfileScreen (invisible pour utilisateurs normaux)
+  - [x] ReviewViewModel lit prefs admin (taille session, ON/OFF défis)
+  - [x] `UserStatsRepository.resetStats()` + `simulateStreak()`
+  - [x] `DailyReviewStatDao.clearAll()`
+  - **Status:** ✅ INTÉGRÉ (TACHE_17)
+  - 📁 Location: `presentation/admin/`
+  - 📄 Documentation: `integration_pending/admin_mode_pr.md`
 
 - [ ] **Mini-Jeux Mixtes** 🎯
   - Combinaison plusieurs modes
@@ -258,39 +214,37 @@
 
 ---
 
-### ⏳ AUTHENTIFICATION FIREBASE (À FAIRE - Sprint 3)
+### ✅ AUTHENTIFICATION FIREBASE (INTÉGRÉE)
 
-- [ ] **Setup Firebase**
-  - [ ] Créer projet Firebase
-  - [ ] Ajouter google-services.json
-  - [ ] Dépendances Firebase
+- [x] **Setup Firebase**
+  - [x] Projet Firebase configuré
+  - [x] `google-services.json` ajouté
+  - [x] Dépendances Firebase Auth + Firestore ajoutées
 
-- [ ] **Firebase Auth**
-  - [ ] Email/Password signup
-  - [ ] Email/Password login
+- [x] **Firebase Auth**
+  - [x] Email/Password signup
+  - [x] Email/Password login
   - [ ] Google Sign-In
-  - [ ] Logout
-  - [ ] Session persistence
+  - [x] Logout
+  - [x] Session persistence
 
-- [ ] **Firebase Firestore**
-  - [ ] Schéma utilisateur
-  - [ ] Sync progression utilisateur
+- [x] **Firebase Firestore**
+  - [x] Schéma utilisateur
+  - [x] Sync progression utilisateur
   - [ ] Sync scores jeux
-  - [ ] Conflict resolution (local vs cloud)
+  - [x] Conflict resolution (local vs cloud)
 
-- [ ] **UI**
-  - [ ] Auth screen (signup/login)
-  - [ ] Profile screen
-  - [ ] Settings sync
+- [x] **UI**
+  - [x] Auth screen (signup/login)
+  - [x] Profile screen
+  - [x] Settings sync de déconnexion via `SyncViewModel`
 
 - [ ] **Tests**
-  - [ ] Tests unitaires
-  - [ ] Tests intégration Firebase
-  - [ ] Tests synchronisation
+  - [ ] Tests unitaires ciblés
+  - [ ] Tests intégration Firebase sur device/emulator
+  - [ ] Tests synchronisation multi-session
 
-**Estimé:** 150k tokens, 4-5 jours  
-**Assignation:** DEV_AUTH  
-**Priority:** 🔴 HAUTE
+**Statut:** ✅ Code intégré — validations console/runtime restantes
 
 ---
 
@@ -335,7 +289,7 @@
 ### ✅ FAIT
 
 - [x] Architecture Clean (MVVM)
-- [x] Room Database v4
+- [x] Room Database v5
 - [x] Jetpack Compose UI
 - [x] Navigation Compose
 - [x] Material Design 3

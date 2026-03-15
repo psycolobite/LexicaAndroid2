@@ -8,6 +8,14 @@ Ce guide clarifie exactement ce que le Chef d'Orchestre (vous) doit faire et ne 
 
 ## 📊 Responsabilités du Chef d'Orchestre
 
+## TL;DR
+- `main` = stable
+- une tâche = une branche (`task/TACHE_XX-nom`)
+- un agent = une branche (`agent/TACHE_XX-nom`)
+- le Chef d'Orchestre relit, teste et fusionne au moment opportun
+- suivi quotidien uniquement dans `DAILY_STANDUP.md`
+- éviter toute nouvelle doc si une doc existante suffit
+
 ### 1. **Decoupage & Attribution des Taches**
 - Decouper le travail en `TACHE_XX` avec scope ~100 000 tokens
 - Attribuer les taches aux agents developpeurs

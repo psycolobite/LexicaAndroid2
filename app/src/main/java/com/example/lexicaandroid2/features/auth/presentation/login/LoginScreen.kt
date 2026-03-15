@@ -104,11 +104,11 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             OutlinedButton(
-                onClick = { viewModel.loginWithGoogleIdToken("TODO_GOOGLE_ID_TOKEN") },
+                onClick = viewModel::onGoogleSignInClicked,
                 enabled = !uiState.isLoading,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Connexion Google")
+                Text("S'enregistrer avec Google")
             }
 
             Spacer(modifier = Modifier.height(8.dp))

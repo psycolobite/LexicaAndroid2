@@ -44,5 +44,16 @@ class UserStatsRepositoryImpl(
 
         dao.insertOrUpdate(currentStats.copy(lastLoginDate = now, streak = newStreak))
     }
+
+    override suspend fun resetStats() {
+        dao.insertOrUpdate(UserStatsEntity(xp = 0, level = 1, streak = 0, lastLoginDate = 0L))
+    }
+
+    override suspend fun simulateStreak(days: Int) {
+        val currentStats = dao.getUserStats().firstOrNull() ?: UserStatsEntity()
+        // Fixer lastLoginDate à hier pour que updateStreak() l'incrémente au prochain appel
+        val yesterday = System.currentTimeMillis() - 24 * 60 * 60 * 1000L
+        dao.insertOrUpdate(currentStats.copy(streak = days, lastLoginDate = yesterday))
+    }
 }
 

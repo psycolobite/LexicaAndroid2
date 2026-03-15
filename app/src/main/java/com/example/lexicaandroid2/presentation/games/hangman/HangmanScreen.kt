@@ -21,6 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,6 +40,8 @@ import com.example.lexicaandroid2.presentation.games.common.GameHeader
 fun HangmanScreen(
     repository: FlashcardRepository,
     onBack: () -> Unit,
+    onAwardXp: (Int) -> Unit = {},
+    onGameCompleted: (Int) -> Unit = {},
     viewModel: HangmanViewModel = viewModel(factory = object : androidx.lifecycle.ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {
@@ -44,10 +50,32 @@ fun HangmanScreen(
     })
 ) {
     val uiState = viewModel.uiState.collectAsState().value
+    var xpSent by remember { mutableStateOf(false) }
+    var completionSent by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         if (uiState.isLoading && uiState.currentWord.isEmpty()) {
             viewModel.loadGame()
+        }
+    }
+
+    LaunchedEffect(uiState.gameOver, uiState.score, uiState.totalWords) {
+        if (uiState.gameOver && !xpSent) {
+            onAwardXp(calculateGameXp(uiState.score, uiState.totalWords))
+            xpSent = true
+        }
+        if (!uiState.gameOver) {
+            xpSent = false
+        }
+    }
+
+    LaunchedEffect(uiState.gameOver, uiState.score) {
+        if (uiState.gameOver && !completionSent) {
+            onGameCompleted(uiState.score)
+            completionSent = true
+        }
+        if (!uiState.gameOver) {
+            completionSent = false
         }
     }
 
@@ -68,15 +96,17 @@ fun HangmanScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = uiState.error!!, color = Color.Red)
+                Text(text = uiState.error ?: "Erreur inconnue", color = Color.Red)
                 Button(onClick = onBack) {
                     Text("Retour")
                 }
             }
-        } else if (uiState.gameOver && !uiState.won) {
+        } else if (uiState.gameOver) {
             GameOverHangmanScreen(
                 score = uiState.score,
+                total = uiState.totalWords,
                 word = uiState.currentWord,
+                xpEarned = calculateGameXp(uiState.score, uiState.totalWords),
                 onRestart = { viewModel.resetGame() },
                 onBack = onBack
             )
@@ -206,6 +236,16 @@ fun HangmanScreen(
     }
 }
 
+private fun calculateGameXp(score: Int, total: Int): Int {
+    if (total <= 0) return 5
+    val percent = (score * 100) / total
+    return when {
+        score == total -> 25
+        percent >= 50 -> 15
+        else -> 5
+    }
+}
+
 @Composable
 fun HangmanDrawing(livesRemaining: Int) {
     Box(modifier = Modifier.size(60.dp), contentAlignment = Alignment.Center) {
@@ -228,7 +268,9 @@ fun HangmanDrawing(livesRemaining: Int) {
 @Composable
 fun GameOverHangmanScreen(
     score: Int,
+    total: Int,
     word: String,
+    xpEarned: Int,
     onRestart: () -> Unit,
     onBack: () -> Unit
 ) {
@@ -252,8 +294,14 @@ fun GameOverHangmanScreen(
             modifier = Modifier.padding(bottom = 8.dp)
         )
         Text(
-            text = "Score: $score",
+            text = "Score: $score / ${maxOf(1, total)}",
             fontSize = 20.sp,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+        Text(
+            text = "XP gagné: $xpEarned",
+            fontSize = 16.sp,
+            color = Color.Gray,
             modifier = Modifier.padding(bottom = 32.dp)
         )
         GameButton(

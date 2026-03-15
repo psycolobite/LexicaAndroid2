@@ -45,6 +45,7 @@ class HangmanViewModel(private val repository: FlashcardRepository) : ViewModel(
                 }
 
                 wordsList = flashcards.map { it.recto.uppercase() }
+                _uiState.update { it.copy(totalWords = wordsList.size) }
                 loadNextWord()
             } catch (e: Exception) {
                 _uiState.update { it.copy(
