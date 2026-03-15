@@ -163,12 +163,13 @@ Ta tache attribuee est la numero X.
 
 ## Regles globales (obligatoires pour tous)
 1. Lire les documents dans l'ordre indique par `START_HERE.md`.
-2. Travailler sur une branche dediee :
-   - agent : `agent/TACHE_XX-nom`
-   - chef d'orchestre : `task/TACHE_XX-nom`
-   - `main` reste stable
-2. Travailler dans un package dedie a la tache.
-3. Ne pas modifier les fichiers coeur:
+2. Workflow Git du projet :
+   - `main` = stable
+   - `develop` = branche de travail et d'integration
+   - les agents ne creent pas de branche dediee par defaut
+   - les integrations passent par `integration_pending/`
+3. Travailler dans un package dedie a la tache.
+4. Ne pas modifier les fichiers coeur:
    - `LexicaApp.kt`
    - `AndroidManifest.xml`
    - `build.gradle.kts`
@@ -207,12 +208,12 @@ Ta tache attribuee est la numero X.
    - Créer les fichiers `.kt` dans les bons packages
    - Modifier `LexicaApp.kt` si intégration globale nécessaire
    - Compiler: `./gradlew clean :app:assembleDebug`
-   - Commit et push
+   - Commit et push sur `develop`
 
 2. **DÉCOUPER le travail**
    - Créer des `TACHE_XX` dans ce fichier (voir format au bas)
    - Assigner aux agents avec un message clair
-   - Agenter travaille dans SON package isolé (ex: `presentation/games/anagrams/`)
+   - L'agent travaille dans SON package isolé (ex: `presentation/games/anagrams/`)
    - Agent ne touche JAMAIS aux fichiers coeur
 
 3. **DOCUMENTER quotidiennement**
@@ -230,19 +231,30 @@ Ta tache attribuee est la numero X.
 
 ### 📋 WORKFLOW STANDARD
 
-**1. Agent livre une PR** → `integration_pending/tache-XX-nom_pr.md`
+**1. Agent livre une PR locale** → `integration_pending/tache-XX-nom_pr.md`
+- l'agent travaille dans son package isole
+- pas de branche dediee par agent par defaut
 
 **2. Toi, tu intègres:**
 ```bash
+git switch develop || git switch -c develop
+
 # Créer les fichiers .kt
 # Modifier LexicaApp.kt si nécessaire
 ./gradlew clean :app:assembleDebug     # Compiler
 git add .
 git commit -m "feat: TACHE_XX - [description]"
+git push origin develop
+```
+
+**3. Quand develop est satisfaisante, fusionner dans main:**
+```bash
+git switch main
+git merge develop
 git push origin main
 ```
 
-**3. Mettre à jour la doc:**
+**4. Mettre à jour la doc:**
 - `DAILY_STANDUP.md` → Ajouter la tâche complétée
 - `FEATURES.md` → Mettre à jour statut
 - Ce fichier → Marquer TACHE comme ✅ TERMINEE

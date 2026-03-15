@@ -24,8 +24,10 @@ Lis seulement :
 
 ### Règles simples
 - `main` = branche stable
-- chaque tâche = une branche dédiée (`task/TACHE_XX-nom`)
-- le Chef d'Orchestre valide puis intègre au bon moment dans `main`
+- `develop` = branche de travail et d'intégration
+- les agents ne créent pas tous une branche dédiée
+- les agents livrent dans leur package isolé + `integration_pending/`
+- le Chef d'Orchestre intègre dans `develop`, puis fusionne dans `main` quand c'est prêt
 - `DAILY_STANDUP.md` = seul fichier de suivi quotidien
 - pas de nouvelle doc si un fichier existant suffit
 
@@ -41,8 +43,9 @@ Lis seulement :
 3. ta tâche assignée dans ce fichier
 
 ### Règles simples
-- tu travailles sur **ta branche** (`agent/TACHE_XX-nom`)
 - tu travailles dans **ton package** seulement
+- tu ne crées pas de branche dédiée par défaut
+- tu livres ton travail via ton package + `integration_pending/`
 - pas de build local
 - pas de modification des fichiers coeur sans demande d'intégration
 - si blocage global : documenter dans `integration_pending/`
