@@ -22,6 +22,7 @@ import com.example.lexicaandroid2.presentation.dashboard.DashboardScreen
 import com.example.lexicaandroid2.presentation.dashboard.DashboardViewModel
 import com.example.lexicaandroid2.presentation.review.ReviewScreen
 import com.example.lexicaandroid2.presentation.review.ReviewViewModel
+import com.example.lexicaandroid2.presentation.review.DrivingModeScreen
 import com.example.lexicaandroid2.presentation.wordlist.WordListScreen
 import com.example.lexicaandroid2.presentation.wordlist.WordListViewModel
 import com.example.lexicaandroid2.presentation.wordlist.WordDetailScreen
@@ -47,6 +48,8 @@ import com.example.lexicaandroid2.presentation.games.semantic.SemanticScreen
 import com.example.lexicaandroid2.presentation.games.spellingadvanced.SpellingAdvancedScreen
 import com.example.lexicaandroid2.presentation.games.qcm.SpellingGameScreen
 import com.example.lexicaandroid2.presentation.profile.ProfileScreen
+import com.example.lexicaandroid2.presentation.profile.ProfileViewModel
+import com.example.lexicaandroid2.presentation.profile.ProfileViewModelFactory
 import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeScreen
 import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeViewModel
 import com.example.lexicaandroid2.presentation.dailychallenge.GameType
@@ -54,49 +57,21 @@ import com.example.lexicaandroid2.features.auth.presentation.login.LoginScreen
 import com.example.lexicaandroid2.features.auth.presentation.login.LoginViewModel
 import com.example.lexicaandroid2.features.auth.presentation.register.RegisterScreen
 import com.example.lexicaandroid2.features.auth.presentation.register.RegisterViewModel
+import com.example.lexicaandroid2.presentation.admin.AdminConfig
 import com.example.lexicaandroid2.presentation.admin.AdminScreen
 import com.example.lexicaandroid2.presentation.admin.AdminViewModel
 import com.example.lexicaandroid2.presentation.games.MiniGamesViewModel
 import com.example.lexicaandroid2.presentation.settings.SettingsScreen
 import com.example.lexicaandroid2.presentation.settings.SettingsViewModel
 import com.example.lexicaandroid2.presentation.common.LexicaBottomNavBar
-import com.example.lexicaandroid2.presentation.common.shouldShowBottomBar
+import com.example.lexicaandroid2.presentation.navigation.Screen
+import com.example.lexicaandroid2.presentation.navigation.shouldShowBottomBar
 import com.example.lexicaandroid2.presentation.online.OnlineScreen
+import com.example.lexicaandroid2.presentation.utilisation.UtilisationScreen
 import com.example.lexicaandroid2.features.sync.SyncViewModel
 import com.example.lexicaandroid2.features.sync.SyncUiState
 import com.example.lexicaandroid2.features.sync.SyncConfirmDialog
 import kotlinx.coroutines.flow.MutableStateFlow
-
-sealed class Screen(val route: String) {
-    data object Dashboard : Screen("dashboard")
-    data object Review : Screen("review")
-    data object WordList : Screen("wordlist?filter={filter}") {
-        fun createRoute(filter: String? = null) = "wordlist?filter=${filter ?: ""}"
-    }
-    data object AddWords : Screen("add_words")
-    data object MiniGames : Screen("mini_games")
-    data object MatchingGame : Screen("game_matching")
-    data object QcmGame : Screen("game_qcm")
-    data object HangmanGame : Screen("game_hangman")
-    data object Gamification : Screen("gamification")
-    data object SpellingGame : Screen("game_spelling")
-    data object AnagramsGame : Screen("game_anagrams")
-    data object ChronoGame : Screen("game_chrono")
-    data object MemoryGame : Screen("game_memory")
-    data object FillWordGame : Screen("game_fillword")
-    data object SemanticGame : Screen("game_semantic")
-    data object SpellingAdvancedGame : Screen("game_spelling_advanced")
-    data object Profile : Screen("profile")
-    data object DailyChallenge : Screen("daily_challenge")
-    data object Login : Screen("login")
-    data object Register : Screen("register")
-    data object Admin : Screen("admin")
-    data object Settings : Screen("settings")
-    data object Online : Screen("online")
-    data class WordDetail(val cardId: String = "") : Screen("word/{cardId}") {
-        fun createRoute(cardId: String) = "word/$cardId"
-    }
-}
 
 @Composable
 fun LexicaApp(
@@ -130,7 +105,7 @@ fun LexicaApp(
     val reviewUiState by reviewViewModel.uiState.collectAsState()
 
     val topBarTitle = when (currentRoute) {
-        Screen.Dashboard.route -> "" // No title for Dashboard
+        Screen.Dashboard.route -> "Lexica"
         Screen.Review.route -> "Review (${reviewUiState.scrum})"
         Screen.WordList.route -> "Mes mots"
         Screen.MiniGames.route -> "Mini-Jeux"
@@ -151,7 +126,9 @@ fun LexicaApp(
         Screen.Register.route -> "Inscription"
         Screen.Admin.route -> "⚙️ Mode Admin"
         Screen.Settings.route -> "Réglages"
+        Screen.Utilisation.route -> "Utilisation"
         Screen.Online.route -> "Mode En Ligne"
+        Screen.DrivingMode.route -> "Mode voiture"
         else -> if (currentRoute?.startsWith("word/") == true) "Détail du mot" else "Lexica"
     }
 
@@ -166,7 +143,9 @@ fun LexicaApp(
                          currentRoute == Screen.Login.route || currentRoute == Screen.Register.route ||
                          currentRoute == Screen.Admin.route ||
                          currentRoute == Screen.Settings.route ||
+                         currentRoute == Screen.Utilisation.route ||
                          currentRoute == Screen.Online.route ||
+                         currentRoute == Screen.DrivingMode.route ||
                          currentRoute?.startsWith("word/") == true
 
     val syncUiState by remember(syncViewModel) {
@@ -196,10 +175,13 @@ fun LexicaApp(
                             navController.navigate(Screen.Login.route)
                         }
                     }
+                } else if (currentRoute == Screen.Profile.route) {
+                    { }
                 } else null,
                 onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
                     { navController.navigate(Screen.Settings.route) }
-                } else null
+                } else null,
+                useBrandTitle = currentRoute == Screen.Dashboard.route
             )
         },
         bottomBar = {
@@ -236,6 +218,9 @@ fun LexicaApp(
                     onNavigateToReview = {
                         navController.navigate(Screen.Review.route)
                     },
+                    onNavigateToDrivingMode = {
+                        navController.navigate(Screen.DrivingMode.route)
+                    },
                     onNavigateToWordList = {
                          navController.navigate(Screen.WordList.createRoute(null))
                     },
@@ -250,6 +235,9 @@ fun LexicaApp(
                     },
                     onNavigateToDailyChallenge = {
                         navController.navigate(Screen.DailyChallenge.route)
+                    },
+                    onNavigateToUsage = {
+                        navController.navigate(Screen.Utilisation.route)
                     }
                 )
             }
@@ -268,6 +256,20 @@ fun LexicaApp(
                 )
             }
             composable(
+                route = Screen.DrivingMode.route,
+                enterTransition = {
+                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(300))
+                },
+                exitTransition = {
+                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(300))
+                }
+            ) {
+                DrivingModeScreen(
+                    repository = repository,
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(
                 route = Screen.WordList.route,
                 enterTransition = {
                     slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(300))
@@ -283,8 +285,7 @@ fun LexicaApp(
                 }
 
                 WordListScreen(
-                    viewModel = wordListViewModel,
-                    navController = navController
+                    viewModel = wordListViewModel
                 )
             }
             composable(
@@ -316,6 +317,10 @@ fun LexicaApp(
                     },
                     onBack = {
                         navController.navigateUp()
+                    },
+                    dailyChallengeUiState = dailyChallengeViewModel.uiState.collectAsState().value,
+                    onNavigateToDailyChallenge = {
+                        navController.navigate(Screen.DailyChallenge.route)
                     }
                 )
             }
@@ -331,6 +336,13 @@ fun LexicaApp(
                 MatchingScreen(
                     repository = repository,
                     onBack = { navController.navigateUp() },
+                    onGoHome = {
+                        navController.navigate(Screen.Dashboard.route) {
+                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    },
                     onAwardXp = { amount -> gamificationViewModel.addXp(amount) },
                     onGameCompleted = { score ->
                         dailyChallengeViewModel.tryCompleteFromGame(GameType.MATCHING, score)
@@ -435,15 +447,23 @@ fun LexicaApp(
                 )
             }
             composable(route = Screen.Profile.route) {
+                val profileViewModel: ProfileViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+                    factory = ProfileViewModelFactory(
+                        userStatsRepository = userStatsRepository,
+                        authRepository = authRepository,
+                        flashcardRepository = repository,
+                        dailyReviewStatDao = dailyReviewStatDao
+                    )
+                )
                 ProfileScreen(
                     flashcardRepository = repository,
                     userStatsRepository = userStatsRepository,
                     authRepository = authRepository,
                     onBack = { navController.navigateUp() },
                     onSignInRequested = { navController.navigate(Screen.Login.route) },
-                    onNavigateToAdmin = { navController.navigate(Screen.Admin.route) },
                     syncViewModel = syncViewModel,
-                    dailyReviewStatDao = dailyReviewStatDao
+                    dailyReviewStatDao = dailyReviewStatDao,
+                    viewModel = profileViewModel
                 )
             }
             composable(route = Screen.Admin.route) {
@@ -505,7 +525,15 @@ fun LexicaApp(
             composable(route = Screen.Settings.route) {
                 SettingsScreen(
                     viewModel = settingsViewModel,
-                    appVersion = appVersion
+                    appVersion = appVersion,
+                    showAdminEntry = AdminConfig.isAdmin(currentAuthUser?.email),
+                    onNavigateToAdmin = { navController.navigate(Screen.Admin.route) }
+                )
+            }
+            composable(route = Screen.Utilisation.route) {
+                UtilisationScreen(
+                    onNavigateToWordList = { navController.navigate(Screen.WordList.createRoute(null)) },
+                    onNavigateToReview = { navController.navigate(Screen.Review.route) }
                 )
             }
             composable(route = Screen.Online.route) {

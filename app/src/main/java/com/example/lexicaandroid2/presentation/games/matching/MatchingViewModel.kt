@@ -13,22 +13,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/** Résultat d'une tentative d'appariement, affiché brièvement à l'utilisateur. */
-enum class MatchResult { SUCCESS, FAILURE, NONE }
+enum class MatchingRoundState {
+    PLAYING,
+    SUCCESS,
+    FAILURE
+}
 
 data class MatchingUiState(
     val pairs: List<MatchingPair> = emptyList(),
     val shuffledDefinitions: List<String> = emptyList(),
     val selectedWord: String? = null,
     val selectedDefinition: String? = null,
-    val foundPairs: Set<String> = emptySet(),       // wordId des paires correctement appariées
-    val wrongPairs: Set<String> = emptySet(),        // wordId de la tentative incorrecte en cours
-    val score: Int = 0,
+    val assignments: Map<String, String> = emptyMap(),
     val totalPairs: Int = 0,
+    val validationMistakeCount: Int = 0,
+    val completedRounds: Int = 0,
+    val roundXpEarned: Int = 0,
     val isLoading: Boolean = true,
     val error: String? = null,
-    val gameOver: Boolean = false,
-    val lastMatchResult: MatchResult = MatchResult.NONE  // feedback affiché après "Valider"
+    val roundState: MatchingRoundState = MatchingRoundState.PLAYING
 )
 
 class MatchingViewModel(private val repository: FlashcardRepository) : ViewModel() {
@@ -37,101 +40,152 @@ class MatchingViewModel(private val repository: FlashcardRepository) : ViewModel
 
     fun loadGame() {
         viewModelScope.launch(Dispatchers.IO) {
-            _uiState.update { it.copy(isLoading = true) }
+            _uiState.update {
+                it.copy(
+                    isLoading = true,
+                    error = null,
+                    selectedWord = null,
+                    selectedDefinition = null,
+                    assignments = emptyMap(),
+                    validationMistakeCount = 0,
+                    roundXpEarned = 0,
+                    roundState = MatchingRoundState.PLAYING
+                )
+            }
+
             try {
                 val flashcards = repository.getAllCards()
+                    .filter { it.recto.isNotBlank() && it.verso.isNotBlank() }
                     .shuffled()
                     .take(4)
 
-                if (flashcards.isEmpty()) {
-                    _uiState.update { it.copy(isLoading = false, error = "Aucune carte disponible") }
+                if (flashcards.size < 4) {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            error = "Il faut au moins 4 cartes valides pour jouer à Correspondance"
+                        )
+                    }
                     return@launch
                 }
 
                 val pairs = GameUtils.createMatchingPairs(flashcards)
-                val definitions = pairs.map { it.definitionText }.shuffled()
-
                 _uiState.update {
                     it.copy(
                         pairs = pairs,
-                        shuffledDefinitions = definitions,
+                        shuffledDefinitions = pairs.map { pair -> pair.definitionText }.shuffled(),
                         totalPairs = pairs.size,
-                        isLoading = false
+                        isLoading = false,
+                        error = null,
+                        selectedWord = null,
+                        selectedDefinition = null,
+                        assignments = emptyMap(),
+                        validationMistakeCount = 0,
+                        roundXpEarned = 0,
+                        roundState = MatchingRoundState.PLAYING
                     )
                 }
             } catch (e: Exception) {
-                _uiState.update { it.copy(isLoading = false, error = e.message ?: "Erreur inconnue") }
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        error = e.message ?: "Erreur inconnue"
+                    )
+                }
             }
         }
     }
 
     fun selectWord(wordId: String) {
         _uiState.update { state ->
-            if (state.foundPairs.contains(wordId)) state
-            else state.copy(selectedWord = wordId, selectedDefinition = null, wrongPairs = emptySet(), lastMatchResult = MatchResult.NONE)
+            if (state.roundState != MatchingRoundState.PLAYING) return@update state
+
+            state.selectedDefinition?.let { selectedDefinition ->
+                assignPair(state, wordId, selectedDefinition)
+            } ?: state.copy(
+                selectedWord = if (state.selectedWord == wordId) null else wordId,
+                selectedDefinition = null
+            )
         }
     }
 
     fun selectDefinition(definitionText: String) {
         _uiState.update { state ->
-            if (state.selectedWord == null) state.copy(selectedDefinition = definitionText, lastMatchResult = MatchResult.NONE)
-            else state.copy(selectedDefinition = definitionText, lastMatchResult = MatchResult.NONE, wrongPairs = emptySet())
+            if (state.roundState != MatchingRoundState.PLAYING) return@update state
+
+            state.selectedWord?.let { selectedWord ->
+                assignPair(state, selectedWord, definitionText)
+            } ?: state.copy(
+                selectedDefinition = if (state.selectedDefinition == definitionText) null else definitionText,
+                selectedWord = null
+            )
         }
     }
 
-    /** Appelé par le bouton "Valider" — vérifie la paire sélectionnée. */
-    fun validateSelection() {
+    fun validateAllPairs() {
         val state = _uiState.value
-        val wordId = state.selectedWord ?: return
-        val definition = state.selectedDefinition ?: return
-        val pair = state.pairs.find { it.wordId == wordId } ?: return
+        if (state.roundState != MatchingRoundState.PLAYING) return
+        if (state.assignments.size != state.totalPairs) return
 
-        if (pair.definitionText == definition) {
-            // ✅ Bonne paire
-            val newFound = state.foundPairs + wordId
+        val mistakes = state.pairs.count { pair ->
+            state.assignments[pair.wordId] != pair.definitionText
+        }
+
+        if (mistakes == 0) {
             _uiState.update {
                 it.copy(
-                    foundPairs = newFound,
-                    score = newFound.size,
-                    selectedWord = null,
-                    selectedDefinition = null,
-                    wrongPairs = emptySet(),
-                    lastMatchResult = MatchResult.SUCCESS,
-                    gameOver = newFound.size == state.totalPairs
+                    roundState = MatchingRoundState.SUCCESS,
+                    validationMistakeCount = 0,
+                    roundXpEarned = SUCCESS_XP,
+                    completedRounds = it.completedRounds + 1
                 )
             }
-            // Effacer le feedback après 1 s
+
             viewModelScope.launch {
-                delay(1000)
-                _uiState.update { it.copy(lastMatchResult = MatchResult.NONE) }
+                delay(1400)
+                loadGame()
             }
         } else {
-            // ❌ Mauvaise paire — marquer en rouge, conserver la sélection pour réessai
             _uiState.update {
                 it.copy(
-                    wrongPairs = setOf(wordId),
-                    lastMatchResult = MatchResult.FAILURE
+                    roundState = MatchingRoundState.FAILURE,
+                    validationMistakeCount = mistakes,
+                    roundXpEarned = 0
                 )
-            }
-            // Effacer la mise en rouge après 900 ms, reset sélection
-            viewModelScope.launch {
-                delay(900)
-                _uiState.update {
-                    it.copy(
-                        selectedWord = null,
-                        selectedDefinition = null,
-                        wrongPairs = emptySet(),
-                        lastMatchResult = MatchResult.NONE
-                    )
-                }
             }
         }
     }
 
-    fun resetGame() {
-        viewModelScope.launch {
-            _uiState.update { MatchingUiState() }
-            loadGame()
+    fun restartCurrentRound() {
+        _uiState.update {
+            it.copy(
+                selectedWord = null,
+                selectedDefinition = null,
+                assignments = emptyMap(),
+                validationMistakeCount = 0,
+                roundXpEarned = 0,
+                roundState = MatchingRoundState.PLAYING
+            )
         }
+    }
+
+    private fun assignPair(
+        state: MatchingUiState,
+        wordId: String,
+        definitionText: String
+    ): MatchingUiState {
+        val cleanedAssignments = state.assignments
+            .filterKeys { it != wordId }
+            .filterValues { it != definitionText }
+
+        return state.copy(
+            assignments = cleanedAssignments + (wordId to definitionText),
+            selectedWord = null,
+            selectedDefinition = null
+        )
+    }
+
+    companion object {
+        private const val SUCCESS_XP = 25
     }
 }

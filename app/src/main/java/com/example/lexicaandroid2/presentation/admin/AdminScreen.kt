@@ -72,7 +72,7 @@ fun AdminScreen(
                 color = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = "Ces paramètres affectent uniquement votre session.",
+                text = "Active uniquement les modes d'entraînement souhaités.",
                 fontSize = 13.sp,
                 color = Color.Gray
             )
@@ -81,21 +81,53 @@ fun AdminScreen(
 
             // ── Section Révision ─────────────────────────────────────────────
             AdminSection(title = "📚 Entraînement (Révision)") {
+                AdminLabel("Modes actifs")
 
-                AdminLabel("Type de carte affiché")
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    ReviewMode.entries.forEach { mode ->
-                        FilterChip(
-                            selected = uiState.reviewMode == mode,
-                            onClick = { viewModel.setReviewMode(mode) },
-                            label = { Text(mode.label, fontSize = 11.sp) },
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
+                    FilterChip(
+                        selected = uiState.reviewDefinitionToWordEnabled,
+                        onClick = { viewModel.setReviewDefinitionToWordEnabled(!uiState.reviewDefinitionToWordEnabled) },
+                        label = { Text("Définition → Mot", fontSize = 11.sp) },
+                        modifier = Modifier.weight(1f)
+                    )
+                    FilterChip(
+                        selected = uiState.reviewWordToDefinitionEnabled,
+                        onClick = { viewModel.setReviewWordToDefinitionEnabled(!uiState.reviewWordToDefinitionEnabled) },
+                        label = { Text("Mot → Définition", fontSize = 11.sp) },
+                        modifier = Modifier.weight(1f)
+                    )
                 }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    FilterChip(
+                        selected = uiState.challengeSemanticEnabled,
+                        onClick = { viewModel.setChallengeSemanticEnabled(!uiState.challengeSemanticEnabled) },
+                        label = { Text("Défi sémantique", fontSize = 11.sp) },
+                        modifier = Modifier.weight(1f)
+                    )
+                    FilterChip(
+                        selected = uiState.challengeOrthoEnabled,
+                        onClick = { viewModel.setChallengeOrtho(!uiState.challengeOrthoEnabled) },
+                        label = { Text("Défi orthographique", fontSize = 11.sp) },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                Text(
+                    text = "Exemple : si seul 'Défi orthographique' est activé, l'entraînement ne proposera que ce mode.",
+                    fontSize = 12.sp,
+                    color = Color.Gray
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
@@ -106,19 +138,6 @@ fun AdminScreen(
                     valueRange = 5f..50f,
                     steps = 8,
                     modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                AdminToggleRow(
-                    label = "Défis orthographiques",
-                    checked = uiState.challengeOrthoEnabled,
-                    onCheckedChange = { viewModel.setChallengeOrtho(it) }
-                )
-                AdminToggleRow(
-                    label = "Défis sémantiques",
-                    checked = uiState.challengeSemanticEnabled,
-                    onCheckedChange = { viewModel.setChallengeSemanticEnabled(it) }
                 )
             }
 
@@ -161,6 +180,25 @@ fun AdminScreen(
                     )
                 ) {
                     Text("🔄 Réinitialiser XP & Niveau")
+                }
+            }
+
+            AdminSection(title = "⭐ Progression") {
+                AdminLabel("Niveau actuel : ${uiState.currentLevel}")
+                AdminLabel("Niveau cible : ${uiState.pendingLevel}")
+                Slider(
+                    value = uiState.pendingLevel.toFloat(),
+                    onValueChange = { viewModel.setPendingLevel(it.toInt()) },
+                    valueRange = 1f..20f,
+                    steps = 18,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                OutlinedButton(
+                    onClick = { viewModel.applyPendingLevel() },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Appliquer le niveau")
                 }
             }
 

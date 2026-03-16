@@ -22,7 +22,7 @@ class UserPrefsRepository(context: Context) {
 
     var fontSize: Float
         get() = prefs.getFloat(KEY_FONT_SIZE, DEFAULT_FONT_SIZE)
-        set(value) = prefs.edit { putFloat(KEY_FONT_SIZE, value.coerceIn(12f, 20f)) }
+        set(value) = prefs.edit { putFloat(KEY_FONT_SIZE, value.coerceIn(12f, 22f)) }
 
     var accentColor: AccentColor
         get() = AccentColor.fromString(prefs.getString(KEY_ACCENT_COLOR, AccentColor.VIOLET.value))

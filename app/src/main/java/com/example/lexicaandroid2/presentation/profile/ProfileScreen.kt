@@ -21,7 +21,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,7 +32,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.features.auth.domain.repository.AuthRepository
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
@@ -48,24 +46,16 @@ fun ProfileScreen(
     authRepository: AuthRepository,
     onBack: () -> Unit,
     onSignInRequested: () -> Unit,
-    onNavigateToAdmin: () -> Unit = {},
     syncViewModel: SyncViewModel? = null,
     dailyReviewStatDao: DailyReviewStatDao? = null,
-    viewModel: ProfileViewModel = viewModel(
-        factory = ProfileViewModelFactory(
-            userStatsRepository = userStatsRepository,
-            authRepository = authRepository,
-            flashcardRepository = flashcardRepository,
-            dailyReviewStatDao = dailyReviewStatDao
-        )
-    )
+    viewModel: ProfileViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -74,136 +64,124 @@ fun ProfileScreen(
             Box(modifier = Modifier.fillMaxWidth().height(300.dp), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
-            return@Column
-        }
+        } else {
+            ProfileHeader(
+                displayName = uiState.displayName,
+                email = uiState.email,
+                initials = uiState.initials
+            )
 
-        ProfileHeader(
-            displayName = uiState.displayName,
-            email = uiState.email,
-            initials = uiState.initials
-        )
-
-        Card(
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFF)),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(modifier = Modifier.padding(12.dp)) {
-                Text(
-                    text = "Progression",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                XpProgressBar(userStats = uiState.userStats)
-                Text(
-                    text = "Streak: ${uiState.userStats.streak} jours",
-                    color = Color.Gray,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
-                )
-            }
-        }
-
-        Card(
-            shape = RoundedCornerShape(12.dp),
-            colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFF)),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                Text(
-                    text = "Statistiques",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                Text("Mots appris: ${uiState.totalWordsLearned}")
-                uiState.gameStats.forEach { (game, played) ->
-                    Text("$game: $played parties")
-                }
-            }
-        }
-
-        // Section Statistiques de Révision (TACHE_13)
-        if (uiState.todayCards > 0 || uiState.last7Days.isNotEmpty()) {
             Card(
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF0FFF4)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                Column(modifier = Modifier.padding(12.dp)) {
                     Text(
-                        text = "Activité de révision",
+                        text = "Progression",
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        StatBox(
-                            label = "Aujourd'hui",
-                            value = "${uiState.todayCards}",
-                            modifier = Modifier.weight(1f)
-                        )
-                        StatBox(
-                            label = "Taux 7 jours",
-                            value = "${uiState.successRate7Days.toInt()}%",
-                            modifier = Modifier.weight(1f)
-                        )
-                        StatBox(
-                            label = "Meilleure série",
-                            value = "${uiState.bestStreak30Days}j",
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    if (uiState.last7Days.isNotEmpty()) {
-                        Text(
-                            text = "7 derniers jours",
-                            fontSize = 13.sp,
-                            color = Color.Gray
-                        )
-                        WeekBarChart(days = uiState.last7Days)
-                    }
+                    XpProgressBar(userStats = uiState.userStats)
+                    Text(
+                        text = "Streak: ${uiState.userStats.streak} jours",
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+                    )
                 }
             }
-        }
 
-        uiState.error?.let { message ->
-            Text(
-                text = message,
-                color = MaterialTheme.colorScheme.error,
-                fontSize = 13.sp
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        // Bouton Mode Admin — visible uniquement pour l'admin
-        if (uiState.isAdmin) {
-            OutlinedButton(
-                onClick = onNavigateToAdmin,
+            Card(
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("⚙️ Mode Admin")
-            }
-        }
-
-        Button(
-            onClick = {
-                if (uiState.isAuthenticated && syncViewModel != null && !uiState.uid.isNullOrBlank()) {
-                    syncViewModel.signOutWithSync(uiState.uid!!)
-                } else {
-                    viewModel.onAuthAction(onSignInRequested)
+                Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Text(
+                        text = "Statistiques",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp
+                    )
+                    Text("Mots appris: ${uiState.totalWordsLearned}")
+                    uiState.gameStats.forEach { (game, played) ->
+                        Text("$game: $played parties")
+                    }
                 }
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(if (uiState.isAuthenticated) "Se déconnecter" else "Se connecter")
-        }
+            }
 
-        Button(
-            onClick = onBack,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Retour")
+            if (uiState.todayCards > 0 || uiState.last7Days.isNotEmpty()) {
+                Card(
+                    shape = RoundedCornerShape(12.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Text(
+                            text = "Activité de révision",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            StatBox(
+                                label = "Aujourd'hui",
+                                value = "${uiState.todayCards}",
+                                modifier = Modifier.weight(1f)
+                            )
+                            StatBox(
+                                label = "Taux 7 jours",
+                                value = "${uiState.successRate7Days.toInt()}%",
+                                modifier = Modifier.weight(1f)
+                            )
+                            StatBox(
+                                label = "Meilleure série",
+                                value = "${uiState.bestStreak30Days}j",
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                        if (uiState.last7Days.isNotEmpty()) {
+                            Text(
+                                text = "7 derniers jours",
+                                fontSize = 13.sp,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                            WeekBarChart(days = uiState.last7Days)
+                        }
+                    }
+                }
+            }
+
+            uiState.error?.let { message ->
+                Text(
+                    text = message,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 13.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Button(
+                onClick = {
+                    if (uiState.isAuthenticated && syncViewModel != null && !uiState.uid.isNullOrBlank()) {
+                        syncViewModel.signOutWithSync(uiState.uid!!)
+                    } else {
+                        viewModel.onAuthAction(onSignInRequested)
+                    }
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(if (uiState.isAuthenticated) "Se déconnecter" else "Se connecter")
+            }
+
+            Button(
+                onClick = onBack,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Retour")
+            }
         }
     }
 }
@@ -226,14 +204,14 @@ private fun ProfileHeader(
                 .height(56.dp)
                 .fillMaxWidth(0.18f)
                 .clip(CircleShape)
-                .background(Color(0xFFE2E8F0)),
+                .background(MaterialTheme.colorScheme.secondaryContainer),
             contentAlignment = Alignment.Center
         ) {
             Text(
                 text = initials,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
-                color = Color(0xFF1E293B)
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
 
@@ -246,7 +224,7 @@ private fun ProfileHeader(
             if (!email.isNullOrBlank()) {
                 Text(
                     text = email,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 13.sp
                 )
             }
@@ -262,7 +240,7 @@ private fun StatBox(
 ) {
     Card(
         shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFFDCFCE7)),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer),
         modifier = modifier
     ) {
         Column(
@@ -270,8 +248,17 @@ private fun StatBox(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(text = value, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color(0xFF166534))
-            Text(text = label, fontSize = 11.sp, color = Color(0xFF4D7C5E))
+            Text(
+                text = value,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            Text(
+                text = label,
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.8f)
+            )
         }
     }
 }
@@ -305,7 +292,7 @@ private fun WeekBarChart(
                 Text(
                     text = stat.dateKey.takeLast(5).replace("-", "/"),
                     fontSize = 8.sp,
-                    color = Color.Gray
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }

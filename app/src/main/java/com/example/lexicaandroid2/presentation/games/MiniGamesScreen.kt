@@ -31,12 +31,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lexicaandroid2.features.gamification.domain.GameUnlockConfig
+import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeState
+import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeUiState
 
 @Composable
 fun MiniGamesScreen(
     viewModel: MiniGamesViewModel,
     onGameSelected: (String) -> Unit,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    dailyChallengeUiState: DailyChallengeUiState? = null,
+    onNavigateToDailyChallenge: (() -> Unit)? = null
 ) {
     val games by viewModel.gamesWithLockState.collectAsState()
 
@@ -62,6 +66,13 @@ fun MiniGamesScreen(
             modifier = Modifier.padding(bottom = 8.dp)
         )
 
+        if (dailyChallengeUiState != null && onNavigateToDailyChallenge != null) {
+            DailyChallengePromptCard(
+                uiState = dailyChallengeUiState,
+                onNavigateToDailyChallenge = onNavigateToDailyChallenge
+            )
+        }
+
         games.forEach { gameState ->
             GameCard(
                 gameState = gameState,
@@ -84,6 +95,73 @@ fun MiniGamesScreen(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+private fun DailyChallengePromptCard(
+    uiState: DailyChallengeUiState,
+    onNavigateToDailyChallenge: () -> Unit
+) {
+    val title: String
+    val subtitle: String
+    val buttonLabel: String
+
+    when (val state = uiState.state) {
+        is DailyChallengeState.Available -> {
+            title = "📅 Défi du jour disponible"
+            subtitle = "${state.gameType.icon} ${state.gameType.displayName} · bonus ${state.bonusXp} XP"
+            buttonLabel = "Voir le défi du jour"
+        }
+        is DailyChallengeState.Completed -> {
+            title = "✅ Défi du jour déjà terminé"
+            subtitle = "Revenez demain pour un nouveau défi."
+            buttonLabel = "Ouvrir le défi du jour"
+        }
+        is DailyChallengeState.Error -> {
+            title = "📅 Défi du jour"
+            subtitle = state.message
+            buttonLabel = "Réessayer"
+        }
+        DailyChallengeState.Loading -> {
+            title = "📅 Défi du jour"
+            subtitle = "Chargement du défi quotidien..."
+            buttonLabel = "Ouvrir"
+        }
+    }
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.tertiaryContainer)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Text(
+                text = title,
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            Text(
+                text = subtitle,
+                fontSize = 13.sp,
+                color = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+            Button(
+                onClick = onNavigateToDailyChallenge,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
+            ) {
+                Text(buttonLabel, fontWeight = FontWeight.SemiBold)
+            }
+        }
     }
 }
 

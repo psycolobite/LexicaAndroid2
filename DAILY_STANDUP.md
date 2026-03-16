@@ -379,6 +379,107 @@ Build:               🔄 À recompiler
 - Tester login → sync cloud → signout → relogin sur une seconde session
 - Décider si les assets launcher legacy API < 26 doivent être régénérés
 
+---
+
+## 📅 2026-03-15 - Stabilisation UX, Git, profil, review et nouvelles entrées produit
+
+### ✅ Accompli
+- [x] **Workflow Git clarifié et simplifié**
+  - création d'un snapshot Git de sécurité sur branche de travail
+  - tag créé : `avant-que-jai-compris-git`
+  - documentation réalignée sur le workflow réel : `main` stable + `develop` intégration + `integration_pending`
+  - simplification de `START_HERE.md`, `GUIDE_CHEF_DORCHESTRE.md`, `CONSIGNES_TACHES.md`
+- [x] **Catalogue des tâches réaligné sur l'état réel**
+  - `TACHE_12` marquée terminée
+  - `TACHE_13` marquée terminée
+  - `TACHE_14` marquée terminée
+  - `TACHE_10` marquée partiellement traitée (Matching refondu, QCM/Pendu à confirmer)
+  - `TACHE_11` marquée partiellement traitée (nom + icône présents, refonte d'icône encore souhaitée)
+
+- [x] **Mode Profil stabilisé**
+  - correction du crash Compose à l'ouverture du profil
+  - correction d'un second crash lié à la `TopAppBar` / navigation
+  - retrait de l'accès admin depuis le profil
+  - accès admin déplacé vers `Settings`
+
+- [x] **Révision / Entraînement améliorés**
+  - restauration du vrai `ReviewScreen.kt` après corruption partielle du fichier
+  - retour du bouton `+` et des détails de carte
+  - ajout d'un vrai flip recto/verso réversible pendant l'entraînement
+  - renommage du CTA dashboard : `COMMENCER L'ENTRAÎNEMENT`
+  - correction de l'affichage des boutons de notation (`A REVOIR`, `JE L'AI`, `TROP FACILE`) avec texte centré et multi-ligne
+  - admin refondu avec **4 bascules indépendantes** :
+    - `Définition → Mot`
+    - `Mot → Définition`
+    - `Défi sémantique`
+    - `Défi orthographique`
+  - logique `ReviewViewModel` réalignée sur ces 4 modes activables séparément
+
+- [x] **Paramètres / Admin**
+  - retrait des réglages trompeurs ou redondants (`accent color`, ancien switch `définition en premier`, anciens réglages entraînement non branchés)
+  - retour d'un vrai réglage utile de texte sous forme de **modulateur global**
+  - application réelle du modulateur à l'app via `fontScale` Compose dans `MainActivity`
+  - ajout de l'entrée `Mode Admin` dans `Settings`
+  - ajout du réglage manuel du niveau utilisateur dans l'admin
+  - ajout d'une **déclaration de propriété intellectuelle** au nom de **Paul Mottet** dans les paramètres
+
+- [x] **Liste de mots / Détail**
+  - remplacement de l'ouverture plein écran du détail mot par une **popup**
+  - conservation des infos détaillées existantes : définition, exemples, synonymes, étymologie, progression
+
+- [x] **Mini-jeux / Daily Challenge**
+  - ajout d'un bloc de proposition du **Défi du jour** directement en haut de l'écran `Mini-Jeux`
+  - début de différenciation UX entre mini-jeux classiques et défi quotidien
+
+- [x] **Jeu de correspondance refondu**
+  - passage d'une validation paire par paire à une **validation globale**
+  - l'utilisateur associe toutes les paires d'abord, puis valide une seule fois
+  - succès : écran vert, félicitations, XP, passage automatique au lot suivant
+  - échec : écran d'erreur avec nombre de fautes, `Recommencer`, `Accueil`
+  - bouton `Accueil` relié au `dashboard`
+
+- [x] **Navigation / Produit**
+  - ajout d'une nouvelle page **`Utilisation`**
+  - ajout de l'entrée `Utilisation` dans la barre du bas
+  - ajout d'un bouton `Utilisation des mots` sur l'accueil
+  - ajout d'un vrai bloc visuel `Lexica` en haut à gauche du dashboard pour casser le vide
+
+- [x] **Synchronisation cloud / local**
+  - changement du comportement du dialogue local/serveur :
+    - plus de popup au redémarrage d'une session déjà connectée
+    - synchro silencieuse privilégiée pour ces cas
+    - conservation du cas d'arbitrage pour le vrai passage `invité -> connecté`
+
+### 🔴 Bloquants
+- **Crash encore présent en fin de session de révision** lorsque la série configurée (ex. 20 cartes) est terminée
+- Build global complet non revalidé proprement sur tout l'ensemble après l'empilement des changements de session
+- Plusieurs chantiers demandés restent encore ouverts (voir section suivante)
+
+### 🔜 Fonctions restantes identifiées
+- Corriger le crash de fin de session en révision
+- Ajouter un **vrai service TTS central** réutilisable dans les jeux et l'entraînement
+- Ajouter la **lecture vocale des faces de cartes** dans `Review`
+- Ajouter un **mode spécial audio / voiture** avec lecture automatique des cartes
+- Rendre le jeu de correspondance plus visuel (trait entre les paires ou repositionnement face à face)
+- Enrichir réellement la page `Utilisation` avec des exercices d'emploi des mots
+- Refaire l'icône de l'application avec une direction artistique choisie
+
+### 📊 Statut Global
+```
+Git / workflow:        ✅ Clarifié et simplifié
+Profil:                ✅ Stabilisé
+Révision:              ⚠️ Améliorée mais crash fin de session à corriger
+Admin:                 ✅ Refactoré en 4 modes indépendants
+Settings:              ✅ Nettoyé + modulateur texte global
+Word detail popup:     ✅ Intégré
+Mini-jeux UX:          ✅ Défi du jour proposé
+Matching:              ✅ Refonte logique validée
+Utilisation:           ⚠️ Page créée, contenu avancé à faire
+TTS / mode voiture:    🔴 À faire
+Icône app:             🔴 À refaire
+Build:                 🔄 À revalider globalement
+```
+
 ### 📊 Statut Global
 ```
 Mini-jeux:           10/10 ██████████ 100%
@@ -393,6 +494,58 @@ Bottom Nav:          ✅ Intégré
 Déverrouillage XP:   ✅ Intégré
 Icône moderne:       ✅ Intégrée
 Build:               ✅ SUCCESSFUL
+```
+
+---
+
+## 📅 2026-03-15 - Session UX / TTS / mode voiture / réalignement doc
+
+### ✅ Accompli
+- [x] **Réglages peaufinés**
+  - ajout d'un vrai bouton `Valider` pour la taille de police
+  - ajout d'un aperçu local dédié
+  - correction de l'ambiguïté visuelle de l'aperçu après application globale
+- [x] **Accueil / navigation / thème**
+  - simplification du branding dashboard vers `Lexica` dans la top bar
+  - fond central `Dashboard` / `Profil` aligné sur le thème sombre
+  - ordre de la bottom bar ajusté avec `Usage` à droite de `Mini-jeux`
+  - comportement des labels de bottom bar ajusté : 1 ligne à 100%, retour possible sur 2 lignes si la police augmente
+- [x] **Audio / TTS avancés**
+  - création d'un service central `LexicaTtsService`
+  - migration du TTS dupliqué dans les modes dictée vers ce service partagé
+  - ajout de commandes audio dans `Review` : lecture du mot, lecture de la définition, options audio dédiées
+  - ajout des bascules `lecture auto du mot` / `lecture auto de la définition`
+- [x] **Mode voiture (première version)**
+  - création de `DrivingModeScreen.kt` + `DrivingModeViewModel.kt`
+  - ajout d'un bouton `Mode voiture` sur l'écran d'accueil (temporaire)
+  - lecture auto mot puis définition, avec `Pause`, `Reprendre`, `Répéter`, `Suivant`, `Retour`
+- [x] **Icône launcher retravaillée**
+  - nouvelle itération vectorielle plus simple / plus moderne dans `ic_launcher_foreground.xml`
+- [x] **Build validée**
+  - `:app:assembleDebug` ✅ SUCCESSFUL
+
+### 🔴 Bloquants
+- Le crash de fin de session `Review` reste volontairement mis de côté
+- Les boutons audio grisés indiquent probablement un TTS non prêt / non disponible sur l'appareil ou l'émulateur ; diagnostic runtime encore à faire
+- La bottom bar reste à peaufiner visuellement (espacements entre labels / taille perçue)
+
+### 🔜 Prochaines tâches utiles
+- Diagnostiquer clairement la disponibilité TTS sur appareil / émulateur et afficher un retour UX explicite
+- Finaliser le `mode voiture` (options de délai, placement final du bouton, lecture configurable)
+- Corriger le crash de fin de session `Review`
+- Faire le rendu graphique avancé du `Matching`
+- Enrichir réellement la page `Utilisation`
+
+### 📊 Statut Global
+```
+Réglages UX:            ✅ Améliorés (aperçu + validation)
+Bottom Nav:             ⚠️ Intégrée, peaufinage visuel restant
+TTS central:            ✅ Intégré
+Audio Review:           ⚠️ Intégré, diagnostic runtime restant
+Mode voiture:           ⚠️ V1 intégrée
+Icône launcher:         ⚠️ Nouvelle itération intégrée, DA encore perfectible
+Review fin de session:  🔴 Crash toujours ouvert
+Build:                  ✅ SUCCESSFUL (assembleDebug)
 ```
 
 

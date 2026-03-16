@@ -36,11 +36,13 @@ import androidx.compose.ui.unit.sp
 fun DashboardScreen(
     viewModel: DashboardViewModel,
     onNavigateToReview: () -> Unit,
+    onNavigateToDrivingMode: () -> Unit,
     onNavigateToWordList: () -> Unit,
     onNavigateToWordListFiltered: (String) -> Unit,
     onNavigateToAddWords: () -> Unit,
     onNavigateToMiniGames: () -> Unit,
-    onNavigateToDailyChallenge: () -> Unit = {}
+    onNavigateToDailyChallenge: () -> Unit = {},
+    onNavigateToUsage: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -51,7 +53,7 @@ fun DashboardScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFFAFAFA)) // Off-white background
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -80,11 +82,13 @@ fun DashboardScreen(
             DashboardContent(
                 uiState = uiState,
                 onNavigateToReview = onNavigateToReview,
+                onNavigateToDrivingMode = onNavigateToDrivingMode,
                 onNavigateToWordList = onNavigateToWordList,
                 onNavigateToWordListFiltered = onNavigateToWordListFiltered,
                 onNavigateToAddWords = onNavigateToAddWords,
                 onNavigateToMiniGames = onNavigateToMiniGames,
-                onNavigateToDailyChallenge = onNavigateToDailyChallenge
+                onNavigateToDailyChallenge = onNavigateToDailyChallenge,
+                onNavigateToUsage = onNavigateToUsage
             )
         }
     }
@@ -94,14 +98,14 @@ fun DashboardScreen(
 private fun DashboardContent(
     uiState: DashboardUiState,
     onNavigateToReview: () -> Unit,
+    onNavigateToDrivingMode: () -> Unit,
     onNavigateToWordList: () -> Unit,
     onNavigateToWordListFiltered: (String) -> Unit,
     onNavigateToAddWords: () -> Unit,
     onNavigateToMiniGames: () -> Unit,
-    onNavigateToDailyChallenge: () -> Unit
+    onNavigateToDailyChallenge: () -> Unit,
+    onNavigateToUsage: () -> Unit
 ) {
-    Spacer(modifier = Modifier.height(16.dp))
-
     // Section titre : mes mots
     Text(
         text = "Mes mots",
@@ -169,7 +173,7 @@ private fun DashboardContent(
         )
     ) {
         Text(
-            text = "🚀  COMMENCER LA RÉVISION",
+            text = "🚀  COMMENCER L'ENTRAÎNEMENT",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
@@ -218,6 +222,29 @@ private fun DashboardContent(
             .height(48.dp)
     ) {
         Text(text = "+ Ajouter des mots", fontWeight = FontWeight.Medium)
+    }
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    OutlinedButton(
+        onClick = onNavigateToUsage,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp)
+    ) {
+        Text(text = "🗣️ Utilisation des mots", fontWeight = FontWeight.Medium)
+    }
+
+    Spacer(modifier = Modifier.height(10.dp))
+
+    OutlinedButton(
+        onClick = onNavigateToDrivingMode,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        enabled = uiState.totalCount > 0
+    ) {
+        Text(text = "🚗 Mode voiture", fontWeight = FontWeight.Medium)
     }
 
     Spacer(modifier = Modifier.height(16.dp))

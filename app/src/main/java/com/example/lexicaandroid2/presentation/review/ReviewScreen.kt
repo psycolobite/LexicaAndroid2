@@ -3,6 +3,7 @@ package com.example.lexicaandroid2.presentation.review
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -14,18 +15,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,7 +42,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -56,15 +60,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 import androidx.navigation.NavController
-import com.example.lexicaandroid2.presentation.review.challenge.ChallengeOverlay
-import com.example.lexicaandroid2.presentation.review.challenge.ChallengeResultOverlay
-import com.example.lexicaandroid2.presentation.review.challenge.ChallengeType
-import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -75,13 +73,15 @@ fun ReviewScreen(
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     var showDeleteDialog by rememberSaveable { mutableStateOf(false) }
+    var showAudioOptions by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         viewModel.loadSession()
     }
 
     LaunchedEffect(viewModel) {
-        viewModel.snackbarEvents.collectLatest { message ->
+        viewModel.snackbarEvents.collect { message ->
+            snackbarHostState.currentSnackbarData?.dismiss()
             snackbarHostState.showSnackbar(
                 message = message,
                 duration = SnackbarDuration.Short
@@ -92,173 +92,127 @@ fun ReviewScreen(
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
     ) { padding ->
-        BoxWithConstraints(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            val isLandscape = maxWidth > maxHeight
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
-            ) {
-                if (uiState.isSessionFinished) {
+            val current = uiState.currentCard
+            when {
+                uiState.isSessionFinished -> {
                     SessionCompleteView(
                         studiedCount = uiState.studiedCount,
                         onReturnToMenu = { navController.popBackStack() }
                     )
-                    return@Column
                 }
 
-                val current = uiState.currentCard
-                AnimatedContent(targetState = uiState.currentCard, label = "cardTransition") { targetCard ->
-                    if (targetCard == null) {
-                        Text(
-                            text = "Aucune carte a reviser",
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                        return@AnimatedContent
-                    }
+                uiState.isLoading || (current == null && uiState.studiedCount == 0 && uiState.totalInSession == 0) -> {
+                    CircularProgressIndicator()
+                }
 
-                    var showDetails by rememberSaveable(targetCard.id) { mutableStateOf(false) }
-                    val rotation by animateFloatAsState(
-                        targetValue = if (uiState.isAnswerRevealed) 180f else 0f,
-                        animationSpec = tween(durationMillis = 420),
-                        label = "flip"
+                current == null -> {
+                    EmptyReviewState(
+                        onReturnToMenu = { navController.popBackStack() }
                     )
-                    val isFront = rotation <= 90f
-                    val density = LocalDensity.current.density
-                    val activeChallengeType = uiState.activeChallengeType
+                }
 
-                    if (activeChallengeType != null) {
-                        Column(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                else -> {
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        IconButton(
+                            onClick = { showAudioOptions = true },
+                            modifier = Modifier.align(Alignment.CenterEnd)
                         ) {
-                            when (val result = uiState.challengeResult) {
-                                null -> ChallengeOverlay(
-                                    challengeType = activeChallengeType,
-                                    cardRecto = targetCard.recto,
-                                    cardVerso = targetCard.verso,
-                                    challengeInput = uiState.challengeInput,
-                                    onInputChange = { viewModel.onChallengeInputChanged(it) },
-                                    onValidate = { viewModel.validateChallenge() },
-                                    onAbandon = { viewModel.dismissChallenge() }
-                                )
-
-                                else -> ChallengeResultOverlay(
-                                    result = result,
-                                    onContinue = { viewModel.dismissChallenge() },
-                                    correctAnswer = when (activeChallengeType) {
-                                        ChallengeType.SPELLING -> targetCard.recto
-                                        ChallengeType.SEMANTIC -> targetCard.verso
-                                        null -> ""
-                                    }
-                                )
-                            }
+                            Icon(
+                                imageVector = Icons.Default.Tune,
+                                contentDescription = "Options audio"
+                            )
                         }
-                        return@AnimatedContent
+
+                        DropdownMenu(
+                            expanded = showAudioOptions,
+                            onDismissRequest = { showAudioOptions = false },
+                            modifier = Modifier.align(Alignment.TopEnd)
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Lire le mot automatiquement") },
+                                trailingIcon = {
+                                    Checkbox(
+                                        checked = uiState.autoSpeakWord,
+                                        onCheckedChange = { viewModel.toggleAutoSpeakWord() }
+                                    )
+                                },
+                                onClick = { viewModel.toggleAutoSpeakWord() }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Lire la définition automatiquement") },
+                                trailingIcon = {
+                                    Checkbox(
+                                        checked = uiState.autoSpeakDefinition,
+                                        onCheckedChange = { viewModel.toggleAutoSpeakDefinition() }
+                                    )
+                                },
+                                onClick = { viewModel.toggleAutoSpeakDefinition() }
+                            )
+                        }
                     }
 
-                    // Layout normal de révision (sans défi)
-                    if (isLandscape) {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.Top,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            // Carte à gauche
-                            Card(
+                    AnimatedContent(targetState = current, label = "cardTransition") { targetCard ->
+                        var showDetails by rememberSaveable(targetCard.id) { mutableStateOf(false) }
+                        val rotation by animateFloatAsState(
+                            targetValue = if (uiState.isAnswerRevealed) 180f else 0f,
+                            animationSpec = tween(durationMillis = 420),
+                            label = "flip"
+                        )
+                        val isFront = rotation <= 90f
+                        val density = LocalDensity.current.density
+
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            Row(
                                 modifier = Modifier
-                                    .weight(1f)
-                                    .padding(8.dp),
-                                shape = RoundedCornerShape(16.dp),
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                                ),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 8.dp, vertical = 4.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .graphicsLayer {
-                                            rotationY = rotation
-                                            cameraDistance = 12 * density
-                                        }
-                                ) {
-                                    if (isFront) {
-                                        Column(
-                                            modifier = Modifier.padding(24.dp),
-                                            horizontalAlignment = Alignment.CenterHorizontally
-                                        ) {
-                                            Text(
-                                                text = targetCard.recto,
-                                                style = MaterialTheme.typography.displaySmall.copy(
-                                                    fontFamily = FontFamily.Serif
-                                                ),
-                                                fontWeight = FontWeight.Bold,
-                                                textAlign = TextAlign.Center
+                                Text(
+                                    text = "Carte",
+                                    style = MaterialTheme.typography.titleSmall
+                                )
+                                Row {
+                                    IconButton(onClick = { viewModel.toggleFavorite() }) {
+                                        if (targetCard.favori) {
+                                            Icon(
+                                                imageVector = Icons.Filled.Favorite,
+                                                contentDescription = "Retirer des favoris"
+                                            )
+                                        } else {
+                                            Icon(
+                                                imageVector = Icons.Outlined.FavoriteBorder,
+                                                contentDescription = "Ajouter aux favoris"
                                             )
                                         }
-                                    } else {
-                                        Column(
-                                            modifier = Modifier
-                                                .padding(24.dp)
-                                                .graphicsLayer { rotationY = 180f },
-                                            horizontalAlignment = Alignment.CenterHorizontally
-                                        ) {
-                                            Text(
-                                                text = targetCard.recto,
-                                                style = MaterialTheme.typography.titleMedium,
-                                                fontWeight = FontWeight.Medium,
-                                                textAlign = TextAlign.Center
-                                            )
-                                            Spacer(modifier = Modifier.height(12.dp))
-                                            HorizontalDivider()
-                                            Spacer(modifier = Modifier.height(12.dp))
-                                            Text(
-                                                text = targetCard.verso,
-                                                style = MaterialTheme.typography.bodyLarge,
-                                                textAlign = TextAlign.Center
-                                            )
-                                            // ...existing code...
-                                        }
+                                    }
+                                    IconButton(onClick = { showDeleteDialog = true }) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Delete,
+                                            contentDescription = "Supprimer la carte"
+                                        )
                                     }
                                 }
                             }
-                            // Boutons à droite
-                            Column(
-                                modifier = Modifier.weight(1f),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Spacer(modifier = Modifier.height(24.dp))
-                                if (!uiState.isAnswerRevealed) {
-                                    Button(
-                                        onClick = { viewModel.revealAnswer() },
-                                        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
-                                    ) {
-                                        Text(text = "VOIR REPONSE")
-                                    }
-                                } else {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                                    ) {
-                                        // ...existing code...
-                                    }
-                                }
+
+                            if (uiState.isSpeaking) {
+                                Text(
+                                    text = "🔊 Lecture en cours...",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.height(8.dp))
                             }
-                        }
-                    } else {
-                        // Portrait : disposition classique
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            // ...existing code...
+
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -272,6 +226,12 @@ fun ReviewScreen(
                                 Box(
                                     modifier = Modifier
                                         .fillMaxWidth()
+                                        .clickable {
+                                            if (uiState.isAnswerRevealed) {
+                                                showDetails = false
+                                            }
+                                            viewModel.toggleAnswerReveal()
+                                        }
                                         .graphicsLayer {
                                             rotationY = rotation
                                             cameraDistance = 12 * density
@@ -282,13 +242,14 @@ fun ReviewScreen(
                                             modifier = Modifier.padding(24.dp),
                                             horizontalAlignment = Alignment.CenterHorizontally
                                         ) {
-                                            Text(
+                                            AudioTextLine(
                                                 text = targetCard.recto,
-                                                style = MaterialTheme.typography.displaySmall.copy(
+                                                onSpeak = { viewModel.speakCurrentWord() },
+                                                enabled = uiState.ttsReady,
+                                                textStyle = MaterialTheme.typography.displaySmall.copy(
                                                     fontFamily = FontFamily.Serif
                                                 ),
-                                                fontWeight = FontWeight.Bold,
-                                                textAlign = TextAlign.Center
+                                                fontWeight = FontWeight.Bold
                                             )
                                         }
                                     } else {
@@ -298,29 +259,63 @@ fun ReviewScreen(
                                                 .graphicsLayer { rotationY = 180f },
                                             horizontalAlignment = Alignment.CenterHorizontally
                                         ) {
-                                            Text(
+                                            AudioTextLine(
                                                 text = targetCard.recto,
-                                                style = MaterialTheme.typography.titleMedium,
-                                                fontWeight = FontWeight.Medium,
-                                                textAlign = TextAlign.Center
+                                                onSpeak = { viewModel.speakCurrentWord() },
+                                                enabled = uiState.ttsReady,
+                                                textStyle = MaterialTheme.typography.titleMedium,
+                                                fontWeight = FontWeight.Medium
                                             )
                                             Spacer(modifier = Modifier.height(12.dp))
                                             HorizontalDivider()
                                             Spacer(modifier = Modifier.height(12.dp))
-                                            Text(
+                                            AudioTextLine(
                                                 text = targetCard.verso,
-                                                style = MaterialTheme.typography.bodyLarge,
-                                                textAlign = TextAlign.Center
+                                                onSpeak = { viewModel.speakCurrentDefinition() },
+                                                enabled = uiState.ttsReady,
+                                                textStyle = MaterialTheme.typography.bodyLarge
                                             )
-                                            // ...existing code...
+                                            Spacer(modifier = Modifier.height(8.dp))
+                                            TextButton(onClick = { showDetails = !showDetails }) {
+                                                Text(text = if (showDetails) "-" else "+")
+                                            }
+                                            if (showDetails) {
+                                                val detailsColor =
+                                                    MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f)
+                                                if (targetCard.categorieGrammaticale.isNotBlank()) {
+                                                    Text(
+                                                        text = "Nature: ${targetCard.categorieGrammaticale}",
+                                                        style = MaterialTheme.typography.bodySmall,
+                                                        color = detailsColor
+                                                    )
+                                                }
+                                                if (targetCard.synonymes.isNotEmpty()) {
+                                                    Text(
+                                                        text = "Synonymes: ${targetCard.synonymes.joinToString(", ")}",
+                                                        style = MaterialTheme.typography.bodySmall,
+                                                        fontStyle = FontStyle.Italic,
+                                                        color = detailsColor
+                                                    )
+                                                }
+                                                val exemple = targetCard.exemples.firstOrNull()
+                                                if (!exemple.isNullOrBlank()) {
+                                                    Text(
+                                                        text = "Exemple: $exemple",
+                                                        style = MaterialTheme.typography.bodySmall,
+                                                        color = detailsColor
+                                                    )
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
+
                             Spacer(modifier = Modifier.height(24.dp))
+
                             if (!uiState.isAnswerRevealed) {
                                 Button(
-                                    onClick = { viewModel.revealAnswer() },
+                                    onClick = { viewModel.toggleAnswerReveal() },
                                     contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
                                 ) {
                                     Text(text = "VOIR REPONSE")
@@ -330,12 +325,63 @@ fun ReviewScreen(
                                     modifier = Modifier.fillMaxWidth()
                                 ) {
                                     val buttonTextSize =
-                                        (maxWidth.value / 16f).coerceIn(10f, 13f).sp
+                                        (maxWidth.value / 18f).coerceIn(9f, 12f).sp
                                     Row(
                                         modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                        horizontalArrangement = Arrangement.spacedBy(6.dp)
                                     ) {
-                                        // ...existing code...
+                                        val errorColor = MaterialTheme.colorScheme.errorContainer
+                                        val okColor = MaterialTheme.colorScheme.tertiaryContainer
+                                        val easyColor = MaterialTheme.colorScheme.primaryContainer
+
+                                        Button(
+                                            modifier = Modifier.weight(1f),
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = errorColor,
+                                                contentColor = contentColorFor(errorColor)
+                                            ),
+                                            onClick = { viewModel.gradeCard(0) }
+                                        ) {
+                                            Text(
+                                                text = "A REVOIR",
+                                                maxLines = 2,
+                                                textAlign = TextAlign.Center,
+                                                fontSize = buttonTextSize,
+                                                lineHeight = (buttonTextSize.value + 1).sp
+                                            )
+                                        }
+                                        Button(
+                                            modifier = Modifier.weight(1f),
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = okColor,
+                                                contentColor = contentColorFor(okColor)
+                                            ),
+                                            onClick = { viewModel.gradeCard(4) }
+                                        ) {
+                                            Text(
+                                                text = "JE L'AI",
+                                                maxLines = 2,
+                                                textAlign = TextAlign.Center,
+                                                fontSize = buttonTextSize,
+                                                lineHeight = (buttonTextSize.value + 1).sp
+                                            )
+                                        }
+                                        Button(
+                                            modifier = Modifier.weight(1f),
+                                            colors = ButtonDefaults.buttonColors(
+                                                containerColor = easyColor,
+                                                contentColor = contentColorFor(easyColor)
+                                            ),
+                                            onClick = { viewModel.gradeCard(5) }
+                                        ) {
+                                            Text(
+                                                text = "TROP\nFACILE",
+                                                maxLines = 2,
+                                                textAlign = TextAlign.Center,
+                                                fontSize = buttonTextSize,
+                                                lineHeight = (buttonTextSize.value + 1).sp
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -371,26 +417,86 @@ fun ReviewScreen(
 }
 
 @Composable
+private fun AudioTextLine(
+    text: String,
+    onSpeak: () -> Unit,
+    enabled: Boolean,
+    textStyle: androidx.compose.ui.text.TextStyle,
+    fontWeight: FontWeight? = null
+) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = text,
+            style = textStyle,
+            fontWeight = fontWeight,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 48.dp)
+        )
+        IconButton(
+            onClick = onSpeak,
+            enabled = enabled,
+            modifier = Modifier.align(Alignment.CenterEnd)
+        ) {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                contentDescription = "Lire l'audio"
+            )
+        }
+    }
+}
+
+@Composable
+private fun EmptyReviewState(
+    onReturnToMenu: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text(
+            text = "Aucune carte a reviser",
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        Button(onClick = onReturnToMenu) {
+            Text(text = "Retour au Menu")
+        }
+    }
+}
+
+@Composable
 private fun SessionCompleteView(
     studiedCount: Int,
     onReturnToMenu: () -> Unit
 ) {
     Column(
+        modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = "🎉 Bravo !",
-            style = MaterialTheme.typography.displaySmall
+            text = "✓",
+            style = MaterialTheme.typography.displayLarge,
+            color = Color(0xFF2E7D32)
         )
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "Vous avez révisé $studiedCount cartes",
-            style = MaterialTheme.typography.bodyLarge
+            text = "Session terminee !",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = "$studiedCount cartes etudiees",
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Spacer(modifier = Modifier.height(24.dp))
         Button(onClick = onReturnToMenu) {
-            Text("Retour au menu")
+            Text(text = "Retour au Menu")
         }
     }
 }

@@ -1,6 +1,6 @@
 # ✅ FEATURES - Lexica Android 2 - Master Checklist
 
-**Dernière mise à jour:** 2026-03-12  
+**Dernière mise à jour:** 2026-03-15  
 **Statut global:** 🟢 En bonne santé — TACHE_09 ✅ TACHE_10 ✅ TACHE_11 ✅ TACHE_12 ✅ TACHE_13 ✅ TACHE_14 ✅ TACHE_14b ✅ TACHE_15 ✅ TACHE_17 ✅ TACHE_18 ✅ TACHE_19 ✅ TACHE_20 ✅ TACHE_21 ✅ TACHE_22 ✅ TACHE_23 ✅
 
 ---
@@ -65,6 +65,12 @@
 - [x] **Défis intégrés dans la révision** — TACHE_14 : défi ortho + sémantique (Jaccard) ✅
 - [x] **Validation sémantique TFLite MiniLM** — TACHE_14b : `TFLiteSemanticValidator` + fallback Jaccard ✅
 - [x] **Barre "Ajouter un mot" intelligente** — TACHE_15 : UX recherche locale + API + apercu ✅
+- [ ] **Crash fin de session Review** — session de 20 cartes / fin de lot
+- ⚠️ **Audio / TTS global** — service central intégré + premiers branchements, validation runtime restante
+- ⚠️ **Mode voiture** — première version intégrée, options avancées et emplacement final à décider
+- ⚠️ **Bottom Nav / Réglages UX** — intégrés mais peaufinage visuel encore en cours
+- [ ] **Matching rendu graphique avancé**
+- [ ] **Utilisation : vrais exercices d'emploi**
 
 ---
 

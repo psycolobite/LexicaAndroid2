@@ -22,6 +22,13 @@ class UserStatsRepositoryImpl(
         dao.insertOrUpdate(currentStats.copy(xp = newXp, level = newLevel))
     }
 
+    override suspend fun setLevel(level: Int) {
+        val currentStats = dao.getUserStats().firstOrNull() ?: UserStatsEntity()
+        val safeLevel = level.coerceAtLeast(1)
+        val xpForLevel = XPCalculator.calculateXpForLevel(safeLevel)
+        dao.insertOrUpdate(currentStats.copy(xp = xpForLevel, level = safeLevel))
+    }
+
     override suspend fun updateStreak() {
         val currentStats = dao.getUserStats().firstOrNull() ?: UserStatsEntity()
         val now = System.currentTimeMillis()

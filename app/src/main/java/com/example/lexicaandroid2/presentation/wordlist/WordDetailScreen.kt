@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,14 +30,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -112,12 +117,12 @@ fun WordDetailScreen(
     viewModel: WordDetailViewModel,
     onBack: () -> Unit
 ) {
-    val uiState = remember { viewModel.uiState }
-    val card = uiState.value.card
+    val uiState by viewModel.uiState.collectAsState()
+    val card = uiState.card
     val showDeleteConfirm = remember { mutableStateOf(false) }
-    var isDeleted = remember { mutableStateOf(false) }
+    var isDeleted by remember { mutableStateOf(false) }
 
-    if (isDeleted.value) {
+    if (isDeleted) {
         onBack()
         return
     }
@@ -132,7 +137,7 @@ fun WordDetailScreen(
                     onClick = {
                         showDeleteConfirm.value = false
                         viewModel.deleteCard()
-                        isDeleted.value = true
+                        isDeleted = true
                     }
                 ) {
                     Text("Supprimer")
@@ -201,122 +206,194 @@ fun WordDetailScreen(
                 .background(Color(0xFFFAFAFA))
         ) {
             item {
-                Column(
+                WordDetailContent(card = card)
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WordDetailDialog(
+    card: Flashcard,
+    onDismiss: () -> Unit,
+    onToggleFavorite: () -> Unit,
+    onDeleteCard: () -> Unit
+) {
+    var showDeleteConfirm by remember { mutableStateOf(false) }
+
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("Supprimer ce mot ?") },
+            text = { Text("Cette action est irréversible.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showDeleteConfirm = false
+                        onDeleteCard()
+                        onDismiss()
+                    }
+                ) {
+                    Text("Supprimer")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDeleteConfirm = false }) {
+                    Text("Annuler")
+                }
+            }
+        )
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 700.dp)
+        ) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                TopAppBar(
+                    title = { Text(card.recto, fontWeight = FontWeight.Bold) },
+                    actions = {
+                        IconButton(onClick = onToggleFavorite) {
+                            Icon(
+                                imageVector = if (card.favori) Icons.Filled.Star else Icons.Outlined.Star,
+                                contentDescription = "Favori",
+                                tint = if (card.favori) Color(0xFFFFB800) else Color.Gray
+                            )
+                        }
+                        IconButton(onClick = { showDeleteConfirm = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Supprimer",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                )
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f, fill = false)
+                        .background(Color(0xFFFAFAFA))
+                ) {
+                    item {
+                        WordDetailContent(card = card)
+                    }
+                }
+
+                Button(
+                    onClick = onDismiss,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    // Catégorie et registre
-                    if (card.categorieGrammaticale.isNotBlank() || card.registre.isNotBlank()) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 16.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-                            if (card.categorieGrammaticale.isNotBlank()) {
-                                Surface(
-                                    color = Color(0xFF6750A4).copy(alpha = 0.1f),
-                                    shape = RoundedCornerShape(12.dp)
-                                ) {
-                                    Text(
-                                        text = card.categorieGrammaticale,
-                                        color = Color(0xFF6750A4),
-                                        style = MaterialTheme.typography.labelSmall,
-                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
-                                    )
-                                }
-                            }
-                            if (card.registre.isNotBlank()) {
-                                Surface(
-                                    color = Color(0xFF6750A4).copy(alpha = 0.1f),
-                                    shape = RoundedCornerShape(12.dp)
-                                ) {
-                                    Text(
-                                        text = card.registre,
-                                        color = Color(0xFF6750A4),
-                                        style = MaterialTheme.typography.labelSmall,
-                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
-                                    )
-                                }
-                            }
-                        }
-                    }
+                    Text("Fermer")
                 }
-            }
-
-            // Définition
-            if (card.verso.isNotBlank()) {
-                item {
-                    DetailSection(title = "📖 Définition", content = card.verso)
-                }
-            }
-
-            // Exemples
-            if (card.exemples.isNotEmpty()) {
-                item {
-                    DetailSection(
-                        title = "💡 Exemples d'usage",
-                        content = card.exemples.joinToString("\n") { "• $it" }
-                    )
-                }
-            }
-
-            // Synonymes
-            if (card.synonymes.isNotEmpty()) {
-                item {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 12.dp)
-                    ) {
-                        Text(
-                            text = "🔗 Synonymes",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 8.dp),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            card.synonymes.forEach { synonym ->
-                                Surface(
-                                    color = Color(0xFF6750A4).copy(alpha = 0.15f),
-                                    shape = RoundedCornerShape(16.dp)
-                                ) {
-                                    Text(
-                                        text = synonym,
-                                        style = MaterialTheme.typography.labelMedium,
-                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Étymologie
-            if (card.etymologie.isNotBlank()) {
-                item {
-                    DetailSection(title = "🌿 Étymologie", content = card.etymologie)
-                }
-            }
-
-            // Progression SM2
-            item {
-                ProgressionSection(card = card)
-            }
-
-            // Spacer pour le bouton du bas
-            item {
-                Spacer(modifier = Modifier.height(16.dp))
             }
         }
+    }
+}
+
+@Composable
+private fun WordDetailContent(card: Flashcard) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 16.dp)
+    ) {
+        if (card.categorieGrammaticale.isNotBlank() || card.registre.isNotBlank()) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                if (card.categorieGrammaticale.isNotBlank()) {
+                    Surface(
+                        color = Color(0xFF6750A4).copy(alpha = 0.1f),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(
+                            text = card.categorieGrammaticale,
+                            color = Color(0xFF6750A4),
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                        )
+                    }
+                }
+                if (card.registre.isNotBlank()) {
+                    Surface(
+                        color = Color(0xFF6750A4).copy(alpha = 0.1f),
+                        shape = RoundedCornerShape(12.dp)
+                    ) {
+                        Text(
+                            text = card.registre,
+                            color = Color(0xFF6750A4),
+                            style = MaterialTheme.typography.labelSmall,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                        )
+                    }
+                }
+            }
+        }
+
+        if (card.verso.isNotBlank()) {
+            DetailSection(title = "📖 Définition", content = card.verso)
+        }
+
+        if (card.exemples.isNotEmpty()) {
+            DetailSection(
+                title = "💡 Exemples d'usage",
+                content = card.exemples.joinToString("\n") { "• $it" }
+            )
+        }
+
+        if (card.synonymes.isNotEmpty()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 12.dp)
+            ) {
+                Text(
+                    text = "🔗 Synonymes",
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    card.synonymes.forEach { synonym ->
+                        Surface(
+                            color = Color(0xFF6750A4).copy(alpha = 0.15f),
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
+                            Text(
+                                text = synonym,
+                                style = MaterialTheme.typography.labelMedium,
+                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        if (card.etymologie.isNotBlank()) {
+            DetailSection(title = "🌿 Étymologie", content = card.etymologie)
+        }
+
+        ProgressionSection(card = card)
     }
 }
 

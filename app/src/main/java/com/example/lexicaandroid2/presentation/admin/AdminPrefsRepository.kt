@@ -18,6 +18,28 @@ class AdminPrefsRepository(context: Context) {
         get() = ReviewMode.fromString(prefs.getString(KEY_REVIEW_MODE, ReviewMode.BOTH.value))
         set(value) = prefs.edit { putString(KEY_REVIEW_MODE, value.value) }
 
+    var reviewWordToDefinitionEnabled: Boolean
+        get() = if (prefs.contains(KEY_REVIEW_WORD_TO_DEFINITION)) {
+            prefs.getBoolean(KEY_REVIEW_WORD_TO_DEFINITION, true)
+        } else {
+            when (reviewMode) {
+                ReviewMode.VOCAB, ReviewMode.BOTH -> true
+                ReviewMode.DEFINITION -> false
+            }
+        }
+        set(value) = prefs.edit { putBoolean(KEY_REVIEW_WORD_TO_DEFINITION, value) }
+
+    var reviewDefinitionToWordEnabled: Boolean
+        get() = if (prefs.contains(KEY_REVIEW_DEFINITION_TO_WORD)) {
+            prefs.getBoolean(KEY_REVIEW_DEFINITION_TO_WORD, true)
+        } else {
+            when (reviewMode) {
+                ReviewMode.DEFINITION, ReviewMode.BOTH -> true
+                ReviewMode.VOCAB -> false
+            }
+        }
+        set(value) = prefs.edit { putBoolean(KEY_REVIEW_DEFINITION_TO_WORD, value) }
+
     // --- Challenges ---
     var challengeOrthoEnabled: Boolean
         get() = prefs.getBoolean(KEY_CHALLENGE_ORTHO, true)
@@ -48,6 +70,8 @@ class AdminPrefsRepository(context: Context) {
     companion object {
         private const val PREFS_NAME = "admin_prefs"
         private const val KEY_REVIEW_MODE = "admin_review_mode"
+        private const val KEY_REVIEW_WORD_TO_DEFINITION = "admin_review_word_to_definition_enabled"
+        private const val KEY_REVIEW_DEFINITION_TO_WORD = "admin_review_definition_to_word_enabled"
         private const val KEY_CHALLENGE_ORTHO = "admin_challenge_ortho_enabled"
         private const val KEY_CHALLENGE_SEMANTIC = "admin_challenge_semantic_enabled"
         private const val KEY_SESSION_SIZE = "admin_session_size"

@@ -1,52 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    Foreground Lexica v4 – "L'Éclat du Savoir"
-    Un livre ouvert (pages blanches, dos bleu ciel)
-    surmonté d'une étoile dorée scintillante.
-    Safe zone : 66dp (x:21→87, y:21→87)
--->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- OMBRE PORTÉE (bas du livre) -->
     <path
-        android:pathData="M26,80 L82,80 L84,84 L24,84 Z"
-        android:fillColor="#1A000000" />
+        android:pathData="M22,26 L68,20 L68,80 L22,86 Z"
+        android:fillColor="#33FFFFFF" />
 
-    <!-- PAGE GAUCHE -->
     <path
-        android:pathData="M24,38 L52,34 L52,80 L24,84 Z"
+        android:pathData="M34,24 L86,30 L86,88 L34,82 Z"
         android:fillColor="#FFFFFFFF" />
 
-    <!-- PAGE DROITE -->
     <path
-        android:pathData="M56,34 L84,38 L84,84 L56,80 Z"
-        android:fillColor="#FFFFFFFF" />
+        android:pathData="M34,24 L86,30 L86,88 L34,82 Z"
+        android:strokeColor="#14000000"
+        android:strokeWidth="2" />
 
-    <!-- DOS (spine) -->
     <path
-        android:pathData="M52,34 L56,34 L56,80 L52,80 Z"
-        android:fillColor="#FFBBDEFB" />
+        android:pathData="M58,24 L70,25.4 L70,73.5 L58,72.2 Z"
+        android:fillColor="#FFFFC107" />
 
-    <!-- LIGNES DE TEXTE – Page gauche -->
-    <path android:pathData="M28,46 L50,46" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-    <path android:pathData="M28,54 L50,54" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-    <path android:pathData="M28,62 L50,62" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-    <path android:pathData="M28,70 L42,70" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-
-    <!-- LIGNES DE TEXTE – Page droite -->
-    <path android:pathData="M58,46 L80,46" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-    <path android:pathData="M58,54 L80,54" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-    <path android:pathData="M58,62 L80,62" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-    <path android:pathData="M66,70 L80,70" android:strokeWidth="3" android:strokeColor="#55000000" android:strokeLineCap="round" />
-
-    <!-- ÉTOILE 4 POINTES DORÉE (centre:73,24 — r.ext=7, r.int=2.5) -->
     <path
-        android:pathData="M73,17 L74.8,22.2 L80,24 L74.8,25.8 L73,31 L71.2,25.8 L66,24 L71.2,22.2 Z"
-        android:fillColor="#FFFFD600" />
+        android:pathData="M45,40 L45,70 L62,70"
+        android:strokeColor="#FF124E78"
+        android:strokeWidth="6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+
+    <path
+        android:pathData="M48,47 L62,47"
+        android:strokeColor="#33124E78"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M48,54 L69,54"
+        android:strokeColor="#33124E78"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M48,61 L66,61"
+        android:strokeColor="#33124E78"
+        android:strokeWidth="2.5"
+        android:strokeLineCap="round" />
+
+    <path
+        android:pathData="M78,36 C81,34.6 83.8,32.1 84.4,29 M79.5,41.5 C83.5,41 86.5,39.7 89,37.8"
+        android:strokeColor="#FFFFC107"
+        android:strokeWidth="3"
+        android:strokeLineCap="round" />
 
 </vector>
 

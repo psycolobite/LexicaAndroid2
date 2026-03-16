@@ -660,7 +660,7 @@ Deja peut-etre presents — verifier `build.gradle.kts` avant d'ajouter.
 
 ---
 
-## TACHE_10 - Recoder QCM + Correspondance + Pendu (bugs critiques)
+## TACHE_10 - Recoder QCM + Correspondance + Pendu (bugs critiques) ⚠️ PARTIELLEMENT TRAITÉE
 - **Scope estime:** ~60 000 tokens
 - **Packages touches:**
   - `presentation/games/qcm/` — `QcmViewModel.kt` + `QcmScreen.kt`
@@ -783,11 +783,20 @@ text = if (letter in 'A'..'Z') {
 - Garder la signature des composables `(repository, onBack, onAwardXp)` intacte
 - Tous les changements passent par `integration_pending/games_fix_pr.md`
 
----
+### État réel constaté
+- ✅ **Matching partiellement refondu** pendant les sessions récentes :
+  - passage à une validation globale des associations
+  - écrans succès / échec dédiés
+  - bouton `Accueil` relié au dashboard
+- ❌ **Rendu graphique avancé du matching** encore à faire (liaison visuelle par trait ou repositionnement)
+- ❌ **QCM** pas confirmé comme totalement recodé selon ce cahier de correction
+- ❌ **Pendu** pas confirmé comme totalement recodé selon ce cahier de correction
 
 ---
 
-## TACHE_11 - Nom et icône de l'application (Lexica)
+---
+
+## TACHE_11 - Nom et icône de l'application (Lexica) ⚠️ PARTIELLEMENT TRAITÉE
 - **Scope estimé :** ~10 000 tokens
 - **Package isolé :** `res/values/`, `res/drawable/`, `res/mipmap-*` — aucun fichier Kotlin à modifier
 - **Fichier intégration attendu :** `integration_pending/app_icon_pr.md`
@@ -830,9 +839,14 @@ Implémenter en SVG vectoriel Android (`<vector>` XML) — pas de PNG, pas de bi
 - ❌ Ne pas créer de PNG (bitmaps) — uniquement SVG vectoriels XML
 - ✅ Tester visuellement : le foreground doit être lisible en rond ET en carré
 
+### État réel constaté
+- ✅ Nom affiché de l'application aligné sur **Lexica**
+- ✅ Icône adaptive déjà présente et intégrée
+- ⚠️ Une **refonte graphique supplémentaire** de l'icône est encore souhaitée / demandée
+
 ---
 
-## TACHE_12 - Liste de mots : supprimer, favoris, et détail complet
+## TACHE_12 - Liste de mots : supprimer, favoris, et détail complet ✅ TERMINÉE
 - **Scope estimé :** ~50 000 tokens
 - **Packages touchés :**
   - `presentation/wordlist/` — `WordListScreen.kt` + `WordListViewModel.kt` (modification)
@@ -927,9 +941,14 @@ Dans `LexicaApp.kt` :
 - ✅ Le toggle favori dans WordDetailScreen doit aussi fonctionner (pas seulement dans la liste)
 - ✅ La suppression depuis WordDetailScreen doit naviguer automatiquement vers la liste après confirmation
 
+### État réel constaté
+- ✅ Actions rapides favoris / suppression intégrées dans la liste
+- ✅ Détail de mot complet implémenté
+- ✅ Évolution UX réalisée : ouverture du détail en **popup** au lieu d'un écran séparé
+
 ---
 
-## TACHE_13 - Statistiques Anki-like dans l'onglet Profil
+## TACHE_13 - Statistiques Anki-like dans l'onglet Profil ✅ TERMINÉE
 - **Scope estimé :** ~55 000 tokens
 - **Packages touchés :**
   - `features/gamification/data/` — nouvelle entité Room `DailyReviewStat`
@@ -1026,9 +1045,14 @@ Row(modifier = Modifier.fillMaxWidth().height(80.dp)) {
 - ✅ Si aucune donnée dans `DailyReviewStat` → afficher 0 partout sans crash
 - ✅ Utiliser `today.cardsReviewed == 0` → afficher "Aucune révision aujourd'hui — c'est le moment ! 🚀"
 
+### État réel constaté
+- ✅ Entité `DailyReviewStat` + DAO intégrés
+- ✅ Hook review → stats quotidiennes intégré
+- ✅ Affichage profil type Anki présent avec barres / série / taux
+
 ---
 
-## TACHE_14 - Défis intégrés dans la révision (Orthographique + Sémantique)
+## TACHE_14 - Défis intégrés dans la révision (Orthographique + Sémantique) ✅ TERMINÉE
 - **Scope estimé :** ~80 000 tokens
 - **Packages touchés :**
   - `presentation/review/` — `ReviewViewModel.kt` + `ReviewScreen.kt` (modifications)
@@ -1738,6 +1762,13 @@ Toutes les préférences stockées dans `SharedPreferences` via `UserPrefsReposi
 - Le changement de thème doit s'appliquer sans redémarrer l'app (`remember { mutableStateOf(...) }` dans MainActivity)
 - Fichier intégration attendu : `integration_pending/settings_pr.md`
 
+### État réel constaté
+- ✅ Écran `Settings` intégré avec thème, taille de texte, notifications et entrée admin
+- ✅ Application réelle du modulateur de texte via `fontScale` Compose dans `MainActivity`
+- ✅ Ajout d'un flux plus propre pour la taille de police : slider local + bouton `Valider`
+- ✅ Ajout d'un aperçu local dédié
+- ⚠️ Peaufinage UX encore à confirmer sur appareil réel (ressenti de l'aperçu et ergonomie finale)
+
 ---
 
 ## TACHE_20 - Déverrouillage progressif des mini-jeux par XP ✅ INTÉGRÉE
@@ -1849,6 +1880,13 @@ Remplacer la navigation actuelle (boutons Dashboard) par une barre de navigation
 - `Screen.Online` est un simple placeholder — ne pas coder de logique réseau maintenant
 - Fichier intégration attendu : `integration_pending/bottom_nav_pr.md`
 
+### État réel constaté
+- ✅ Bottom bar intégrée dans `LexicaApp.kt`
+- ✅ Écran `Online` placeholder intégré
+- ✅ Nouvelle entrée produit `Usage` aussi intégrée dans la navigation basse
+- ✅ Ordre des onglets réajusté côté produit (`Accueil`, `Entraînement`, `Mini-Jeux`, `Usage`, `En Ligne`)
+- ⚠️ Réglages fins d'espacement / taille perçue / wrapping des labels encore à peaufiner
+
 ---
 
 ## TACHE_22 - Icône d'application moderne ✅ INTÉGRÉE
@@ -1887,6 +1925,11 @@ Concevoir et intégrer une icône launcher moderne, reconnaissable et "marketing
 - Respecter les zones safe area des adaptive icons (foreground centré dans 66% du canvas)
 - Ne pas modifier les icônes dans `app/src/debug/` si elles existent
 
+### État réel constaté
+- ✅ Icône adaptive déjà intégrée dans le projet
+- ✅ Nouvelle itération launcher vectorielle retravaillée récemment (`ic_launcher_foreground.xml`)
+- ⚠️ Une direction artistique finale peut encore être affinée si besoin produit
+
 ---
 
 ## TACHE_23 - Synchronisation des données utilisateur via Firebase ✅ INTÉGRÉE
@@ -1900,6 +1943,96 @@ Concevoir et intégrer une icône launcher moderne, reconnaissable et "marketing
 - **Fichier intégration attendu :** `integration_pending/firebase_sync_pr.md`
 
 ### Objectif
+
+---
+
+## TACHE_34 - Crash de fin de session Review
+- **Scope estimé :** ~20 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/review/ReviewViewModel.kt`
+  - `presentation/review/ReviewScreen.kt`
+  - tests ciblés `presentation/review/ReviewViewModelTest.kt`
+- **Fichier intégration attendu :** `integration_pending/review_session_end_fix_pr.md`
+
+### Objectif
+Supprimer le crash encore présent quand la session de révision atteint sa fin (ex. 20 cartes), notamment avec `currentCard = null`, `isSessionFinished`, suppression de carte en fin de lot, et combinaisons de modes admin.
+
+---
+
+## TACHE_35 - Diagnostic disponibilité TTS + fallback UX
+- **Scope estimé :** ~18 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `core/tts/`
+  - `presentation/review/`
+  - écrans dictée si nécessaire
+- **Fichier intégration attendu :** `integration_pending/tts_runtime_diagnostic_pr.md`
+
+### Objectif
+Rendre explicite la disponibilité réelle du moteur TTS sur appareil / émulateur et éviter l'impression de boutons audio "gris sans raison".
+
+### Attendu
+- détection claire `TTS prêt / non prêt / langue indisponible`
+- message UI explicite quand l'audio n'est pas disponible
+- comportement cohérent des boutons audio selon l'état réel
+
+---
+
+## TACHE_36 - Mode voiture V2 (finalisation produit)
+- **Scope estimé :** ~35 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/review/DrivingModeScreen.kt`
+  - `presentation/review/DrivingModeViewModel.kt`
+  - `presentation/dashboard/` ou `presentation/review/` selon arbitrage placement bouton
+- **Fichier intégration attendu :** `integration_pending/driving_mode_v2_pr.md`
+
+### Objectif
+Transformer la première version du mode voiture en vraie fonctionnalité produit.
+
+### Attendu
+- options de délai recto → verso
+- délai entre deux cartes
+- répétition configurable
+- choix `mot seulement` / `mot + définition`
+- arbitrage final sur l'emplacement du bouton d'entrée
+
+---
+
+## TACHE_37 - Matching visuel avancé
+- **Scope estimé :** ~30 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/games/matching/`
+- **Fichier intégration attendu :** `integration_pending/matching_visual_pr.md`
+
+### Objectif
+Remplacer le système de badges du matching par une liaison visuelle plus claire : traits, repositionnement, ou autre rendu mobile lisible, tout en conservant la validation globale du lot.
+
+---
+
+## TACHE_38 - Utilisation : exercices d'emploi réels
+- **Scope estimé :** ~45 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/utilisation/`
+- **Fichier intégration attendu :** `integration_pending/utilisation_real_exercises_pr.md`
+
+### Objectif
+Faire évoluer la page `Utilisation` d'un placeholder vers de vrais modules d'emploi des mots : reformulation, phrase à écrire, choix du bon mot, correction de phrase, remplacement lexical.
+
+---
+
+## TACHE_39 - Bottom bar : peaufinage spacing / labels
+- **Scope estimé :** ~12 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/common/LexicaBottomNavBar.kt`
+- **Fichier intégration attendu :** `integration_pending/bottom_nav_polish_pr.md`
+
+### Objectif
+Réduire légèrement les espaces visuels entre les labels d'onglets pour permettre une police un peu plus lisible à 100%, tout en acceptant un passage sur 2 lignes si la taille utilisateur augmente.
 Quand un utilisateur se connecte avec un compte existant, récupérer sa progression cloud (XP, streak, favoris) et proposer de remplacer la progression locale — avec une alerte claire avant d'écraser.
 
 ### Comportement attendu
@@ -2190,3 +2323,93 @@ Permettre la sélection multiple de mots dans les listes pour appliquer des acti
 ### Contraintes
 - conserver les actions unitaires existantes si elles sont déjà présentes
 - éviter toute suppression en lot sans confirmation explicite
+
+---
+
+## TACHE_34 - Crash de fin de session Review
+- **Scope estimé :** ~20 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/review/ReviewViewModel.kt`
+  - `presentation/review/ReviewScreen.kt`
+  - tests ciblés `presentation/review/ReviewViewModelTest.kt`
+- **Fichier intégration attendu :** `integration_pending/review_session_end_fix_pr.md`
+
+### Objectif
+Supprimer le crash encore présent quand la session de révision atteint sa fin (ex. 20 cartes), notamment avec `currentCard = null`, `isSessionFinished`, suppression de carte en fin de lot, et combinaisons de modes admin.
+
+---
+
+## TACHE_35 - Diagnostic disponibilité TTS + fallback UX
+- **Scope estimé :** ~18 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `core/tts/`
+  - `presentation/review/`
+  - écrans dictée si nécessaire
+- **Fichier intégration attendu :** `integration_pending/tts_runtime_diagnostic_pr.md`
+
+### Objectif
+Rendre explicite la disponibilité réelle du moteur TTS sur appareil / émulateur et éviter l'impression de boutons audio grisés sans raison visible.
+
+### Attendu
+- détection claire `TTS prêt / non prêt / langue indisponible`
+- message UI explicite quand l'audio n'est pas disponible
+- comportement cohérent des boutons audio selon l'état réel
+
+---
+
+## TACHE_36 - Mode voiture V2 (finalisation produit)
+- **Scope estimé :** ~35 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/review/DrivingModeScreen.kt`
+  - `presentation/review/DrivingModeViewModel.kt`
+  - `presentation/dashboard/` ou `presentation/review/` selon arbitrage placement bouton
+- **Fichier intégration attendu :** `integration_pending/driving_mode_v2_pr.md`
+
+### Objectif
+Transformer la première version du mode voiture en vraie fonctionnalité produit.
+
+### Attendu
+- options de délai recto → verso
+- délai entre deux cartes
+- répétition configurable
+- choix `mot seulement` / `mot + définition`
+- arbitrage final sur l'emplacement du bouton d'entrée
+
+---
+
+## TACHE_37 - Matching visuel avancé
+- **Scope estimé :** ~30 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/games/matching/`
+- **Fichier intégration attendu :** `integration_pending/matching_visual_pr.md`
+
+### Objectif
+Remplacer le système de badges du matching par une liaison visuelle plus claire : traits, repositionnement, ou autre rendu mobile lisible, tout en conservant la validation globale du lot.
+
+---
+
+## TACHE_38 - Utilisation : exercices d'emploi réels
+- **Scope estimé :** ~45 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/utilisation/`
+- **Fichier intégration attendu :** `integration_pending/utilisation_real_exercises_pr.md`
+
+### Objectif
+Faire évoluer la page `Utilisation` d'un placeholder vers de vrais modules d'emploi des mots : reformulation, phrase à écrire, choix du bon mot, correction de phrase, remplacement lexical.
+
+---
+
+## TACHE_39 - Bottom bar : peaufinage spacing / labels
+- **Scope estimé :** ~12 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/common/LexicaBottomNavBar.kt`
+- **Fichier intégration attendu :** `integration_pending/bottom_nav_polish_pr.md`
+
+### Objectif
+Réduire légèrement les espaces visuels entre les labels d'onglets pour permettre une police un peu plus lisible à 100%, tout en acceptant un passage sur 2 lignes si la taille utilisateur augmente.

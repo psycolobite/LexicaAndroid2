@@ -9,16 +9,20 @@ import com.example.lexicaandroid2.features.gamification.domain.UserStatsReposito
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class AdminUiState(
-    val reviewMode: ReviewMode = ReviewMode.BOTH,
-    val challengeOrthoEnabled: Boolean = true,
+    val reviewWordToDefinitionEnabled: Boolean = true,
+    val reviewDefinitionToWordEnabled: Boolean = true,
     val challengeSemanticEnabled: Boolean = true,
+    val challengeOrthoEnabled: Boolean = true,
     val sessionSize: Int = AdminPrefsRepository.DEFAULT_SESSION_SIZE,
     val qcmQuestionCount: Int = AdminPrefsRepository.DEFAULT_QCM_COUNT,
     val memoryGridSize: MemoryGridSize = MemoryGridSize.SIZE_4X4,
+    val currentLevel: Int = 1,
+    val pendingLevel: Int = 1,
     val snackbarMessage: String? = null
 )
 
@@ -33,12 +37,14 @@ class AdminViewModel(
 
     init {
         loadPrefs()
+        observeUserStats()
     }
 
     private fun loadPrefs() {
         _uiState.update {
             it.copy(
-                reviewMode = adminPrefsRepository.reviewMode,
+                reviewWordToDefinitionEnabled = adminPrefsRepository.reviewWordToDefinitionEnabled,
+                reviewDefinitionToWordEnabled = adminPrefsRepository.reviewDefinitionToWordEnabled,
                 challengeOrthoEnabled = adminPrefsRepository.challengeOrthoEnabled,
                 challengeSemanticEnabled = adminPrefsRepository.challengeSemanticEnabled,
                 sessionSize = adminPrefsRepository.sessionSize,
@@ -48,9 +54,28 @@ class AdminViewModel(
         }
     }
 
-    fun setReviewMode(mode: ReviewMode) {
-        adminPrefsRepository.reviewMode = mode
-        _uiState.update { it.copy(reviewMode = mode) }
+    private fun observeUserStats() {
+        viewModelScope.launch {
+            userStatsRepository.getUserStats().collectLatest { stats ->
+                val level = stats?.level ?: 1
+                _uiState.update {
+                    it.copy(
+                        currentLevel = level,
+                        pendingLevel = level
+                    )
+                }
+            }
+        }
+    }
+
+    fun setReviewWordToDefinitionEnabled(enabled: Boolean) {
+        adminPrefsRepository.reviewWordToDefinitionEnabled = enabled
+        _uiState.update { it.copy(reviewWordToDefinitionEnabled = enabled) }
+    }
+
+    fun setReviewDefinitionToWordEnabled(enabled: Boolean) {
+        adminPrefsRepository.reviewDefinitionToWordEnabled = enabled
+        _uiState.update { it.copy(reviewDefinitionToWordEnabled = enabled) }
     }
 
     fun setChallengeOrtho(enabled: Boolean) {
@@ -76,6 +101,23 @@ class AdminViewModel(
     fun setMemoryGridSize(size: MemoryGridSize) {
         adminPrefsRepository.memoryGridSize = size
         _uiState.update { it.copy(memoryGridSize = size) }
+    }
+
+    fun setPendingLevel(level: Int) {
+        _uiState.update { it.copy(pendingLevel = level.coerceIn(1, 20)) }
+    }
+
+    fun applyPendingLevel() {
+        viewModelScope.launch {
+            try {
+                userStatsRepository.setLevel(_uiState.value.pendingLevel)
+                _uiState.update {
+                    it.copy(snackbarMessage = "Niveau mis à jour : ${it.pendingLevel} ✅")
+                }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(snackbarMessage = "Erreur : ${e.message}") }
+            }
+        }
     }
 
     fun resetXpAndLevel() {

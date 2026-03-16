@@ -1,9 +1,9 @@
 package com.example.lexicaandroid2.presentation.games.qcm
 
 import android.app.Application
-import android.speech.tts.TextToSpeech
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lexicaandroid2.core.tts.LexicaTtsService
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.presentation.games.common.GameUtils
@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 data class SpellingGameUiState(
     val flashcards: List<Flashcard> = emptyList(),
@@ -40,22 +39,30 @@ class SpellingGameViewModel(
     private val _uiState = MutableStateFlow(SpellingGameUiState())
     val uiState: StateFlow<SpellingGameUiState> = _uiState.asStateFlow()
 
-    private var textToSpeech: TextToSpeech? = null
+    private val ttsService = LexicaTtsService(application)
 
     init {
-        initializeTextToSpeech()
+        observeTtsState()
     }
 
-    private fun initializeTextToSpeech() {
-        textToSpeech = TextToSpeech(application) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                textToSpeech?.language = Locale.FRENCH
-                _uiState.update { it.copy(ttsReady = true) }
-            } else {
-                _uiState.update { it.copy(
-                    error = "Erreur d'initialisation du TTS",
-                    ttsReady = false
-                )}
+    private fun observeTtsState() {
+        viewModelScope.launch {
+            ttsService.isReady.collect { ready ->
+                _uiState.update { it.copy(ttsReady = ready) }
+            }
+        }
+
+        viewModelScope.launch {
+            ttsService.isSpeaking.collect { speaking ->
+                _uiState.update { it.copy(isSpeaking = speaking) }
+            }
+        }
+
+        viewModelScope.launch {
+            ttsService.errorMessage.collect { error ->
+                if (!error.isNullOrBlank()) {
+                    _uiState.update { it.copy(error = error) }
+                }
             }
         }
     }
@@ -113,19 +120,7 @@ class SpellingGameViewModel(
     }
 
     fun speakWord(word: String) {
-        textToSpeech?.let { tts ->
-            if (tts.isSpeaking) {
-                tts.stop()
-            }
-            _uiState.update { it.copy(isSpeaking = true) }
-            tts.speak(word, TextToSpeech.QUEUE_FLUSH, null)
-
-            // Simulate speaking finished after 2 seconds
-            viewModelScope.launch {
-                kotlinx.coroutines.delay(2000)
-                _uiState.update { it.copy(isSpeaking = false) }
-            }
-        }
+        ttsService.speak(word)
     }
 
     fun updateUserInput(input: String) {
@@ -164,13 +159,13 @@ class SpellingGameViewModel(
 
     fun resetGame() {
         viewModelScope.launch {
-            _uiState.update { SpellingGameUiState(ttsReady = _uiState.value.ttsReady) }
+            _uiState.update { SpellingGameUiState(ttsReady = ttsService.isReady.value) }
             loadGame()
         }
     }
 
     override fun onCleared() {
         super.onCleared()
-        textToSpeech?.shutdown()
+        ttsService.shutdown()
     }
 }

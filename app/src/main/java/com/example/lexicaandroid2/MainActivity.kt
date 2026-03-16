@@ -23,8 +23,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalDensity
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -52,6 +54,7 @@ import com.example.lexicaandroid2.presentation.admin.AdminViewModel
 import com.example.lexicaandroid2.presentation.admin.AdminViewModelFactory
 import com.example.lexicaandroid2.presentation.games.MiniGamesViewModel
 import com.example.lexicaandroid2.presentation.games.MiniGamesViewModelFactory
+import androidx.compose.ui.unit.Density
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,31 +150,41 @@ class MainActivity : ComponentActivity() {
                         AppTheme.DARK -> true
                         AppTheme.SYSTEM -> isSystemInDarkTheme()
                     }
-                    MaterialTheme(
-                        colorScheme = if (darkTheme) darkColorScheme() else lightColorScheme()
-                    ) {
-                        val navController = rememberNavController()
-                        LexicaApp(
-                            navController = navController,
-                            reviewViewModel = reviewViewModel,
-                            dashboardViewModel = dashboardViewModel,
-                            wordListViewModel = wordListViewModel,
-                            addWordsViewModel = addWordsViewModel,
-                            gamificationViewModel = gamificationViewModel,
-                            miniGamesViewModel = miniGamesViewModel,
-                            repository = repository,
-                            userStatsRepository = userStatsRepository,
-                            authRepository = authRepository,
-                            dailyChallengeViewModel = dailyChallengeViewModel,
-                            loginViewModel = loginViewModel,
-                            registerViewModel = registerViewModel,
-                            adminViewModel = adminViewModel,
-                            settingsViewModel = settingsViewModel,
-                            syncViewModel = syncViewModel,
-                            appVersion = appVersion,
-                            isInitiallyAuthenticated = isInitiallyAuthenticated,
-                            dailyReviewStatDao = dailyReviewStatDao
+                    val density = LocalDensity.current
+                    val fontScaleMultiplier =
+                        (settingsUiState.fontSize / UserPrefsRepository.DEFAULT_FONT_SIZE).coerceIn(0.75f, 1.375f)
+                    CompositionLocalProvider(
+                        LocalDensity provides Density(
+                            density = density.density,
+                            fontScale = density.fontScale * fontScaleMultiplier
                         )
+                    ) {
+                        MaterialTheme(
+                            colorScheme = if (darkTheme) darkColorScheme() else lightColorScheme()
+                        ) {
+                            val navController = rememberNavController()
+                            LexicaApp(
+                                navController = navController,
+                                reviewViewModel = reviewViewModel,
+                                dashboardViewModel = dashboardViewModel,
+                                wordListViewModel = wordListViewModel,
+                                addWordsViewModel = addWordsViewModel,
+                                gamificationViewModel = gamificationViewModel,
+                                miniGamesViewModel = miniGamesViewModel,
+                                repository = repository,
+                                userStatsRepository = userStatsRepository,
+                                authRepository = authRepository,
+                                dailyChallengeViewModel = dailyChallengeViewModel,
+                                loginViewModel = loginViewModel,
+                                registerViewModel = registerViewModel,
+                                adminViewModel = adminViewModel,
+                                settingsViewModel = settingsViewModel,
+                                syncViewModel = syncViewModel,
+                                appVersion = appVersion,
+                                isInitiallyAuthenticated = isInitiallyAuthenticated,
+                                dailyReviewStatDao = dailyReviewStatDao
+                            )
+                        }
                     }
                 }
     }

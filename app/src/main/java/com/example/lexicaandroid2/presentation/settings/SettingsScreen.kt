@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,6 +50,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import kotlin.math.roundToInt
 
 /**
  * Écran des réglages utilisateur.
@@ -60,10 +62,13 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun SettingsScreen(
     viewModel: SettingsViewModel,
-    appVersion: String = "1.0"
+    appVersion: String = "1.0",
+    showAdminEntry: Boolean = false,
+    onNavigateToAdmin: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showTimePicker by remember { mutableStateOf(false) }
+    var pendingFontSize by remember(uiState.fontSize) { mutableStateOf(uiState.fontSize) }
 
     if (showTimePicker) {
         ReminderTimePickerDialog(
@@ -88,7 +93,6 @@ fun SettingsScreen(
         SettingsSectionTitle("🎨 Apparence")
 
         SettingsCard {
-            // Thème
             SettingsLabel("Thème")
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -108,90 +112,67 @@ fun SettingsScreen(
             HorizontalDivider()
             Spacer(Modifier.height(12.dp))
 
-            // Taille de police
-            SettingsLabel("Taille de police : ${uiState.fontSize.toInt()}sp")
+            val textScalePercent = ((pendingFontSize / UserPrefsRepository.DEFAULT_FONT_SIZE) * 100f).roundToInt()
+            val appliedTextScalePercent = ((uiState.fontSize / UserPrefsRepository.DEFAULT_FONT_SIZE) * 100f).roundToInt()
+            val previewScaleRatio = pendingFontSize / uiState.fontSize.coerceAtLeast(1f)
+            SettingsLabel("Échelle du texte : $textScalePercent%")
             Slider(
-                value = uiState.fontSize,
-                onValueChange = { viewModel.setFontSize(it) },
-                valueRange = 12f..20f,
-                steps = 7,
+                value = pendingFontSize,
+                onValueChange = { pendingFontSize = it },
+                valueRange = 12f..22f,
+                steps = 9,
                 modifier = Modifier.fillMaxWidth()
             )
-            // Aperçu live de la taille
             Text(
-                text = "Aperçu du texte",
-                fontSize = uiState.fontSize.sp,
+                text = "Ajuste la valeur ici, puis valide pour appliquer à toute l'application.",
+                style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(Modifier.height(12.dp))
-            HorizontalDivider()
-            Spacer(Modifier.height(12.dp))
 
-            // Couleur d'accent
-            SettingsLabel("Couleur d'accent")
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 4.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
             ) {
-                AccentColor.entries.forEach { color ->
-                    val isSelected = uiState.accentColor == color
-                    Box(
-                        modifier = Modifier
-                            .size(36.dp)
-                            .clip(CircleShape)
-                            .background(Color(color.colorHex))
-                            .border(
-                                width = if (isSelected) 3.dp else 0.dp,
-                                color = if (isSelected) MaterialTheme.colorScheme.onSurface
-                                        else Color.Transparent,
-                                shape = CircleShape
-                            )
-                            .clickable { viewModel.setAccentColor(color) }
+                Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(
+                        text = "Aperçu local",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    Text(
+                        text = "Lexica",
+                        fontSize = (20f * previewScaleRatio).sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    Text(
+                        text = "Le changement global sera appliqué seulement après validation.",
+                        fontSize = (14f * previewScaleRatio).sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "Taille appliquée actuellement : $appliedTextScalePercent%",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = "Après validation, l’aperçu gardera exactement ce rendu.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
-        }
 
-        Spacer(Modifier.height(4.dp))
+            Spacer(Modifier.height(12.dp))
 
-        // ── Section Entraînement ──────────────────────────────────────────
-        SettingsSectionTitle("📚 Entraînement")
-
-        SettingsCard {
-            SettingsLabel("Cartes par session : ${uiState.cardsPerSession}")
-            Slider(
-                value = uiState.cardsPerSession.toFloat(),
-                onValueChange = { viewModel.setCardsPerSession(it.toInt()) },
-                valueRange = 5f..50f,
-                steps = 44,
+            Button(
+                onClick = { viewModel.setFontSize(pendingFontSize) },
+                enabled = pendingFontSize != uiState.fontSize,
                 modifier = Modifier.fillMaxWidth()
-            )
-
-            Spacer(Modifier.height(8.dp))
-            HorizontalDivider()
-            Spacer(Modifier.height(8.dp))
-
-            SettingsToggleRow(
-                label = "Afficher définition en premier",
-                description = "Inverse recto/verso lors de la révision",
-                checked = uiState.showDefinitionFirst,
-                onCheckedChange = { viewModel.setShowDefinitionFirst(it) }
-            )
-
-            Spacer(Modifier.height(4.dp))
-            HorizontalDivider()
-            Spacer(Modifier.height(4.dp))
-
-            SettingsToggleRow(
-                label = "Activer les défis",
-                description = "Défis orthographiques et sémantiques intégrés dans la révision",
-                checked = uiState.challengesEnabled,
-                onCheckedChange = { viewModel.setChallengesEnabled(it) }
-            )
+            ) {
+                Text("Valider")
+            }
         }
 
         Spacer(Modifier.height(4.dp))
@@ -249,6 +230,29 @@ fun SettingsScreen(
 
         Spacer(Modifier.height(4.dp))
 
+        if (showAdminEntry) {
+            SettingsSectionTitle("⚙️ Administration")
+
+            SettingsCard {
+                Text(
+                    text = "Accéder au mode admin et aux réglages avancés d'entraînement.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+
+                Spacer(Modifier.height(12.dp))
+
+                OutlinedButton(
+                    onClick = onNavigateToAdmin,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Ouvrir le mode admin")
+                }
+            }
+
+            Spacer(Modifier.height(4.dp))
+        }
+
         // ── Section À propos ──────────────────────────────────────────────
         SettingsSectionTitle("ℹ️ À propos")
 
@@ -278,6 +282,21 @@ fun SettingsScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.clickable { /* placeholder — ajouter URL quand disponible */ }
+            )
+
+            Spacer(Modifier.height(8.dp))
+            HorizontalDivider()
+            Spacer(Modifier.height(8.dp))
+
+            Text(
+                text = "Propriété intellectuelle",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Medium
+            )
+            Text(
+                text = "Application, concept, contenus et identité du projet © Paul Mottet. Tous droits réservés.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
 

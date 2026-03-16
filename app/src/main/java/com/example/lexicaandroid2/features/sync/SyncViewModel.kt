@@ -65,6 +65,7 @@ class SyncViewModel(
 
     private var periodicSyncJob: Job? = null
     private var lastObservedUid: String? = null
+    private var initialAuthStateHandled = false
 
     init {
         // Observe les changements d'utilisateur connecté
@@ -73,7 +74,16 @@ class SyncViewModel(
                 .map { it?.uid }
                 .distinctUntilChanged()
                 .collect { uid ->
-                    if (uid != null && uid != lastObservedUid) {
+                    if (!initialAuthStateHandled) {
+                        initialAuthStateHandled = true
+                        if (uid != null) {
+                            lastObservedUid = uid
+                            syncExistingAuthenticatedSession(uid)
+                            startPeriodicSync(uid)
+                        } else {
+                            _uiState.update { SyncUiState.Idle }
+                        }
+                    } else if (uid != null && uid != lastObservedUid) {
                         lastObservedUid = uid
                         checkAndSync(uid)
                         startPeriodicSync(uid)
@@ -83,6 +93,34 @@ class SyncViewModel(
                         _uiState.update { SyncUiState.Idle }
                     }
                 }
+        }
+    }
+
+    private fun syncExistingAuthenticatedSession(uid: String) {
+        viewModelScope.launch {
+            when (val result = syncManager.checkOnLogin(uid)) {
+                is SyncCheckResult.NoCloudData -> {
+                    syncManager.uploadLocalToCloud(uid)
+                    _uiState.update { SyncUiState.Idle }
+                }
+                is SyncCheckResult.EmptyLocalImport -> {
+                    try {
+                        syncManager.silentImportFromCloud(uid, result.cloudProgress)
+                    } finally {
+                        _uiState.update { SyncUiState.Idle }
+                    }
+                }
+                is SyncCheckResult.UpToDate -> {
+                    _uiState.update { SyncUiState.Idle }
+                }
+                is SyncCheckResult.Conflict -> {
+                    syncManager.uploadLocalToCloud(uid)
+                    _uiState.update { SyncUiState.Idle }
+                }
+                is SyncCheckResult.NetworkError -> {
+                    _uiState.update { SyncUiState.Idle }
+                }
+            }
         }
     }
 

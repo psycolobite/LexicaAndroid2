@@ -45,21 +45,32 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.lexicaandroid2.domain.model.Flashcard
 
 @Composable
 fun WordListScreen(
-    viewModel: WordListViewModel,
-    navController: NavController,
-    onNavigateToWordDetail: (String) -> Unit = { cardId ->
-        navController.navigate("word/$cardId")
-    }
+    viewModel: WordListViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var selectedCard by remember { mutableStateOf<Flashcard?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.loadWords()
+    }
+
+    selectedCard?.let { card ->
+        WordDetailDialog(
+            card = card,
+            onDismiss = { selectedCard = null },
+            onToggleFavorite = {
+                viewModel.toggleFavorite(card)
+                selectedCard = card.copy(favori = !card.favori)
+            },
+            onDeleteCard = {
+                viewModel.deleteCard(card.id)
+                selectedCard = null
+            }
+        )
     }
 
     Scaffold(
@@ -85,7 +96,7 @@ fun WordListScreen(
                 items(uiState.filteredCards) { card ->
                     WordItem(
                         card = card,
-                        onCardClick = { onNavigateToWordDetail(card.id) },
+                        onCardClick = { selectedCard = card },
                         onToggleFavorite = { viewModel.toggleFavorite(card) },
                         onDeleteCard = { viewModel.deleteCard(card.id) }
                     )
