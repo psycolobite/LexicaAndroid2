@@ -18,21 +18,19 @@
 ### 3. Bouton "Retour au menu" → "Valider"
 **Avant :** Validation automatique au clic sur la définition. Bouton "Retour au menu" en bas.
 
-**Après :**
-- L'utilisateur sélectionne un mot (colonne gauche) **puis** une définition (colonne droite)
-- Le bouton **"✅ Valider"** s'active uniquement quand une paire est sélectionnée (désactivé sinon, texte "Sélectionne une paire…")
-- Après clic :
-  - ✅ **Bonne paire** → bannière verte "Bravo ! Bonne paire ✨" pendant 1 s → la paire reste verte, déverrouille la suivante
-  - ❌ **Mauvaise paire** → flash rouge 900 ms → reset automatique → l'utilisateur réessaie
+**Après :** Validation globale via un bouton "VALIDER" en bas, activé uniquement quand toutes les paires sont reliées. Plus d'erreur immédiate frustrante.
 
-### 4. Design des cartes (SelectableButton)
-**Avant :** Petits rectangles, texte 14sp gris, peu lisibles en 2 colonnes.
+## Mise à jour v2 (2026-03-16)
 
-**Après :**
-- Padding vertical **16dp** (plus grand, plus facile à toucher)
-- Texte **15sp** avec `lineHeight = 20sp` (définitions longues correctement wrappées)
-- Coins arrondis **12dp** (design moderne Material 3)
-- 4 états visuels clairement distincts : Normal / Sélectionné (bleu) / Trouvé (vert) / Erreur (rouge)
+### 4. Consolidation finale de l'interface
+**Avant :** Encore deux barres distinctes (TopBar + GameHeader).
+
+**Après :** Intégration totale dans une `GameTopAppBar` unique. Gain maximal d'espace vertical.
+
+### 5. Règles de jeu strictes
+- **3 erreurs maximum** par planche : au-delà, la solution est dévoilée et l'XP est annulée (0 XP).
+- **Pénalité XP** : Si le joueur recommence après un échec (moins de 3 erreurs), le gain d'XP est divisé par 2.
+- **Feedback visuel** : Nouveaux écrans intermédiaires clairs pour "Succès", "Échec", et "Solution".
 
 ---
 
@@ -79,4 +77,3 @@ Les nouveaux paramètres `isFound` et `isWrong` ont une **valeur par défaut `fa
 - [x] `FeedbackBanner` animée (fade in/out)
 - [x] `MatchingViewModel.validateSelection()` avec délais coroutines
 - [x] Build réussi sans erreur ni warning Kotlin
-

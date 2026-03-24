@@ -16,7 +16,8 @@ import kotlinx.coroutines.launch
 enum class MatchingRoundState {
     PLAYING,
     SUCCESS,
-    FAILURE
+    FAILURE,
+    SHOW_SOLUTION
 }
 
 data class MatchingUiState(
@@ -27,6 +28,8 @@ data class MatchingUiState(
     val assignments: Map<String, String> = emptyMap(),
     val totalPairs: Int = 0,
     val validationMistakeCount: Int = 0,
+    val failureCount: Int = 0,
+    val potentialXp: Int = 25,
     val completedRounds: Int = 0,
     val roundXpEarned: Int = 0,
     val isLoading: Boolean = true,
@@ -81,6 +84,8 @@ class MatchingViewModel(private val repository: FlashcardRepository) : ViewModel
                         selectedDefinition = null,
                         assignments = emptyMap(),
                         validationMistakeCount = 0,
+                        failureCount = 0,
+                        potentialXp = SUCCESS_XP,
                         roundXpEarned = 0,
                         roundState = MatchingRoundState.PLAYING
                     )
@@ -136,34 +141,56 @@ class MatchingViewModel(private val repository: FlashcardRepository) : ViewModel
                 it.copy(
                     roundState = MatchingRoundState.SUCCESS,
                     validationMistakeCount = 0,
-                    roundXpEarned = SUCCESS_XP,
+                    roundXpEarned = it.potentialXp,
                     completedRounds = it.completedRounds + 1
                 )
             }
 
             viewModelScope.launch {
                 delay(1400)
+                // Load next game logic or let UI trigger it?
+                // Currently loadGame() is called here, re-shuffling.
+                // But normally we wait for user to click "Next" or auto.
+                // The previous code had delay then loadGame().
                 loadGame()
             }
         } else {
-            _uiState.update {
-                it.copy(
-                    roundState = MatchingRoundState.FAILURE,
-                    validationMistakeCount = mistakes,
-                    roundXpEarned = 0
-                )
+            val newFailureCount = state.failureCount + 1
+            if (newFailureCount >= 3) {
+                // Too many attempts, show solution, 0 XP
+                _uiState.update {
+                    it.copy(
+                        roundState = MatchingRoundState.SHOW_SOLUTION,
+                        validationMistakeCount = mistakes,
+                        failureCount = newFailureCount,
+                        potentialXp = 0,
+                        roundXpEarned = 0
+                    )
+                }
+            } else {
+                // Retry with penalty
+                _uiState.update {
+                    it.copy(
+                        roundState = MatchingRoundState.FAILURE,
+                        validationMistakeCount = mistakes,
+                        failureCount = newFailureCount,
+                        potentialXp = it.potentialXp / 2,
+                        roundXpEarned = 0
+                    )
+                }
             }
         }
     }
 
     fun restartCurrentRound() {
+        // Keep failureCount and potentialXp
         _uiState.update {
             it.copy(
                 selectedWord = null,
                 selectedDefinition = null,
                 assignments = emptyMap(),
                 validationMistakeCount = 0,
-                roundXpEarned = 0,
+                // Do NOT reset failureCount or potentialXp here
                 roundState = MatchingRoundState.PLAYING
             )
         }

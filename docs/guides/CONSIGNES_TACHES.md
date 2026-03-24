@@ -2413,3 +2413,4 @@ Faire évoluer la page `Utilisation` d'un placeholder vers de vrais modules d'em
 
 ### Objectif
 Réduire légèrement les espaces visuels entre les labels d'onglets pour permettre une police un peu plus lisible à 100%, tout en acceptant un passage sur 2 lignes si la taille utilisateur augmente.
+

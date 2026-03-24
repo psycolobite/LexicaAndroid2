@@ -31,7 +31,16 @@ object GameUtils {
     }
 
     fun shuffleAnswers(correct: String, otherCards: List<Flashcard>): List<String> {
-        val others = otherCards.map { it.verso }.take(3)
+        val normalizedCorrect = correct.trim().lowercase()
+        val others = otherCards
+            .asSequence()
+            .map { it.verso.trim() }
+            .filter { it.isNotBlank() }
+            .distinctBy { it.lowercase() }
+            .filter { it.lowercase() != normalizedCorrect }
+            .shuffled()
+            .take(3)
+            .toList()
         return (listOf(correct) + others).shuffled()
     }
 

@@ -138,6 +138,11 @@ class SpellingAdvancedViewModel(
         ttsService.speak(card.recto)
     }
 
+    fun playWord(word: String?) {
+        if (word == null) return
+        ttsService.speak(word)
+    }
+
     fun useRevealLetterJoker() {
         val state = _uiState.value
         val card = state.currentCard ?: return
@@ -217,7 +222,6 @@ class SpellingAdvancedViewModel(
     }
 
     fun restart() {
-        _uiState.update { SpellingAdvancedUiState(ttsReady = ttsService.isReady.value) }
         loadGame()
     }
 

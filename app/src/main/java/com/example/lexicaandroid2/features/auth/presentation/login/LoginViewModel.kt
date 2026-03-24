@@ -94,12 +94,12 @@ class LoginViewModel(
         }
     }
 
-    fun onGoogleSignInClicked() {
-        _uiState.update {
-            it.copy(
-                errorMessage = "Google Sign-In à configurer dans Firebase (client OAuth manquant)."
-            )
-        }
+    fun onGoogleSignInCancelled() {
+        _uiState.update { it.copy(isLoading = false, errorMessage = "Connexion Google annulée") }
+    }
+
+    fun onGoogleSignInError(message: String) {
+        _uiState.update { it.copy(isLoading = false, errorMessage = message) }
     }
 
     fun logout() {

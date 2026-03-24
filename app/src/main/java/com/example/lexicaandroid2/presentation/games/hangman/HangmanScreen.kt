@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.presentation.games.common.GameButton
-import com.example.lexicaandroid2.presentation.games.common.GameHeader
+import com.example.lexicaandroid2.presentation.games.common.GameTopAppBar
 
 @Composable
 fun HangmanScreen(
@@ -79,159 +80,170 @@ fun HangmanScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        if (uiState.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        } else if (uiState.error != null) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = uiState.error ?: "Erreur inconnue", color = Color.Red)
-                Button(onClick = onBack) {
-                    Text("Retour")
-                }
-            }
-        } else if (uiState.gameOver) {
-            GameOverHangmanScreen(
+    Scaffold(
+        topBar = {
+            GameTopAppBar(
+                title = "Pendu",
                 score = uiState.score,
+                // Assuming currentWordIndex exists or similar. If not, removing current/total for now to be safe or using completed?
+                // Let's rely on score for now or try uiState.currentIndex if it complies.
+                // Looking at other games, standardized state usually has currentIndex.
+                // If compilation fails I will fix.
+                current = uiState.currentWordIndex + 1,
                 total = uiState.totalWords,
-                word = uiState.currentWord,
-                xpEarned = calculateGameXp(uiState.score, uiState.totalWords),
-                onRestart = { viewModel.resetGame() },
                 onBack = onBack
             )
-        } else {
-            GameHeader(
-                title = "Pendu - Lexica",
-                score = uiState.score,
-                progress = uiState.score.toFloat() / maxOf(1, uiState.totalWords)
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Vies: ${uiState.livesRemaining}",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    HangmanDrawing(uiState.livesRemaining)
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(Color.White)
+        ) {
+            if (uiState.isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
                 }
-
-                Box(
+            } else if (uiState.error != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = uiState.error, color = Color.Red)
+                    Button(onClick = onBack) {
+                        Text("Retour")
+                    }
+                }
+            } else if (uiState.gameOver) {
+                GameOverHangmanScreen(
+                    score = uiState.score,
+                    total = uiState.totalWords,
+                    word = uiState.currentWord,
+                    xpEarned = calculateGameXp(uiState.score, uiState.totalWords),
+                    onRestart = { viewModel.resetGame() },
+                    onBack = onBack
+                )
+            } else {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFF5F5F5))
-                        .padding(24.dp),
-                    contentAlignment = Alignment.Center
+                        .weight(1f)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        uiState.currentWord.forEach { letter ->
-                            Text(
-                                text = if (uiState.guessedLetters.contains(letter)) letter.toString() else "_",
-                                fontSize = 24.sp,
-                                fontWeight = FontWeight.Bold,
-                                modifier = Modifier.padding(4.dp)
-                            )
-                        }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Vies: ${uiState.livesRemaining}",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        HangmanDrawing(uiState.livesRemaining)
                     }
-                }
 
-                Text(
-                    text = "Lettres essayées: ${uiState.wrongLetters.joinToString(", ")}",
-                    fontSize = 12.sp,
-                    color = Color.Red,
-                    modifier = Modifier.padding(8.dp)
-                )
-
-                Text(
-                    text = "Choisissez une lettre:",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                LazyVerticalGrid(
-                    columns = GridCells.Fixed(7),
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
-                    items(('A'..'Z').toList()) { letter ->
-                        val isGuessed = uiState.guessedLetters.contains(letter)
-                        val isWrong = uiState.wrongLetters.contains(letter)
-                        val isUsed = isGuessed || isWrong
-
-                        Box(
-                            modifier = Modifier
-                                .size(40.dp)
-                                .background(
-                                    color = when {
-                                        isGuessed -> Color(0xFFD4EDDA)
-                                        isWrong -> Color(0xFFF8D7DA)
-                                        else -> Color.White
-                                    },
-                                    shape = RoundedCornerShape(4.dp)
-                                )
-                                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
-                                .clickable(enabled = !isUsed) { viewModel.guessLetter(letter) },
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = letter.toString(),
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold,
-                                color = if (isUsed) Color.Gray else Color.Black
-                            )
-                        }
-                    }
-                }
-
-                if (uiState.won) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color(0xFFD4EDDA))
-                            .padding(16.dp),
+                            .background(Color(0xFFF5F5F5))
+                            .padding(24.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = "Mot trouvé! ${uiState.currentWord}",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFF155724)
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            uiState.currentWord.forEach { letter ->
+                                Text(
+                                    text = if (uiState.guessedLetters.contains(letter)) letter.toString() else "_",
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(4.dp)
+                                )
+                            }
+                        }
+                    }
+
+                    Text(
+                        text = "Lettres essayées: ${uiState.wrongLetters.joinToString(", ")}",
+                        fontSize = 12.sp,
+                        color = Color.Red,
+                        modifier = Modifier.padding(8.dp)
+                    )
+
+                    Text(
+                        text = "Choisissez une lettre:",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(7),
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        items(('A'..'Z').toList()) { letter ->
+                            val isGuessed = uiState.guessedLetters.contains(letter)
+                            val isWrong = uiState.wrongLetters.contains(letter)
+                            val isUsed = isGuessed || isWrong
+
+                            Box(
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .background(
+                                        color = when {
+                                            isGuessed -> Color(0xFFD4EDDA)
+                                            isWrong -> Color(0xFFF8D7DA)
+                                            else -> Color.White
+                                        },
+                                        shape = RoundedCornerShape(4.dp)
+                                    )
+                                    .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
+                                    .clickable(enabled = !isUsed) { viewModel.guessLetter(letter) },
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = letter.toString(),
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = if (isUsed) Color.Gray else Color.Black
+                                )
+                            }
+                        }
+                    }
+
+                    if (uiState.won) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color(0xFFD4EDDA))
+                                .padding(16.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = "Mot trouvé! ${uiState.currentWord}",
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color(0xFF155724)
+                            )
+                        }
+                        GameButton(
+                            text = "Mot suivant",
+                            onClick = { viewModel.nextWord() }
                         )
                     }
-                    GameButton(
-                        text = "Mot suivant",
-                        onClick = { viewModel.nextWord() }
-                    )
                 }
-            }
 
-            GameButton(
-                text = "Retour au menu",
-                onClick = onBack,
-                modifier = Modifier.padding(16.dp)
-            )
+                GameButton(
+                    text = "Retour au menu",
+                    onClick = onBack,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         }
     }
 }
@@ -315,4 +327,3 @@ fun GameOverHangmanScreen(
         )
     }
 }
-

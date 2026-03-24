@@ -14,11 +14,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.VolumeUp
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -40,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.presentation.games.common.GameButton
-import com.example.lexicaandroid2.presentation.games.common.GameHeader
+import com.example.lexicaandroid2.presentation.games.common.GameTopAppBar
 
 @Composable
 fun SpellingGameScreen(
@@ -92,121 +93,123 @@ fun SpellingGameScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-        if (uiState.isLoading) {
-            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
-            }
-        } else if (uiState.error != null) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(text = uiState.error ?: "Erreur inconnue", color = Color.Red, fontSize = 16.sp)
-                GameButton(
-                    text = "Retour",
-                    onClick = onBack,
-                    modifier = Modifier.padding(top = 16.dp)
-                )
-            }
-        } else if (uiState.gameOver) {
-            GameOverSpellingScreen(
+    Scaffold(
+        topBar = {
+            GameTopAppBar(
+                title = "Dictée",
                 score = uiState.score,
+                current = uiState.currentIndex + 1,
                 total = uiState.totalWords,
-                xpEarned = calculateGameXp(uiState.score, uiState.totalWords),
-                onRestart = { viewModel.resetGame() },
                 onBack = onBack
             )
-        } else {
-            val progress = if (uiState.totalWords == 0) 0f
-                          else (uiState.currentIndex.toFloat() / uiState.totalWords)
-
-            GameHeader(
-                title = "Jeu de Dictée",
-                score = uiState.score,
-                progress = progress
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = "Mot ${uiState.currentIndex + 1}/${uiState.totalWords}",
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.outline
-                )
-
-                // Listen Button
-                Box(
-                    modifier = Modifier
-                        .size(120.dp)
-                        .background(
-                            color = if (uiState.isSpeaking)
-                                MaterialTheme.colorScheme.primaryContainer
-                            else
-                                MaterialTheme.colorScheme.primary,
-                            shape = RoundedCornerShape(50)
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    IconButton(
-                        onClick = { viewModel.speakWord(uiState.currentQuestion.mot) },
-                        enabled = !uiState.isSpeaking && uiState.ttsReady,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(8.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.VolumeUp,
-                            contentDescription = "Écouter le mot",
-                            tint = Color.White,
-                            modifier = Modifier.size(60.dp)
-                        )
-                    }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .background(MaterialTheme.colorScheme.background)
+        ) {
+            if (uiState.isLoading) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
                 }
-
-                if (uiState.isSpeaking) {
-                    Text(
-                        text = "🔊 En cours de lecture...",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.primary,
-                        fontWeight = FontWeight.Bold
+            } else if (uiState.error != null) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = uiState.error ?: "Erreur inconnue", color = Color.Red, fontSize = 16.sp)
+                    GameButton(
+                        text = "Retour",
+                        onClick = onBack,
+                        modifier = Modifier.padding(top = 16.dp)
                     )
                 }
-
-                // Input Field
-                TextField(
-                    value = uiState.userInput,
-                    onValueChange = { viewModel.updateUserInput(it) },
-                    label = { Text("Tapez le mot...") },
+            } else if (uiState.gameOver) {
+                GameOverSpellingScreen(
+                    score = uiState.score,
+                    total = uiState.totalWords,
+                    xpEarned = calculateGameXp(uiState.score, uiState.totalWords),
+                    onRestart = { viewModel.resetGame() },
+                    onBack = onBack
+                )
+            } else {
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .border(
-                            width = 2.dp,
-                            color = when {
-                                !uiState.answered -> MaterialTheme.colorScheme.outline
-                                uiState.isCorrect == true -> Color(0xFF28A745) // Green
-                                else -> Color(0xFFDC3545) // Red
-                            },
-                            shape = RoundedCornerShape(8.dp)
-                        ),
-                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            if (!uiState.answered && uiState.userInput.isNotEmpty()) {
-                                viewModel.validateAnswer()
+                        .weight(1f)
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Mot ${uiState.currentIndex + 1}/${uiState.totalWords}",
+                        fontSize = 12.sp,
+                    )
+
+                    // Listen Button
+                    Box(
+                        modifier = Modifier
+                            .size(120.dp)
+                            .background(
+                                color = if (uiState.isSpeaking)
+                                    MaterialTheme.colorScheme.primaryContainer
+                                else
+                                    MaterialTheme.colorScheme.primary,
+                                shape = RoundedCornerShape(50)
+                            ),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        IconButton(
+                            onClick = { viewModel.speakWord(uiState.currentQuestion.mot) },
+                            enabled = !uiState.isSpeaking && uiState.ttsReady,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                                contentDescription = "Écouter le mot",
+                                tint = Color.White,
+                                modifier = Modifier.size(60.dp)
+                            )
+                        }
+                    }
+
+                    if (uiState.isSpeaking) {
+                        Text(
+                            text = "🔊 En cours de lecture...",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.primary,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    // Input Field
+                    TextField(
+                        value = uiState.userInput,
+                        onValueChange = { viewModel.updateUserInput(it) },
+                        label = { Text("Tapez le mot...") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .border(
+                                width = 2.dp,
+                                color = when {
+                                    !uiState.answered -> MaterialTheme.colorScheme.outline
+                                    uiState.isCorrect == true -> Color(0xFF28A745) // Green
+                                    else -> Color(0xFFDC3545) // Red
+                                },
+                                shape = RoundedCornerShape(8.dp)
+                            ),
+                        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                if (!uiState.answered && uiState.userInput.isNotEmpty()) {
+                                    viewModel.validateAnswer()
                             }
                         }
                     ),
@@ -277,6 +280,7 @@ fun SpellingGameScreen(
             )
         }
     }
+}
 }
 
 private fun calculateGameXp(score: Int, total: Int): Int {

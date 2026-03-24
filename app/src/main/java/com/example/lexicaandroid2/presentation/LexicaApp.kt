@@ -64,6 +64,7 @@ import com.example.lexicaandroid2.presentation.games.MiniGamesViewModel
 import com.example.lexicaandroid2.presentation.settings.SettingsScreen
 import com.example.lexicaandroid2.presentation.settings.SettingsViewModel
 import com.example.lexicaandroid2.presentation.common.LexicaBottomNavBar
+import com.example.lexicaandroid2.presentation.navigation.GAME_ROUTES
 import com.example.lexicaandroid2.presentation.navigation.Screen
 import com.example.lexicaandroid2.presentation.navigation.shouldShowBottomBar
 import com.example.lexicaandroid2.presentation.online.OnlineScreen
@@ -148,6 +149,10 @@ fun LexicaApp(
                          currentRoute == Screen.DrivingMode.route ||
                          currentRoute?.startsWith("word/") == true
 
+    val shouldShowTopBar = currentRoute !in GAME_ROUTES &&
+        currentRoute != Screen.Login.route &&
+        currentRoute != Screen.Register.route
+
     val syncUiState by remember(syncViewModel) {
         syncViewModel?.uiState ?: MutableStateFlow(SyncUiState.Idle)
     }.collectAsState()
@@ -163,26 +168,28 @@ fun LexicaApp(
 
     Scaffold(
         topBar = {
-            LexicaTopAppBar(
-                title = topBarTitle,
-                canNavigateBack = canNavigateBack,
-                navigateUp = { navController.navigateUp() },
-                onProfileClick = if (currentRoute == Screen.Dashboard.route) {
-                    {
-                        if (currentAuthUser != null) {
-                            navController.navigate(Screen.Profile.route)
-                        } else {
-                            navController.navigate(Screen.Login.route)
+            if (shouldShowTopBar) {
+                LexicaTopAppBar(
+                    title = topBarTitle,
+                    canNavigateBack = canNavigateBack,
+                    navigateUp = { navController.navigateUp() },
+                    onProfileClick = if (currentRoute == Screen.Dashboard.route) {
+                        {
+                            if (currentAuthUser != null) {
+                                navController.navigate(Screen.Profile.route)
+                            } else {
+                                navController.navigate(Screen.Login.route)
+                            }
                         }
-                    }
-                } else if (currentRoute == Screen.Profile.route) {
-                    { }
-                } else null,
-                onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
-                    { navController.navigate(Screen.Settings.route) }
-                } else null,
-                useBrandTitle = currentRoute == Screen.Dashboard.route
-            )
+                    } else if (currentRoute == Screen.Profile.route) {
+                        { }
+                    } else null,
+                    onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
+                        { navController.navigate(Screen.Settings.route) }
+                    } else null,
+                    useBrandTitle = currentRoute == Screen.Dashboard.route
+                )
+            }
         },
         bottomBar = {
             if (shouldShowBottomBar(currentRoute)) {
@@ -222,7 +229,7 @@ fun LexicaApp(
                         navController.navigate(Screen.DrivingMode.route)
                     },
                     onNavigateToWordList = {
-                         navController.navigate(Screen.WordList.createRoute(null))
+                        navController.navigate(Screen.WordList.createRoute(null))
                     },
                     onNavigateToWordListFiltered = { filter ->
                         navController.navigate(Screen.WordList.createRoute(filter))

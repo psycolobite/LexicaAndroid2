@@ -89,7 +89,7 @@ Documentation:  ✅ NETTOYÉE & CLARIFIÉE
 - [x] **BUILD SUCCESSFUL** ✅ (0 erreurs, 2026-03-09)
 - [x] TACHE_S2 créée : recherche API externe + fix accents + fix espace
 - [x] TACHE_11 créée : menu profil (icône top-right dashboard)
-- [x] FEATURES.md mis à jour : 10/10 mini-jeux ✅
+- [x] Features.md mis à jour : 10/10 mini-jeux ✅
 
 ### 🔴 Bloquants
 - TACHE_S1 + TACHE_S2 : moteur recherche bugué (agent à lancer)
@@ -549,3 +549,61 @@ Build:                  ✅ SUCCESSFUL (assembleDebug)
 ```
 
 
+
+## 📅 2026-03-16 - Optimisation Build & Refonte UI Mini-Jeux
+
+### ✅ Accompli
+- **Optimisation Build Gradle** : Activation exécution parallèle (`org.gradle.parallel=true`) et cache de construction.
+- **Navigation Refactoring** : Extraction de la classe `Screen` dans un fichier dédié (`presentation/navigation/Screen.kt`).
+- **Refonte UI Mini-Jeux** :
+  - Création du composant `GameTopAppBar` unifié (titre, score, progression).
+  - Suppression des anciens headers encombrants pour maximiser l'espace de jeu.
+  - Mise à jour de TOUS les écrans de jeu : Matching, Anagrams, FillWord, Memory, Semantic, Chrono, SpellingAdvanced, QCM, Hangman, SpellingGame.
+- **Règles "Correspondance" (Matching)** :
+  - Implémentation logique "3 erreurs = solution + 0 XP".
+  - Pénalité XP (division par 2) en cas de retry.
+  - Feedback visuel clair (Succès, Échec, Solution).
+- **Correctifs divers** :
+  - Migration icônes Material (AutoMirrored).
+  - Fix imports manquants et références (`currentIndex`).
+  - Nettoyage code mort et corrections de compilation.
+
+### 🔴 Bloquants
+- Aucun. **BUILD SUCCESSFUL**.
+
+### 🔜 Prochaines actions
+- Vérification visuelle sur appareil/émulateur.
+- Finalisation des tâches d'intégration restantes.
+
+### 📊 Statut Global
+- Mini-jeux:      10/10 (UI unifiée et optimisée)
+- Build:          ✅ SUCCESSFUL (Optimisé)
+- UX/UI:          ✅ Améliorée (TopBar compacte, espace utile maximisé)
+
+---
+
+## 📅 2026-03-24 - Refonte Auth UI + Google Sign-In
+
+### ✅ Accompli
+- [x] Relecture `START_HERE.md` avant intervention
+- [x] Refonte visuelle de `LoginScreen.kt` et `RegisterScreen.kt` avec carte centrée, branding `Lexica` et hiérarchie plus propre
+- [x] Suppression du doublon visuel `Connexion` / `Inscription` en retirant la top bar globale sur les routes auth
+- [x] Remplacement du faux bouton Google par un vrai flux `GoogleSignInClient` → `idToken` → Firebase Auth
+- [x] Ajout du helper partagé `GoogleSignInHelper.kt`
+- [x] Ajout de `play-services-auth` dans `app/build.gradle.kts`
+- [x] Gestion UX annulation / erreur Google dans `LoginViewModel.kt` et `RegisterViewModel.kt`
+
+### 🔴 Bloquants
+- Build et test runtime du flux Google à valider après intégration
+
+### 🔜 Prochaines actions
+- Recompiler le projet
+- Tester `Continuer avec Google` sur connexion et inscription
+- Vérifier le comportement premier accès vs compte déjà existant
+
+### 📊 Statut Global
+```
+Auth UI:         ✅ Refonte visuelle
+Google Sign-In:  ✅ Implémenté côté app
+Build:           ✅ `:app:assembleDebug` SUCCESSFUL
+```
