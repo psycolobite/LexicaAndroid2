@@ -22,6 +22,13 @@ class UserStatsRepositoryImpl(
         dao.insertOrUpdate(currentStats.copy(xp = newXp, level = newLevel))
     }
 
+    override suspend fun setLevel(level: Int) {
+        val currentStats = dao.getUserStats().firstOrNull() ?: UserStatsEntity()
+        val safeLevel = level.coerceAtLeast(1)
+        val xpForLevel = XPCalculator.calculateXpForLevel(safeLevel)
+        dao.insertOrUpdate(currentStats.copy(xp = xpForLevel, level = safeLevel))
+    }
+
     override suspend fun updateStreak() {
         val currentStats = dao.getUserStats().firstOrNull() ?: UserStatsEntity()
         val now = System.currentTimeMillis()
@@ -43,6 +50,17 @@ class UserStatsRepositoryImpl(
         val newStreak = if (wasYesterday) currentStats.streak + 1 else 1
 
         dao.insertOrUpdate(currentStats.copy(lastLoginDate = now, streak = newStreak))
+    }
+
+    override suspend fun resetStats() {
+        dao.insertOrUpdate(UserStatsEntity(xp = 0, level = 1, streak = 0, lastLoginDate = 0L))
+    }
+
+    override suspend fun simulateStreak(days: Int) {
+        val currentStats = dao.getUserStats().firstOrNull() ?: UserStatsEntity()
+        // Fixer lastLoginDate à hier pour que updateStreak() l'incrémente au prochain appel
+        val yesterday = System.currentTimeMillis() - 24 * 60 * 60 * 1000L
+        dao.insertOrUpdate(currentStats.copy(streak = days, lastLoginDate = yesterday))
     }
 }
 

@@ -1,16 +1,12 @@
 package com.example.lexicaandroid2.presentation.games.spellingadvanced
 
 import android.app.Application
-import android.os.Bundle
-import android.speech.tts.TextToSpeech
-import android.speech.tts.UtteranceProgressListener
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lexicaandroid2.core.tts.LexicaTtsService
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import java.text.Normalizer
-import java.util.Locale
-import java.util.UUID
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,10 +46,32 @@ class SpellingAdvancedViewModel(
     private val _uiState = MutableStateFlow(SpellingAdvancedUiState())
     val uiState: StateFlow<SpellingAdvancedUiState> = _uiState.asStateFlow()
 
-    private var tts: TextToSpeech? = null
+    private val ttsService = LexicaTtsService(application)
 
     init {
-        initTts()
+        observeTtsState()
+    }
+
+    private fun observeTtsState() {
+        viewModelScope.launch {
+            ttsService.isReady.collect { ready ->
+                _uiState.update { it.copy(ttsReady = ready) }
+            }
+        }
+
+        viewModelScope.launch {
+            ttsService.isSpeaking.collect { speaking ->
+                _uiState.update { it.copy(isSpeaking = speaking) }
+            }
+        }
+
+        viewModelScope.launch {
+            ttsService.errorMessage.collect { error ->
+                if (!error.isNullOrBlank()) {
+                    _uiState.update { it.copy(error = error) }
+                }
+            }
+        }
     }
 
     fun loadGame() {
@@ -117,10 +135,12 @@ class SpellingAdvancedViewModel(
             _uiState.update { it.copy(jokersRemaining = it.jokersRemaining - 1) }
         }
 
-        val utteranceId = UUID.randomUUID().toString()
-        val bundle = Bundle()
-        bundle.putString(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, utteranceId)
-        tts?.speak(card.recto, TextToSpeech.QUEUE_FLUSH, bundle, utteranceId)
+        ttsService.speak(card.recto)
+    }
+
+    fun playWord(word: String?) {
+        if (word == null) return
+        ttsService.speak(word)
     }
 
     fun useRevealLetterJoker() {
@@ -202,39 +222,7 @@ class SpellingAdvancedViewModel(
     }
 
     fun restart() {
-        _uiState.update { SpellingAdvancedUiState(ttsReady = _uiState.value.ttsReady) }
         loadGame()
-    }
-
-    private fun initTts() {
-        tts = TextToSpeech(getApplication()) { status ->
-            if (status == TextToSpeech.SUCCESS) {
-                tts?.language = Locale.FRENCH
-                tts?.setOnUtteranceProgressListener(object : UtteranceProgressListener() {
-                    override fun onStart(utteranceId: String?) {
-                        viewModelScope.launch {
-                            _uiState.update { it.copy(isSpeaking = true) }
-                        }
-                    }
-
-                    override fun onDone(utteranceId: String?) {
-                        viewModelScope.launch {
-                            _uiState.update { it.copy(isSpeaking = false) }
-                        }
-                    }
-
-                    @Deprecated("Deprecated in Java")
-                    override fun onError(utteranceId: String?) {
-                        viewModelScope.launch {
-                            _uiState.update { it.copy(isSpeaking = false) }
-                        }
-                    }
-                })
-                _uiState.update { it.copy(ttsReady = true) }
-            } else {
-                _uiState.update { it.copy(ttsReady = false, error = "Echec initialisation TTS") }
-            }
-        }
     }
 
     private data class AnswerEvaluation(
@@ -309,6 +297,6 @@ class SpellingAdvancedViewModel(
 
     override fun onCleared() {
         super.onCleared()
-        tts?.shutdown()
+        ttsService.shutdown()
     }
 }

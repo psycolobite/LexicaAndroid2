@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import com.example.lexicaandroid2.presentation.games.common.GameTopAppBar
+
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,7 +29,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.presentation.games.common.GameButton
-import com.example.lexicaandroid2.presentation.games.common.GameHeader
 import com.example.lexicaandroid2.presentation.games.common.SelectableButton
 
 @Composable
@@ -48,138 +50,155 @@ fun ChronoScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        when {
-            uiState.isLoading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            uiState.error != null -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = uiState.error, color = MaterialTheme.colorScheme.error)
-                    Button(onClick = onBack) {
-                        Text("Back")
-                    }
-                }
-            }
-
-            uiState.gameFinished -> {
-                ChronoGameOver(
-                    score = uiState.score,
-                    totalAnswered = uiState.totalAnswered,
-                    earnedXp = uiState.earnedXp,
-                    onRestart = viewModel::restart,
-                    onBack = onBack
-                )
-            }
-
-            !uiState.gameStarted -> {
-                ChronoStart(
-                    selectedDuration = uiState.selectedDurationSeconds,
-                    onSelectDuration = viewModel::setDuration,
-                    onStart = viewModel::startGame,
-                    onBack = onBack
-                )
-            }
-
-            else -> {
-                GameHeader(
+    Scaffold(
+        topBar = {
+            if (!uiState.isLoading && !uiState.gameFinished && uiState.gameStarted) {
+                GameTopAppBar(
                     title = "Chrono",
                     score = uiState.score,
-                    progress = uiState.progress
+                    current = uiState.timeRemainingSeconds.toInt(),
+                    total = uiState.selectedDurationSeconds.toInt(),
+                    onBack = onBack
                 )
+            } else if (!uiState.gameStarted && !uiState.isLoading) {
+                 GameTopAppBar(
+                    title = "Chrono - Setup",
+                    score = 0,
+                    current = 0,
+                    total = 0,
+                    onBack = onBack
+                )
+            }
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
+        ) {
+            when {
+                uiState.isLoading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
+                    }
+                }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = "Time left: ${uiState.timeRemainingSeconds}s",
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = if (uiState.timeRemainingSeconds <= 10L) Color(0xFFB71C1C) else Color(0xFF1B5E20)
-                    )
-
-                    Text(
-                        text = "Answered: ${uiState.totalAnswered}",
-                        color = Color.Gray,
-                        fontSize = 12.sp
-                    )
-
-                    Surface(
-                        modifier = Modifier.fillMaxWidth(),
-                        color = Color(0xFFF5F5F5),
-                        shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                uiState.error != null -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Column(modifier = Modifier.padding(14.dp)) {
-                            Text(
-                                text = "Word",
-                                fontSize = 12.sp,
-                                color = Color.Gray
+                        Text(text = uiState.error, color = MaterialTheme.colorScheme.error)
+                        Button(onClick = onBack) {
+                            Text("Back")
+                        }
+                    }
+                }
+
+                uiState.gameFinished -> {
+                    ChronoGameOver(
+                        score = uiState.score,
+                        totalAnswered = uiState.totalAnswered,
+                        earnedXp = uiState.earnedXp,
+                        onRestart = viewModel::restart,
+                        onBack = onBack
+                    )
+                }
+
+                !uiState.gameStarted -> {
+                    ChronoStart(
+                        selectedDuration = uiState.selectedDurationSeconds,
+                        onSelectDuration = viewModel::setDuration,
+                        onStart = viewModel::startGame,
+                        onBack = onBack
+                    )
+                }
+
+                else -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Text(
+                            text = "Time left: ${uiState.timeRemainingSeconds}s",
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = if (uiState.timeRemainingSeconds <= 10L) Color(0xFFB71C1C) else Color(0xFF1B5E20)
+                        )
+
+                        Text(
+                            text = "Answered: ${uiState.totalAnswered}",
+                            color = Color.Gray,
+                            fontSize = 12.sp
+                        )
+
+                        Surface(
+                            modifier = Modifier.fillMaxWidth(),
+                            color = Color(0xFFF5F5F5),
+                            shape = androidx.compose.foundation.shape.RoundedCornerShape(12.dp)
+                        ) {
+                            Column(modifier = Modifier.padding(14.dp)) {
+                                Text(
+                                    text = "Word",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray
+                                )
+                                Text(
+                                    text = uiState.currentQuestion?.recto ?: "",
+                                    fontSize = 24.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+                        }
+
+                        Text(
+                            text = "Choose the definition",
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        uiState.answers.forEach { answer ->
+                            SelectableButton(
+                                text = answer,
+                                isSelected = uiState.selectedAnswer == answer,
+                                onClick = { viewModel.selectAnswer(answer) }
                             )
+                        }
+
+                        GameButton(
+                            text = "Validate",
+                            onClick = viewModel::submitAnswer,
+                            enabled = uiState.selectedAnswer != null
+                        )
+
+                        val last = uiState.lastAnswerCorrect
+                        if (last != null) {
                             Text(
-                                text = uiState.currentQuestion?.recto ?: "",
-                                fontSize = 24.sp,
+                                text = if (last) "Correct (+5 XP)" else "Wrong",
+                                color = if (last) Color(0xFF155724) else Color(0xFF721C24),
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                    }
 
-                    Text(
-                        text = "Choose the definition",
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    uiState.answers.forEach { answer ->
-                        SelectableButton(
-                            text = answer,
-                            isSelected = uiState.selectedAnswer == answer,
-                            onClick = { viewModel.selectAnswer(answer) }
+                        Text(
+                            text = "XP: ${uiState.earnedXp}",
+                            color = Color.Gray,
+                            fontSize = 12.sp
                         )
                     }
 
                     GameButton(
-                        text = "Validate",
-                        onClick = viewModel::submitAnswer,
-                        enabled = uiState.selectedAnswer != null
-                    )
-
-                    val last = uiState.lastAnswerCorrect
-                    if (last != null) {
-                        Text(
-                            text = if (last) "Correct (+5 XP)" else "Wrong",
-                            color = if (last) Color(0xFF155724) else Color(0xFF721C24),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    Text(
-                        text = "XP: ${uiState.earnedXp}",
-                        color = Color.Gray,
-                        fontSize = 12.sp
+                        text = "Back to menu",
+                        onClick = onBack,
+                        modifier = Modifier.padding(16.dp)
                     )
                 }
-
-                GameButton(
-                    text = "Back to menu",
-                    onClick = onBack,
-                    modifier = Modifier.padding(16.dp)
-                )
             }
         }
     }

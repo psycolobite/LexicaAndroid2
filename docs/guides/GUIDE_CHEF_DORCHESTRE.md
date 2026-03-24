@@ -1,12 +1,21 @@
 # 👨‍💼 Guide du Chef d'Orchestre
 
-**Derniere mise a jour :** 2026-03-04
+**Derniere mise a jour :** 2026-03-15
 
 Ce guide clarifie exactement ce que le Chef d'Orchestre (vous) doit faire et ne pas faire concernant la documentation.
 
 ---
 
 ## 📊 Responsabilités du Chef d'Orchestre
+
+## TL;DR
+- `main` = stable
+- `develop` = branche de travail et d'integration
+- les agents ne creent pas de branche dediee par defaut
+- les agents livrent via leur package + `integration_pending/`
+- le Chef d'Orchestre relit, integre dans `develop`, teste, puis fusionne au moment opportun dans `main`
+- suivi quotidien uniquement dans `DAILY_STANDUP.md`
+- éviter toute nouvelle doc si une doc existante suffit
 
 ### 1. **Decoupage & Attribution des Taches**
 - Decouper le travail en `TACHE_XX` avec scope ~100 000 tokens

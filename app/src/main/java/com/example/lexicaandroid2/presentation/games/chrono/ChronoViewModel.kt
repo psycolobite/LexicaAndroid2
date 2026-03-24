@@ -51,6 +51,8 @@ class ChronoViewModel(private val repository: FlashcardRepository) : ViewModel()
                 val cards = repository.getAllCards()
                     .filter { it.recto.isNotBlank() && it.verso.isNotBlank() }
                     .distinctBy { it.id }
+                    .shuffled()
+                    .take(100) // Cap à 100 : évite de charger 7000+ cartes en mémoire
 
                 if (cards.isEmpty()) {
                     _uiState.update {

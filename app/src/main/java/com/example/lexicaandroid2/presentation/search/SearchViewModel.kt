@@ -10,6 +10,7 @@ import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import java.text.Normalizer
 
 enum class SearchType {
     GLOBAL, BY_WORD, BY_DEFINITION, FAVORITES
@@ -73,16 +74,13 @@ class SearchViewModel(
                     SearchType.FAVORITES -> repository.searchFavorites(query)
                 }
 
-                resultsFlow.collect { results ->
-                    val count = if (query.isBlank()) {
-                        repository.countSearchResults("")
-                    } else {
-                        results.size
-                    }
+                resultsFlow.collect { localResults ->
+                    val resolvedResults = resolveResults(query = query, type = type, localResults = localResults)
+                    val count = if (query.isBlank()) repository.countSearchResults("") else resolvedResults.size
 
                     _uiState.update {
                         it.copy(
-                            results = results,
+                            results = resolvedResults,
                             totalResults = count,
                             isLoading = false,
                             error = null
@@ -102,10 +100,64 @@ class SearchViewModel(
         }
     }
 
+    private suspend fun resolveResults(
+        query: String,
+        type: SearchType,
+        localResults: List<Flashcard>
+    ): List<Flashcard> {
+        if (query.isBlank()) return localResults
+        if (localResults.isNotEmpty()) return localResults
+
+        val accentInsensitive = accentInsensitiveFallback(query = query, type = type)
+        if (accentInsensitive.isNotEmpty()) return accentInsensitive
+
+        return if (type == SearchType.GLOBAL || type == SearchType.BY_WORD) {
+            repository.searchExternal(query)
+        } else {
+            emptyList()
+        }
+    }
+
+    private suspend fun accentInsensitiveFallback(query: String, type: SearchType): List<Flashcard> {
+        val normalizedQuery = normalize(query)
+        if (normalizedQuery.isBlank()) return emptyList()
+
+        val allCards = repository.getAllPaginated(limit = 500, offset = 0).first()
+
+        return allCards
+            .asSequence()
+            .filter { card ->
+                when (type) {
+                    SearchType.GLOBAL -> {
+                        normalize(card.recto).contains(normalizedQuery) ||
+                            normalize(card.verso).contains(normalizedQuery) ||
+                            card.synonymes.any { normalize(it).contains(normalizedQuery) }
+                    }
+                    SearchType.BY_WORD -> normalize(card.recto).contains(normalizedQuery)
+                    SearchType.BY_DEFINITION -> normalize(card.verso).contains(normalizedQuery)
+                    SearchType.FAVORITES -> {
+                        card.favori && (
+                            normalize(card.recto).contains(normalizedQuery) ||
+                                normalize(card.verso).contains(normalizedQuery)
+                            )
+                    }
+                }
+            }
+            .take(50)
+            .toList()
+    }
+
+    private fun normalize(value: String): String {
+        return Normalizer.normalize(value, Normalizer.Form.NFD)
+            .replace(Regex("\\p{M}+"), "")
+            .lowercase()
+            .trim()
+    }
+
     fun clearSearch() {
         searchJob?.cancel()
         _searchQuery.value = ""
-        _uiState.update { it.copy(query = "", isLoading = false) }
+        _uiState.update { it.copy(query = "", results = emptyList(), totalResults = 0, isLoading = false) }
     }
 }
 

@@ -58,6 +58,9 @@ dependencies {
     testImplementation(libs.mockito.kotlin)
     testImplementation(libs.mockito.core)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlin.test)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.test.core.ktx)
@@ -80,5 +83,10 @@ dependencies {
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:32.8.1"))
     implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.0")
+    // TensorFlow Lite (validation sémantique MiniLM)
+    implementation("org.tensorflow:tensorflow-lite:2.14.0")
+    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
 }

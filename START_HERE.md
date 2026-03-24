@@ -15,54 +15,40 @@ Pour connaître l'état précis du projet (ce qui est fait, ce qui reste à fair
 
 ## 👨‍💼 **Je suis Chef d'Orchestre**
 
-### Lis en cet ordre:
+### Version courte
+Lis seulement :
 
-1. **[FEATURES.md](FEATURES.md)** (2 min)
-   → Liste des fonctionnalités et leur état d'avancement.
+1. **[FEATURES.md](FEATURES.md)**
+2. **[docs/guides/CONSIGNES_TACHES.md](docs/guides/CONSIGNES_TACHES.md)**
+3. **[docs/guides/GUIDE_CHEF_DORCHESTRE.md](docs/guides/GUIDE_CHEF_DORCHESTRE.md)**
 
-2. **[docs/specifications/BRIEF_EXECUTIF.md](docs/specifications/BRIEF_EXECUTIF.md)** (5 min)
-   → Vision et contexte du projet.
-
-3. **[docs/planning/PLAN_ACTION_IMMEDIATE.md](docs/planning/PLAN_ACTION_IMMEDIATE.md)** (10 min)
-   → Le plan d'intégration actuel.
-
-4. **[docs/INDEX_DOCUMENTS.md](docs/INDEX_DOCUMENTS.md)** (5 min)
-   → Index pour chercher ce que tu veux.
-
-### Tes Devoirs (COMPLET - Lis CONSIGNES_TACHES.md section "Consignes pour le Chef d'Orchestre")
-
-**Résumé rapide:**
-- ✅ Découper le travail en **TACHE_XX** (voir `docs/guides/CONSIGNES_TACHES.md`)
-- ✅ **Intégrer les PRs** depuis `integration_pending/` vers les fichiers coeur
-- ✅ **Compiler & tester** après chaque intégration (`./gradlew clean :app:assembleDebug`)
-- ✅ **Mettre à jour DAILY_STANDUP.md** quotidiennement (SEUL fichier de suivi)
-- ❌ **NE PAS créer de nouveaux fichiers doc** → Tout va dans les docs existantes
-- ❌ **NE PAS modifier les fichiers agents** (laisser les agents coder dans leurs packages)
-
-**Fichier complet:** `docs/guides/CONSIGNES_TACHES.md` → Section "Consignes pour le Chef d'Orchestre"
+### Règles simples
+- `main` = branche stable
+- `develop` = branche de travail et d'intégration
+- les agents ne créent pas tous une branche dédiée
+- les agents livrent dans leur package isolé + `integration_pending/`
+- le Chef d'Orchestre intègre dans `develop`, puis fusionne dans `main` quand c'est prêt
+- `DAILY_STANDUP.md` = seul fichier de suivi quotidien
+- pas de nouvelle doc si un fichier existant suffit
 
 ---
 
 ## 👨‍💻 **Je suis Agent Développeur**
 
-### Lis en cet ordre:
+### Version courte
+Lis seulement :
 
-1. **[FEATURES.md](FEATURES.md)** (2 min)
-   → Vérifie quelle fonctionnalité tu dois implémenter.
+1. **[FEATURES.md](FEATURES.md)**
+2. **[docs/guides/CONSIGNES_TACHES.md](docs/guides/CONSIGNES_TACHES.md)**
+3. ta tâche assignée dans ce fichier
 
-2. **[docs/guides/SETUP_AGENTS_PARALLEL.md](docs/guides/SETUP_AGENTS_PARALLEL.md)** (30 min)
-   → Configuration de ton environnement (VS Code, Android Studio, etc.).
-
-3. **[docs/guides/GUIDELINES.md](docs/guides/GUIDELINES.md)** (15 min)
-   → Règles globales, workflow, fichiers interdits.
-
-4. **[docs/guides/CONSIGNES_TACHES.md](docs/guides/CONSIGNES_TACHES.md)** (5 min)
-   → Trouve la tâche `TACHE_XX` assignée.
-
-5. **[docs/guides/TROUBLESHOOTING.md](docs/guides/TROUBLESHOOTING.md)** (garder en favoris)
-   → Solutions aux erreurs courantes.
-
-⚠️ Rappel agents: pas de build local, pas de modification des fichiers coeur, pas de modification des fichiers `.txt`.
+### Règles simples
+- tu travailles dans **ton package** seulement
+- tu ne crées pas de branche dédiée par défaut
+- tu livres ton travail via ton package + `integration_pending/`
+- pas de build local
+- pas de modification des fichiers coeur sans demande d'intégration
+- si blocage global : documenter dans `integration_pending/`
 
 ---
 
@@ -106,10 +92,11 @@ Pour connaître l'état précis du projet (ce qui est fait, ce qui reste à fair
 
 ## ✅ Checklist (Première Fois)
 
-- [ ] Lire ce fichier (START_HERE.md) - **FAIT**
-- [ ] Lire **[FEATURES.md](FEATURES.md)** (État du projet)
-- [ ] Lire la doc spécifique à votre rôle
-- [ ] Commencer!
+- [ ] Lire ce fichier
+- [ ] Ouvrir la bonne branche
+- [ ] Lire `FEATURES.md`
+- [ ] Lire la doc minimale de ton rôle
+- [ ] Commencer
 
 ---
 

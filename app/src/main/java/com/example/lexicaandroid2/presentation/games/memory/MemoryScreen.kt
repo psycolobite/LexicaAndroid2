@@ -5,8 +5,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -14,7 +16,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,8 +35,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.presentation.games.common.GameButton
-import com.example.lexicaandroid2.presentation.games.common.GameHeader
-import com.example.lexicaandroid2.presentation.games.common.SelectableButton
+import com.example.lexicaandroid2.presentation.games.common.GameTopAppBar
 
 @Composable
 fun MemoryScreen(
@@ -53,131 +56,150 @@ fun MemoryScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        when {
-            uiState.isLoading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            uiState.error != null -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Text(text = uiState.error, color = MaterialTheme.colorScheme.error)
-                    Button(onClick = onBack) {
-                        Text("Retour")
+    Scaffold(
+        topBar = {
+            GameTopAppBar(
+                title = "Memory",
+                score = uiState.score,
+                current = uiState.matchedPairs,
+                total = uiState.totalPairs,
+                onBack = onBack
+            )
+        }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
+        ) {
+            when {
+                uiState.isLoading -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator()
                     }
                 }
-            }
 
-            uiState.gameOver -> {
-                MemoryGameOver(
-                    score = uiState.score,
-                    attempts = uiState.attempts,
-                    bestScore = uiState.bestScore,
-                    onRestart = viewModel::restart,
-                    onBack = onBack
-                )
-            }
-
-            else -> {
-                GameHeader(
-                    title = "Memory",
-                    score = uiState.score,
-                    progress = uiState.progress
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f)
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
-                ) {
-                    Text(
-                        text = "Paires trouvées: ${uiState.matchedPairs}/${uiState.totalPairs}",
-                        fontSize = 13.sp,
-                        color = Color.Gray
-                    )
-                    Text(
-                        text = "Tentatives: ${uiState.attempts}",
-                        fontSize = 13.sp,
-                        color = Color.Gray
-                    )
-
-                    uiState.availableConfigs.forEach { config ->
-                        val selected = config == uiState.selectedConfig
-                        SelectableButton(
-                            text = "Grille ${config.columns}x${config.rows}",
-                            isSelected = selected,
-                            onClick = { viewModel.loadGame(config) },
-                            modifier = Modifier.fillMaxWidth(),
-                            enabled = !uiState.isCheckingPair
-                        )
-                    }
-
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(uiState.selectedConfig.columns),
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                uiState.error != null -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        items(uiState.cards, key = { it.id }) { card ->
-                            val showFront = card.isFaceUp || card.isMatched
-                            val background = when {
-                                card.isMatched -> Color(0xFFD4EDDA)
-                                showFront -> Color(0xFFE3F2FD)
-                                else -> Color(0xFFB0BEC5)
-                            }
+                        Text(text = uiState.error, color = MaterialTheme.colorScheme.error)
+                        Button(onClick = onBack) {
+                            Text("Retour")
+                        }
+                    }
+                }
 
-                            Surface(
-                                shape = RoundedCornerShape(10.dp),
-                                color = background,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable {
-                                        viewModel.onCardClicked(card.id)
-                                    }
-                            ) {
-                                Box(
+                uiState.gameOver -> {
+                    MemoryGameOver(
+                        score = uiState.score,
+                        attempts = uiState.attempts,
+                        bestScore = uiState.bestScore,
+                        onRestart = viewModel::restart,
+                        onBack = onBack
+                    )
+                }
+
+                else -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        ) {
+                            uiState.availableConfigs.forEach { config ->
+                                val selected = config == uiState.selectedConfig
+                                FilterChip(
+                                    selected = selected,
+                                    onClick = { viewModel.loadGame(config) },
+                                    label = { Text("${config.columns}×${config.rows}", fontSize = 12.sp) },
+                                    enabled = !uiState.isCheckingPair,
+                                    modifier = Modifier.weight(1f)
+                                )
+                            }
+                        }
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text(
+                                text = "Paires: ${uiState.matchedPairs}/${uiState.totalPairs}",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = "Essais: ${uiState.attempts}",
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
+                        }
+
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(uiState.selectedConfig.columns),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            verticalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            items(uiState.cards, key = { it.id }) { card ->
+                                val showFront = card.isFaceUp || card.isMatched
+                                val background = when {
+                                    card.isMatched -> Color(0xFFD4EDDA)
+                                    showFront -> Color(0xFFE3F2FD)
+                                    else -> Color(0xFFB0BEC5)
+                                }
+
+                                Surface(
+                                    shape = RoundedCornerShape(10.dp),
+                                    color = background,
                                     modifier = Modifier
-                                        .padding(8.dp)
-                                        .fillMaxWidth(),
-                                    contentAlignment = Alignment.Center
+                                        .fillMaxWidth()
+                                        .clickable {
+                                            viewModel.onCardClicked(card.id)
+                                        }
                                 ) {
-                                    Text(
-                                        text = if (showFront) card.text else "?",
-                                        fontSize = 12.sp,
-                                        fontWeight = if (showFront) FontWeight.Medium else FontWeight.Bold,
-                                        color = if (showFront) Color.Black else Color.White
-                                    )
+                                    Box(
+                                        modifier = Modifier
+                                            .padding(8.dp)
+                                            .fillMaxWidth(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = if (showFront) card.text else "?",
+                                            fontSize = 12.sp,
+                                            fontWeight = if (showFront) FontWeight.Medium else FontWeight.Bold,
+                                            color = if (showFront) Color.Black else Color.White
+                                        )
+                                    }
                                 }
                             }
                         }
+
+                        Text(
+                            text = "Meilleur score (session): ${uiState.bestScore}",
+                            fontSize = 12.sp,
+                            color = Color.Gray
+                        )
                     }
 
-                    Text(
-                        text = "Meilleur score (session): ${uiState.bestScore}",
-                        fontSize = 12.sp,
-                        color = Color.Gray
+                    GameButton(
+                        text = "Retour au menu",
+                        onClick = onBack,
+                        modifier = Modifier.padding(16.dp)
                     )
                 }
-
-                GameButton(
-                    text = "Retour au menu",
-                    onClick = onBack,
-                    modifier = Modifier.padding(16.dp)
-                )
             }
         }
     }

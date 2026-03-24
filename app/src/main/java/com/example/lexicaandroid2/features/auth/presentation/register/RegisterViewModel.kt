@@ -79,6 +79,35 @@ class RegisterViewModel(
         }
     }
 
+    fun registerWithGoogleIdToken(idToken: String) {
+        if (idToken.isBlank()) {
+            _uiState.update { it.copy(errorMessage = "Token Google invalide") }
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+
+            repository.signInWithGoogleIdToken(idToken)
+                .onFailure { error ->
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = error.message ?: "Échec de connexion Google"
+                        )
+                    }
+                }
+        }
+    }
+
+    fun onGoogleSignInCancelled() {
+        _uiState.update { it.copy(isLoading = false, errorMessage = "Connexion Google annulée") }
+    }
+
+    fun onGoogleSignInError(message: String) {
+        _uiState.update { it.copy(isLoading = false, errorMessage = message) }
+    }
+
     fun logout() {
         viewModelScope.launch {
             repository.signOut()

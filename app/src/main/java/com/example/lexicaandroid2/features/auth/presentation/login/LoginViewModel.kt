@@ -94,6 +94,14 @@ class LoginViewModel(
         }
     }
 
+    fun onGoogleSignInCancelled() {
+        _uiState.update { it.copy(isLoading = false, errorMessage = "Connexion Google annulée") }
+    }
+
+    fun onGoogleSignInError(message: String) {
+        _uiState.update { it.copy(isLoading = false, errorMessage = message) }
+    }
+
     fun logout() {
         viewModelScope.launch {
             repository.signOut()
