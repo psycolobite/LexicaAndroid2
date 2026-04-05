@@ -2,14 +2,18 @@ package com.example.lexicaandroid2.presentation
 
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -69,6 +73,8 @@ import com.example.lexicaandroid2.presentation.navigation.Screen
 import com.example.lexicaandroid2.presentation.navigation.shouldShowBottomBar
 import com.example.lexicaandroid2.presentation.online.OnlineScreen
 import com.example.lexicaandroid2.presentation.utilisation.UtilisationScreen
+import com.example.lexicaandroid2.domain.usecase.ResetProgressUseCase
+import com.example.lexicaandroid2.features.sync.SyncManager
 import com.example.lexicaandroid2.features.sync.SyncViewModel
 import com.example.lexicaandroid2.features.sync.SyncUiState
 import com.example.lexicaandroid2.features.sync.SyncConfirmDialog
@@ -94,6 +100,8 @@ fun LexicaApp(
     appVersion: String = "1.0",
     isInitiallyAuthenticated: Boolean = false,
     dailyReviewStatDao: DailyReviewStatDao? = null,
+    resetProgressUseCase: ResetProgressUseCase? = null,
+    syncManager: SyncManager? = null,
     navController: NavHostController = rememberNavController()
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -102,13 +110,11 @@ fun LexicaApp(
     // Auth state pour la navigation conditionnelle
     val currentAuthUser by authRepository.currentUser.collectAsState(initial = null)
 
-    // Review State for Title
-    val reviewUiState by reviewViewModel.uiState.collectAsState()
-
     val topBarTitle = when (currentRoute) {
         Screen.Dashboard.route -> "Lexica"
-        Screen.Review.route -> "Review (${reviewUiState.scrum})"
+        Screen.Review.route -> "Apprendre mes mots"
         Screen.WordList.route -> "Mes mots"
+        Screen.AddWords.route -> "Ajouter des mots"
         Screen.MiniGames.route -> "Mini-Jeux"
         Screen.MatchingGame.route -> "Correspondance"
         Screen.QcmGame.route -> "QCM"
@@ -134,6 +140,7 @@ fun LexicaApp(
     }
 
     val canNavigateBack = currentRoute == Screen.Review.route || currentRoute == Screen.WordList.route ||
+                         currentRoute == Screen.AddWords.route ||
                          currentRoute == Screen.MiniGames.route || currentRoute == Screen.MatchingGame.route ||
                          currentRoute == Screen.QcmGame.route || currentRoute == Screen.HangmanGame.route ||
                          currentRoute == Screen.Gamification.route || currentRoute == Screen.SpellingGame.route ||
@@ -169,26 +176,32 @@ fun LexicaApp(
     Scaffold(
         topBar = {
             if (shouldShowTopBar) {
-                LexicaTopAppBar(
-                    title = topBarTitle,
-                    canNavigateBack = canNavigateBack,
-                    navigateUp = { navController.navigateUp() },
-                    onProfileClick = if (currentRoute == Screen.Dashboard.route) {
-                        {
-                            if (currentAuthUser != null) {
-                                navController.navigate(Screen.Profile.route)
-                            } else {
-                                navController.navigate(Screen.Login.route)
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.TopStart
+                ) {
+                    LexicaTopAppBar(
+                        title = topBarTitle,
+                        canNavigateBack = canNavigateBack,
+                        navigateUp = { navController.navigateUp() },
+                        modifier = Modifier.fillMaxWidth(),
+                        onProfileClick = if (currentRoute == Screen.Dashboard.route) {
+                            {
+                                if (currentAuthUser != null) {
+                                    navController.navigate(Screen.Profile.route)
+                                } else {
+                                    navController.navigate(Screen.Login.route)
+                                }
                             }
-                        }
-                    } else if (currentRoute == Screen.Profile.route) {
-                        { }
-                    } else null,
-                    onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
-                        { navController.navigate(Screen.Settings.route) }
-                    } else null,
-                    useBrandTitle = currentRoute == Screen.Dashboard.route
-                )
+                        } else if (currentRoute == Screen.Profile.route) {
+                            { }
+                        } else null,
+                        onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
+                            { navController.navigate(Screen.Settings.route) }
+                        } else null,
+                        useBrandTitle = currentRoute == Screen.Dashboard.route
+                    )
+                }
             }
         },
         bottomBar = {
@@ -197,7 +210,7 @@ fun LexicaApp(
                     currentRoute = currentRoute,
                     onNavigate = { route ->
                         navController.navigate(route) {
-                            popUpTo(navController.graph.startDestinationId) { saveState = true }
+                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
                             launchSingleTop = true
                             restoreState = true
                         }
@@ -459,7 +472,9 @@ fun LexicaApp(
                         userStatsRepository = userStatsRepository,
                         authRepository = authRepository,
                         flashcardRepository = repository,
-                        dailyReviewStatDao = dailyReviewStatDao
+                        dailyReviewStatDao = dailyReviewStatDao,
+                        resetProgressUseCase = resetProgressUseCase,
+                        syncManager = syncManager
                     )
                 )
                 ProfileScreen(
@@ -534,7 +549,8 @@ fun LexicaApp(
                     viewModel = settingsViewModel,
                     appVersion = appVersion,
                     showAdminEntry = AdminConfig.isAdmin(currentAuthUser?.email),
-                    onNavigateToAdmin = { navController.navigate(Screen.Admin.route) }
+                    onNavigateToAdmin = { navController.navigate(Screen.Admin.route) },
+                    onTrainingSettingsApplied = { reviewViewModel.invalidateSessionForSettingsChange() }
                 )
             }
             composable(route = Screen.Utilisation.route) {

@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 import java.util.Locale
 
 /**
@@ -462,7 +463,7 @@ private fun UserStatsCard(stats: com.example.lexicaandroid2.features.gamificatio
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = lexicaPanelContainerColor()
         )
     ) {
         Row(

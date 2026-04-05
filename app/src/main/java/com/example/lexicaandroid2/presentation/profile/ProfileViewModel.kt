@@ -4,12 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
+import com.example.lexicaandroid2.domain.usecase.ResetProgressUseCase
 import com.example.lexicaandroid2.features.auth.domain.model.AuthUser
 import com.example.lexicaandroid2.features.auth.domain.repository.AuthRepository
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStat
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
 import com.example.lexicaandroid2.features.gamification.data.UserStatsEntity
 import com.example.lexicaandroid2.features.gamification.domain.UserStatsRepository
+import com.example.lexicaandroid2.features.sync.SyncManager
 import com.example.lexicaandroid2.presentation.admin.AdminConfig
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,14 +43,20 @@ data class ProfileUiState(
     val successRate7Days: Float = 0f,   // Pourcentage (0..100)
     val bestStreak30Days: Int = 0,
     val isLoading: Boolean = true,
-    val error: String? = null
+    val error: String? = null,
+    // Reset progression
+    val resetDialogStep: Int = 0,        // 0=caché, 1=1er dialog, 2=2ème dialog
+    val isResetting: Boolean = false,
+    val resetDoneMessage: String? = null
 )
 
 class ProfileViewModel(
     private val userStatsRepository: UserStatsRepository,
     private val authRepository: AuthRepository,
     private val flashcardRepository: FlashcardRepository,
-    private val dailyReviewStatDao: DailyReviewStatDao? = null   // nullable → rétro-compat avant migration DB
+    private val dailyReviewStatDao: DailyReviewStatDao? = null,
+    private val resetProgressUseCase: ResetProgressUseCase? = null,
+    private val syncManager: SyncManager? = null       // pour invalider le cloud après reset
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileUiState())
@@ -74,6 +82,62 @@ class ProfileViewModel(
             }
         }
     }
+
+    // ==================== RESET PROGRESSION ====================
+
+    /** Étape 1 : l'utilisateur clique sur le bouton — ouvre le 1er dialog. */
+    fun onResetProgressClicked() {
+        _uiState.update { it.copy(resetDialogStep = 1) }
+    }
+
+    /** Étape 1 confirmée — ouvre le 2ème dialog (vraiment la dernière chance !). */
+    fun onResetStep1Confirmed() {
+        _uiState.update { it.copy(resetDialogStep = 2) }
+    }
+
+    /** L'utilisateur abandonne à n'importe quelle étape — ferme tout. */
+    fun onResetDismissed() {
+        _uiState.update { it.copy(resetDialogStep = 0) }
+    }
+
+    /** Étape 2 confirmée — on efface vraiment tout. Adieu les données 👋 */
+    fun onResetConfirmedFinal() {
+        val useCase = resetProgressUseCase ?: return
+        viewModelScope.launch {
+            _uiState.update { it.copy(isResetting = true, resetDialogStep = 0) }
+            runCatching { useCase() }
+                .onSuccess {
+                    // Si l'utilisateur est connecté, on uploade la progression vide vers Firestore
+                    // pour éviter qu'un re-login réimporte les anciennes données
+                    val uid = _uiState.value.uid
+                    if (uid != null && syncManager != null) {
+                        runCatching { syncManager.uploadLocalToCloud(uid) }
+                    }
+                    _uiState.update {
+                        it.copy(
+                            isResetting = false,
+                            totalWordsLearned = 0,
+                            resetDoneMessage = "✅ Tabula rasa ! Tout est effacé. Bonne chance pour la suite 🌱"
+                        )
+                    }
+                }
+                .onFailure { e ->
+                    _uiState.update {
+                        it.copy(
+                            isResetting = false,
+                            error = e.message ?: "Erreur lors de la réinitialisation"
+                        )
+                    }
+                }
+        }
+    }
+
+    /** Dismiss le message de confirmation de reset. */
+    fun onResetMessageDismissed() {
+        _uiState.update { it.copy(resetDoneMessage = null) }
+    }
+
+    // ===========================================================
 
     private fun observeAuthAndStats() {
         viewModelScope.launch {
@@ -226,7 +290,9 @@ class ProfileViewModelFactory(
     private val userStatsRepository: UserStatsRepository,
     private val authRepository: AuthRepository,
     private val flashcardRepository: FlashcardRepository,
-    private val dailyReviewStatDao: DailyReviewStatDao? = null
+    private val dailyReviewStatDao: DailyReviewStatDao? = null,
+    private val resetProgressUseCase: ResetProgressUseCase? = null,
+    private val syncManager: SyncManager? = null
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -235,7 +301,9 @@ class ProfileViewModelFactory(
                 userStatsRepository = userStatsRepository,
                 authRepository = authRepository,
                 flashcardRepository = flashcardRepository,
-                dailyReviewStatDao = dailyReviewStatDao
+                dailyReviewStatDao = dailyReviewStatDao,
+                resetProgressUseCase = resetProgressUseCase,
+                syncManager = syncManager
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

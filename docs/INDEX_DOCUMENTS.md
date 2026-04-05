@@ -1,6 +1,6 @@
 # 📚 Index Complet de la Documentation
 
-**Derniere mise a jour :** 2026-03-04  
+**Derniere mise a jour :** 2026-03-24  
 **Statut :** 🟢 Actif & Complet
 
 Ce fichier fusionne l'ancien `README_NAVIGATION.md` et `INDEX_DOCUMENTS.md` pour eviter les doublons.
@@ -61,6 +61,7 @@ Ce fichier fusionne l'ancien `README_NAVIGATION.md` et `INDEX_DOCUMENTS.md` pour
 Definition du projet.
 - `BRIEF_EXECUTIF.md` - Vue executif (5 min)
 - `SYNTHESE_COMPLETE_2026-02-27.md` - Vue complete (25 min)
+- `fonctionnement algo délai et présentation cards.md` - Référence complète pour l'algo de délai, la logique de session et la présentation des faces
 
 ### 📁 `/docs/planning/`
 Ce qu'on fait.
@@ -185,7 +186,7 @@ PLAN_ACTION_IMMEDIATE.md
 | Type | Nombre | Exemples |
 |------|--------|----------|
 | Guides actifs | 4 | `GUIDELINES.md`, `CONSIGNES_TACHES.md`, etc. |
-| Specifications | 2 | `BRIEF_EXECUTIF.md`, `SYNTHESE_COMPLETE...` |
+| Specifications | 3 | `BRIEF_EXECUTIF.md`, `SYNTHESE_COMPLETE...`, algo délai |
 | Planning | 3 | `PLAN_ACTION_IMMEDIATE.md`, `BACKLOG.md`, etc. |
 | Status | 1 | `etat_2026-02-27.md` (dernier seulement) |
 | Archives | Variable | Anciens etats, sessions, etc. |
@@ -209,7 +210,7 @@ Si tout est ✅: **Tu es pret !**
 **Fichier :** `INDEX_DOCUMENTS.md`  
 **Cree :** 2026-02-27  
 **Fusionne :** `README_NAVIGATION.md` + ancien `INDEX_DOCUMENTS.md`  
-**Derniere mise a jour :** 2026-03-04  
+**Derniere mise a jour :** 2026-03-24  
 **Statut :** 🟢 Actif  
 **Maintenance :** Mise a jour apres chaque changement structure doc
 

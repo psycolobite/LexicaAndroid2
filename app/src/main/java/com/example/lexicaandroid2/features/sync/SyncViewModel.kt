@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.features.auth.domain.repository.AuthRepository
-import com.example.lexicaandroid2.features.gamification.data.UserStatsDao
-import com.example.lexicaandroid2.features.gamification.domain.UserStatsRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -257,15 +254,11 @@ class SyncViewModel(
 
 class SyncViewModelFactory(
     private val authRepository: AuthRepository,
-    private val userStatsRepository: UserStatsRepository,
-    private val userStatsDao: UserStatsDao,
-    private val flashcardRepository: FlashcardRepository
+    private val syncManager: SyncManager
 ) : ViewModelProvider.Factory {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SyncViewModel::class.java)) {
-            val firestoreRepo = FirestoreSyncRepository()
-            val syncManager = SyncManager(firestoreRepo, userStatsDao, userStatsRepository, flashcardRepository)
             return SyncViewModel(syncManager, authRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")

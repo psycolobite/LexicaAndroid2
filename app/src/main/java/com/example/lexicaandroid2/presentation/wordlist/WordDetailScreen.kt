@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -29,6 +28,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,12 +40,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
+import com.example.lexicaandroid2.domain.model.ReviewCardProgressSummary
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -55,6 +56,7 @@ import kotlinx.coroutines.launch
 
 data class WordDetailUiState(
     val card: Flashcard? = null,
+    val progressSummary: ReviewCardProgressSummary? = null,
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -77,7 +79,26 @@ class WordDetailViewModel(
             try {
                 val allCards = repository.getAllCards()
                 val card = allCards.find { it.id == cardId }
-                _uiState.update { it.copy(card = card, isLoading = false, error = if (card == null) "Mot non trouvé" else null) }
+                val progressSummary = card?.let {
+                    val questionProgress = repository.getQuestionProgressForCard(it.id)
+                    questionProgress.takeIf { progress -> progress.isNotEmpty() }
+                        ?.let { progress ->
+                            ReviewCardProgressSummary.fromProgress(
+                                cardId = it.id,
+                                progress = progress,
+                                now = System.currentTimeMillis()
+                            )
+                        }
+                        ?: ReviewCardProgressSummary.fromFlashcard(it, System.currentTimeMillis())
+                }
+                _uiState.update {
+                    it.copy(
+                        card = card,
+                        progressSummary = progressSummary,
+                        isLoading = false,
+                        error = if (card == null) "Mot non trouvé" else null
+                    )
+                }
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
             }
@@ -105,6 +126,7 @@ class WordDetailViewModelFactory(
     private val cardId: String,
     private val repository: FlashcardRepository
 ) : ViewModelProvider.Factory {
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return WordDetailViewModel(cardId, repository) as T
     }
@@ -119,6 +141,7 @@ fun WordDetailScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val card = uiState.card
+    val progressSummary = uiState.progressSummary
     val showDeleteConfirm = remember { mutableStateOf(false) }
     var isDeleted by remember { mutableStateOf(false) }
 
@@ -166,6 +189,8 @@ fun WordDetailScreen(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 },
+                modifier = Modifier.height(40.dp),
+                colors = TopAppBarDefaults.topAppBarColors(),
                 actions = {
                     if (card != null) {
                         IconButton(onClick = { viewModel.toggleFavorite() }) {
@@ -206,7 +231,11 @@ fun WordDetailScreen(
                 .background(Color(0xFFFAFAFA))
         ) {
             item {
-                WordDetailContent(card = card)
+                WordDetailContent(
+                    card = card,
+                    progressSummary = progressSummary
+                        ?: ReviewCardProgressSummary.fromFlashcard(card, System.currentTimeMillis())
+                )
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
@@ -258,6 +287,8 @@ fun WordDetailDialog(
             Column(modifier = Modifier.fillMaxWidth()) {
                 TopAppBar(
                     title = { Text(card.recto, fontWeight = FontWeight.Bold) },
+                    modifier = Modifier.height(40.dp),
+                    colors = TopAppBarDefaults.topAppBarColors(),
                     actions = {
                         IconButton(onClick = onToggleFavorite) {
                             Icon(
@@ -283,7 +314,13 @@ fun WordDetailDialog(
                         .background(Color(0xFFFAFAFA))
                 ) {
                     item {
-                        WordDetailContent(card = card)
+                        WordDetailContent(
+                            card = card,
+                            progressSummary = ReviewCardProgressSummary.fromFlashcard(
+                                card,
+                                System.currentTimeMillis()
+                            )
+                        )
                     }
                 }
 
@@ -301,7 +338,10 @@ fun WordDetailDialog(
 }
 
 @Composable
-private fun WordDetailContent(card: Flashcard) {
+private fun WordDetailContent(
+    card: Flashcard,
+    progressSummary: ReviewCardProgressSummary
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -393,7 +433,7 @@ private fun WordDetailContent(card: Flashcard) {
             DetailSection(title = "🌿 Étymologie", content = card.etymologie)
         }
 
-        ProgressionSection(card = card)
+        ProgressionSection(card = card, progressSummary = progressSummary)
     }
 }
 
@@ -419,14 +459,14 @@ fun DetailSection(title: String, content: String) {
 }
 
 @Composable
-fun ProgressionSection(card: Flashcard) {
-    val isNew = card.sm2MotVersDef.repetitions == 0 && card.sm2DefVersMot.repetitions == 0
-    val isKnown = card.sm2MotVersDef.interval > 20 && card.sm2DefVersMot.interval > 20
-    val (stateText, stateColor) = when {
-        isNew -> "À apprendre" to Color(0xFF1E3A5F)
-        isKnown -> "Connu" to Color(0xFF27AE60)
-        else -> "En cours" to Color(0xFFD35400)
-    }
+fun ProgressionSection(
+    card: Flashcard,
+    progressSummary: ReviewCardProgressSummary
+) {
+    val (stateText, stateColor) = progressSummary.aggregateState.toLabelAndColor()
+    val isNew = progressSummary.aggregateState == ReviewCardAggregateState.TO_WORK &&
+        card.sm2MotVersDef.totalReviews == 0 &&
+        card.sm2DefVersMot.totalReviews == 0
 
     val nextReviewDays = if (card.sm2MotVersDef.nextReviewDate > 0) {
         ((card.sm2MotVersDef.nextReviewDate - System.currentTimeMillis()) / (1000 * 60 * 60 * 24)).toInt()
@@ -469,6 +509,16 @@ fun ProgressionSection(card: Flashcard) {
                     )
                 }
 
+                FaceProgressRow(
+                    title = "Mot → Définition",
+                    state = progressSummary.wordToDefinitionState
+                )
+
+                FaceProgressRow(
+                    title = "Définition → Mot",
+                    state = progressSummary.definitionToWordState
+                )
+
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -500,3 +550,32 @@ fun ProgressionSection(card: Flashcard) {
         }
     }
 }
+
+@Composable
+private fun FaceProgressRow(
+    title: String,
+    state: ReviewCardAggregateState
+) {
+    val (label, color) = state.toLabelAndColor()
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(title, style = MaterialTheme.typography.bodySmall)
+        Text(
+            text = label,
+            color = color,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.bodySmall
+        )
+    }
+}
+
+private fun ReviewCardAggregateState.toLabelAndColor(): Pair<String, Color> = when (this) {
+    ReviewCardAggregateState.TO_WORK -> label to Color(0xFF1E3A5F)
+    ReviewCardAggregateState.IN_PROGRESS -> label to Color(0xFFD35400)
+    ReviewCardAggregateState.KNOWN -> label to Color(0xFF27AE60)
+}
+

@@ -11,11 +11,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,14 +71,16 @@ fun LexicaTopAppBar(
                     fontWeight = FontWeight.SemiBold
                 )
             },
-            modifier = modifier,
+            modifier = modifier.height(40.dp),
+            colors = TopAppBarDefaults.topAppBarColors(),
             navigationIcon = navigationIcon,
             actions = actions
         )
     } else {
         CenterAlignedTopAppBar(
             title = { Text(title) },
-            modifier = modifier,
+            modifier = modifier.height(40.dp),
+            colors = TopAppBarDefaults.topAppBarColors(),
             navigationIcon = navigationIcon,
             actions = actions
         )

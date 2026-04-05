@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 
 enum class ChallengeType {
     SPELLING,
@@ -142,7 +143,7 @@ fun ChallengeOverlay(
                 onClick = onAbandon,
                 modifier = Modifier.weight(1f),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
+                    containerColor = lexicaPanelContainerColor()
                 ),
                 enabled = !isLoading
             ) {

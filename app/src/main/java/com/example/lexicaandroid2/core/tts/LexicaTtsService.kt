@@ -1,4 +1,4 @@
-package com.example.lexicaandroid2.core.tts
+ package com.example.lexicaandroid2.core.tts
 
 import android.content.Context
 import android.os.Bundle
@@ -14,6 +14,16 @@ class LexicaTtsService(
     context: Context,
     initialLocale: Locale = Locale.FRENCH
 ) {
+    private val localeFallbacks = listOf(
+        Locale.FRANCE,
+        Locale.FRENCH,
+        Locale("fr", "FR"),
+        Locale("fr"),
+        Locale.getDefault(),
+        Locale.US,
+        Locale.UK
+    )
+
     private val appContext = context.applicationContext
 
     private val _isReady = MutableStateFlow(false)
@@ -27,6 +37,7 @@ class LexicaTtsService(
 
     private var requestedLocale: Locale = initialLocale
     private var textToSpeech: TextToSpeech? = null
+    private var appliedLocale: Locale? = null
 
     init {
         textToSpeech = TextToSpeech(appContext) { status ->
@@ -52,7 +63,11 @@ class LexicaTtsService(
 
                 val languageApplied = applyLanguage(requestedLocale)
                 _isReady.value = languageApplied
-                _errorMessage.value = if (languageApplied) null else "Langue TTS non disponible"
+                _errorMessage.value = when {
+                    !languageApplied -> "Aucune voix TTS disponible sur l'appareil"
+                    appliedLocale?.language != Locale.FRENCH.language -> "Voix française indisponible — lecture avec la voix système"
+                    else -> null
+                }
             } else {
                 _isReady.value = false
                 _errorMessage.value = "Échec initialisation TTS"
@@ -64,7 +79,11 @@ class LexicaTtsService(
         requestedLocale = locale
         val applied = applyLanguage(locale)
         _isReady.value = applied
-        _errorMessage.value = if (applied) null else "Langue TTS non disponible"
+        _errorMessage.value = when {
+            !applied -> "Aucune voix TTS disponible sur l'appareil"
+            appliedLocale?.language != Locale.FRENCH.language -> "Voix française indisponible — lecture avec la voix système"
+            else -> null
+        }
         return applied
     }
 
@@ -94,7 +113,21 @@ class LexicaTtsService(
     }
 
     private fun applyLanguage(locale: Locale): Boolean {
-        val result = textToSpeech?.setLanguage(locale) ?: return false
-        return result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED
+        val tts = textToSpeech ?: return false
+        val candidates = buildList {
+            add(locale)
+            localeFallbacks.forEach { fallback ->
+                if (fallback != locale) add(fallback)
+            }
+        }
+
+        val appliedLocale = candidates.firstOrNull { candidate ->
+            val result = tts.setLanguage(candidate)
+            result != TextToSpeech.LANG_MISSING_DATA && result != TextToSpeech.LANG_NOT_SUPPORTED
+        } ?: return false
+
+        requestedLocale = appliedLocale
+        this.appliedLocale = appliedLocale
+        return true
     }
 }

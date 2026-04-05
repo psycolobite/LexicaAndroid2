@@ -3,7 +3,6 @@ package com.example.lexicaandroid2.presentation.wordlist
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,15 +15,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +42,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
+import com.example.lexicaandroid2.domain.model.ReviewCardProgressSummary
 
 @Composable
 fun WordListScreen(
@@ -96,6 +94,8 @@ fun WordListScreen(
                 items(uiState.filteredCards) { card ->
                     WordItem(
                         card = card,
+                        progressSummary = uiState.progressByCardId[card.id]
+                            ?: ReviewCardProgressSummary.fromFlashcard(card, System.currentTimeMillis()),
                         onCardClick = { selectedCard = card },
                         onToggleFavorite = { viewModel.toggleFavorite(card) },
                         onDeleteCard = { viewModel.deleteCard(card.id) }
@@ -133,17 +133,12 @@ fun SearchBar(
 @Composable
 fun WordItem(
     card: Flashcard,
+    progressSummary: ReviewCardProgressSummary,
     onCardClick: () -> Unit,
     onToggleFavorite: () -> Unit,
     onDeleteCard: () -> Unit
 ) {
-    val isNew = card.sm2MotVersDef.repetitions == 0 && card.sm2DefVersMot.repetitions == 0
-    val isKnown = card.sm2MotVersDef.interval > 20 && card.sm2DefVersMot.interval > 20
-    val (stateText, stateColor) = when {
-        isNew -> "À apprendre" to Color(0xFF1E3A5F)
-        isKnown -> "Connu" to Color(0xFF27AE60)
-        else -> "En cours" to Color(0xFFD35400)
-    }
+    val (stateText, stateColor) = progressSummary.aggregateState.toLabelAndColor()
 
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
@@ -197,6 +192,22 @@ fun WordItem(
                     overflow = TextOverflow.Ellipsis,
                     color = Color.Gray
                 )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    QuestionStateChip(
+                        label = "Mot → Définition",
+                        state = progressSummary.wordToDefinitionState
+                    )
+                    QuestionStateChip(
+                        label = "Définition → Mot",
+                        state = progressSummary.definitionToWordState
+                    )
+                }
             }
 
             Row(
@@ -243,3 +254,29 @@ fun WordItem(
         }
     }
 }
+
+@Composable
+private fun QuestionStateChip(
+    label: String,
+    state: ReviewCardAggregateState
+) {
+    val (_, color) = state.toLabelAndColor()
+    Surface(
+        color = color.copy(alpha = 0.12f),
+        shape = RoundedCornerShape(16.dp)
+    ) {
+        Text(
+            text = "$label • ${state.label}",
+            color = color,
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+        )
+    }
+}
+
+private fun ReviewCardAggregateState.toLabelAndColor(): Pair<String, Color> = when (this) {
+    ReviewCardAggregateState.TO_WORK -> label to Color(0xFF1E3A5F)
+    ReviewCardAggregateState.IN_PROGRESS -> label to Color(0xFFD35400)
+    ReviewCardAggregateState.KNOWN -> label to Color(0xFF27AE60)
+}
+

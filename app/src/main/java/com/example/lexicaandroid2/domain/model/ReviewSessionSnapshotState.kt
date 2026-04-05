@@ -1,0 +1,36 @@
+package com.example.lexicaandroid2.domain.model
+
+data class ReviewSessionSnapshotState(
+    val currentCard: Flashcard? = null,
+    val pendingCards: List<Flashcard> = emptyList(),
+    val currentFaceIsMotVersDef: Boolean = true,
+    val trainingModeCursor: Int = 0,
+    val sessionCards: List<Flashcard>? = null,
+    val sessionPlan: ReviewSessionPlan? = null,
+    val sessionState: ReviewSessionState? = null,
+    val pendingSessionEvents: List<ReviewSessionEvent>? = null,
+    val activeSessionEvent: ReviewSessionEvent? = null,
+    val eventInput: String = "",
+    val selectedChoice: String? = null,
+    val matchingAssignments: Map<String, String>? = null,
+    val matchingSelectedWordId: String? = null,
+    val matchingSelectedDefinition: String? = null,
+    val eventResultSuccessful: Boolean? = null,
+    val eventResultMessage: String? = null,
+    val eventResultCorrectAnswer: String? = null,
+    val normalAnswersSinceLastMatching: Int = 0,
+    val sessionSizeLimit: Int = 0,
+    val adminNormalPresentationEnabled: Boolean? = null,
+    val isAnswerRevealed: Boolean = false,
+    val isSessionFinished: Boolean = false,
+    val studiedCount: Int = 0,
+    val totalInSession: Int = 0,
+    val xpBonusAccumulated: Int = 0,
+    val autoSpeakWord: Boolean = false,
+    val autoSpeakDefinition: Boolean = false,
+    val presentationModeName: String = "WORD_TO_DEFINITION",
+    val activeChallengeTypeName: String? = null,
+    val challengeInput: String = "",
+    val challengeResult: ReviewChallengeResultSnapshot? = null
+)
+

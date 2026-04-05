@@ -61,7 +61,7 @@ class SettingsViewModel(
 
     fun setCardsPerSession(count: Int) {
         userPrefsRepository.cardsPerSession = count
-        _uiState.update { it.copy(cardsPerSession = count) }
+        _uiState.update { it.copy(cardsPerSession = userPrefsRepository.cardsPerSession) }
     }
 
     fun setShowDefinitionFirst(show: Boolean) {

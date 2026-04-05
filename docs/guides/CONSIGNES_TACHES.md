@@ -163,6 +163,7 @@ Ta tache attribuee est la numero X.
 
 ## Regles globales (obligatoires pour tous)
 1. Lire les documents dans l'ordre indique par `START_HERE.md`.
+1.bis. **Révision / présentation des mots :** la référence actuelle n'est plus l'ancien comportement `Review` implicite. Résumé à retenir : 2 questions indépendantes par carte (`Mot -> Définition`, `Définition -> Mot`), lot initial de session = 10 par défaut, priorité aux questions déjà commencées dont le délai est expiré depuis le plus longtemps, calcul du délai basé uniquement sur la première réponse de chaque session, statut `connu` seulement quand les 2 faces de la carte atteignent ensemble `t4`. Voir `docs/specifications/fonctionnement algo délai et présentation cards.md`.
 2. Workflow Git du projet :
    - `main` = stable
    - `develop` = branche de travail et d'integration
@@ -270,7 +271,7 @@ git push origin main
 | `build.gradle.kts` | Quand dépendances | Ajouter libs si besoin |
 
 ## Catalogue des taches
-Derniere mise a jour : 2026-03-04
+Derniere mise a jour : 2026-03-25
 
 ---
 
@@ -2033,6 +2034,211 @@ Faire évoluer la page `Utilisation` d'un placeholder vers de vrais modules d'em
 
 ### Objectif
 Réduire légèrement les espaces visuels entre les labels d'onglets pour permettre une police un peu plus lisible à 100%, tout en acceptant un passage sur 2 lignes si la taille utilisateur augmente.
+
+---
+
+## Série Polo-1 — Refonte algo review / délais / sessions
+
+## TACHE Polo-1 1 - Persistance par question + migration Room
+- **Scope estimé :** ~45 000 tokens
+- **Statut :** ✅ Fait
+- **Packages touchés :**
+  - `data/local/`
+  - `data/mapper/`
+  - `domain/model/`
+  - `domain/repository/`
+- **Fichier intégration attendu :** `integration_pending/polo_1_1_question_persistence_pr.md`
+
+### Objectif
+Introduire la source de vérité persistante par question (`Mot -> Définition`, `Définition -> Mot`) sans casser les cartes existantes.
+
+### Livrables
+- entités Room dédiées à la progression par question
+- DAO dédié
+- mapper question ↔ domaine
+- extension du repository pour lire/écrire ces données
+- migration depuis les 2 blocs SM2 actuels vers 2 enregistrements question par carte
+
+### Contraintes
+- conserver `Flashcard` comme agrégat contenu
+- ne pas supprimer le contenu existant des cartes
+- documenter toute migration dans le fichier d'intégration
+
+---
+
+## TACHE Polo-1 2 - Moteur de calcul du délai (`ReviewIntervalEngine`)
+- **Scope estimé :** ~35 000 tokens
+- **Statut :** ✅ Fait
+- **Packages touchés :**
+  - `domain/logic/`
+  - `domain/model/`
+  - `app/src/test/java/com/example/lexicaandroid2/domain/`
+- **Fichier intégration attendu :** `integration_pending/polo_1_2_interval_engine_pr.md`
+
+### Objectif
+Implémenter le nouveau moteur de calcul long terme décrit dans la spec (`level`, `intervalIndex`, `peakIntervalIndex`, `weightedSuccess`, `weightedFailure`, `recentStreak`, `recoveryReserve`).
+
+### Livrables
+- classe `ReviewIntervalEngine`
+- calculs pour `À revoir`, `Je l'ai`, `Trop facile`
+- conversion `intervalIndex -> durée`
+- tests unitaires sur montée, chute, récupération et seuil `t4`
+
+### Contraintes
+- ne plus faire dépendre `Review` du comportement SM2 actuel pour la logique cible
+- garder le moteur pur et testable sans UI
+
+---
+
+## TACHE Polo-1 3 - Planificateur de session (`ReviewSessionPlanner`)
+- **Scope estimé :** ~32 000 tokens
+- **Statut :** ✅ Fait
+- **Packages touchés :**
+  - `domain/logic/`
+  - `domain/repository/`
+  - `data/repository/`
+  - `data/local/`
+- **Fichier intégration attendu :** `integration_pending/polo_1_3_session_planner_pr.md`
+
+### Objectif
+Sélectionner les questions selon les priorités de la spec, puis construire l'ordre de session.
+
+### Livrables
+- sélection prioritaire des questions déjà commencées et dues
+- sous-priorité : dues depuis le plus longtemps
+- complément avec questions jamais commencées, plus anciennes d'abord
+- ordre global par questions jumelles consécutives
+- ordre de session mélangé en évitant si possible deux faces d'une même carte à la suite
+
+### Contraintes
+- la taille de lot doit être paramétrable
+- le planificateur ne doit rien persister lui-même
+
+---
+
+## TACHE Polo-1 4 - Moteur de session locale (`ReviewSessionEngine`)
+- **Scope estimé :** ~45 000 tokens
+- **Statut :** ✅ Fait
+- **Packages touchés :**
+  - `domain/logic/`
+  - `domain/model/`
+  - `app/src/test/java/com/example/lexicaandroid2/presentation/review/`
+- **Fichier intégration attendu :** `integration_pending/polo_1_4_session_engine_pr.md`
+
+### Objectif
+Gérer la boucle locale de session et la validation des questions avant commit en fin de session.
+
+### Livrables
+- règle `2 x Je l'ai`
+- règle `1 x Trop facile`
+- règle spéciale si intervalle `> t2`
+- sortie forcée après `5 x À revoir`
+- cas particulier `Je l'ai` non validant puis `5 x À revoir` => calcul long terme = `À revoir`
+- retrait progressif des questions validées du lot
+
+### Contraintes
+- le moteur local ne doit pas persister le long terme avant la clôture de session
+- il doit conserver la première réponse de session comme vérité long terme
+
+---
+
+## TACHE Polo-1 5 - Session persistante + reprise + annulation
+- **Scope estimé :** ~38 000 tokens
+- **Statut :** ✅ Fait
+- **Packages touchés :**
+  - `data/local/`
+  - `data/repository/`
+  - `domain/model/`
+  - `presentation/review/`
+- **Fichier intégration attendu :** `integration_pending/polo_1_5_session_persistence_pr.md`
+
+### Objectif
+Permettre de quitter l'entraînement puis de reprendre exactement la session en cours, avec bouton retour / annulation.
+
+### Livrables
+- snapshot persistant de session
+- restauration au retour dans `Review`
+- historique de session suffisant pour annuler la dernière réponse
+- conservation des insertions planifiées (`QCM`, `matching`, défi, orthographe additionnelle)
+
+### Contraintes
+- la reprise doit retrouver le même ordre de session
+- aucune perte de contexte local entre deux ouvertures de l'écran
+
+---
+
+## TACHE Polo-1 6 - Refonte `ReviewViewModel` / `ReviewScreen`
+- **Scope estimé :** ~50 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/review/ReviewViewModel.kt`
+  - `presentation/review/ReviewScreen.kt`
+  - tests `presentation/review/ReviewViewModelTest.kt`
+- **Fichier intégration attendu :** `integration_pending/polo_1_6_review_flow_pr.md`
+
+### Objectif
+Faire de `ReviewViewModel` un orchestrateur du nouveau moteur de session au lieu d'une simple file FIFO de `Flashcard`.
+
+### Livrables
+- `ReviewUiState` piloté par item courant de session
+- compteur = nombre de questions restantes à valider
+- fin de session stable sans crash
+- branchement du commit long terme à la clôture effective de session
+
+### Contraintes
+- conserver les commandes TTS déjà présentes quand elles restent compatibles
+- ne pas réintroduire le crash de fin de session actuellement connu
+
+---
+
+## TACHE Polo-1 7 - Activités annexes dans la session
+- **Scope estimé :** ~45 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/review/`
+  - `presentation/review/challenge/`
+  - éventuellement réutilisation logique de `presentation/games/matching/` et `presentation/games/qcm/`
+- **Fichier intégration attendu :** `integration_pending/polo_1_7_review_side_events_pr.md`
+
+### Objectif
+Injecter dans le flux `Review` les activités annexes prévues par la spec.
+
+### Livrables
+- matching intégré toutes les `N` questions posées
+- QCM intégré à partir du `3e À revoir` d'une même question
+- question orthographique additionnelle sur les questions `Mot -> Définition`
+- défis remplaçants branchés sur `3 Je l'ai` d'affilée ou `1 Trop facile`
+
+### Contraintes
+- matching/QCM/question orthographique n'impactent pas le calcul long terme
+- matching et QCM comptent comme `Je l'ai` pour l'avancement local selon la spec
+
+---
+
+## TACHE Polo-1 8 - Projections produit + réglages + listes
+- **Scope estimé :** ~40 000 tokens
+- **Statut :** 🔴 À faire
+- **Packages touchés :**
+  - `presentation/settings/`
+  - `presentation/admin/`
+  - `presentation/wordlist/`
+  - `data/repository/`
+  - `data/mapper/`
+- **Fichier intégration attendu :** `integration_pending/polo_1_8_product_projection_pr.md`
+
+### Objectif
+Réaligner les états produit et les réglages utilisateur avec la nouvelle vérité par question.
+
+### Livrables
+- valeur par défaut du lot initial = `10`
+- libellé UI non ambigu pour ce réglage
+- projection correcte `à travailler` / `en cours` / `connu`
+- regroupement visuel des 2 faces d'une même carte quand elles sont dans la même liste
+- adaptations des compteurs et stats liées à `Review`
+
+### Contraintes
+- `connu` ne doit être vrai que si les 2 questions de la carte sont `>= t4`
+- dès qu'une échéance expire, la carte doit redevenir visible dans `à travailler`
 Quand un utilisateur se connecte avec un compte existant, récupérer sa progression cloud (XP, streak, favoris) et proposer de remplacer la progression locale — avec une alerte claire avant d'écraser.
 
 ### Comportement attendu

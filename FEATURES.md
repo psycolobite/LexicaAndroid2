@@ -72,6 +72,7 @@
 - [x] **Défis intégrés dans la révision** — TACHE_14 : défi ortho + sémantique (Jaccard) ✅
 - [x] **Validation sémantique TFLite MiniLM** — TACHE_14b : `TFLiteSemanticValidator` + fallback Jaccard ✅
 - [x] **Barre "Ajouter un mot" intelligente** — TACHE_15 : UX recherche locale + API + apercu ✅
+- ⚠️ **Moteur de révision / présentation des mots** — nouvelle base de vérité définie : 2 questions indépendantes par carte, lot de session initial de 10, priorités par échéance, délais calculés sur la première réponse de session, statut `connu` seulement si les 2 faces dépassent `t4` (voir `docs/specifications/fonctionnement algo délai et présentation cards.md`)
 - [ ] **Crash fin de session Review** — session de 20 cartes / fin de lot
 - ⚠️ **Audio / TTS global** — service central intégré + premiers branchements, validation runtime restante
 - ⚠️ **Mode voiture** — première version intégrée, options avancées et emplacement final à décider

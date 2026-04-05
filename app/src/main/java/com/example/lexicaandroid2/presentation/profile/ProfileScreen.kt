@@ -11,17 +11,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -30,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
@@ -38,6 +42,7 @@ import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
 import com.example.lexicaandroid2.features.gamification.domain.UserStatsRepository
 import com.example.lexicaandroid2.features.gamification.ui.XpProgressBar
 import com.example.lexicaandroid2.features.sync.SyncViewModel
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 
 @Composable
 fun ProfileScreen(
@@ -51,6 +56,36 @@ fun ProfileScreen(
     viewModel: ProfileViewModel
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    // Dialogs de confirmation de reset
+    if (uiState.resetDialogStep == 1) {
+        ResetConfirmDialog1(
+            wordsCount = uiState.totalWordsLearned,
+            xp = uiState.userStats.xp,
+            streak = uiState.userStats.streak,
+            onConfirm = { viewModel.onResetStep1Confirmed() },
+            onDismiss = { viewModel.onResetDismissed() }
+        )
+    }
+    if (uiState.resetDialogStep == 2) {
+        ResetConfirmDialog2(
+            onConfirm = { viewModel.onResetConfirmedFinal() },
+            onDismiss = { viewModel.onResetDismissed() }
+        )
+    }
+    // Message de succès après reset
+    uiState.resetDoneMessage?.let { msg ->
+        AlertDialog(
+            onDismissRequest = { viewModel.onResetMessageDismissed() },
+            title = { Text("🌱 C'est reparti de zéro !") },
+            text = { Text(msg) },
+            confirmButton = {
+                TextButton(onClick = { viewModel.onResetMessageDismissed() }) {
+                    Text("OK, courage !")
+                }
+            }
+        )
+    }
 
     Column(
         modifier = Modifier
@@ -73,7 +108,7 @@ fun ProfileScreen(
 
             Card(
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                colors = CardDefaults.cardColors(containerColor = lexicaPanelContainerColor()),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(12.dp)) {
@@ -93,7 +128,7 @@ fun ProfileScreen(
 
             Card(
                 shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                colors = CardDefaults.cardColors(containerColor = lexicaPanelContainerColor()),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -182,9 +217,137 @@ fun ProfileScreen(
             ) {
                 Text("Retour")
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // ===== Bouton de réinitialisation =====
+            OutlinedButton(
+                onClick = { viewModel.onResetProgressClicked() },
+                enabled = !uiState.isResetting,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                if (uiState.isResetting) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.height(18.dp),
+                        strokeWidth = 2.dp,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                } else {
+                    Text("🗑️ Remettre la progression à zéro")
+                }
+            }
         }
     }
 }
+
+// ==================== DIALOGS HUMORISTIQUES ====================
+
+@Composable
+private fun ResetConfirmDialog1(
+    wordsCount: Int,
+    xp: Long,
+    streak: Int,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "🚨 Mais… VRAIMENT ?!",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "Vous êtes sur le point de supprimer :",
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text("📚 $wordsCount mot${if (wordsCount > 1) "s" else ""} appris avec tant d'efforts...")
+                Text("⭐ $xp XP durement gagnés...")
+                Text("🔥 Une série de $streak jour${if (streak > 1) "s" else ""} consécutifs...")
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "C'est une décision grave, Votre Honneur. 🧑‍⚖️ Voulez-vous vraiment continuer ?",
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontSize = 13.sp
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7043))
+            ) {
+                Text("Oui, je suis courageux 😤")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Euuuh... non, finalement 😅")
+            }
+        }
+    )
+}
+
+@Composable
+private fun ResetConfirmDialog2(
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        containerColor = Color(0xFFFFF3E0),
+        title = {
+            Text(
+                text = "⚠️ DERNIÈRE CHANCE !",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                color = Color(0xFFB71C1C),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+        },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+                Text(
+                    text = "Après ça, tout disparaît dans le vide numérique. Pour toujours.",
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFFB71C1C)
+                )
+                Text("Votre streak ? 💨 POOF.")
+                Text("Vos XP ? 💨 POOF.")
+                Text("Vos mots ? 💨 POOOOF.")
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "Êtes-vous ABSOLUMENT, TOTALEMENT, IRRÉMÉDIABLEMENT certain(e) de vouloir tout effacer ? 💀",
+                    fontSize = 13.sp,
+                    color = Color(0xFF5D4037)
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB71C1C))
+            ) {
+                Text("💣 OUI, tout effacer !", color = Color.White)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Non, j'ai eu peur, désolé 🙏", color = Color(0xFF5D4037))
+            }
+        }
+    )
+}
+
+// ==================== COMPOSANTS EXISTANTS ====================
 
 @Composable
 private fun ProfileHeader(

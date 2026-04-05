@@ -108,4 +108,8 @@ interface FlashcardDao {
            OR LOWER(synonymes) LIKE '%' || LOWER(:query) || '%'
     """)
     suspend fun countSearchResults(query: String): Int
+
+    /** Efface TOUS les flashcards (réinitialisation complète). */
+    @Query("DELETE FROM flashcards")
+    suspend fun deleteAll()
 }

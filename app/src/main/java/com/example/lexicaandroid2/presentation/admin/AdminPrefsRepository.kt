@@ -40,6 +40,10 @@ class AdminPrefsRepository(context: Context) {
         }
         set(value) = prefs.edit { putBoolean(KEY_REVIEW_DEFINITION_TO_WORD, value) }
 
+    var normalPresentationEnabled: Boolean
+        get() = prefs.getBoolean(KEY_NORMAL_PRESENTATION_ENABLED, true)
+        set(value) = prefs.edit { putBoolean(KEY_NORMAL_PRESENTATION_ENABLED, value) }
+
     // --- Challenges ---
     var challengeOrthoEnabled: Boolean
         get() = prefs.getBoolean(KEY_CHALLENGE_ORTHO, true)
@@ -49,10 +53,22 @@ class AdminPrefsRepository(context: Context) {
         get() = prefs.getBoolean(KEY_CHALLENGE_SEMANTIC, true)
         set(value) = prefs.edit { putBoolean(KEY_CHALLENGE_SEMANTIC, value) }
 
+    var extraSpellingEnabled: Boolean
+        get() = prefs.getBoolean(KEY_EXTRA_SPELLING, true)
+        set(value) = prefs.edit { putBoolean(KEY_EXTRA_SPELLING, value) }
+
+    var reviewQcmEnabled: Boolean
+        get() = prefs.getBoolean(KEY_REVIEW_QCM_ENABLED, true)
+        set(value) = prefs.edit { putBoolean(KEY_REVIEW_QCM_ENABLED, value) }
+
+    var reviewMatchingEnabled: Boolean
+        get() = prefs.getBoolean(KEY_REVIEW_MATCHING_ENABLED, true)
+        set(value) = prefs.edit { putBoolean(KEY_REVIEW_MATCHING_ENABLED, value) }
+
     // --- Session size ---
     var sessionSize: Int
         get() = prefs.getInt(KEY_SESSION_SIZE, DEFAULT_SESSION_SIZE)
-        set(value) = prefs.edit { putInt(KEY_SESSION_SIZE, value.coerceIn(5, 50)) }
+        set(value) = prefs.edit { putInt(KEY_SESSION_SIZE, value.coerceIn(2, 50)) }
 
     // --- Game overrides ---
     var qcmQuestionCount: Int
@@ -72,13 +88,17 @@ class AdminPrefsRepository(context: Context) {
         private const val KEY_REVIEW_MODE = "admin_review_mode"
         private const val KEY_REVIEW_WORD_TO_DEFINITION = "admin_review_word_to_definition_enabled"
         private const val KEY_REVIEW_DEFINITION_TO_WORD = "admin_review_definition_to_word_enabled"
+        private const val KEY_NORMAL_PRESENTATION_ENABLED = "admin_normal_presentation_enabled"
         private const val KEY_CHALLENGE_ORTHO = "admin_challenge_ortho_enabled"
         private const val KEY_CHALLENGE_SEMANTIC = "admin_challenge_semantic_enabled"
+        private const val KEY_EXTRA_SPELLING = "admin_extra_spelling_enabled"
+        private const val KEY_REVIEW_QCM_ENABLED = "admin_review_qcm_enabled"
+        private const val KEY_REVIEW_MATCHING_ENABLED = "admin_review_matching_enabled"
         private const val KEY_SESSION_SIZE = "admin_session_size"
         private const val KEY_QCM_COUNT = "admin_qcm_count"
         private const val KEY_MEMORY_GRID = "admin_memory_grid"
 
-        const val DEFAULT_SESSION_SIZE = 20
+        const val DEFAULT_SESSION_SIZE = 10
         const val DEFAULT_QCM_COUNT = 10
     }
 }

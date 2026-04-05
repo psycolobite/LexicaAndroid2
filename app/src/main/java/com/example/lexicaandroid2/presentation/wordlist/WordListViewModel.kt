@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.lexicaandroid2.data.remote.DictionaryService
 import com.example.lexicaandroid2.data.remote.model.WordResult
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewCardProgressSummary
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,9 +17,10 @@ import kotlinx.coroutines.launch
 data class WordListUiState(
     val cards: List<Flashcard> = emptyList(),
     val filteredCards: List<Flashcard> = emptyList(),
+    val progressByCardId: Map<String, ReviewCardProgressSummary> = emptyMap(),
     val searchQuery: String = "",
     val isLoading: Boolean = false,
-    val selectedFilter: String? = null, // "TO_LEARN", "LEARNING", "KNOWN"
+    val selectedFilter: String? = null,
     val apiSearchResults: List<WordResult> = emptyList(),
     val isApiLoading: Boolean = false,
     val apiError: String? = null
@@ -36,10 +38,15 @@ class WordListViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             val allCards = repository.getAllCards()
+            val progressByCardId = ReviewCardProgressSummary.indexByCardId(
+                cards = allCards,
+                questionProgress = repository.getAllQuestionProgress()
+            )
             _uiState.update {
                 it.copy(
                     cards = allCards,
-                    filteredCards = applyFilters(allCards, it.searchQuery, it.selectedFilter),
+                    filteredCards = applyFilters(allCards, it.searchQuery, it.selectedFilter, progressByCardId),
+                    progressByCardId = progressByCardId,
                     isLoading = false
                 )
             }
@@ -50,7 +57,7 @@ class WordListViewModel(
         _uiState.update {
             it.copy(
                 searchQuery = query,
-                filteredCards = applyFilters(it.cards, query, it.selectedFilter)
+                filteredCards = applyFilters(it.cards, query, it.selectedFilter, it.progressByCardId)
             )
         }
     }
@@ -59,7 +66,7 @@ class WordListViewModel(
         _uiState.update {
             it.copy(
                 selectedFilter = filter,
-                filteredCards = applyFilters(it.cards, it.searchQuery, filter)
+                filteredCards = applyFilters(it.cards, it.searchQuery, filter, it.progressByCardId)
             )
         }
     }
@@ -127,7 +134,12 @@ class WordListViewModel(
          loadWords()
     }
 
-    private fun applyFilters(cards: List<Flashcard>, query: String, filter: String?): List<Flashcard> {
+    private fun applyFilters(
+        cards: List<Flashcard>,
+        query: String,
+        filter: String?,
+        progressByCardId: Map<String, ReviewCardProgressSummary>
+    ): List<Flashcard> {
         var result = cards
 
         if (query.isNotBlank()) {
@@ -138,22 +150,8 @@ class WordListViewModel(
         }
 
         if (filter != null) {
-            // Need to reconstruct logic for state or add state to Domain model?
-            // Domain model doesn't have 'state' field yet explicitly (it's calculated in Mapper).
-            // Option 1: Add 'state' to Domain Flashcard.
-            // Option 2: Re-calculate here or just accept it's a bit heavier.
-            // Let's add 'state' to Domain Flashcard to be consistent (cleaner).
-
-            // Wait, for now I will recalculate to avoid changing Domain model everywhere immediately if not strictly needed.
             result = result.filter {
-                val isNew = it.sm2MotVersDef.repetitions == 0 && it.sm2DefVersMot.repetitions == 0
-                val isKnown = it.sm2MotVersDef.interval > 20 && it.sm2DefVersMot.interval > 20
-                val state = when {
-                    isNew -> "TO_LEARN"
-                    isKnown -> "KNOWN"
-                    else -> "LEARNING"
-                }
-                state == filter
+                progressByCardId[it.id]?.matchesFilter(filter) == true
             }
         }
 

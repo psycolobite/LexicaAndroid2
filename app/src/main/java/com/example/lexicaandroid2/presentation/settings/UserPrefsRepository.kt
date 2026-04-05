@@ -32,7 +32,7 @@ class UserPrefsRepository(context: Context) {
 
     var cardsPerSession: Int
         get() = prefs.getInt(KEY_CARDS_PER_SESSION, DEFAULT_CARDS_PER_SESSION)
-        set(value) = prefs.edit { putInt(KEY_CARDS_PER_SESSION, value.coerceIn(5, 50)) }
+        set(value) = prefs.edit { putInt(KEY_CARDS_PER_SESSION, value.coerceIn(2, 50)) }
 
     var showDefinitionFirst: Boolean
         get() = prefs.getBoolean(KEY_SHOW_DEFINITION_FIRST, false)
@@ -64,7 +64,7 @@ class UserPrefsRepository(context: Context) {
         private const val KEY_REMINDER_TIME = "reminder_time"
 
         const val DEFAULT_FONT_SIZE = 16f
-        const val DEFAULT_CARDS_PER_SESSION = 20
+        const val DEFAULT_CARDS_PER_SESSION = 10
         const val DEFAULT_REMINDER_TIME = "20:00"
     }
 }

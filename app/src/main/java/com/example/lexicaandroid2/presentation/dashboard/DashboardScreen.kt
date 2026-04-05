@@ -3,7 +3,6 @@ package com.example.lexicaandroid2.presentation.dashboard
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -58,39 +57,17 @@ fun DashboardScreen(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (uiState.isLoading) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "Chargement...")
-            }
-        } else if (uiState.totalCount == 0) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .height(400.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "Aucune carte dans la base.\nImport automatique en cours si vide...",
-                    style = MaterialTheme.typography.bodyLarge,
-                    textAlign = TextAlign.Center
-                )
-            }
-        } else {
-            DashboardContent(
-                uiState = uiState,
-                onNavigateToReview = onNavigateToReview,
-                onNavigateToDrivingMode = onNavigateToDrivingMode,
-                onNavigateToWordList = onNavigateToWordList,
-                onNavigateToWordListFiltered = onNavigateToWordListFiltered,
-                onNavigateToAddWords = onNavigateToAddWords,
-                onNavigateToMiniGames = onNavigateToMiniGames,
-                onNavigateToDailyChallenge = onNavigateToDailyChallenge,
-                onNavigateToUsage = onNavigateToUsage
-            )
-        }
+        DashboardContent(
+            uiState = uiState,
+            onNavigateToReview = onNavigateToReview,
+            onNavigateToDrivingMode = onNavigateToDrivingMode,
+            onNavigateToWordList = onNavigateToWordList,
+            onNavigateToWordListFiltered = onNavigateToWordListFiltered,
+            onNavigateToAddWords = onNavigateToAddWords,
+            onNavigateToMiniGames = onNavigateToMiniGames,
+            onNavigateToDailyChallenge = onNavigateToDailyChallenge,
+            onNavigateToUsage = onNavigateToUsage
+        )
     }
 }
 
@@ -116,6 +93,23 @@ private fun DashboardContent(
     )
     Spacer(modifier = Modifier.height(8.dp))
 
+    if (uiState.totalCount == 0) {
+        DashboardEmptyState(
+            isLoading = uiState.isLoading,
+            onNavigateToAddWords = onNavigateToAddWords
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+    } else if (uiState.isLoading) {
+        Text(
+            text = "Actualisation des statistiques…",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+    }
+
     // Cartes stats — les 3 catégories filtrent, "Tous" ouvre la liste complète
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -123,11 +117,11 @@ private fun DashboardContent(
     ) {
         StatCard(
             modifier = Modifier.weight(1f),
-            title = "À apprendre",
+            title = "À travailler",
             count = uiState.newCount,
             color = Color(0xFFA7C7E7),
             textColor = Color(0xFF424242),
-            onClick = { onNavigateToWordListFiltered("TO_LEARN") }
+            onClick = { onNavigateToWordListFiltered("TO_WORK") }
         )
         StatCard(
             modifier = Modifier.weight(1f),
@@ -135,7 +129,7 @@ private fun DashboardContent(
             count = uiState.learningCount,
             color = Color(0xFFFFB347),
             textColor = Color(0xFF424242),
-            onClick = { onNavigateToWordListFiltered("LEARNING") }
+            onClick = { onNavigateToWordListFiltered("IN_PROGRESS") }
         )
         StatCard(
             modifier = Modifier.weight(1f),
@@ -248,6 +242,48 @@ private fun DashboardContent(
     }
 
     Spacer(modifier = Modifier.height(16.dp))
+}
+
+@Composable
+private fun DashboardEmptyState(
+    isLoading: Boolean,
+    onNavigateToAddWords: () -> Unit
+) {
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            Text(
+                text = "Aucune carte pour le moment",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Text(
+                text = if (isLoading) {
+                    "Import automatique en cours si la base est vide. Vous pouvez déjà ajouter vos propres mots dès maintenant."
+                } else {
+                    "La base est vide. Vous pouvez lancer l'app avec vos propres mots en les ajoutant manuellement ci-dessous."
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            OutlinedButton(
+                onClick = onNavigateToAddWords,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "+ Ajouter mes premiers mots", fontWeight = FontWeight.Medium)
+            }
+        }
+    }
 }
 
 @Composable

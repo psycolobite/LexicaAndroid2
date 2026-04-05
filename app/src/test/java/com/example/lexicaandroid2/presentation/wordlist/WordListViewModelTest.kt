@@ -2,10 +2,13 @@ package com.example.lexicaandroid2.presentation.wordlist
 
 import com.example.lexicaandroid2.data.remote.DictionaryService
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
+import com.example.lexicaandroid2.domain.model.ReviewQuestionType
 import com.example.lexicaandroid2.domain.model.Sm2Stats
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -16,7 +19,6 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.any
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -52,6 +54,9 @@ class WordListViewModelTest {
         repository = mock()
         dictionaryService = mock()
         viewModel = WordListViewModel(repository, dictionaryService)
+        runBlocking {
+            whenever(repository.getAllQuestionProgress()).thenReturn(emptyList())
+        }
     }
 
     @After
@@ -139,6 +144,42 @@ class WordListViewModelTest {
     @Test
     fun onFilterSelectedKnownShowsOnlyKnownCards() = runTest {
         whenever(repository.getAllCards()).thenReturn(listOf(card1, knownCard))
+        whenever(repository.getAllQuestionProgress()).thenReturn(
+            listOf(
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(card1.id),
+                    cardId = card1.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 0,
+                    nextDueAt = System.currentTimeMillis() - 1_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(card1.id),
+                    cardId = card1.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 1,
+                    nextDueAt = System.currentTimeMillis() - 1_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(knownCard.id),
+                    cardId = knownCard.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 2,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(knownCard.id),
+                    cardId = knownCard.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 3,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                )
+            )
+        )
         viewModel.loadWords()
         viewModel.onFilterSelected("KNOWN")
         assertEquals(1, viewModel.uiState.value.filteredCards.size)
@@ -148,6 +189,42 @@ class WordListViewModelTest {
     @Test
     fun onFilterSelectedToLearnShowsOnlyFreshCards() = runTest {
         whenever(repository.getAllCards()).thenReturn(listOf(freshCard, knownCard))
+        whenever(repository.getAllQuestionProgress()).thenReturn(
+            listOf(
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(freshCard.id),
+                    cardId = freshCard.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 0,
+                    nextDueAt = System.currentTimeMillis() - 1_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(freshCard.id),
+                    cardId = freshCard.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 1,
+                    nextDueAt = System.currentTimeMillis() - 1_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(knownCard.id),
+                    cardId = knownCard.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 2,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(knownCard.id),
+                    cardId = knownCard.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 3,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                )
+            )
+        )
         viewModel.loadWords()
         viewModel.onFilterSelected("TO_LEARN")
         assertEquals(1, viewModel.uiState.value.filteredCards.size)
@@ -169,6 +246,56 @@ class WordListViewModelTest {
         viewModel.loadWords()
         viewModel.onFilterSelected("LEARNING")
         assertEquals("LEARNING", viewModel.uiState.value.selectedFilter)
+    }
+
+    @Test
+    fun onFilterSelectedToWorkUsesQuestionProjectionWhenAvailable() = runTest {
+        val now = System.currentTimeMillis()
+        whenever(repository.getAllCards()).thenReturn(listOf(card1, knownCard))
+        whenever(repository.getAllQuestionProgress()).thenReturn(
+            listOf(
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(card1.id),
+                    cardId = card1.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 0,
+                    nextDueAt = now - 1_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(card1.id),
+                    cardId = card1.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 1,
+                    nextDueAt = now + 60_000L,
+                    intervalIndex = 2,
+                    firstAnsweredAt = now - 120_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(knownCard.id),
+                    cardId = knownCard.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 2,
+                    nextDueAt = now + 60_000L,
+                    intervalIndex = 4,
+                    firstAnsweredAt = now - 120_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(knownCard.id),
+                    cardId = knownCard.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 3,
+                    nextDueAt = now + 60_000L,
+                    intervalIndex = 4,
+                    firstAnsweredAt = now - 120_000L
+                )
+            )
+        )
+
+        viewModel.loadWords()
+        viewModel.onFilterSelected("TO_WORK")
+
+        assertEquals(1, viewModel.uiState.value.filteredCards.size)
+        assertEquals(card1.id, viewModel.uiState.value.filteredCards.first().id)
     }
 
     // endregion

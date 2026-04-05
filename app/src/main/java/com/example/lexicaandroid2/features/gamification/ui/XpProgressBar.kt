@@ -10,6 +10,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.lexicaandroid2.features.gamification.data.UserStatsEntity
 import com.example.lexicaandroid2.features.gamification.domain.XPCalculator
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 
 @Composable
 fun XpProgressBar(
@@ -46,7 +47,7 @@ fun XpProgressBar(
             progress = progress,
             modifier = Modifier.fillMaxWidth().height(12.dp).clip(RoundedCornerShape(6.dp)),
             color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.surfaceVariant
+            trackColor = lexicaPanelContainerColor()
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(

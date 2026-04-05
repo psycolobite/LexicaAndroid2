@@ -48,12 +48,16 @@ val GAME_ROUTES = setOf(
     Screen.DrivingMode.route
 )
 
+private val BOTTOM_BAR_HIDDEN_ROUTES = GAME_ROUTES + setOf(
+    Screen.Review.route
+)
+
 /**
  * Retourne `true` si la barre de navigation inférieure doit être affichée
  * pour la route courante.
  */
 fun shouldShowBottomBar(currentRoute: String?): Boolean {
     if (currentRoute == null) return false
-    return currentRoute !in GAME_ROUTES && !currentRoute.startsWith("word/")
+    return currentRoute !in BOTTOM_BAR_HIDDEN_ROUTES && !currentRoute.startsWith("word/")
 }
 

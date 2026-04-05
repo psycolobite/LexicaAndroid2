@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInRoot
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.presentation.games.common.GameButton
@@ -287,7 +288,7 @@ private fun MatchingAssignmentsLegend(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = lexicaPanelContainerColor())
     ) {
         Text(
             text = if (totalPairs > 0) {

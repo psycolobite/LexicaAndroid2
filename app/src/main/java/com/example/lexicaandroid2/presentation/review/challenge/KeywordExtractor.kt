@@ -10,7 +10,7 @@ object KeywordExtractor {
         "ne", "pas", "plus", "très", "aussi", "dont", "où", "car", "ni",
         "est", "etre", "avoir", "faire", "aller", "venir", "pouvoir", "devoir",
         "vouloir", "savoir", "falloir", "sembler", "paraître", "rester", "demeurer"
-    )
+    ).map(::normalizeToken).toSet()
 
     /**
      * Extrait les mots-clés importants du texte
@@ -29,11 +29,14 @@ object KeywordExtractor {
      * Tokenise le texte : normalise, supprime diacritiques, split sur les espaces
      */
     fun tokenize(text: String): List<String> =
-        Normalizer.normalize(text.lowercase(), Normalizer.Form.NFD)
-            .replace(Regex("\\p{M}"), "")
-            .replace(Regex("[^a-z\\s]"), "")
+        normalizeToken(text)
+            .replace(Regex("[^a-z]+"), " ")
             .split("\\s+".toRegex())
             .filter { it.isNotBlank() }
+
+    private fun normalizeToken(text: String): String =
+        Normalizer.normalize(text.lowercase(), Normalizer.Form.NFD)
+            .replace(Regex("\\p{M}+"), "")
 
     /**
      * Calcule la similarité Jaccard entre deux textes

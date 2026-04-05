@@ -1,10 +1,7 @@
 package com.example.lexicaandroid2.presentation.settings
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -16,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -37,19 +33,20 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 import kotlin.math.roundToInt
 
 /**
@@ -64,11 +61,22 @@ fun SettingsScreen(
     viewModel: SettingsViewModel,
     appVersion: String = "1.0",
     showAdminEntry: Boolean = false,
-    onNavigateToAdmin: () -> Unit = {}
+    onNavigateToAdmin: () -> Unit = {},
+    onTrainingSettingsApplied: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showTimePicker by remember { mutableStateOf(false) }
     var pendingFontSize by remember(uiState.fontSize) { mutableStateOf(uiState.fontSize) }
+    val initialCardsPerSession = remember { uiState.cardsPerSession }
+    val latestCardsPerSession by rememberUpdatedState(uiState.cardsPerSession)
+
+    DisposableEffect(Unit) {
+        onDispose {
+            if (latestCardsPerSession != initialCardsPerSession) {
+                onTrainingSettingsApplied()
+            }
+        }
+    }
 
     if (showTimePicker) {
         ReminderTimePickerDialog(
@@ -133,7 +141,7 @@ fun SettingsScreen(
 
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+                colors = CardDefaults.cardColors(containerColor = lexicaPanelContainerColor())
             ) {
                 Column(modifier = Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(
@@ -173,6 +181,32 @@ fun SettingsScreen(
             ) {
                 Text("Valider")
             }
+        }
+
+        Spacer(Modifier.height(4.dp))
+
+        SettingsSectionTitle("📚 Entraînement")
+
+        SettingsCard {
+            SettingsLabel("Taille de la session : ${uiState.cardsPerSession} question(s)")
+            Slider(
+                value = uiState.cardsPerSession.toFloat(),
+                onValueChange = { viewModel.setCardsPerSession(it.toInt()) },
+                valueRange = 2f..50f,
+                steps = 47,
+                modifier = Modifier.fillMaxWidth()
+            )
+            Text(
+                text = "Définit combien de questions entrent au départ dans une session. `Mot -> Définition` et `Définition -> Mot` comptent comme 2 questions distinctes pour une même carte si les deux sont actives.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = "Le changement est enregistré immédiatement. En quittant cet écran, la session d'entraînement en cours est réinitialisée pour appliquer le nouveau lot.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
 
         Spacer(Modifier.height(4.dp))
@@ -321,6 +355,7 @@ private fun SettingsCard(content: @Composable ColumnScope.() -> Unit) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
+        colors = CardDefaults.cardColors(containerColor = lexicaPanelContainerColor()),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         content = {
             Column(

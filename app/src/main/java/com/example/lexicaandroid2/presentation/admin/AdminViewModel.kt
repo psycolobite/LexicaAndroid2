@@ -14,10 +14,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 data class AdminUiState(
+    val normalPresentationEnabled: Boolean = true,
     val reviewWordToDefinitionEnabled: Boolean = true,
     val reviewDefinitionToWordEnabled: Boolean = true,
     val challengeSemanticEnabled: Boolean = true,
     val challengeOrthoEnabled: Boolean = true,
+    val extraSpellingEnabled: Boolean = true,
+    val reviewQcmEnabled: Boolean = true,
+    val reviewMatchingEnabled: Boolean = true,
     val sessionSize: Int = AdminPrefsRepository.DEFAULT_SESSION_SIZE,
     val qcmQuestionCount: Int = AdminPrefsRepository.DEFAULT_QCM_COUNT,
     val memoryGridSize: MemoryGridSize = MemoryGridSize.SIZE_4X4,
@@ -43,10 +47,14 @@ class AdminViewModel(
     private fun loadPrefs() {
         _uiState.update {
             it.copy(
+                normalPresentationEnabled = adminPrefsRepository.normalPresentationEnabled,
                 reviewWordToDefinitionEnabled = adminPrefsRepository.reviewWordToDefinitionEnabled,
                 reviewDefinitionToWordEnabled = adminPrefsRepository.reviewDefinitionToWordEnabled,
                 challengeOrthoEnabled = adminPrefsRepository.challengeOrthoEnabled,
                 challengeSemanticEnabled = adminPrefsRepository.challengeSemanticEnabled,
+                extraSpellingEnabled = adminPrefsRepository.extraSpellingEnabled,
+                reviewQcmEnabled = adminPrefsRepository.reviewQcmEnabled,
+                reviewMatchingEnabled = adminPrefsRepository.reviewMatchingEnabled,
                 sessionSize = adminPrefsRepository.sessionSize,
                 qcmQuestionCount = adminPrefsRepository.qcmQuestionCount,
                 memoryGridSize = adminPrefsRepository.memoryGridSize
@@ -88,9 +96,34 @@ class AdminViewModel(
         _uiState.update { it.copy(challengeSemanticEnabled = enabled) }
     }
 
+    fun setExtraSpellingEnabled(enabled: Boolean) {
+        adminPrefsRepository.extraSpellingEnabled = enabled
+        _uiState.update { it.copy(extraSpellingEnabled = enabled) }
+    }
+
+    fun setReviewQcmEnabled(enabled: Boolean) {
+        adminPrefsRepository.reviewQcmEnabled = enabled
+        _uiState.update { it.copy(reviewQcmEnabled = enabled) }
+    }
+
+    fun setReviewMatchingEnabled(enabled: Boolean) {
+        adminPrefsRepository.reviewMatchingEnabled = enabled
+        _uiState.update { it.copy(reviewMatchingEnabled = enabled) }
+    }
+
+    fun setNormalPresentationEnabled(enabled: Boolean) {
+        adminPrefsRepository.normalPresentationEnabled = enabled
+        _uiState.update { it.copy(normalPresentationEnabled = enabled) }
+    }
+
+    fun applyNormalPresentationPreset() {
+        adminPrefsRepository.normalPresentationEnabled = true
+        loadPrefs()
+    }
+
     fun setSessionSize(size: Int) {
         adminPrefsRepository.sessionSize = size
-        _uiState.update { it.copy(sessionSize = size) }
+        _uiState.update { it.copy(sessionSize = adminPrefsRepository.sessionSize) }
     }
 
     fun setQcmQuestionCount(count: Int) {

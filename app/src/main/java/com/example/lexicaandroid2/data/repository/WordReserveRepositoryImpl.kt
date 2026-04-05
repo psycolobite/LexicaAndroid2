@@ -1,9 +1,11 @@
 package com.example.lexicaandroid2.data.repository
 
 import com.example.lexicaandroid2.data.local.FlashcardDao
+import com.example.lexicaandroid2.data.local.ReviewQuestionDao
 import com.example.lexicaandroid2.data.local.WordReserveDao
 import com.example.lexicaandroid2.data.local.WordReserveEntity
 import com.example.lexicaandroid2.data.mapper.toEntity
+import com.example.lexicaandroid2.data.mapper.toReviewQuestionProgressEntities
 import com.example.lexicaandroid2.data.remote.DictionaryService
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.repository.WordReserveRepository
@@ -12,6 +14,7 @@ import java.util.UUID
 class WordReserveRepositoryImpl(
     private val reserveDao: WordReserveDao,
     private val flashcardDao: FlashcardDao,
+    private val reviewQuestionDao: ReviewQuestionDao,
     private val dictionaryService: DictionaryService
 ) : WordReserveRepository {
 
@@ -36,6 +39,7 @@ class WordReserveRepositoryImpl(
             state = "TO_LEARN" // Start as new
         )
         flashcardDao.insert(flashcard)
+        reviewQuestionDao.insertAll(flashcard.toReviewQuestionProgressEntities())
         reserveDao.delete(word) // Remove from reserve
     }
 
@@ -54,13 +58,15 @@ class WordReserveRepositoryImpl(
                     fromApi = true
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             return emptyList()
         }
     }
 
     override suspend fun addCustomWordToCollection(flashcard: Flashcard) {
-        flashcardDao.insert(flashcard.toEntity())
+        val entity = flashcard.toEntity()
+        flashcardDao.insert(entity)
+        reviewQuestionDao.insertAll(entity.toReviewQuestionProgressEntities())
     }
 }
 

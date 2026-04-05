@@ -29,12 +29,9 @@ class DashboardViewModel(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                // Get raw stats from map
                 val stats = repository.getStatsByState()
-
-                // Map keys match "TO_LEARN", "LEARNING", "KNOWN" from Entity logic
-                val newC = stats["TO_LEARN"] ?: 0
-                val learningC = stats["LEARNING"] ?: 0
+                val newC = stats["TO_WORK"] ?: stats["TO_LEARN"] ?: 0
+                val learningC = stats["IN_PROGRESS"] ?: stats["LEARNING"] ?: 0
                 val knownC = stats["KNOWN"] ?: 0
 
                 val total = newC + learningC + knownC

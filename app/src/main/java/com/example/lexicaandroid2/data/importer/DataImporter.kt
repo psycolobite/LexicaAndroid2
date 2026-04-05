@@ -4,9 +4,11 @@ import android.content.Context
 import android.util.Log
 import com.example.lexicaandroid2.data.local.FlashcardDao
 import com.example.lexicaandroid2.data.local.FlashcardEntity
+import com.example.lexicaandroid2.data.local.ReviewQuestionDao
 import com.example.lexicaandroid2.data.local.Sm2DataEmbedded
 import com.example.lexicaandroid2.data.local.WordReserveDao
 import com.example.lexicaandroid2.data.local.WordReserveEntity
+import com.example.lexicaandroid2.data.mapper.toReviewQuestionProgressEntities
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import com.google.gson.reflect.TypeToken
@@ -18,6 +20,7 @@ import java.time.format.DateTimeFormatter
 class DataImporter(
     private val context: Context,
     private val dao: FlashcardDao,
+    private val reviewQuestionDao: ReviewQuestionDao,
     private val reserveDao: WordReserveDao? = null, // Optional for backward combat
     private val gson: Gson = Gson()
 ) {
@@ -29,6 +32,7 @@ class DataImporter(
             return
         }
         dao.insertAll(cards)
+        reviewQuestionDao.insertAll(cards.flatMap { it.toReviewQuestionProgressEntities() })
         Log.d(TAG, "Import SUCCESS")
     }
 

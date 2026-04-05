@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.example.lexicaandroid2.features.gamification.domain.GameUnlockConfig
 import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeState
 import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeUiState
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 
 @Composable
 fun MiniGamesScreen(
@@ -191,7 +192,7 @@ private fun GameCard(
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant
+            disabledContainerColor = lexicaPanelContainerColor()
         )
     ) {
         Row(

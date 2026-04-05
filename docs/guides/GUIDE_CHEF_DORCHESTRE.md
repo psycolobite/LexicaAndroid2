@@ -156,7 +156,7 @@ C'est le **SEUL fichier de suivi quotidien** a maintenir.
 - ✅ `START_HERE.md` - Entree agents
 - ✅ `FEATURES.md` - Statut features
 - ✅ `docs/INDEX_DOCUMENTS.md` - Index navigation
-- ✅ `docs/specifications/` - Specs projet (rarement modifiees)
+- ✅ `docs/specifications/` - Specs projet (rarement modifiees). Pour l'entraînement / la présentation des mots, la référence courte est dans les docs actives et la référence complète est `docs/specifications/fonctionnement algo délai et présentation cards.md`
 - ✅ `docs/planning/` - Backlog, roadmap
 
 ### Delivrables Agents (A Fusionner)

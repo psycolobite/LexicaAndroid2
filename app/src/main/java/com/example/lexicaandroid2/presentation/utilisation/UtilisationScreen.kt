@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 
 @Composable
 fun UtilisationScreen(
@@ -80,7 +81,7 @@ private fun UsageCard(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        colors = CardDefaults.cardColors(containerColor = lexicaPanelContainerColor())
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
