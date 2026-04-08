@@ -27,9 +27,11 @@ import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatHelp
 import com.example.lexicaandroid2.presentation.admin.AdminPrefsRepository
 import com.example.lexicaandroid2.presentation.settings.UserPrefsRepository
 import com.example.lexicaandroid2.presentation.review.challenge.JaccardSemanticValidator
+import com.example.lexicaandroid2.presentation.review.challenge.ModelDownloadManager
 import com.example.lexicaandroid2.presentation.review.challenge.SemanticValidator
 import com.example.lexicaandroid2.presentation.review.challenge.SemanticValidatorFactory
 import com.example.lexicaandroid2.presentation.review.challenge.SpellingValidator
+import com.example.lexicaandroid2.presentation.review.challenge.UsageChallengeValidator
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,6 +53,8 @@ class ReviewViewModel(
     private val reviewSessionSnapshotRepository: ReviewSessionSnapshotRepository? = null,
     private val isAdminUserProvider: (() -> Boolean)? = null,
     private val onSessionXpAwarded: (Int) -> Unit = {},
+    private val semanticModelCachedProvider: (() -> Boolean)? = null,
+    private val semanticValidatorProvider: (() -> SemanticValidator)? = null,
     private val random: Random = Random.Default
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ReviewUiState())
@@ -78,17 +82,40 @@ class ReviewViewModel(
     private var normalAnswersSinceLastMatching: Int = 0
     private var sessionSizeLimit: Int = DEFAULT_SESSION_SIZE
     private val appContext = context?.applicationContext
+    private val modelDownloadManager = appContext?.let(::ModelDownloadManager)
+    private var hasPromptedSemanticModelDownload = false
+    private var isSemanticModelDownloadDialogVisible = false
 
     private var ttsService: LexicaTtsService? = null
     private var isTtsObservationStarted: Boolean = false
     private val reviewSessionPlanner by lazy { ReviewSessionPlanner(repository, random) }
     private val spellingValidator = SpellingValidator()
-    private val semanticValidator: SemanticValidator by lazy {
-        if (context != null) {
-            SemanticValidatorFactory.createSemanticValidator(context)
-        } else {
-            JaccardSemanticValidator()
-        }
+    private var semanticValidator: SemanticValidator = createSemanticValidator()
+    private val usageChallengeValidator = UsageChallengeValidator { semanticValidator }
+
+    private fun createSemanticValidator(): SemanticValidator =
+        semanticValidatorProvider?.invoke()
+            ?: appContext?.let { SemanticValidatorFactory.createSemanticValidator(it) }
+            ?: JaccardSemanticValidator()
+
+    private fun isSemanticModelCached(): Boolean =
+        semanticModelCachedProvider?.invoke() ?: (modelDownloadManager?.isModelCached() == true)
+
+    private fun canOfferSemanticModelDownload(): Boolean =
+        semanticModelCachedProvider != null || modelDownloadManager != null
+
+    private fun isSemanticAiModeReady(): Boolean =
+        isSemanticModelCached() && semanticValidator !is JaccardSemanticValidator && semanticValidator.isModelReady()
+
+    private fun canPromptSemanticModelDownload(): Boolean =
+        canOfferSemanticModelDownload() &&
+            !isSemanticModelCached() &&
+            !hasPromptedSemanticModelDownload
+
+    fun promptSemanticModelDownloadOnAppLaunch() {
+        if (!canPromptSemanticModelDownload() || isSemanticModelDownloadDialogVisible) return
+        isSemanticModelDownloadDialogVisible = true
+        publishUiState(isAnswerRevealed = _uiState.value.isAnswerRevealed)
     }
 
     private fun ensureTtsServiceInitialized() {
@@ -206,7 +233,7 @@ class ReviewViewModel(
         activeSessionCreatedAt = System.currentTimeMillis()
         currentUndoSnapshotState = null
         normalAnswersSinceLastMatching = 0
-        pendingSessionEvents = buildInitialExtraSpellingEvents(sanitizedPlan)
+        pendingSessionEvents = buildInitialExtraSpellingEvents(sanitizedPlan) + buildInitialUsageChallengeEvents(sanitizedPlan)
         activeSessionEvent = null
         resetEventInteraction()
         maybeActivateDueEvent()
@@ -280,7 +307,8 @@ class ReviewViewModel(
                 visibleFrontText(current, _uiState.value.presentationMode)
             }
         } else {
-            _uiState.value.eventInstruction.ifBlank { visibleFrontText(current, _uiState.value.presentationMode) }
+            // En mode QCM/Matching, lire le mot ou la définition affiché(e), pas l'instruction
+            visibleFrontText(current, _uiState.value.presentationMode)
         }
         ttsService?.speak(textToRead)
     }
@@ -316,17 +344,47 @@ class ReviewViewModel(
     private fun maybeAutoSpeakVisibleContent() {
         val state = _uiState.value
         val current = state.currentCard ?: return
-        if (state.currentItemType != ReviewCurrentItemType.NORMAL_QUESTION) return
 
-        val textToSpeak = when {
-            state.isAnswerRevealed && state.autoSpeakDefinition -> visibleAnswerText(current, state.presentationMode)
-            !state.isAnswerRevealed && state.presentationMode == ReviewPresentationMode.WORD_TO_DEFINITION && state.autoSpeakWord -> current.recto
-            !state.isAnswerRevealed && state.presentationMode == ReviewPresentationMode.DEFINITION_TO_WORD && state.autoSpeakDefinition -> current.verso
-            else -> null
+        if (state.currentItemType == ReviewCurrentItemType.NORMAL_QUESTION) {
+            val textToSpeak = when {
+                state.isAnswerRevealed && state.autoSpeakDefinition -> visibleAnswerText(current, state.presentationMode)
+                !state.isAnswerRevealed && state.presentationMode == ReviewPresentationMode.WORD_TO_DEFINITION && state.autoSpeakWord -> current.recto
+                !state.isAnswerRevealed && state.presentationMode == ReviewPresentationMode.DEFINITION_TO_WORD && state.autoSpeakDefinition -> current.verso
+                else -> null
+            }
+            textToSpeak?.let { ttsService?.speak(it) }
+            return
         }
 
-        textToSpeak?.let { text ->
-            ttsService?.speak(text)
+        // Orthographic events: auto-speak on question display (not on result)
+        if (state.eventResultMessage != null || state.eventResultSuccessful != null) return
+
+        val isExtraSpelling = state.currentItemType == ReviewCurrentItemType.EXTRA_SPELLING
+        val isSpellingChallenge = state.currentItemType == ReviewCurrentItemType.CHALLENGE &&
+            (state.activeChallengeKind == ReviewSessionChallengeKind.SPELLING || state.activeChallengeKind == null)
+        val isSemanticChallenge = state.currentItemType == ReviewCurrentItemType.CHALLENGE &&
+            state.activeChallengeKind == ReviewSessionChallengeKind.SEMANTIC
+        val isUsageChallenge = state.currentItemType == ReviewCurrentItemType.CHALLENGE &&
+            state.activeChallengeKind == ReviewSessionChallengeKind.USAGE
+
+        when {
+            isExtraSpelling -> {
+                // Question ortho: definition shown, word hidden → read both if enabled
+                if (state.autoSpeakDefinition) ttsService?.speak(current.verso)
+                else if (state.autoSpeakWord) ttsService?.speak(current.recto)
+            }
+            isSpellingChallenge -> {
+                // Défi ortho: definition shown, word must NOT be read
+                if (state.autoSpeakDefinition) ttsService?.speak(current.verso)
+            }
+            isSemanticChallenge -> {
+                // Défi sémantique: word shown, definition hidden
+                if (state.autoSpeakWord) ttsService?.speak(current.recto)
+            }
+            isUsageChallenge -> {
+                // Défi d'utilisation: word shown, the user must use it in a sentence
+                if (state.autoSpeakWord) ttsService?.speak(current.recto)
+            }
         }
     }
 
@@ -355,7 +413,11 @@ class ReviewViewModel(
             normalAnswersSinceLastMatching += 1
 
             updatedState = maybeScheduleQcm(updatedState, beforeQuestionState, updatedQuestionState)
-            maybeScheduleMatching(updatedState)
+            maybeScheduleMatching(
+                state = updatedState,
+                answer = answer,
+                updatedQuestionState = updatedQuestionState
+            )
 
             sessionState = updatedState
             maybeActivateDueEvent()
@@ -404,6 +466,14 @@ class ReviewViewModel(
         } else {
             matchingSelectedDefinition = if (matchingSelectedDefinition == definition) null else definition
         }
+        publishUiState(isAnswerRevealed = false)
+        viewModelScope.launch { persistSessionSnapshot() }
+    }
+
+    fun onMatchingDrop(wordId: String, definition: String) {
+        val event = activeSessionEvent ?: return
+        if (event.type != ReviewSessionEventType.MATCHING || eventResultSuccessful != null) return
+        assignMatching(wordId, definition)
         publishUiState(isAnswerRevealed = false)
         viewModelScope.launch { persistSessionSnapshot() }
     }
@@ -462,6 +532,31 @@ class ReviewViewModel(
                 maybeAutoSpeakVisibleContent()
             }
         }
+    }
+
+    fun dismissSemanticModelDownload() {
+        hasPromptedSemanticModelDownload = true
+        isSemanticModelDownloadDialogVisible = false
+        viewModelScope.launch {
+            _snackbarEvents.trySend("Tu peux continuer normalement, la correction standard reste active")
+        }
+        publishUiState(isAnswerRevealed = _uiState.value.isAnswerRevealed)
+    }
+
+    fun onSemanticModelDownloaded() {
+        hasPromptedSemanticModelDownload = true
+        isSemanticModelDownloadDialogVisible = false
+        semanticValidator = createSemanticValidator()
+        viewModelScope.launch {
+            _snackbarEvents.trySend(
+                if (isSemanticAiModeReady()) {
+                    "La correction de tes réponses est maintenant plus souple et plus précise"
+                } else {
+                    "Le téléchargement est terminé, mais l'app reste en correction standard pour l'instant"
+                }
+            )
+        }
+        publishUiState(isAnswerRevealed = _uiState.value.isAnswerRevealed)
     }
 
     private suspend fun validateQcmEvent(event: ReviewSessionEvent) {
@@ -529,11 +624,18 @@ class ReviewViewModel(
 
     private suspend fun validateChallengeEvent(event: ReviewSessionEvent) {
         val card = event.cardId?.let(sessionCardsById::get) ?: return
-        val isCorrect = when (event.challengeKind) {
-            ReviewSessionChallengeKind.SPELLING -> spellingValidator.validate(eventInput, card.recto).isValid
-            ReviewSessionChallengeKind.SEMANTIC -> semanticValidator.validate(eventInput, card.verso).isValid
-            null -> false
+        val validationResult = when (event.challengeKind) {
+            ReviewSessionChallengeKind.SPELLING -> spellingValidator.validate(eventInput, card.recto)
+            ReviewSessionChallengeKind.SEMANTIC -> semanticValidator.validate(eventInput, card.verso)
+            ReviewSessionChallengeKind.USAGE -> usageChallengeValidator.validate(
+                userInput = eventInput,
+                targetWord = card.recto,
+                expectedDefinition = card.verso,
+                examples = card.exemples
+            )
+            null -> null
         }
+        val isCorrect = validationResult?.isValid == true
 
         if (event.appliesSessionCredit && event.questionId != null) {
             sessionState = sessionState?.let { ReviewSessionEngine.clearPendingReplacementChallenge(it, event.questionId) }
@@ -547,18 +649,22 @@ class ReviewViewModel(
         }
 
         eventResultSuccessful = isCorrect
-        eventResultMessage = if (event.appliesSessionCredit) {
-            if (isCorrect) {
-                "Défi réussi"
-            } else {
-                "Défi manqué"
-            }
+        val baseMessage = validationResult?.feedbackMessage?.takeIf { it.isNotBlank() } ?: if (isCorrect) {
+            "Défi réussi"
         } else {
-            if (isCorrect) "Défi réussi (mode test admin)" else "Défi manqué (mode test admin)"
+            "Défi manqué"
+        }
+        eventResultMessage = if (event.appliesSessionCredit) {
+            baseMessage
+        } else if (event.questionId == null) {
+            "$baseMessage (mode test admin)"
+        } else {
+            baseMessage
         }
         eventResultCorrectAnswer = when (event.challengeKind) {
             ReviewSessionChallengeKind.SPELLING -> card.recto
             ReviewSessionChallengeKind.SEMANTIC -> card.verso
+            ReviewSessionChallengeKind.USAGE -> card.verso
             null -> null
         }
         publishUiState(isAnswerRevealed = false)
@@ -597,8 +703,15 @@ class ReviewViewModel(
         return ReviewSessionEngine.markQcmScheduled(state, updatedQuestionState.progress.questionId)
     }
 
-    private fun maybeScheduleMatching(state: ReviewSessionState) {
+    private fun maybeScheduleMatching(
+        state: ReviewSessionState,
+        answer: ReviewAnswer,
+        updatedQuestionState: ReviewSessionQuestionState
+    ) {
         if (!isIntegratedMatchingEnabled()) return
+        if (isAdminReviewFilteringEnabled()) return
+        if (answer != ReviewAnswer.AGAIN) return
+        if (updatedQuestionState.progress.questionType != ReviewQuestionType.DEFINITION_TO_WORD) return
         if (sessionSizeLimit <= 0 || normalAnswersSinceLastMatching < sessionSizeLimit) return
         normalAnswersSinceLastMatching = 0
 
@@ -613,24 +726,64 @@ class ReviewViewModel(
             .map { group -> group.first().progress.cardId }
             .take(5)
 
-        if (candidateCardIds.size < 2) return
+        val completedCardIds = completeMatchingCardIds(candidateCardIds, state)
+        if (completedCardIds.size < 2) return
 
-        val shuffledDefinitions = candidateCardIds
-            .mapNotNull(sessionCardsById::get)
+        val matchingCards = completedCardIds
+            .mapNotNull(::findCardForMatching)
+            .distinctBy { it.id }
+
+        if (matchingCards.size < 2) return
+
+        val shuffledDefinitions = matchingCards
             .map { it.verso }
             .shuffled(random)
 
         pendingSessionEvents = pendingSessionEvents + ReviewSessionEvent(
             eventId = "matching-${System.currentTimeMillis()}",
             type = ReviewSessionEventType.MATCHING,
-            cardIds = candidateCardIds,
+            cardIds = matchingCards.map { it.id },
             options = shuffledDefinitions,
             countdownBeforeDisplay = 0
         )
     }
 
+    private fun completeMatchingCardIds(
+        orderedSessionCardIds: List<String>,
+        state: ReviewSessionState
+    ): List<String> {
+        val currentCardId = state.currentQuestionId
+            ?.let { state.questionStates[it]?.progress?.cardId }
+
+        val prioritized = buildList {
+            addAll(orderedSessionCardIds)
+            if (currentCardId != null && currentCardId !in orderedSessionCardIds) {
+                add(currentCardId)
+            }
+        }.distinct()
+
+        if (prioritized.size >= 2) return prioritized.take(5)
+
+        val distractorIds = allCardsCache
+            .asSequence()
+            .map { it.id }
+            .filter { it !in prioritized }
+            .take(5 - prioritized.size)
+            .toList()
+
+        return (prioritized + distractorIds).distinct().take(5)
+    }
+
+    private fun findCardForMatching(cardId: String): Flashcard? {
+        sessionCardsById[cardId]?.let { return it }
+        val card = allCardsCache.firstOrNull { it.id == cardId } ?: return null
+        sessionCardsById = sessionCardsById + (cardId to card)
+        return card
+    }
+
     private fun buildInitialExtraSpellingEvents(plan: ReviewSessionPlan): List<ReviewSessionEvent> {
         if (!isExtraSpellingEnabled()) return emptyList()
+        if (sessionSizeLimit <= 1) return emptyList()
         var updatedState = sessionState
         val events = mutableListOf<ReviewSessionEvent>()
 
@@ -661,6 +814,30 @@ class ReviewViewModel(
         return events
     }
 
+    private fun buildInitialUsageChallengeEvents(plan: ReviewSessionPlan): List<ReviewSessionEvent> {
+        if (!isUsageChallengeEnabled()) return emptyList()
+
+        val eligibleQuestions = plan.selectedQuestions
+            .filter { it.questionType == ReviewQuestionType.WORD_TO_DEFINITION }
+            .shuffled(random)
+            .take(1)
+
+        return eligibleQuestions.mapNotNull { question ->
+            val card = sessionCardsById[question.cardId] ?: return@mapNotNull null
+            ReviewSessionEvent(
+                eventId = "usage-${question.questionId}",
+                type = ReviewSessionEventType.CHALLENGE,
+                questionId = question.questionId,
+                cardId = question.cardId,
+                correctAnswer = card.verso,
+                challengeKind = ReviewSessionChallengeKind.USAGE,
+                countdownBeforeDisplay = if (plan.selectedQuestions.size <= 1) 0 else random.nextInt(plan.selectedQuestions.size),
+                isSkippable = true,
+                appliesSessionCredit = false
+            )
+        }
+    }
+
     private fun decrementPendingEventCountdowns() {
         pendingSessionEvents = pendingSessionEvents.map { event ->
             if (event.countdownBeforeDisplay > 0) {
@@ -680,7 +857,7 @@ class ReviewViewModel(
             currentQuestionState.progress.pendingReplacementChallengeKind != null
         ) {
             val challengeKind = currentQuestionState.progress.pendingReplacementChallengeKind
-            if (challengeKind != null && !isReplacementChallengeEnabled(challengeKind)) {
+            if (!isReplacementChallengeEnabled(challengeKind)) {
                 sessionState = sessionState?.let {
                     ReviewSessionEngine.clearPendingReplacementChallenge(it, currentQuestionState.progress.questionId)
                 }
@@ -722,7 +899,34 @@ class ReviewViewModel(
         questionType: ReviewQuestionType,
         correctAnswer: String
     ): List<String> {
-        val distractors = allCardsCache
+        val distractors = buildPrioritizedQcmDistractors(
+            targetCard = targetCard,
+            questionType = questionType,
+            correctAnswer = correctAnswer
+        )
+
+        return (listOf(correctAnswer) + distractors)
+            .distinctBy { it.lowercase() }
+            .shuffled(random)
+    }
+
+    private fun buildPrioritizedQcmDistractors(
+        targetCard: Flashcard,
+        questionType: ReviewQuestionType,
+        correctAnswer: String
+    ): List<String> {
+        val normalizedCorrectAnswer = correctAnswer.trim().lowercase()
+        val orderedSessionCardIds = sessionPlan?.selectedQuestions
+            .orEmpty()
+            .map { it.cardId }
+            .distinct()
+
+        val prioritizedCards = buildList {
+            addAll(orderedSessionCardIds.mapNotNull { cardId -> sessionCardsById[cardId] })
+            addAll(allCardsCache)
+        }
+
+        return prioritizedCards
             .asSequence()
             .filter { it.id != targetCard.id }
             .map {
@@ -733,14 +937,9 @@ class ReviewViewModel(
             }
             .filter { it.isNotBlank() }
             .distinctBy { it.lowercase() }
-            .filter { it.lowercase() != correctAnswer.trim().lowercase() }
-            .shuffled(random)
+            .filter { it.lowercase() != normalizedCorrectAnswer }
             .take(3)
             .toList()
-
-        return (listOf(correctAnswer) + distractors)
-            .distinctBy { it.lowercase() }
-            .shuffled(random)
     }
 
     private fun questionIdsForCard(cardId: String): List<String> {
@@ -813,18 +1012,30 @@ class ReviewViewModel(
     fun invalidateSessionForSettingsChange() {
         stopSpeaking()
         viewModelScope.launch {
-            persistValidatedProgressBeforeReset()
-            resetSessionInternals()
-            clearPersistedSessionSnapshot()
-            _uiState.value = buildSessionFinishedState(
-                studiedCount = 0,
-                totalInSession = 0,
-                xpBonusAccumulated = 0,
-                autoSpeakWord = _uiState.value.autoSpeakWord,
-                autoSpeakDefinition = _uiState.value.autoSpeakDefinition,
-                presentationMode = _uiState.value.presentationMode
-            )
+            resetSessionForConfigurationChange()
         }
+    }
+
+    fun reloadSessionForSettingsChange() {
+        stopSpeaking()
+        viewModelScope.launch {
+            resetSessionForConfigurationChange()
+            loadSession()
+        }
+    }
+
+    private suspend fun resetSessionForConfigurationChange() {
+        persistValidatedProgressBeforeReset()
+        resetSessionInternals()
+        clearPersistedSessionSnapshot()
+        _uiState.value = buildSessionFinishedState(
+            studiedCount = 0,
+            totalInSession = 0,
+            xpBonusAccumulated = 0,
+            autoSpeakWord = _uiState.value.autoSpeakWord,
+            autoSpeakDefinition = _uiState.value.autoSpeakDefinition,
+            presentationMode = _uiState.value.presentationMode
+        )
     }
 
     fun toggleFavorite() {
@@ -950,7 +1161,9 @@ class ReviewViewModel(
             xpBonusAccumulated = _uiState.value.xpBonusAccumulated,
             canUndo = currentUndoSnapshotState != null,
             normalQuestionInstanceKey = "${currentQuestionState.progress.questionId}:${currentQuestionState.presentationCount}",
-            ttsStatusMessage = _uiState.value.ttsStatusMessage
+            ttsStatusMessage = _uiState.value.ttsStatusMessage,
+            semanticModelReady = isSemanticAiModeReady(),
+            showSemanticModelDownloadDialog = isSemanticModelDownloadDialogVisible
         )
     }
 
@@ -983,11 +1196,13 @@ class ReviewViewModel(
                 val challengeTitle = when (event.challengeKind) {
                     ReviewSessionChallengeKind.SPELLING -> "Défi orthographique"
                     ReviewSessionChallengeKind.SEMANTIC -> "Défi sémantique"
+                    ReviewSessionChallengeKind.USAGE -> "Défi utilisation"
                     null -> "Défi"
                 }
                 val challengeInstruction = when (event.challengeKind) {
                     ReviewSessionChallengeKind.SPELLING -> "Écris le mot correspondant à la définition"
                     ReviewSessionChallengeKind.SEMANTIC -> "Décris le sens du mot avec tes propres mots"
+                    ReviewSessionChallengeKind.USAGE -> "Écris une phrase naturelle qui utilise correctement ce mot"
                     null -> "Résous le défi"
                 }
                 QuadrupleUi(challengeTitle, challengeInstruction, false, event.challengeKind)
@@ -1031,7 +1246,9 @@ class ReviewViewModel(
             matchingSelectedWordId = matchingSelectedWordId,
             matchingSelectedDefinition = matchingSelectedDefinition,
             canSkipCurrentEvent = canSkip || event.isSkippable,
-            activeChallengeKind = challengeKind
+            activeChallengeKind = challengeKind,
+            semanticModelReady = isSemanticAiModeReady(),
+            showSemanticModelDownloadDialog = isSemanticModelDownloadDialogVisible
         )
     }
 
@@ -1067,7 +1284,9 @@ class ReviewViewModel(
             ttsStatusMessage = _uiState.value.ttsStatusMessage,
             showSessionCelebration = showSessionCelebration,
             sessionCompletionXp = sessionCompletionXp,
-            sessionCompletionToken = sessionCompletionToken
+            sessionCompletionToken = sessionCompletionToken,
+            semanticModelReady = isSemanticAiModeReady(),
+            showSemanticModelDownloadDialog = isSemanticModelDownloadDialogVisible
         )
     }
 
@@ -1352,6 +1571,9 @@ class ReviewViewModel(
     private fun isIntegratedMatchingEnabled(): Boolean =
         !isAdminReviewFilteringEnabled() || adminPrefsRepository?.reviewMatchingEnabled != false
 
+    private fun isUsageChallengeEnabled(): Boolean =
+        isAdminReviewFilteringEnabled() && adminPrefsRepository?.challengeUsageEnabled == true
+
     private fun shouldUseForcedAdminEventSession(): Boolean {
         if (!isAdminReviewFilteringEnabled()) return false
         if (adminPrefsRepository?.reviewWordToDefinitionEnabled == true) return false
@@ -1361,7 +1583,8 @@ class ReviewViewModel(
             isForcedAdminQcmEnabled() ||
             isForcedAdminMatchingEnabled() ||
             isForcedAdminSemanticChallengeEnabled() ||
-            isForcedAdminSpellingChallengeEnabled()
+            isForcedAdminSpellingChallengeEnabled() ||
+            isForcedAdminUsageChallengeEnabled()
     }
 
     private fun buildForcedAdminTestEvents(limit: Int): List<ReviewSessionEvent> {
@@ -1400,6 +1623,20 @@ class ReviewViewModel(
                         cardId = card.id,
                         correctAnswer = card.recto,
                         challengeKind = ReviewSessionChallengeKind.SPELLING,
+                        appliesSessionCredit = false
+                    )
+                }
+            }
+            if (isForcedAdminUsageChallengeEnabled()) {
+                add { index ->
+                    val card = usableCards[index % usableCards.size]
+                    ReviewSessionEvent(
+                        eventId = "admin-usage-$index-${card.id}",
+                        type = ReviewSessionEventType.CHALLENGE,
+                        cardId = card.id,
+                        correctAnswer = card.verso,
+                        challengeKind = ReviewSessionChallengeKind.USAGE,
+                        isSkippable = true,
                         appliesSessionCredit = false
                     )
                 }
@@ -1474,6 +1711,9 @@ class ReviewViewModel(
     private fun isForcedAdminMatchingEnabled(): Boolean =
         isAdminReviewFilteringEnabled() && adminPrefsRepository?.reviewMatchingEnabled == true
 
+    private fun isForcedAdminUsageChallengeEnabled(): Boolean =
+        isAdminReviewFilteringEnabled() && adminPrefsRepository?.challengeUsageEnabled == true
+
     private fun shouldDiscardSnapshotForAdminFilters(
         snapshot: ReviewSessionSnapshot,
         effectiveLimit: Int
@@ -1512,6 +1752,7 @@ class ReviewViewModel(
         return when (challengeKind) {
             ReviewSessionChallengeKind.SPELLING -> adminPrefsRepository?.challengeOrthoEnabled != false
             ReviewSessionChallengeKind.SEMANTIC -> adminPrefsRepository?.challengeSemanticEnabled != false
+            ReviewSessionChallengeKind.USAGE -> adminPrefsRepository?.challengeUsageEnabled != false
         }
     }
 
@@ -1527,6 +1768,7 @@ class ReviewViewModel(
             correctAnswer = when (challengeKind) {
                 ReviewSessionChallengeKind.SPELLING -> card.recto
                 ReviewSessionChallengeKind.SEMANTIC -> card.verso
+                ReviewSessionChallengeKind.USAGE -> card.verso
             },
             challengeKind = challengeKind,
             appliesSessionCredit = true
@@ -1703,7 +1945,9 @@ data class ReviewUiState(
     val matchingSelectedWordId: String? = null,
     val matchingSelectedDefinition: String? = null,
     val canSkipCurrentEvent: Boolean = false,
-    val activeChallengeKind: ReviewSessionChallengeKind? = null
+    val activeChallengeKind: ReviewSessionChallengeKind? = null,
+    val semanticModelReady: Boolean = false,
+    val showSemanticModelDownloadDialog: Boolean = false
 )
 
 class ReviewViewModelFactory(
@@ -1715,7 +1959,9 @@ class ReviewViewModelFactory(
     private val adminPrefsRepository: AdminPrefsRepository? = null,
     private val reviewSessionSnapshotRepository: ReviewSessionSnapshotRepository? = null,
     private val isAdminUserProvider: (() -> Boolean)? = null,
-    private val onSessionXpAwarded: (Int) -> Unit = {}
+    private val onSessionXpAwarded: (Int) -> Unit = {},
+    private val semanticModelCachedProvider: (() -> Boolean)? = null,
+    private val semanticValidatorProvider: (() -> SemanticValidator)? = null
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ReviewViewModel::class.java)) {
@@ -1729,7 +1975,9 @@ class ReviewViewModelFactory(
                 adminPrefsRepository = adminPrefsRepository,
                 reviewSessionSnapshotRepository = reviewSessionSnapshotRepository,
                 isAdminUserProvider = isAdminUserProvider,
-                onSessionXpAwarded = onSessionXpAwarded
+                onSessionXpAwarded = onSessionXpAwarded,
+                semanticModelCachedProvider = semanticModelCachedProvider,
+                semanticValidatorProvider = semanticValidatorProvider
             ) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")

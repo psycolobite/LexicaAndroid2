@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Politique de confidentialité — Lexica</title>
+    <meta name="description" content="Politique de confidentialité de l'application Lexica." />
+    <style>
+        :root {
+            color-scheme: light dark;
+            --bg: #0f172a;
+            --card: #111827;
+            --text: #e5e7eb;
+            --muted: #cbd5e1;
+            --accent: #8b5cf6;
+            --accent-soft: rgba(139, 92, 246, 0.16);
+            --border: rgba(148, 163, 184, 0.22);
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f8fafc;
+                --card: #ffffff;
+                --text: #0f172a;
+                --muted: #334155;
+                --accent: #7c3aed;
+                --accent-soft: rgba(124, 58, 237, 0.08);
+                --border: rgba(15, 23, 42, 0.1);
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: linear-gradient(180deg, var(--bg), color-mix(in srgb, var(--bg) 92%, black 8%));
+            color: var(--text);
+            line-height: 1.65;
+        }
+
+        .container {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 32px 20px 64px;
+        }
+
+        .hero,
+        section {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero {
+            margin-bottom: 20px;
+        }
+
+        section + section {
+            margin-top: 16px;
+        }
+
+        h1, h2 {
+            line-height: 1.2;
+            margin-top: 0;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
+            margin-bottom: 12px;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        p, li {
+            color: var(--muted);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--text);
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .notice {
+            border-left: 4px solid #f59e0b;
+            background: rgba(245, 158, 11, 0.08);
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        .footer {
+            margin-top: 24px;
+            font-size: 0.95rem;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        code {
+            padding: 0.1rem 0.35rem;
+            border-radius: 6px;
+            background: rgba(148, 163, 184, 0.14);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <article class="hero">
+            <div class="badge">Politique de confidentialité — Lexica</div>
+            <h1>Politique de confidentialité</h1>
+            <p>
+                Cette politique décrit comment l'application <strong>Lexica</strong> collecte,
+                utilise et protège les données liées à votre utilisation de l'application.
+            </p>
+            <p><strong>Dernière mise à jour :</strong> 8 avril 2026</p>
+            <div class="notice">
+                <strong>Avant publication :</strong> remplacez la mention de contact ci-dessous par
+                votre adresse e-mail de support réelle ou le contact officiel que vous souhaitez afficher.
+            </div>
+        </article>
+
+        <section>
+            <h2>1. Responsable de l'application</h2>
+            <p>
+                Application : <strong>Lexica</strong><br />
+                Éditeur : <strong>Paul Mottet</strong><br />
+                Contact support : <strong>mottet2.paul6@outlook.fr</strong>
+            </p>
+        </section>
+
+        <section>
+            <h2>2. Données traitées</h2>
+            <p>Selon les fonctionnalités que vous utilisez, Lexica peut traiter les catégories de données suivantes :</p>
+            <ul>
+                <li>données d'authentification (adresse e-mail, identifiant utilisateur) ;</li>
+                <li>données de progression et d'usage dans l'application ;</li>
+                <li>préférences locales et réglages de l'utilisateur ;</li>
+                <li>mots, cartes et contenus ajoutés manuellement dans l'application ;</li>
+                <li>données minimales de synchronisation cloud si vous utilisez un compte.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>3. Finalités du traitement</h2>
+            <p>Ces données sont utilisées pour :</p>
+            <ul>
+                <li>permettre la connexion à l'application ;</li>
+                <li>sauvegarder et restaurer certaines données liées à votre compte ;</li>
+                <li>synchroniser votre progression entre plusieurs appareils lorsque cette fonction est activée ;</li>
+                <li>personnaliser l'expérience d'apprentissage ;</li>
+                <li>assurer le bon fonctionnement technique de l'application.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>4. Authentification et services tiers</h2>
+            <p>Lexica peut utiliser les services tiers suivants :</p>
+            <ul>
+                <li><strong>Firebase Authentication</strong> pour la connexion par e-mail/mot de passe ou via un compte Google ;</li>
+                <li><strong>Firebase Firestore</strong> pour la synchronisation de certaines données de progression ;</li>
+                <li><strong>Google Sign-In</strong> si vous choisissez ce mode de connexion.</li>
+            </ul>
+            <p>
+                À la date de cette politique, le dépôt de l'application ne montre pas l'usage d'un SDK publicitaire
+                ni d'un SDK d'analytics dédié intégré à l'application.
+            </p>
+        </section>
+
+        <section>
+            <h2>5. Données synchronisées dans le cloud</h2>
+            <p>
+                Lorsque vous utilisez la synchronisation cloud, Lexica peut synchroniser certaines données liées à
+                votre progression, notamment des indicateurs comme l'XP, le niveau, la série de jours, la dernière
+                connexion utile à la progression et certains favoris.
+            </p>
+            <p>
+                Les données d'apprentissage plus détaillées et le contenu local de l'application peuvent rester
+                principalement stockés sur l'appareil selon les fonctionnalités utilisées.
+            </p>
+        </section>
+
+        <section>
+            <h2>6. Stockage local</h2>
+            <p>
+                Lexica conserve également des données en local sur votre appareil afin de permettre l'utilisation
+                courante de l'application, notamment la liste des cartes, la progression d'apprentissage et les
+                préférences utilisateur.
+            </p>
+        </section>
+
+        <section>
+            <h2>7. Suppression du compte et des données</h2>
+            <p>
+                Si vous utilisez un compte, l'application prévoit un flux de suppression du compte depuis l'écran
+                de profil de l'application.
+            </p>
+            <ul>
+                <li>la suppression du compte vise à supprimer l'accès au compte connecté ;</li>
+                <li>les données synchronisées associées au compte peuvent être supprimées dans le cadre de ce flux ;</li>
+                <li>les données stockées localement sur l'appareil peuvent également être réinitialisées selon les options utilisées.</li>
+            </ul>
+            <p>
+                Pour toute demande complémentaire relative à vos données, utilisez le contact support indiqué dans
+                cette politique ou dans la fiche Google Play de l'application.
+            </p>
+        </section>
+
+        <section>
+            <h2>8. Partage des données</h2>
+            <p>
+                Les données ne sont pas revendues. Elles ne sont partagées qu'avec les prestataires techniques
+                nécessaires au fonctionnement de l'application, dans la mesure où vous utilisez leurs services,
+                par exemple Firebase pour l'authentification et la synchronisation.
+            </p>
+        </section>
+
+        <section>
+            <h2>9. Sécurité</h2>
+            <p>
+                Des mesures raisonnables sont prises pour limiter l'accès non autorisé aux données et pour utiliser
+                les services techniques adaptés au fonctionnement de l'application. Toutefois, aucun système n'offre
+                une sécurité absolue.
+            </p>
+        </section>
+
+        <section>
+            <h2>10. Vos droits</h2>
+            <p>Vous pouvez notamment :</p>
+            <ul>
+                <li>demander la suppression de votre compte lorsque cette option est disponible ;</li>
+                <li>demander des informations sur les données liées à votre usage ;</li>
+                <li>cesser d'utiliser les fonctions de synchronisation en vous déconnectant de l'application.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>11. Évolution de cette politique</h2>
+            <p>
+                Cette politique peut être mise à jour afin de refléter l'évolution de l'application, de ses services
+                techniques ou de ses obligations de publication. La date de mise à jour figurant en haut de page
+                sera modifiée en conséquence.
+            </p>
+        </section>
+
+        <p class="footer">
+            URL recommandée pour Google Play : <code>https://&lt;ton-compte&gt;.github.io/LexicaAndroid2/privacy-policy/</code>
+        </p>
+    </main>
+</body>
+</html>
+

@@ -44,6 +44,7 @@ import com.example.lexicaandroid2.features.gamification.ui.XpProgressBar
 import com.example.lexicaandroid2.features.sync.SyncViewModel
 import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun ProfileScreen(
     flashcardRepository: FlashcardRepository,
@@ -73,6 +74,13 @@ fun ProfileScreen(
             onDismiss = { viewModel.onResetDismissed() }
         )
     }
+    if (uiState.showDeleteAccountDialog) {
+        DeleteAccountDialog(
+            isDeleting = uiState.isDeletingAccount,
+            onConfirm = { viewModel.onDeleteAccountConfirmed() },
+            onDismiss = { viewModel.onDeleteAccountDismissed() }
+        )
+    }
     // Message de succès après reset
     uiState.resetDoneMessage?.let { msg ->
         AlertDialog(
@@ -82,6 +90,18 @@ fun ProfileScreen(
             confirmButton = {
                 TextButton(onClick = { viewModel.onResetMessageDismissed() }) {
                     Text("OK, courage !")
+                }
+            }
+        )
+    }
+    uiState.deleteAccountMessage?.let { msg ->
+        AlertDialog(
+            onDismissRequest = { viewModel.onDeleteAccountMessageDismissed() },
+            title = { Text("Compte supprimé") },
+            text = { Text(msg) },
+            confirmButton = {
+                TextButton(onClick = { viewModel.onDeleteAccountMessageDismissed() }) {
+                    Text("OK")
                 }
             }
         )
@@ -206,9 +226,31 @@ fun ProfileScreen(
                         viewModel.onAuthAction(onSignInRequested)
                     }
                 },
+                enabled = !uiState.isDeletingAccount,
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text(if (uiState.isAuthenticated) "Se déconnecter" else "Se connecter")
+            }
+
+            if (uiState.isAuthenticated) {
+                OutlinedButton(
+                    onClick = { viewModel.onDeleteAccountClicked() },
+                    enabled = !uiState.isDeletingAccount,
+                    colors = ButtonDefaults.outlinedButtonColors(
+                        contentColor = MaterialTheme.colorScheme.error
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (uiState.isDeletingAccount) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.height(18.dp),
+                            strokeWidth = 2.dp,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    } else {
+                        Text("Supprimer mon compte")
+                    }
+                }
             }
 
             Button(
@@ -273,7 +315,7 @@ private fun ResetConfirmDialog1(
                 Text("🔥 Une série de $streak jour${if (streak > 1) "s" else ""} consécutifs...")
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "C'est une décision grave, Votre Honneur. 🧑‍⚖️ Voulez-vous vraiment continuer ?",
+                    text = "C'est une décision grave. Voulez-vous vraiment continuer ?",
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 13.sp
                 )
@@ -284,12 +326,45 @@ private fun ResetConfirmDialog1(
                 onClick = onConfirm,
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF7043))
             ) {
-                Text("Oui, je suis courageux 😤")
+                Text("Oui, il le faut")
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text("Euuuh... non, finalement 😅")
+            }
+        }
+    )
+}
+
+@Composable
+private fun DeleteAccountDialog(
+    isDeleting: Boolean,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "Supprimer définitivement le compte ?",
+                fontWeight = FontWeight.Bold
+            )
+        },
+        text = {
+            Text(
+                "Cette action supprime le compte connecté ainsi que sa progression synchronisée. " +
+                    "Elle est irréversible."
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onConfirm, enabled = !isDeleting) {
+                Text("Oui, supprimer", color = MaterialTheme.colorScheme.error)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss, enabled = !isDeleting) {
+                Text("Annuler")
             }
         }
     )
@@ -305,7 +380,7 @@ private fun ResetConfirmDialog2(
         containerColor = Color(0xFFFFF3E0),
         title = {
             Text(
-                text = "⚠️ DERNIÈRE CHANCE !",
+                text = "⚠️ Dernière confirmation",
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp,
                 color = Color(0xFFB71C1C),
@@ -316,16 +391,13 @@ private fun ResetConfirmDialog2(
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    text = "Après ça, tout disparaît dans le vide numérique. Pour toujours.",
+                    text = "Cette action est irréversible. Toute votre progression sera définitivement supprimée : mots appris, XP, streak et historique de révisions.",
                     fontWeight = FontWeight.SemiBold,
                     color = Color(0xFFB71C1C)
                 )
-                Text("Votre streak ? 💨 POOF.")
-                Text("Vos XP ? 💨 POOF.")
-                Text("Vos mots ? 💨 POOOOF.")
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "Êtes-vous ABSOLUMENT, TOTALEMENT, IRRÉMÉDIABLEMENT certain(e) de vouloir tout effacer ? 💀",
+                    text = "Confirmez-vous la suppression ?",
                     fontSize = 13.sp,
                     color = Color(0xFF5D4037)
                 )
@@ -336,15 +408,16 @@ private fun ResetConfirmDialog2(
                 onClick = onConfirm,
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFB71C1C))
             ) {
-                Text("💣 OUI, tout effacer !", color = Color.White)
+                Text("Supprimer définitivement", color = Color.White)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Non, j'ai eu peur, désolé 🙏", color = Color(0xFF5D4037))
+                Text("Annuler", color = Color(0xFF5D4037))
             }
         }
     )
+
 }
 
 // ==================== COMPOSANTS EXISTANTS ====================

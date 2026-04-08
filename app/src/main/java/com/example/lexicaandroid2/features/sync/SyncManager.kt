@@ -110,6 +110,7 @@ class SyncManager(
      * Remplace la progression locale par celle du cloud.
      * Appelé quand l'utilisateur confirme dans [SyncConfirmDialog].
      */
+    @Suppress("UNUSED_PARAMETER")
     suspend fun replaceLocalWithCloud(uid: String, cloudProgress: CloudProgress) {
         try {
             // 1. Écraser les stats utilisateur (XP, level, streak, lastLoginDate)
@@ -158,6 +159,14 @@ class SyncManager(
      */
     suspend fun saveBeforeLogout(uid: String) {
         uploadLocalToCloud(uid)
+    }
+
+    suspend fun deleteCloudAccountData(uid: String) {
+        try {
+            firestoreSyncRepository.deleteProgress(uid)
+        } catch (e: Exception) {
+            Log.w(TAG, "deleteCloudAccountData failed: ${e.message}")
+        }
     }
 
     /**

@@ -22,7 +22,6 @@ fun XpProgressBar(
 
     // Use XPCalculator to get progress information
     val progress = XPCalculator.calculateProgressToNextLevel(currentLevel, totalXp)
-    val currentLevelXp = XPCalculator.calculateXpForLevel(currentLevel)
     val nextLevelXp = XPCalculator.calculateXpForLevel(currentLevel + 1)
     val xpToNext = XPCalculator.calculateXpToNextLevel(currentLevel, totalXp)
 
@@ -44,7 +43,7 @@ fun XpProgressBar(
         }
         Spacer(modifier = Modifier.height(8.dp))
         LinearProgressIndicator(
-            progress = progress,
+            progress = { progress },
             modifier = Modifier.fillMaxWidth().height(12.dp).clip(RoundedCornerShape(6.dp)),
             color = MaterialTheme.colorScheme.primary,
             trackColor = lexicaPanelContainerColor()

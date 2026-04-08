@@ -53,9 +53,13 @@ class KeywordExtractorTest {
     }
 
     @Test
-    fun extractKeywordsReturnsMostSpecificWordsFirst() {
-        val result = KeywordExtractor.extractKeywords("informatique reseau programmation", topN = 3)
-        assertTrue(result.first().length >= result.last().length)
+    fun extractKeywordsDefaultsToTwoMainKeywords() {
+        val result = KeywordExtractor.extractKeywords(
+            "plante ligneuse avec feuilles et branches"
+        )
+
+        assertEquals(2, result.size)
+        assertEquals(listOf("plante", "ligneuse"), result)
     }
 
     @Test
@@ -70,6 +74,16 @@ class KeywordExtractorTest {
     fun extractKeywordsNoDuplicates() {
         val result = KeywordExtractor.extractKeywords("chat chat chaton chaton")
         assertEquals(result.size, result.distinct().size)
+    }
+
+    @Test
+    fun extractKeywordsIgnoresGenericDefinitionWordsWhenBetterCandidatesExist() {
+        val result = KeywordExtractor.extractKeywords(
+            "personne qui pratique la medecine avec experience"
+        )
+
+        assertTrue("personne" !in result)
+        assertTrue("pratique" in result || "medecine" in result || "experience" in result)
     }
 
     // endregion
@@ -117,7 +131,8 @@ class KeywordExtractorTest {
             expectedDef = "mammifere domestique fidele compagnon loyal"
         )
         assertTrue(found.isNotEmpty())
-        assertTrue("compagnon" in missing || "loyal" in missing)
+        assertTrue(found.all { it in listOf("mammifere", "domestique") })
+        assertTrue(missing.all { it in listOf("mammifere", "domestique") })
     }
 
     @Test

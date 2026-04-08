@@ -18,6 +18,7 @@ data class AdminUiState(
     val reviewWordToDefinitionEnabled: Boolean = true,
     val reviewDefinitionToWordEnabled: Boolean = true,
     val challengeSemanticEnabled: Boolean = true,
+    val challengeUsageEnabled: Boolean = true,
     val challengeOrthoEnabled: Boolean = true,
     val extraSpellingEnabled: Boolean = true,
     val reviewQcmEnabled: Boolean = true,
@@ -38,6 +39,7 @@ class AdminViewModel(
 
     private val _uiState = MutableStateFlow(AdminUiState())
     val uiState: StateFlow<AdminUiState> = _uiState.asStateFlow()
+    private var hasPendingReviewSettingsChange = false
 
     init {
         loadPrefs()
@@ -52,6 +54,7 @@ class AdminViewModel(
                 reviewDefinitionToWordEnabled = adminPrefsRepository.reviewDefinitionToWordEnabled,
                 challengeOrthoEnabled = adminPrefsRepository.challengeOrthoEnabled,
                 challengeSemanticEnabled = adminPrefsRepository.challengeSemanticEnabled,
+                challengeUsageEnabled = adminPrefsRepository.challengeUsageEnabled,
                 extraSpellingEnabled = adminPrefsRepository.extraSpellingEnabled,
                 reviewQcmEnabled = adminPrefsRepository.reviewQcmEnabled,
                 reviewMatchingEnabled = adminPrefsRepository.reviewMatchingEnabled,
@@ -77,53 +80,97 @@ class AdminViewModel(
     }
 
     fun setReviewWordToDefinitionEnabled(enabled: Boolean) {
+        if (_uiState.value.reviewWordToDefinitionEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.reviewWordToDefinitionEnabled = enabled
         _uiState.update { it.copy(reviewWordToDefinitionEnabled = enabled) }
     }
 
     fun setReviewDefinitionToWordEnabled(enabled: Boolean) {
+        if (_uiState.value.reviewDefinitionToWordEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.reviewDefinitionToWordEnabled = enabled
         _uiState.update { it.copy(reviewDefinitionToWordEnabled = enabled) }
     }
 
     fun setChallengeOrtho(enabled: Boolean) {
+        if (_uiState.value.challengeOrthoEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.challengeOrthoEnabled = enabled
         _uiState.update { it.copy(challengeOrthoEnabled = enabled) }
     }
 
     fun setChallengeSemanticEnabled(enabled: Boolean) {
+        if (_uiState.value.challengeSemanticEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.challengeSemanticEnabled = enabled
         _uiState.update { it.copy(challengeSemanticEnabled = enabled) }
     }
 
+    fun setChallengeUsageEnabled(enabled: Boolean) {
+        if (_uiState.value.challengeUsageEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
+        adminPrefsRepository.challengeUsageEnabled = enabled
+        _uiState.update { it.copy(challengeUsageEnabled = enabled) }
+    }
+
     fun setExtraSpellingEnabled(enabled: Boolean) {
+        if (_uiState.value.extraSpellingEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.extraSpellingEnabled = enabled
         _uiState.update { it.copy(extraSpellingEnabled = enabled) }
     }
 
     fun setReviewQcmEnabled(enabled: Boolean) {
+        if (_uiState.value.reviewQcmEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.reviewQcmEnabled = enabled
         _uiState.update { it.copy(reviewQcmEnabled = enabled) }
     }
 
     fun setReviewMatchingEnabled(enabled: Boolean) {
+        if (_uiState.value.reviewMatchingEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.reviewMatchingEnabled = enabled
         _uiState.update { it.copy(reviewMatchingEnabled = enabled) }
     }
 
     fun setNormalPresentationEnabled(enabled: Boolean) {
+        if (_uiState.value.normalPresentationEnabled != enabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.normalPresentationEnabled = enabled
         _uiState.update { it.copy(normalPresentationEnabled = enabled) }
     }
 
     fun applyNormalPresentationPreset() {
+        if (!adminPrefsRepository.normalPresentationEnabled) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.normalPresentationEnabled = true
         loadPrefs()
     }
 
     fun setSessionSize(size: Int) {
+        if (_uiState.value.sessionSize != size.coerceIn(2, 50)) {
+            hasPendingReviewSettingsChange = true
+        }
         adminPrefsRepository.sessionSize = size
         _uiState.update { it.copy(sessionSize = adminPrefsRepository.sessionSize) }
+    }
+
+    fun consumePendingReviewSettingsChange(): Boolean {
+        val hadPendingChange = hasPendingReviewSettingsChange
+        hasPendingReviewSettingsChange = false
+        return hadPendingChange
     }
 
     fun setQcmQuestionCount(count: Int) {

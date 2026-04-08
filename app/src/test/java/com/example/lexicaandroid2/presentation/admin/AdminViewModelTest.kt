@@ -9,6 +9,8 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -48,6 +50,43 @@ class AdminViewModelTest {
             viewModel.applyNormalPresentationPreset()
 
             verify(adminPrefsRepository).normalPresentationEnabled = true
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test
+    fun consumePendingReviewSettingsChangeReturnsTrueOnlyAfterReviewChange() = runTest {
+        Dispatchers.setMain(testDispatcher)
+        try {
+            val adminPrefsRepository = mock<AdminPrefsRepository>()
+            val userStatsRepository = mock<UserStatsRepository>()
+            whenever(userStatsRepository.getUserStats()).thenReturn(flowOf(UserStatsEntity(level = 3)))
+
+            whenever(adminPrefsRepository.normalPresentationEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewWordToDefinitionEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewDefinitionToWordEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.extraSpellingEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewQcmEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewMatchingEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.challengeSemanticEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.challengeOrthoEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.sessionSize).thenReturn(AdminPrefsRepository.DEFAULT_SESSION_SIZE)
+            whenever(adminPrefsRepository.qcmQuestionCount).thenReturn(AdminPrefsRepository.DEFAULT_QCM_COUNT)
+            whenever(adminPrefsRepository.memoryGridSize).thenReturn(MemoryGridSize.SIZE_4X4)
+
+            val viewModel = AdminViewModel(
+                adminPrefsRepository = adminPrefsRepository,
+                userStatsRepository = userStatsRepository,
+                dailyReviewStatDao = null
+            )
+
+            assertFalse(viewModel.consumePendingReviewSettingsChange())
+
+            viewModel.setNormalPresentationEnabled(false)
+
+            assertTrue(viewModel.consumePendingReviewSettingsChange())
+            assertFalse(viewModel.consumePendingReviewSettingsChange())
         } finally {
             Dispatchers.resetMain()
         }

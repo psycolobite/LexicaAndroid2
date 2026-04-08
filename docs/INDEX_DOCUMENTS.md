@@ -1,6 +1,6 @@
 # 📚 Index Complet de la Documentation
 
-**Derniere mise a jour :** 2026-03-24  
+**Derniere mise a jour :** 2026-04-08  
 **Statut :** 🟢 Actif & Complet
 
 Ce fichier fusionne l'ancien `README_NAVIGATION.md` et `INDEX_DOCUMENTS.md` pour eviter les doublons.
@@ -62,10 +62,12 @@ Definition du projet.
 - `BRIEF_EXECUTIF.md` - Vue executif (5 min)
 - `SYNTHESE_COMPLETE_2026-02-27.md` - Vue complete (25 min)
 - `fonctionnement algo délai et présentation cards.md` - Référence complète pour l'algo de délai, la logique de session et la présentation des faces
+- `operationalisation algo délai et présentation cards.md` - Traduction de la spec en plan technique concret (Polo-1)
 
 ### 📁 `/docs/planning/`
 Ce qu'on fait.
 - `PLAN_ACTION_IMMEDIATE.md` - Actions prioritaires
+- `PLAN_INTEGRATION_GOOGLE_PLAY.md` - Checklist dédiée de préparation publication Google Play
 - `BACKLOG.md` - Taches globales
 - `MINI_GAMES_BACKLOG.md` - Backlog jeux (10 jeux)
 
@@ -89,6 +91,32 @@ Fichiers obsoletes (archives techniques).
 - `OBSOLETE_PROMPTS_AGENTS.md` - Remplace par `CONSIGNES_TACHES.md`
 - `OBSOLETE_README_NAVIGATION.md` - Fusionne dans `INDEX_DOCUMENTS.md`
 - `OBSOLETE_INDEX_DOCUMENTS_old.md` - Ancienne version avant fusion
+
+---
+
+## 🏗️ Architecture Code — Modules Clés
+
+### 📁 `presentation/review/` — Écran d'entraînement (7 fichiers)
+
+Refactorisé le 2026-04-05 depuis un monolithe de ~1700 lignes :
+
+| Fichier | Responsabilité |
+|---------|---------------|
+| `ReviewScreen.kt` | Orchestrateur lean (~300 lignes) : Scaffold, navigation entre états |
+| `ReviewModels.kt` | Data classes (`ReviewCardDisplay`, `ConfettiPiece`, `ReviewButtonColors`) + utilitaires (`decodeReviewText`, `buildReviewCardDisplay`) |
+| `ReviewSharedComponents.kt` | Composables partagés : `ReviewHeader`, `ReviewContextHint`, `AudioTextLine`, `GradeButton`, `EmptyReviewState`, etc. |
+| `NormalQuestionContent.kt` | Contenu question normale : flip recto/verso, contrôles fixes bas d'écran |
+| `OrthographicContent.kt` | Contenu orthographique : question ortho (PASSER+VALIDER) + défis (VALIDER seul) |
+| `EventContent.kt` | QCM (`MultipleChoiceEventContent`) + Matching (`MatchingEventContent`) |
+| `SessionCelebration.kt` | Célébration fin de session + confettis |
+
+### 📁 `domain/logic/` — Moteur de session Polo-1
+
+| Fichier | Responsabilité |
+|---------|---------------|
+| `ReviewIntervalEngine.kt` | Calcul des délais de révision (ratio maîtrise, éligibilité) |
+| `ReviewSessionPlanner.kt` | Planification d'une session : ordre global, priorités, anti-jumelles |
+| `ReviewSessionEngine.kt` | Moteur de validation locale : règles de progression par question |
 
 ---
 
@@ -186,9 +214,10 @@ PLAN_ACTION_IMMEDIATE.md
 | Type | Nombre | Exemples |
 |------|--------|----------|
 | Guides actifs | 4 | `GUIDELINES.md`, `CONSIGNES_TACHES.md`, etc. |
-| Specifications | 3 | `BRIEF_EXECUTIF.md`, `SYNTHESE_COMPLETE...`, algo délai |
+| Specifications | 4 | `BRIEF_EXECUTIF.md`, `SYNTHESE_COMPLETE...`, algo délai, opérationnalisation |
 | Planning | 3 | `PLAN_ACTION_IMMEDIATE.md`, `BACKLOG.md`, etc. |
 | Status | 1 | `etat_2026-02-27.md` (dernier seulement) |
+| Architecture code | 10+ | Review (7 fichiers), Polo-1 engine (3 fichiers) |
 | Archives | Variable | Anciens etats, sessions, etc. |
 | Obsoletes | 3+ | `OBSOLETE_PROMPTS_AGENTS.md`, etc. |
 
@@ -210,7 +239,7 @@ Si tout est ✅: **Tu es pret !**
 **Fichier :** `INDEX_DOCUMENTS.md`  
 **Cree :** 2026-02-27  
 **Fusionne :** `README_NAVIGATION.md` + ancien `INDEX_DOCUMENTS.md`  
-**Derniere mise a jour :** 2026-03-24  
+**Derniere mise a jour :** 2026-04-05  
 **Statut :** 🟢 Actif  
 **Maintenance :** Mise a jour apres chaque changement structure doc
 

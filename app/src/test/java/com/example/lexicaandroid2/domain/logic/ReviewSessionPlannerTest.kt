@@ -190,6 +190,7 @@ class ReviewSessionPlannerTest {
         override suspend fun deleteCard(cardId: String) = Unit
         override suspend fun getStatsByState(): Map<String, Int> = emptyMap()
         override suspend fun getAllCards(): List<Flashcard> = emptyList()
+        override suspend fun deleteAllCards() = Unit
     }
 }
 

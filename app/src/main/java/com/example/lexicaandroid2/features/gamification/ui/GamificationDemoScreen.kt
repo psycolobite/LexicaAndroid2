@@ -45,8 +45,8 @@ fun GamificationDemoScreen(
             fontWeight = FontWeight.Bold
         )
         
-        Divider()
-        
+        HorizontalDivider()
+
         // Progress Bar
         userStats?.let { stats ->
             XpProgressBar(userStats = stats)
@@ -54,13 +54,13 @@ fun GamificationDemoScreen(
             // Stats Cards
             StatsCardsRow(stats)
             
-            Divider()
-            
+            HorizontalDivider()
+
             // XP Actions
             XpActionsSection(onAddXp)
             
-            Divider()
-            
+            HorizontalDivider()
+
             // Level Information
             LevelInformationCard(stats)
         } ?: run {
@@ -237,8 +237,8 @@ private fun LevelInformationCard(stats: UserStatsEntity) {
                 fontWeight = FontWeight.Bold
             )
             
-            Divider()
-            
+            HorizontalDivider()
+
             InfoRow(
                 label = "Niveau actuel",
                 value = stats.level.toString()

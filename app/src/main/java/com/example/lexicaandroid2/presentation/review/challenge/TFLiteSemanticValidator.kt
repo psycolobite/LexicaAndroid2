@@ -4,180 +4,385 @@ import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.File
 import java.io.FileOutputStream
+import java.net.HttpURLConnection
 import java.net.URL
+import java.util.Locale
 import kotlin.math.sqrt
 
+private const val MODEL_SUCCESS_THRESHOLD = 0.62f
+private const val MODEL_PARTIAL_THRESHOLD = 0.40f
+private const val DEFAULT_MAX_SEQUENCE_LENGTH = 96
+
+data class SemanticModelBundle(
+    val modelFile: File,
+    val vocabFile: File
+)
+
+private data class RemoteSemanticAsset(
+    val fileName: String,
+    val minBytes: Long,
+    val url: String
+)
+
 /**
- * Gestionnaire de téléchargement du modèle TFLite MiniLM
- * 
- * Modèle: paraphrase-multilingual-MiniLM-L12-v2
- * Taille: ~25MB
- * Precision: FP32
- * 
- * Téléchargement conditionnel au premier usage + cache persistent
+ * Télécharge et cache localement un bundle cohérent pour embeddings on-device :
+ * - un modèle TFLite DistilUSE multilingue quantifié
+ * - le vocabulaire WordPiece du tokenizer d'origine
+ *
+ * Le modèle MiniLM pointé auparavant n'existe pas en `model.tflite` dans le dépôt HF ciblé,
+ * ce qui rendait l'ancienne pipeline inexécutable en pratique.
  */
 class ModelDownloadManager(private val context: Context) {
-    private val modelFileName = "minilm_multilingual.tflite"
-    private val modelFile: File = File(context.filesDir, modelFileName)
-    
-    // URL du modèle (exemple — à adapter selon source réelle)
-    // En production : utiliser Firebase ML ou URL directe Hugging Face
-    private val modelUrl = "https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2/resolve/main/model.tflite"
-    
-    fun isModelCached(): Boolean = modelFile.exists() && modelFile.length() > 1_000_000
-    
+
+    private val bundleSpecs = listOf(
+        RemoteSemanticAsset(
+            fileName = "semantic_distiluse_multilingual_int8.tflite",
+            minBytes = 20_000_000,
+            url = "https://huggingface.co/xuying7/distiluse-base-multilingual-cased-v2-tflite-version/resolve/main/model_int8.tflite"
+        ),
+        RemoteSemanticAsset(
+            fileName = "semantic_distiluse_multilingual_vocab.txt",
+            minBytes = 500_000,
+            url = "https://huggingface.co/sentence-transformers/distiluse-base-multilingual-cased-v2/resolve/main/vocab.txt"
+        )
+    )
+
+    fun isModelCached(): Boolean = bundleSpecs.all { spec ->
+        File(context.filesDir, spec.fileName).let { it.exists() && it.length() >= spec.minBytes }
+    }
+
     suspend fun downloadModelIfNeeded(onProgress: (Int) -> Unit = {}): Boolean = withContext(Dispatchers.IO) {
-        if (isModelCached()) return@withContext true
-        
+        if (isModelCached()) {
+            onProgress(100)
+            return@withContext true
+        }
+
+        context.filesDir.mkdirs()
+        val tempFiles = mutableListOf<File>()
+
         return@withContext try {
-            // Créer dossier s'il n'existe pas
-            context.filesDir.mkdirs()
-            
-            // Télécharger le fichier
-            val url = URL(modelUrl)
-            val connection = url.openConnection()
-            connection.connectTimeout = 30_000
-            connection.readTimeout = 30_000
-            
-            val contentLength = connection.contentLength
-            if (contentLength <= 0) return@withContext false
-            
-            var downloadedBytes = 0
-            val buffer = ByteArray(8192)
-            var bytesRead: Int
-            
-            url.openStream().use { inputStream ->
-                FileOutputStream(modelFile).use { outputStream ->
-                    while (inputStream.read(buffer).also { bytesRead = it } != -1) {
-                        outputStream.write(buffer, 0, bytesRead)
-                        downloadedBytes += bytesRead
-                        val progress = (downloadedBytes * 100) / contentLength
-                        onProgress(progress)
+            val connections = bundleSpecs.map { spec -> spec to openConnection(spec.url) }
+            val totalBytes = connections.sumOf { (_, connection) -> connection.contentLengthLong.coerceAtLeast(1L) }
+            var downloadedBytes = 0L
+
+            connections.forEach { (spec, connection) ->
+                val targetFile = File(context.filesDir, spec.fileName)
+                val tempFile = File(context.filesDir, "${spec.fileName}.part")
+                tempFiles += tempFile
+
+                connection.inputStream.use { inputStream ->
+                    FileOutputStream(tempFile).use { outputStream ->
+                        val buffer = ByteArray(DEFAULT_BUFFER_SIZE)
+                        var bytesRead: Int
+                        while (inputStream.read(buffer).also { bytesRead = it } != -1) {
+                            outputStream.write(buffer, 0, bytesRead)
+                            downloadedBytes += bytesRead
+                            onProgress(((downloadedBytes * 100) / totalBytes).toInt().coerceIn(0, 100))
+                        }
                     }
                 }
+
+                if (tempFile.length() < spec.minBytes) {
+                    error("Fichier téléchargé incomplet : ${spec.fileName}")
+                }
+
+                if (targetFile.exists()) {
+                    targetFile.delete()
+                }
+                if (!tempFile.renameTo(targetFile)) {
+                    tempFile.copyTo(targetFile, overwrite = true)
+                    tempFile.delete()
+                }
             }
-            
+
+            onProgress(100)
             isModelCached()
         } catch (e: Exception) {
             e.printStackTrace()
-            // Nettoyer le fichier partiellement téléchargé
-            if (modelFile.exists()) modelFile.delete()
+            bundleSpecs.forEach { spec -> File(context.filesDir, spec.fileName).delete() }
+            tempFiles.forEach(File::delete)
             false
         }
     }
-    
-    fun getModelFile(): File? = if (isModelCached()) modelFile else null
+
+    fun getModelBundle(): SemanticModelBundle? {
+        if (!isModelCached()) return null
+        return SemanticModelBundle(
+            modelFile = File(context.filesDir, bundleSpecs[0].fileName),
+            vocabFile = File(context.filesDir, bundleSpecs[1].fileName)
+        )
+    }
+
+    fun getModelFile(): File? = getModelBundle()?.modelFile
+
+    fun getVocabFile(): File? = getModelBundle()?.vocabFile
+
+    private fun openConnection(url: String): HttpURLConnection {
+        return (URL(url).openConnection() as HttpURLConnection).apply {
+            connectTimeout = 30_000
+            readTimeout = 30_000
+            instanceFollowRedirects = true
+            connect()
+        }
+    }
+}
+
+internal interface SentenceEmbeddingEngine {
+    fun isReady(): Boolean
+    fun embed(text: String): FloatArray?
+}
+
+internal class DistilUseWordPieceTokenizer private constructor(
+    private val tokenToId: Map<String, Int>,
+    private val doLowerCase: Boolean
+) {
+
+    constructor(vocabLines: List<String>, doLowerCase: Boolean = false) : this(
+        tokenToId = vocabLines.mapIndexedNotNull { index, token ->
+            token.trimEnd('\r').takeIf { it.isNotEmpty() }?.let { it to index }
+        }.toMap(),
+        doLowerCase = doLowerCase
+    )
+
+    fun encode(text: String, maxSequenceLength: Int = DEFAULT_MAX_SEQUENCE_LENGTH): IntArray {
+        val bodyLimit = (maxSequenceLength - 2).coerceAtLeast(1)
+        val pieces = basicTokenize(text)
+            .flatMap(::wordPieceTokenize)
+            .take(bodyLimit)
+            .ifEmpty { listOf(UNKNOWN_TOKEN) }
+
+        val tokens = buildList {
+            add(CLS_TOKEN)
+            addAll(pieces)
+            add(SEP_TOKEN)
+        }
+
+        return tokens.map { tokenToId[it] ?: unknownTokenId }.toIntArray()
+    }
+
+    private fun basicTokenize(text: String): List<String> {
+        val cleanedText = cleanText(if (doLowerCase) text.lowercase(Locale.ROOT) else text)
+        if (cleanedText.isBlank()) return emptyList()
+
+        val tokens = mutableListOf<String>()
+        val currentToken = StringBuilder()
+
+        fun flushCurrentToken() {
+            if (currentToken.isNotEmpty()) {
+                tokens += currentToken.toString()
+                currentToken.setLength(0)
+            }
+        }
+
+        cleanedText.forEach { char ->
+            when {
+                char.isWhitespace() -> flushCurrentToken()
+                isPunctuation(char) -> {
+                    flushCurrentToken()
+                    tokens += char.toString()
+                }
+                else -> currentToken.append(char)
+            }
+        }
+        flushCurrentToken()
+
+        return tokens.filter { it.isNotBlank() }
+    }
+
+    private fun wordPieceTokenize(token: String): List<String> {
+        if (token.length > MAX_INPUT_CHARS_PER_WORD) {
+            return listOf(UNKNOWN_TOKEN)
+        }
+
+        var start = 0
+        val subTokens = mutableListOf<String>()
+        while (start < token.length) {
+            var end = token.length
+            var currentSubToken: String? = null
+
+            while (start < end) {
+                val fragment = token.substring(start, end)
+                val candidate = if (start == 0) fragment else "##$fragment"
+                if (candidate in tokenToId) {
+                    currentSubToken = candidate
+                    break
+                }
+                end -= 1
+            }
+
+            if (currentSubToken == null) {
+                return listOf(UNKNOWN_TOKEN)
+            }
+
+            subTokens += currentSubToken
+            start = end
+        }
+
+        return subTokens
+    }
+
+    private fun cleanText(text: String): String = buildString(text.length) {
+        text.forEach { char ->
+            when {
+                isControl(char) -> Unit
+                char.isWhitespace() -> append(' ')
+                else -> append(char)
+            }
+        }
+    }
+
+    private fun isControl(char: Char): Boolean {
+        if (char == '\t' || char == '\n' || char == '\r') return false
+        return when (Character.getType(char)) {
+            Character.CONTROL.toInt(), Character.FORMAT.toInt() -> true
+            else -> false
+        }
+    }
+
+    private fun isPunctuation(char: Char): Boolean {
+        val code = char.code
+        if (code in 33..47 || code in 58..64 || code in 91..96 || code in 123..126) {
+            return true
+        }
+
+        return when (Character.getType(char)) {
+            Character.DASH_PUNCTUATION.toInt(),
+            Character.START_PUNCTUATION.toInt(),
+            Character.END_PUNCTUATION.toInt(),
+            Character.CONNECTOR_PUNCTUATION.toInt(),
+            Character.OTHER_PUNCTUATION.toInt(),
+            Character.INITIAL_QUOTE_PUNCTUATION.toInt(),
+            Character.FINAL_QUOTE_PUNCTUATION.toInt() -> true
+            else -> false
+        }
+    }
+
+    private val unknownTokenId: Int = tokenToId[UNKNOWN_TOKEN] ?: 0
+
+    private companion object {
+        private const val MAX_INPUT_CHARS_PER_WORD = 100
+        private const val CLS_TOKEN = "[CLS]"
+        private const val SEP_TOKEN = "[SEP]"
+        private const val UNKNOWN_TOKEN = "[UNK]"
+    }
+}
+
+internal class TFLiteSentenceEmbeddingEngine(
+    private val modelManager: ModelDownloadManager
+) : SentenceEmbeddingEngine {
+
+    private val lock = Any()
+    private var interpreter: Interpreter? = null
+    private var tokenizer: DistilUseWordPieceTokenizer? = null
+
+    init {
+        initialize()
+    }
+
+    override fun isReady(): Boolean = interpreter != null && tokenizer != null
+
+    override fun embed(text: String): FloatArray? {
+        val localInterpreter = interpreter ?: return null
+        val localTokenizer = tokenizer ?: return null
+        val tokenIds = localTokenizer.encode(text)
+        if (tokenIds.size < 2) return null
+
+        return synchronized(lock) {
+            try {
+                localInterpreter.resizeInput(0, intArrayOf(1, tokenIds.size))
+                localInterpreter.allocateTensors()
+
+                val outputShape = localInterpreter.getOutputTensor(0).shape()
+                if (outputShape.size != 3 || outputShape[0] != 1 || outputShape[2] <= 0) {
+                    return@synchronized null
+                }
+
+                val sequenceLength = outputShape[1]
+                val hiddenSize = outputShape[2]
+                val output = Array(1) { Array(sequenceLength) { FloatArray(hiddenSize) } }
+                localInterpreter.run(arrayOf(tokenIds), output)
+
+                val pooled = meanPool(
+                    tokenEmbeddings = output[0],
+                    tokenCount = tokenIds.size.coerceAtMost(sequenceLength)
+                )
+                normalize(pooled)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
+
+    private fun initialize() {
+        val bundle = modelManager.getModelBundle() ?: return
+        try {
+            tokenizer = DistilUseWordPieceTokenizer(
+                vocabLines = bundle.vocabFile.readLines(),
+                doLowerCase = false
+            )
+            interpreter = Interpreter(
+                bundle.modelFile,
+                Interpreter.Options().apply {
+                    setNumThreads(2)
+                }
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            interpreter = null
+            tokenizer = null
+        }
+    }
+
+    private fun meanPool(tokenEmbeddings: Array<FloatArray>, tokenCount: Int): FloatArray {
+        val hiddenSize = tokenEmbeddings.firstOrNull()?.size ?: return FloatArray(0)
+        val pooled = FloatArray(hiddenSize)
+        val contentStart = if (tokenCount > 2) 1 else 0
+        val contentEnd = if (tokenCount > 2) tokenCount - 1 else tokenCount
+        val validCount = (contentEnd - contentStart).coerceAtLeast(1)
+
+        for (tokenIndex in contentStart until contentEnd.coerceAtMost(tokenEmbeddings.size)) {
+            val embedding = tokenEmbeddings[tokenIndex]
+            for (dimension in embedding.indices) {
+                pooled[dimension] += embedding[dimension]
+            }
+        }
+
+        for (dimension in pooled.indices) {
+            pooled[dimension] /= validCount.toFloat()
+        }
+        return pooled
+    }
+
+    private fun normalize(vector: FloatArray): FloatArray {
+        val norm = sqrt(vector.sumOf { value -> (value * value).toDouble() }).toFloat()
+        if (norm <= 0f) return vector
+        for (index in vector.indices) {
+            vector[index] /= norm
+        }
+        return vector
+    }
 }
 
 /**
- * Implémentation TFLite de la validation sémantique
- * 
- * Encode une phrase → vecteur dense 384-dim
- * Calcule cosine similarity entre deux vecteurs
- * Score >= 0.65 = match sémantique acceptable
+ * Validateur sémantique hybride :
+ * - embeddings on-device si le bundle TFLite est disponible
+ * - fallback Jaccard sinon ou en cas d'erreur d'inférence
  */
-class TFLiteSemanticValidator(
-    private val context: Context,
-    private val modelManager: ModelDownloadManager
+class TFLiteSemanticValidator internal constructor(
+    private val embeddingEngine: SentenceEmbeddingEngine,
+    private val fallbackValidator: SemanticValidator = JaccardSemanticValidator()
 ) : SemanticValidator {
-    
-    private var interpreter: Interpreter? = null
-    private var isInitialized = false
-    
-    init {
-        initializeInterpreter()
-    }
-    
-    private fun initializeInterpreter() {
-        if (!modelManager.isModelCached()) return
-        
-        try {
-            val modelFile = modelManager.getModelFile() ?: return
-            interpreter = Interpreter(modelFile)
-            isInitialized = true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            isInitialized = false
-        }
-    }
-    
-    override fun isModelReady(): Boolean = isInitialized && interpreter != null
-    
-    /**
-     * Encode une phrase en vecteur dense 384-dim
-     * 
-     * Processus simplifié (en prod : utiliser tokenizer complet)
-     * Pour V1 : approximation vectorielle
-     */
-    private fun encodeSimplified(text: String): FloatArray {
-        val normalized = KeywordExtractor.tokenize(text)
-        val vector = FloatArray(384)
-        
-        // Méthode simple : hash des tokens dans le vecteur
-        // (En prod vrai : utiliser tokenizer BERT + embedding layer)
-        normalized.forEachIndexed { idx, token ->
-            val hash = token.hashCode().toLong() and 0xFFFFFFFFL
-            val position = (hash % 384).toInt()
-            vector[position] += 1f / (idx + 1)  // IDF-like weighting
-        }
-        
-        // Normalisation L2
-        val norm = sqrt(vector.sumOf { (it * it).toDouble() }).toFloat()
-        if (norm > 0f) {
-            for (i in vector.indices) vector[i] /= norm
-        }
-        
-        return vector
-    }
-    
-    /**
-     * Encode une phrase via TFLite (si disponible) ou fallback simplifié
-     */
-    private fun encode(text: String): FloatArray {
-        if (!isModelReady()) {
-            return encodeSimplified(text)
-        }
-        
-        return try {
-            // Préparation input (simplifié — en prod : tokenizer complet)
-            val inputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 384), org.tensorflow.lite.DataType.FLOAT32)
-            val input = encodeSimplified(text)  // Utiliser embedding simplifié en input
-            inputBuffer.loadArray(input)
-            
-            // Run inference
-            val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 384), org.tensorflow.lite.DataType.FLOAT32)
-            interpreter?.run(arrayOf(inputBuffer.buffer), mapOf(0 to outputBuffer.buffer))
-            
-            outputBuffer.floatArray
-        } catch (e: Exception) {
-            e.printStackTrace()
-            encodeSimplified(text)
-        }
-    }
-    
-    /**
-     * Cosine similarity entre deux vecteurs [0, 1]
-     */
-    private fun cosineSimilarity(a: FloatArray, b: FloatArray): Float {
-        if (a.size != b.size) return 0f
-        
-        var dotProduct = 0.0
-        var normA = 0.0
-        var normB = 0.0
-        
-        for (i in a.indices) {
-            dotProduct += a[i].toDouble() * b[i].toDouble()
-            normA += (a[i].toDouble() * a[i].toDouble())
-            normB += (b[i].toDouble() * b[i].toDouble())
-        }
-        
-        val denominator = sqrt(normA) * sqrt(normB)
-        return if (denominator > 0.0) (dotProduct / denominator).toFloat() else 0f
-    }
-    
+
+    @Suppress("UNUSED_PARAMETER")
+    constructor(context: Context, modelManager: ModelDownloadManager) : this(
+        embeddingEngine = TFLiteSentenceEmbeddingEngine(modelManager)
+    )
+
+    override fun isModelReady(): Boolean = embeddingEngine.isReady()
+
     override fun validate(userInput: String, expected: String): ValidationResult {
         if (userInput.isBlank()) {
             return ValidationResult(
@@ -185,62 +390,60 @@ class TFLiteSemanticValidator(
                 keywordScore = 0f,
                 semanticScore = 0f,
                 foundKeywords = emptyList(),
-                missingKeywords = KeywordExtractor.extractKeywords(expected, topN = 5),
+                missingKeywords = emptyList(),
                 xpBonus = 0,
                 feedbackMessage = "❌ Aucune réponse fournie"
             )
         }
-        
-        // Calcul scores
-        val (foundKeywords, missingKeywords) = KeywordExtractor.analyzeKeywords(userInput, expected, topN = 5)
-        val allKeywords = foundKeywords + missingKeywords
-        val keywordScore = if (allKeywords.isEmpty()) 1f else foundKeywords.size.toFloat() / allKeywords.size.toFloat()
-        
-        // Score TFLite (si modèle disponible)
-        val semanticScore = if (isModelReady()) {
-            val userVector = encode(userInput)
-            val expectedVector = encode(expected)
-            cosineSimilarity(userVector, expectedVector)
-        } else {
-            -1f  // Indicateur "pas disponible"
+
+        if (!isModelReady()) {
+            return fallbackValidator.validate(userInput, expected)
         }
-        
-        // Règle combinée : (TFLite OU Jaccard) si une couche dispo
+
+        val userEmbedding = embeddingEngine.embed(userInput) ?: return fallbackValidator.validate(userInput, expected)
+        val expectedEmbedding = embeddingEngine.embed(expected) ?: return fallbackValidator.validate(userInput, expected)
+
+        val semanticScore = cosineSimilarity(userEmbedding, expectedEmbedding)
+        val semanticPercent = (semanticScore.coerceAtLeast(0f) * 100).toInt()
+
         val (isValid, xpBonus, feedbackMessage) = when {
-            // Avec TFLite : soit sémantique bon, soit keywords bon
-            semanticScore >= 0f && (semanticScore >= 0.65f || keywordScore >= 0.6f) -> {
-                val msg = "✅ Bonne définition ! Similarité sémantique : ${(semanticScore * 100).toInt()}%"
-                Triple(true, 15, msg)
+            semanticScore >= MODEL_SUCCESS_THRESHOLD -> {
+                Triple(true, 15, "✅ Bonne définition ! Similarité sémantique : ${semanticPercent}%")
             }
-            // Sans TFLite : fallback sur keywords seuls
-            semanticScore < 0f && keywordScore >= 0.6f -> {
-                val msg = "✅ Bonne définition ! Mots-clés trouvés : ${foundKeywords.joinToString(", ")}"
-                Triple(true, 15, msg)
+
+            semanticScore >= MODEL_PARTIAL_THRESHOLD -> {
+                Triple(false, 5, "💡 Presque ! Reformule encore un peu ta réponse. Similarité : ${semanticPercent}%")
             }
-            // Presque (keywords > 30% ou semantic > 0.4)
-            (semanticScore >= 0.4f || keywordScore >= 0.3f) -> {
-                val msg = "💡 Presque ! Il manquait : ${missingKeywords.joinToString(", ")}"
-                Triple(false, 5, msg)
-            }
-            // Échec
+
             else -> {
-                val missing = if (missingKeywords.isNotEmpty()) {
-                    "Mots-clés manquants : ${missingKeywords.joinToString(", ")}"
-                } else {
-                    "Sens insuffisant"
-                }
-                Triple(false, 0, "❌ $missing")
+                Triple(false, 0, "❌ La réponse est trop éloignée du sens attendu. Similarité : ${semanticPercent}%")
             }
         }
-        
+
         return ValidationResult(
             isValid = isValid,
-            keywordScore = keywordScore,
+            keywordScore = 0f,
             semanticScore = semanticScore,
-            foundKeywords = foundKeywords,
-            missingKeywords = missingKeywords,
+            foundKeywords = emptyList(),
+            missingKeywords = emptyList(),
             xpBonus = xpBonus,
             feedbackMessage = feedbackMessage
         )
+    }
+
+    private fun cosineSimilarity(a: FloatArray, b: FloatArray): Float {
+        if (a.size != b.size || a.isEmpty()) return 0f
+
+        var dotProduct = 0.0
+        var normA = 0.0
+        var normB = 0.0
+        for (index in a.indices) {
+            dotProduct += a[index].toDouble() * b[index].toDouble()
+            normA += a[index].toDouble() * a[index].toDouble()
+            normB += b[index].toDouble() * b[index].toDouble()
+        }
+
+        val denominator = sqrt(normA) * sqrt(normB)
+        return if (denominator > 0.0) (dotProduct / denominator).toFloat() else 0f
     }
 }

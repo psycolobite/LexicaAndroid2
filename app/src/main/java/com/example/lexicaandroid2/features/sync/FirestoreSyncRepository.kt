@@ -70,6 +70,14 @@ class FirestoreSyncRepository {
         }
     }
 
+    suspend fun deleteProgress(uid: String): Result<Unit> = runCatching {
+        db.collection(COLLECTION_USERS).document(uid).delete().await()
+        Log.d(TAG, "Delete OK for uid=$uid")
+        Unit
+    }.also { result ->
+        result.onFailure { Log.e(TAG, "Delete failed for uid=$uid: ${it.message}", it) }
+    }
+
     companion object {
         private const val COLLECTION_USERS = "users"
         private const val TAG = "FirestoreSyncRepo"
