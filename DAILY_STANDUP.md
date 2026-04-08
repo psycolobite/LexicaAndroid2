@@ -1792,6 +1792,11 @@ Build:              ✅ Compilation OK
 - Diagnostic complémentaire : la croix rouge visible dans GitHub Actions correspond au run ancien `docs: fix privacy policy pages url guidance` ; les commits suivants n’avaient pas relancé Pages car le workflow ne se déclenche que sur `privacy-policy/**` ou le workflow lui-même
 - Nouveau déclenchement préparé via une micro-mise à jour de `privacy-policy/index.html` (date de mise à jour + notice contact) pour forcer un run Pages après activation
 - Politique de confidentialité retravaillée ensuite pour la publication : suppression de la notice interne destinée au dépôt et renforcement des mentions attendues côté RGPD / Google Play (`base légale`, `durée de conservation`, `transferts`, `droits`, `CNIL`, reformulation de la `sécurité` autour de Firebase / Google Cloud)
+- Audit complémentaire des flux de données réalisé pour préparer la fiche **Google Play Data safety** : confirmation que le cloud Firestore ne synchronise actuellement que `xp`, `level`, `streak`, `lastLoginDate` et `favoriteCardIds` ; la progression détaillée question par question reste locale
+- Politique de confidentialité encore précisée sur deux points techniques réels : les requêtes de recherche externe envoyées au Wiktionnaire et la portée exacte des données synchronisées
+- Préparation repo-side du verrouillage Firestore : ajout de `firestore.rules`, `firebase.json` et `.firebaserc` pour le projet `lexica-6d59a`
+- Correction du flux de suppression de compte dans `ProfileViewModel.kt` : suppression du document Firestore **avant** la suppression du compte Firebase pour rester compatible avec des règles strictes basées sur `auth.uid == userId`
+- Vérification technique après correction du flux : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
 - Reste hors repo :
   - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS

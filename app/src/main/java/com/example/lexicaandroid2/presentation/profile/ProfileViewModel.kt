@@ -123,8 +123,10 @@ class ProfileViewModel(
             }
 
             runCatching {
-                authRepository.deleteAccount().getOrThrow()
+                // Supprimer d'abord le document cloud tant que l'utilisateur est encore authentifié.
+                // Cela permet de rester compatible avec des règles Firestore strictes de type auth.uid == document id.
                 syncManager?.deleteCloudAccountData(uid)
+                authRepository.deleteAccount().getOrThrow()
                 resetProgressUseCase?.invoke()
                 runCatching { authRepository.signOut() }
             }.onSuccess {
