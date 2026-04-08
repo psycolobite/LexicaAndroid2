@@ -1789,6 +1789,8 @@ Build:              ✅ Compilation OK
 - Activation GitHub Pages effectuée ensuite côté dépôt (source : **GitHub Actions**) ; un **nouveau déclenchement** du workflow est nécessaire après cette activation pour sortir du `404` initial
 - URL publique GitHub Pages attendue déjà branchée côté app dans `LexicaApp.kt` : `https://psycolobite.github.io/LexicaAndroid2/`
 - Vérification technique après branchement : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+- Diagnostic complémentaire : la croix rouge visible dans GitHub Actions correspond au run ancien `docs: fix privacy policy pages url guidance` ; les commits suivants n’avaient pas relancé Pages car le workflow ne se déclenche que sur `privacy-policy/**` ou le workflow lui-même
+- Nouveau déclenchement préparé via une micro-mise à jour de `privacy-policy/index.html` (date de mise à jour + notice contact) pour forcer un run Pages après activation
 - Reste hors repo :
   - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS
