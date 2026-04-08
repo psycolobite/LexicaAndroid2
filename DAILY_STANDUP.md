@@ -1786,10 +1786,11 @@ Build:              ✅ Compilation OK
 - Correction de la cible GitHub Pages documentée : le workflow publie le contenu de `privacy-policy/` à la **racine** du site Pages du dépôt, donc l’URL attendue est de type `https://psycolobite.github.io/LexicaAndroid2/` et non `/privacy-policy/`
 - Commit/push documentaire effectué sur `integration/espace-de-travail-2026-04-08-suite` : `74c1757 docs: fix privacy policy pages url guidance`
 - Test HTTP public effectué sur `https://psycolobite.github.io/LexicaAndroid2/` : **404** à ce stade, ce qui confirme que l’activation GitHub Pages côté dépôt reste nécessaire
+- Activation GitHub Pages effectuée ensuite côté dépôt (source : **GitHub Actions**) ; un **nouveau déclenchement** du workflow est nécessaire après cette activation pour sortir du `404` initial
 - URL publique GitHub Pages attendue déjà branchée côté app dans `LexicaApp.kt` : `https://psycolobite.github.io/LexicaAndroid2/`
 - Vérification technique après branchement : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
 - Reste hors repo :
-  - activer **Settings → Pages → Source: GitHub Actions**
+  - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS
   - confirmer l’e-mail support public final avant publication
 
