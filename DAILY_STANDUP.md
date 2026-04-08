@@ -1784,8 +1784,9 @@ Build:              ✅ Compilation OK
 - Vérification Git locale effectuée : `origin` pointe bien sur `https://github.com/psycolobite/LexicaAndroid2.git`
 - Vérification remote effectuée : la branche distante existante est `origin/integration/espace-de-travail-2026-04-08-suite` ; `main` n’a pas encore été poussée sur GitHub à ce stade
 - Correction de la cible GitHub Pages documentée : le workflow publie le contenu de `privacy-policy/` à la **racine** du site Pages du dépôt, donc l’URL attendue est de type `https://psycolobite.github.io/LexicaAndroid2/` et non `/privacy-policy/`
+- Commit/push documentaire effectué sur `integration/espace-de-travail-2026-04-08-suite` : `74c1757 docs: fix privacy policy pages url guidance`
+- Test HTTP public effectué sur `https://psycolobite.github.io/LexicaAndroid2/` : **404** à ce stade, ce qui confirme que l’activation GitHub Pages côté dépôt reste nécessaire
 - Reste hors repo :
-  - pousser sur GitHub
   - activer **Settings → Pages → Source: GitHub Actions**
   - récupérer l’URL finale publique HTTPS
   - confirmer l’e-mail support public final avant publication
