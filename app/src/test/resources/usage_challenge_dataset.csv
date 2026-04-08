@@ -1,0 +1,23 @@
+case_id;word_id;target_word;expected_definition;example_hint;candidate_sentence;expected_verdict;notes
+UC_001;mr_1;Abnégation;Sacrifice volontaire de soi-même, de son intérêt, de son amour-propre.;Faire preuve d'abnégation.;Son abnégation l'a poussée à renoncer à ses vacances pour s'occuper de sa sœur malade.;ACCEPT;Bon usage net et contextualisé
+UC_002;mr_1;Abnégation;Sacrifice volontaire de soi-même, de son intérêt, de son amour-propre.;Faire preuve d'abnégation.;Abnégation est un mot compliqué.;REJECT;Mot présent mais aucun usage réel
+UC_003;mr_1;Abnégation;Sacrifice volontaire de soi-même, de son intérêt, de son amour-propre.;Faire preuve d'abnégation.;Il a montré une certaine abnégation en laissant les autres passer avant lui.;ACCEPT;Usage plausible
+UC_004;mr_1;Abnégation;Sacrifice volontaire de soi-même, de son intérêt, de son amour-propre.;Faire preuve d'abnégation.;Je pense à l'abnégation.;REJECT;Trop court et pas contextualisé
+UC_005;mr_4;Dithyrambique;Très élogieux, parfois à l'excès.;Une critique dithyrambique.;Le critique a publié un article dithyrambique sur ce roman qu'il jugeait génial.;ACCEPT;Adjectif bien employé
+UC_006;mr_4;Dithyrambique;Très élogieux, parfois à l'excès.;Une critique dithyrambique.;Cette soupe est dithyrambique.;REJECT;Usage absurde hors sens
+UC_007;mr_4;Dithyrambique;Très élogieux, parfois à l'excès.;Une critique dithyrambique.;Son discours était si dithyrambique qu'il en devenait presque ridicule.;ACCEPT;Usage correct nuancé
+UC_008;mr_8;Harangue;Discours prononcé pour exhorter ou convaincre.;Une harangue enflammée.;Le chef a lancé une longue harangue pour convaincre l'équipe de tenir bon.;ACCEPT;Nom bien utilisé
+UC_009;mr_8;Harangue;Discours prononcé pour exhorter ou convaincre.;Une harangue enflammée.;Harangue est un mot de vocabulaire.;REJECT;Pas d'usage, seulement mention
+UC_010;mr_8;Harangue;Discours prononcé pour exhorter ou convaincre.;Une harangue enflammée.;Il a répondu par une harangue pleine d'emphase devant la foule.;ACCEPT;Usage correct
+UC_011;mr_9;Ineffable;Qui ne peut être exprimé par des mots.;Un bonheur ineffable.;Elle a ressenti une joie ineffable en revoyant son enfant après tant d'années.;ACCEPT;Adjectif correct
+UC_012;mr_9;Ineffable;Qui ne peut être exprimé par des mots.;Un bonheur ineffable.;Cet ineffable est posé sur la table.;REJECT;Mauvaise catégorie/usage hors sens
+UC_013;mr_10;Jactance;Attitude d'une personne qui se vante.;Il parle avec jactance.;Sa jactance agaçait tout le monde, car il se vantait sans cesse de ses succès.;ACCEPT;Nom correctement contextualisé
+UC_014;mr_10;Jactance;Attitude d'une personne qui se vante.;Il parle avec jactance.;Jactance signifie quelque chose de positif.;REJECT;Contresens explicite
+UC_015;mr_5;Ébullition;État d'un liquide qui bout, agitation intense.;La salle était en ébullition.;La foule était en ébullition après l'annonce du verdict, chacun criait en même temps.;ACCEPT;Sens figuré correct
+UC_016;mr_5;Ébullition;État d'un liquide qui bout, agitation intense.;La salle était en ébullition.;J'ai vu une ébullition silencieuse et immobile.;BORDERLINE;Cas ambigu volontaire
+UC_017;mr_6;Farouche;Qui fuit la société, qui a un caractère sauvage.;Un regard farouche.;Le cheval restait farouche et refusait qu'on l'approche.;ACCEPT;Usage correct
+UC_018;mr_6;Farouche;Qui fuit la société, qui a un caractère sauvage.;Un regard farouche.;Farouche est un très beau mot.;REJECT;Pas d'usage réel
+UC_019;mr_3;Concupiscence;Désir violent des plaisirs sensuels.;;Le roman décrit la concupiscence du personnage, dominé par ses désirs les plus charnels.;ACCEPT;Usage soutenu correct
+UC_020;mr_3;Concupiscence;Désir violent des plaisirs sensuels.;;La concupiscence aide à bien réfléchir calmement.;REJECT;Contresens fort
+
+

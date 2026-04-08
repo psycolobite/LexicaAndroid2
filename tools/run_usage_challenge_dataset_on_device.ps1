@@ -15,7 +15,7 @@ function Get-AdbPath {
     if (Test-Path $localProperties) {
         $sdkLine = Get-Content $localProperties | Where-Object { $_ -like 'sdk.dir=*' } | Select-Object -First 1
         if ($sdkLine) {
-            $sdkDir = $sdkLine.Substring(8).Replace('\\', '\')
+            $sdkDir = $sdkLine.Substring(8).Replace('\:', ':').Replace('\\', '\')
             $adbPath = Join-Path $sdkDir 'platform-tools\adb.exe'
             if (Test-Path $adbPath) { return $adbPath }
         }
@@ -25,25 +25,37 @@ function Get-AdbPath {
 }
 
 function To-Base64([string]$text) {
-    return [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text))
+    $base64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text))
+    return ($base64.TrimEnd('=')).Replace('+', '-').Replace('/', '_')
 }
 
 function Invoke-UsageCheck($adb, $row, $validatorMode, $packageName) {
-    & $adb shell am broadcast `
-        -a "com.example.lexicaandroid2.DEBUG_USAGE_CHALLENGE" `
-        --es word_b64 (To-Base64 $row.target_word) `
-        --es definition_b64 (To-Base64 $row.expected_definition) `
-        --es example_b64 (To-Base64 $row.example_hint) `
-        --es sentence_b64 (To-Base64 $row.candidate_sentence) `
-        --es validator_mode $validatorMode | Out-Null
+    $args = @(
+        'shell', 'am', 'broadcast',
+        '-a', 'com.example.lexicaandroid2.DEBUG_USAGE_CHALLENGE',
+        '-n', "$packageName/.debug.UsageChallengeDebugReceiver",
+        '--es', 'word_b64', (To-Base64 $row.target_word),
+        '--es', 'definition_b64', (To-Base64 $row.expected_definition)
+    )
+
+    if (-not [string]::IsNullOrWhiteSpace($row.example_hint)) {
+        $args += @('--es', 'example_b64', (To-Base64 $row.example_hint))
+    }
+
+    $args += @(
+        '--es', 'sentence_b64', (To-Base64 $row.candidate_sentence),
+        '--es', 'validator_mode', $validatorMode
+    )
+
+    & $adb @args | Out-Null
 
     $json = & $adb shell run-as $packageName cat files/usage_challenge_last_result.json
     return $json | ConvertFrom-Json
 }
 
 $adb = Get-AdbPath
-$devices = & $adb devices
-if ($devices -notmatch "device`r?$") {
+$deviceState = (& $adb get-state 2>$null | Out-String).Trim()
+if ($deviceState -ne 'device') {
     throw "Aucun appareil/emulateur connecté"
 }
 

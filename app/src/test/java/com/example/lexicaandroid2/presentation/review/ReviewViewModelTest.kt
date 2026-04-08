@@ -16,6 +16,8 @@ import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.domain.repository.ReviewSessionSnapshotRepository
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
 import com.example.lexicaandroid2.presentation.admin.AdminPrefsRepository
+import com.example.lexicaandroid2.presentation.review.challenge.JaccardSemanticValidator
+import com.example.lexicaandroid2.presentation.review.challenge.SemanticValidator
 import com.example.lexicaandroid2.presentation.settings.UserPrefsRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -252,6 +254,38 @@ class ReviewViewModelTest {
     }
 
     @Test
+    fun matchingCanUseGlobalDistractorWhenSessionHasSingleCard() = runTest {
+        whenever(repository.countNeverStartedQuestionProgress()).thenReturn(1)
+        whenever(repository.getNeverStartedQuestionProgress(any())).thenReturn(listOf(questionDef))
+
+        viewModel.loadSession(limit = 1)
+        advanceUntilIdle()
+        viewModel.gradeCard(0)
+        advanceUntilIdle()
+
+        assertEquals(ReviewCurrentItemType.MATCHING, viewModel.uiState.value.currentItemType)
+        assertTrue(viewModel.uiState.value.eventCards.size >= 2)
+        assertTrue(viewModel.uiState.value.eventCards.any { it.id == cardDef.id })
+    }
+
+    @Test
+    fun qcmCanUseGlobalDistractorsWhenSessionHasSingleQuestion() = runTest {
+        whenever(repository.countNeverStartedQuestionProgress()).thenReturn(1)
+        whenever(repository.getNeverStartedQuestionProgress(any())).thenReturn(listOf(questionWord))
+
+        viewModel.loadSession(limit = 1)
+        advanceUntilIdle()
+        repeat(3) {
+            viewModel.gradeCard(0)
+            advanceUntilIdle()
+        }
+
+        assertEquals(ReviewCurrentItemType.QCM, viewModel.uiState.value.currentItemType)
+        assertEquals(4, viewModel.uiState.value.eventOptions.size)
+        assertTrue(viewModel.uiState.value.eventOptions.contains(cardWord.verso))
+    }
+
+    @Test
     fun adminCanDisableWordToDefinitionQuestionsInReview() = runTest {
         val adminPrefs = mock<AdminPrefsRepository>()
         whenever(adminPrefs.reviewWordToDefinitionEnabled).thenReturn(false)
@@ -343,6 +377,147 @@ class ReviewViewModelTest {
         assertEquals(ReviewCurrentItemType.CHALLENGE, viewModel.uiState.value.currentItemType)
         assertEquals(ReviewSessionChallengeKind.SEMANTIC, viewModel.uiState.value.activeChallengeKind)
         assertEquals(cardWord, viewModel.uiState.value.currentCard)
+    }
+
+    @Test
+    fun semanticModelPromptIsShownAtAppLaunchAndCanSwitchToAiMode() = runTest {
+        val adminPrefs = mock<AdminPrefsRepository>()
+        var modelCached = false
+
+        whenever(adminPrefs.reviewWordToDefinitionEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewDefinitionToWordEnabled).thenReturn(false)
+        whenever(adminPrefs.extraSpellingEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewQcmEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewMatchingEnabled).thenReturn(false)
+        whenever(adminPrefs.challengeOrthoEnabled).thenReturn(false)
+        whenever(adminPrefs.challengeSemanticEnabled).thenReturn(true)
+
+        val aiValidator = object : SemanticValidator {
+            override fun validate(userInput: String, expected: String) =
+                com.example.lexicaandroid2.presentation.review.challenge.ValidationResult(
+                    isValid = true,
+                    semanticScore = 0.9f
+                )
+
+            override fun isModelReady(): Boolean = true
+        }
+
+        viewModel = ReviewViewModel(
+            repository = repository,
+            sm2Algorithm = Sm2Algorithm,
+            dailyStatDao = dailyStatDao,
+            reviewSessionSnapshotRepository = snapshotRepository,
+            adminPrefsRepository = adminPrefs,
+            isAdminUserProvider = { true },
+            semanticModelCachedProvider = { modelCached },
+            semanticValidatorProvider = { if (modelCached) aiValidator else JaccardSemanticValidator() }
+        )
+
+        viewModel.loadSession()
+        advanceUntilIdle()
+
+        assertEquals(ReviewCurrentItemType.CHALLENGE, viewModel.uiState.value.currentItemType)
+        assertEquals(ReviewSessionChallengeKind.SEMANTIC, viewModel.uiState.value.activeChallengeKind)
+        assertFalse(viewModel.uiState.value.showSemanticModelDownloadDialog)
+        assertFalse(viewModel.uiState.value.semanticModelReady)
+
+        viewModel.promptSemanticModelDownloadOnAppLaunch()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.showSemanticModelDownloadDialog)
+
+        modelCached = true
+        viewModel.onSemanticModelDownloaded()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.semanticModelReady)
+        assertFalse(viewModel.uiState.value.showSemanticModelDownloadDialog)
+    }
+
+    @Test
+    fun dismissSemanticModelPromptPreventsItFromReappearingDuringCurrentLaunch() = runTest {
+        val adminPrefs = mock<AdminPrefsRepository>()
+
+        whenever(adminPrefs.reviewWordToDefinitionEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewDefinitionToWordEnabled).thenReturn(false)
+        whenever(adminPrefs.extraSpellingEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewQcmEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewMatchingEnabled).thenReturn(false)
+        whenever(adminPrefs.challengeOrthoEnabled).thenReturn(false)
+        whenever(adminPrefs.challengeSemanticEnabled).thenReturn(true)
+
+        viewModel = ReviewViewModel(
+            repository = repository,
+            sm2Algorithm = Sm2Algorithm,
+            dailyStatDao = dailyStatDao,
+            reviewSessionSnapshotRepository = snapshotRepository,
+            adminPrefsRepository = adminPrefs,
+            isAdminUserProvider = { true },
+            semanticModelCachedProvider = { false },
+            semanticValidatorProvider = { JaccardSemanticValidator() }
+        )
+
+        viewModel.promptSemanticModelDownloadOnAppLaunch()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.showSemanticModelDownloadDialog)
+
+        viewModel.dismissSemanticModelDownload()
+        advanceUntilIdle()
+
+        assertFalse(viewModel.uiState.value.showSemanticModelDownloadDialog)
+
+        viewModel.promptSemanticModelDownloadOnAppLaunch()
+        advanceUntilIdle()
+
+        assertFalse(viewModel.uiState.value.showSemanticModelDownloadDialog)
+    }
+
+    @Test
+    fun semanticChallengePropagatesValidatorFeedbackMessage() = runTest {
+        val adminPrefs = mock<AdminPrefsRepository>()
+
+        whenever(adminPrefs.reviewWordToDefinitionEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewDefinitionToWordEnabled).thenReturn(false)
+        whenever(adminPrefs.extraSpellingEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewQcmEnabled).thenReturn(false)
+        whenever(adminPrefs.reviewMatchingEnabled).thenReturn(false)
+        whenever(adminPrefs.challengeOrthoEnabled).thenReturn(false)
+        whenever(adminPrefs.challengeSemanticEnabled).thenReturn(true)
+
+        val aiValidator = object : SemanticValidator {
+            override fun validate(userInput: String, expected: String) =
+                com.example.lexicaandroid2.presentation.review.challenge.ValidationResult(
+                    isValid = true,
+                    semanticScore = 0.92f,
+                    feedbackMessage = "✅ Bonne définition ! Similarité sémantique : 92%"
+                )
+
+            override fun isModelReady(): Boolean = true
+        }
+
+        viewModel = ReviewViewModel(
+            repository = repository,
+            sm2Algorithm = Sm2Algorithm,
+            dailyStatDao = dailyStatDao,
+            reviewSessionSnapshotRepository = snapshotRepository,
+            adminPrefsRepository = adminPrefs,
+            isAdminUserProvider = { true },
+            semanticModelCachedProvider = { true },
+            semanticValidatorProvider = { aiValidator }
+        )
+
+        viewModel.loadSession(limit = 1)
+        advanceUntilIdle()
+        viewModel.onEventInputChanged("une réponse libre")
+        viewModel.submitActiveEvent()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.semanticModelReady)
+        assertEquals(
+            "✅ Bonne définition ! Similarité sémantique : 92% (mode test admin)",
+            viewModel.uiState.value.eventResultMessage
+        )
     }
 
     @Test
@@ -495,6 +670,58 @@ class ReviewViewModelTest {
             viewModel.uiState.value.presentationMode == ReviewPresentationMode.WORD_TO_DEFINITION ||
                 viewModel.uiState.value.presentationMode == ReviewPresentationMode.DEFINITION_TO_WORD
         )
+    }
+
+    @Test
+    fun reloadSessionForSettingsChangeRestoresStandardFlowAfterAdminFiltering() = runTest {
+        val adminPrefs = mock<AdminPrefsRepository>()
+        var normalPresentationEnabled = false
+        var reviewWordToDefinitionEnabled = false
+        var reviewDefinitionToWordEnabled = true
+
+        whenever(adminPrefs.normalPresentationEnabled).thenAnswer { normalPresentationEnabled }
+        whenever(adminPrefs.reviewWordToDefinitionEnabled).thenAnswer { reviewWordToDefinitionEnabled }
+        whenever(adminPrefs.reviewDefinitionToWordEnabled).thenAnswer { reviewDefinitionToWordEnabled }
+        whenever(adminPrefs.extraSpellingEnabled).thenReturn(true)
+        whenever(adminPrefs.reviewQcmEnabled).thenReturn(true)
+        whenever(adminPrefs.reviewMatchingEnabled).thenReturn(true)
+        whenever(adminPrefs.challengeOrthoEnabled).thenReturn(true)
+        whenever(adminPrefs.challengeSemanticEnabled).thenReturn(true)
+
+        val sameCardWord = question(cardWord.id, ReviewQuestionType.WORD_TO_DEFINITION, 0, firstAnsweredAt = null)
+        val sameCardDef = question(cardWord.id, ReviewQuestionType.DEFINITION_TO_WORD, 1, firstAnsweredAt = null)
+
+        whenever(repository.countNeverStartedQuestionProgress()).thenReturn(2)
+        whenever(repository.getNeverStartedQuestionProgress(any())).thenReturn(listOf(sameCardWord, sameCardDef))
+
+        viewModel = ReviewViewModel(
+            repository = repository,
+            sm2Algorithm = Sm2Algorithm,
+            dailyStatDao = dailyStatDao,
+            reviewSessionSnapshotRepository = snapshotRepository,
+            adminPrefsRepository = adminPrefs,
+            isAdminUserProvider = { true }
+        )
+
+        viewModel.loadSession(limit = 2)
+        advanceUntilIdle()
+
+        assertEquals(1, viewModel.uiState.value.totalInSession)
+        assertEquals(ReviewPresentationMode.DEFINITION_TO_WORD, viewModel.uiState.value.presentationMode)
+
+        normalPresentationEnabled = true
+        reviewWordToDefinitionEnabled = false
+        reviewDefinitionToWordEnabled = true
+
+        viewModel.reloadSessionForSettingsChange()
+        advanceUntilIdle()
+
+        assertEquals(2, viewModel.uiState.value.totalInSession)
+        assertTrue(
+            viewModel.uiState.value.presentationMode == ReviewPresentationMode.WORD_TO_DEFINITION ||
+                viewModel.uiState.value.presentationMode == ReviewPresentationMode.DEFINITION_TO_WORD
+        )
+        verify(snapshotRepository, atLeastOnce()).clearActiveSession()
     }
 
     @Test

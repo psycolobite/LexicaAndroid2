@@ -25,8 +25,8 @@ class WiktionnaireHtmlParser {
         } ?: parserOutput.selectFirst("ol")
 
         val firstDefinition = definitions
-            ?.select("> li")
-            ?.firstOrNull()
+            ?.children()
+            ?.firstOrNull { it.tagName() == "li" }
             ?: definitions?.select("li")?.firstOrNull()
             ?: return null
 
@@ -115,4 +115,5 @@ class WiktionnaireHtmlParser {
         return collected.filter { it.isNotBlank() }.distinct().take(5)
     }
 }
+
 

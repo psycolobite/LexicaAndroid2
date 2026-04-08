@@ -19,6 +19,7 @@ par votre vraie adresse de contact support.
 ## Publication automatique via GitHub Pages
 
 Le workflow prévu dans `.github/workflows/privacy-policy-pages.yml` déploie automatiquement ce dossier.
+Il se déclenche sur `main` ainsi que sur les branches `integration/**`.
 
 ### Étapes externes restantes
 

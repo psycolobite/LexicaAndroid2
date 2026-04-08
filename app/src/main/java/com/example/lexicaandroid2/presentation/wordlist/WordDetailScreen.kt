@@ -133,6 +133,7 @@ class WordDetailViewModelFactory(
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun WordDetailScreen(
     cardId: String,

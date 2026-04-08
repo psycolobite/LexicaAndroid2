@@ -2,6 +2,9 @@ package com.example.lexicaandroid2.presentation.review.challenge
 
 import android.content.Context
 
+private const val LEXICAL_SUCCESS_THRESHOLD = 0.50f
+private const val LEXICAL_PARTIAL_THRESHOLD = 0.25f
+
 data class ValidationResult(
     val isValid: Boolean,
     val keywordScore: Float = 0f,
@@ -18,46 +21,45 @@ interface SemanticValidator {
 }
 
 /**
- * Validateur Jaccard TF-IDF — Jaccard score sur mots-clés
- * 
- * Avantages : Aucune dépendance, rapide, déterministe
- * Inconvénients : Synonymes non reconnus (ex: "auto" vs "voiture")
+ * Validateur lexical de secours.
+ *
+ * Avantages : aucune dépendance, rapide, déterministe.
+ * Limites : reste moins bon qu'un vrai modèle sémantique pour les reformulations libres.
  */
 class JaccardSemanticValidator : SemanticValidator {
     override fun validate(userInput: String, expected: String): ValidationResult {
-        val (found, missing) = KeywordExtractor.analyzeKeywords(userInput, expected, topN = 5)
-        val allKeywords = found + missing
-        
-        val keywordScore = if (allKeywords.isEmpty()) {
-            if (userInput.isNotBlank()) 1f else 0f
-        } else {
-            found.size.toFloat() / allKeywords.size.toFloat()
+        if (userInput.isBlank()) {
+            return ValidationResult(
+                isValid = false,
+                keywordScore = 0f,
+                semanticScore = 0f,
+                foundKeywords = emptyList(),
+                missingKeywords = emptyList(),
+                xpBonus = 0,
+                feedbackMessage = "❌ Aucune réponse fournie"
+            )
         }
 
-        val jaccardScore = KeywordExtractor.jaccardScore(userInput, expected)
-        
-        // Règle de validation (sans modèle TFLite) :
+        val lexicalScore = KeywordExtractor.lexicalFallbackScore(userInput, expected)
+
         val (isValid, xpBonus, feedbackMessage) = when {
-            keywordScore >= 0.6f -> {
-                val msg = "✅ Bonne définition ! Mots-clés trouvés : ${found.joinToString(", ")}"
-                Triple(true, 15, msg)
+            lexicalScore >= LEXICAL_SUCCESS_THRESHOLD -> {
+                Triple(true, 15, "✅ Bonne définition !")
             }
-            keywordScore >= 0.3f -> {
-                val msg = "💡 Presque ! Il manquait : ${missing.joinToString(", ")}"
-                Triple(false, 5, msg)
+            lexicalScore >= LEXICAL_PARTIAL_THRESHOLD -> {
+                Triple(false, 5, "💡 Presque ! Reformule encore un peu ta réponse.")
             }
             else -> {
-                val msg = "❌ Mots-clés manquants : ${missing.joinToString(", ")}"
-                Triple(false, 0, msg)
+                Triple(false, 0, "❌ La réponse est trop éloignée du sens attendu.")
             }
         }
 
         return ValidationResult(
             isValid = isValid,
-            keywordScore = keywordScore,
-            semanticScore = jaccardScore,
-            foundKeywords = found,
-            missingKeywords = missing,
+            keywordScore = lexicalScore,
+            semanticScore = lexicalScore,
+            foundKeywords = emptyList(),
+            missingKeywords = emptyList(),
             xpBonus = xpBonus,
             feedbackMessage = feedbackMessage
         )
@@ -98,12 +100,12 @@ class SpellingValidator : SemanticValidator {
 }
 
 /**
- * Factory pour créer le validateur approprié
- * 
+ * Factory pour créer le validateur approprié.
+ *
  * Logique :
- * - Si TFLite modèle disponible → TFLiteSemanticValidator (meilleure qualité)
- * - Sinon → JaccardSemanticValidator (fallback rapide)
- * - Pour Spelling → toujours SpellingValidator
+ * - Si le bundle embeddings on-device est disponible → `TFLiteSemanticValidator`
+ * - Sinon → `JaccardSemanticValidator` (fallback déterministe)
+ * - Pour Spelling → toujours `SpellingValidator`
  */
 object SemanticValidatorFactory {
     fun createSemanticValidator(context: Context): SemanticValidator {

@@ -1,7 +1,17 @@
 package com.example.lexicaandroid2.presentation.review.challenge
 
+import java.util.regex.Pattern
+
 private const val MIN_USAGE_WORD_COUNT = 6
-private const val USAGE_PARTIAL_THRESHOLD = 0.25f
+private const val USAGE_ACCEPT_THRESHOLD = 0.09f
+
+private val META_LANGUAGE_MARKERS = listOf(
+    "est un mot",
+    "mot de vocabulaire",
+    "très beau mot",
+    "signifie",
+    "veut dire"
+)
 
 class UsageChallengeValidator(
     private val semanticValidatorProvider: () -> SemanticValidator
@@ -40,6 +50,23 @@ class UsageChallengeValidator(
             )
         }
 
+        val normalizedInput = trimmedInput.lowercase()
+        if (META_LANGUAGE_MARKERS.any { it in normalizedInput }) {
+            return ValidationResult(
+                isValid = false,
+                semanticScore = 0f,
+                feedbackMessage = "💡 N'explique pas le mot : utilise-le dans une vraie phrase de contexte."
+            )
+        }
+
+        if (looksLikeAdjectiveMisusedAsNoun(trimmedInput, targetWord, expectedDefinition)) {
+            return ValidationResult(
+                isValid = false,
+                semanticScore = 0f,
+                feedbackMessage = "⚠️ Le mot semble mal employé dans la phrase."
+            )
+        }
+
         val expectedContext = buildString {
             append(expectedDefinition)
             examples.firstOrNull()?.takeIf { it.isNotBlank() }?.let {
@@ -50,7 +77,7 @@ class UsageChallengeValidator(
 
         val semanticResult = semanticValidatorProvider().validate(trimmedInput, expectedContext)
         val semanticScore = semanticResult.semanticScore.takeIf { it >= 0f } ?: semanticResult.keywordScore
-        val isSemanticallyAcceptable = semanticResult.isValid || semanticResult.keywordScore >= USAGE_PARTIAL_THRESHOLD
+        val isSemanticallyAcceptable = semanticResult.isValid || semanticScore >= USAGE_ACCEPT_THRESHOLD
 
         return if (isSemanticallyAcceptable) {
             ValidationResult(
@@ -71,6 +98,24 @@ class UsageChallengeValidator(
                 feedbackMessage = "⚠️ La phrase contient bien le mot, mais l'usage semble encore trop éloigné du sens attendu."
             )
         }
+    }
+
+    private fun looksLikeAdjectiveMisusedAsNoun(
+        sentence: String,
+        targetWord: String,
+        expectedDefinition: String
+    ): Boolean {
+        val normalizedDefinition = expectedDefinition.trim().lowercase()
+        val adjectiveLikeDefinition = normalizedDefinition.startsWith("qui ") ||
+            normalizedDefinition.startsWith("très ")
+        if (!adjectiveLikeDefinition) return false
+
+        val escapedTarget = Pattern.quote(targetWord.lowercase())
+        val nounLikePattern = Regex(
+            pattern = "\\b(ce|cet|cette|ces|le|la|les|un|une)\\s+$escapedTarget\\s+(est|était|sera|fut|demeure|reste|restait)\\b",
+            option = RegexOption.IGNORE_CASE
+        )
+        return nounLikePattern.containsMatchIn(sentence.lowercase())
     }
 }
 

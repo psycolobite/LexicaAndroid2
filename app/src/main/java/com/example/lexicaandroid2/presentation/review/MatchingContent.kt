@@ -260,7 +260,7 @@ private fun MatchingWordChip(
         shape         = RoundedCornerShape(50),
         color         = when {
             isBeingDragged || isSelected -> MaterialTheme.colorScheme.primary
-            isAssigned                   -> MaterialTheme.colorScheme.tertiaryContainer
+            isAssigned                   -> MaterialTheme.colorScheme.secondaryContainer
             else                         -> lexicaPanelContainerColor()
         },
         shadowElevation = if (isBeingDragged) 8.dp else 0.dp,
@@ -273,8 +273,8 @@ private fun MatchingWordChip(
             style      = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.SemiBold,
             color      = when {
-                isBeingDragged || isSelected -> MaterialTheme.colorScheme.onPrimary
-                isAssigned                   -> MaterialTheme.colorScheme.onTertiaryContainer
+                    isBeingDragged || isSelected -> MaterialTheme.colorScheme.onPrimary
+                isAssigned                   -> MaterialTheme.colorScheme.onSecondaryContainer
                 else                         -> MaterialTheme.colorScheme.onSurfaceVariant
             },
             modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
@@ -326,7 +326,7 @@ private fun DefinitionDropCard(
                         when {
                             isHovered          -> MaterialTheme.colorScheme.primaryContainer
                             isDropZoneSelected -> MaterialTheme.colorScheme.secondaryContainer
-                            assignedWordText != null -> MaterialTheme.colorScheme.tertiaryContainer
+                            assignedWordText != null -> MaterialTheme.colorScheme.secondaryContainer
                             else               -> MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f)
                         }
                     )
@@ -343,7 +343,7 @@ private fun DefinitionDropCard(
                         text       = assignedWordText,
                         style      = MaterialTheme.typography.bodyMedium,
                         fontWeight = FontWeight.Bold,
-                        color      = MaterialTheme.colorScheme.onTertiaryContainer
+                        color      = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                     isHovered -> Text(
                         text  = "↓ Dépose ici",

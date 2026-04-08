@@ -9,7 +9,8 @@ enum class ReviewSessionEventType {
 
 enum class ReviewSessionChallengeKind {
     SPELLING,
-    SEMANTIC
+    SEMANTIC,
+    USAGE
 }
 
 data class ReviewSessionEvent(

@@ -98,6 +98,7 @@ fun GameTopAppBar(
 // N'affiche QUE score + progress bar sur une seule ligne, pas de titre
 // (la TopAppBar du Scaffold s'en charge déjà).
 // ─────────────────────────────────────────────────────────────────────────────
+@Suppress("UNUSED_PARAMETER")
 @Composable
 fun GameHeader(
     title: String,          // conservé pour compatibilité mais ignoré ici

@@ -53,6 +53,10 @@ class AdminPrefsRepository(context: Context) {
         get() = prefs.getBoolean(KEY_CHALLENGE_SEMANTIC, true)
         set(value) = prefs.edit { putBoolean(KEY_CHALLENGE_SEMANTIC, value) }
 
+    var challengeUsageEnabled: Boolean
+        get() = prefs.getBoolean(KEY_CHALLENGE_USAGE, true)
+        set(value) = prefs.edit { putBoolean(KEY_CHALLENGE_USAGE, value) }
+
     var extraSpellingEnabled: Boolean
         get() = prefs.getBoolean(KEY_EXTRA_SPELLING, true)
         set(value) = prefs.edit { putBoolean(KEY_EXTRA_SPELLING, value) }
@@ -91,6 +95,7 @@ class AdminPrefsRepository(context: Context) {
         private const val KEY_NORMAL_PRESENTATION_ENABLED = "admin_normal_presentation_enabled"
         private const val KEY_CHALLENGE_ORTHO = "admin_challenge_ortho_enabled"
         private const val KEY_CHALLENGE_SEMANTIC = "admin_challenge_semantic_enabled"
+        private const val KEY_CHALLENGE_USAGE = "admin_challenge_usage_enabled"
         private const val KEY_EXTRA_SPELLING = "admin_extra_spelling_enabled"
         private const val KEY_REVIEW_QCM_ENABLED = "admin_review_qcm_enabled"
         private const val KEY_REVIEW_MATCHING_ENABLED = "admin_review_matching_enabled"

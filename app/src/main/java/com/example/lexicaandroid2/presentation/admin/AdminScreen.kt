@@ -27,6 +27,7 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -42,10 +43,19 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun AdminScreen(
     viewModel: AdminViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onReviewSettingsChanged: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            if (viewModel.consumePendingReviewSettingsChange()) {
+                onReviewSettingsChanged()
+            }
+        }
+    }
 
     LaunchedEffect(uiState.snackbarMessage) {
         uiState.snackbarMessage?.let {
@@ -167,7 +177,12 @@ fun AdminScreen(
                                 label = { Text("Défi orthographique", fontSize = 11.sp) },
                                 modifier = Modifier.weight(1f)
                             )
-                            Spacer(modifier = Modifier.weight(1f))
+                            FilterChip(
+                                selected = uiState.challengeUsageEnabled,
+                                onClick = { viewModel.setChallengeUsageEnabled(!uiState.challengeUsageEnabled) },
+                                label = { Text("Défi utilisation", fontSize = 11.sp) },
+                                modifier = Modifier.weight(1f)
+                            )
                         }
 
                         Spacer(modifier = Modifier.height(2.dp))

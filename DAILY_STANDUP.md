@@ -1780,6 +1780,7 @@ Build:              ✅ Compilation OK
 - Création d’une page statique prête à publier : `privacy-policy/index.html`
 - Ajout d’un mini guide de déploiement : `privacy-policy/README.md`
 - Ajout d’un workflow GitHub Actions pour GitHub Pages : `.github/workflows/privacy-policy-pages.yml`
+- Ajustement du workflow pour autoriser aussi la publication depuis les branches `integration/**`, afin de sortir l’URL sans attendre un merge sur `main`
 - Reste hors repo :
   - pousser sur GitHub
   - activer **Settings → Pages → Source: GitHub Actions**

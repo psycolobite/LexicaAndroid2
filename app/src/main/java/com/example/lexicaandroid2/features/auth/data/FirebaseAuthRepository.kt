@@ -41,6 +41,11 @@ class FirebaseAuthRepository(
             result.user?.toAuthUser() ?: error("Aucun utilisateur retourné")
         }
 
+    override suspend fun deleteAccount(): Result<Unit> = runCatching {
+        val user = firebaseAuth.currentUser ?: error("Aucun compte connecté")
+        user.delete().await()
+    }
+
     override suspend fun signOut() = firebaseAuth.signOut()
 }
 

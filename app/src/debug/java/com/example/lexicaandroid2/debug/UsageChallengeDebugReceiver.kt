@@ -59,7 +59,7 @@ class UsageChallengeDebugReceiver : BroadcastReceiver() {
         val encoded = intent.getStringExtra("${key}_b64")
         if (encoded.isNullOrBlank()) return ""
 
-        return String(Base64.decode(encoded, Base64.DEFAULT), Charsets.UTF_8)
+        return String(Base64.decode(encoded, Base64.URL_SAFE or Base64.NO_WRAP), Charsets.UTF_8)
     }
 
     private fun classify(result: ValidationResult): String = when {

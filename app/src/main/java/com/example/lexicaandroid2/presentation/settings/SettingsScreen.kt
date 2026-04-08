@@ -43,6 +43,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,11 +61,13 @@ import kotlin.math.roundToInt
 fun SettingsScreen(
     viewModel: SettingsViewModel,
     appVersion: String = "1.0",
+    privacyPolicyUrl: String? = null,
     showAdminEntry: Boolean = false,
     onNavigateToAdmin: () -> Unit = {},
     onTrainingSettingsApplied: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val uriHandler = LocalUriHandler.current
     var showTimePicker by remember { mutableStateOf(false) }
     var pendingFontSize by remember(uiState.fontSize) { mutableStateOf(uiState.fontSize) }
     val initialCardsPerSession = remember { uiState.cardsPerSession }
@@ -311,11 +314,26 @@ fun SettingsScreen(
             HorizontalDivider()
             Spacer(Modifier.height(8.dp))
 
+            val canOpenPrivacyPolicy = !privacyPolicyUrl.isNullOrBlank() &&
+                (privacyPolicyUrl.startsWith("https://") || privacyPolicyUrl.startsWith("http://"))
+
             Text(
-                text = "Politique de confidentialité",
+                text = if (canOpenPrivacyPolicy) {
+                    "Politique de confidentialité"
+                } else {
+                    "Politique de confidentialité à publier avant la mise en ligne"
+                },
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.clickable { /* placeholder — ajouter URL quand disponible */ }
+                color = if (canOpenPrivacyPolicy) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                modifier = if (canOpenPrivacyPolicy) {
+                    Modifier.clickable { uriHandler.openUri(privacyPolicyUrl!!) }
+                } else {
+                    Modifier
+                }
             )
 
             Spacer(Modifier.height(8.dp))

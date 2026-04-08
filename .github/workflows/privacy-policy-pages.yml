@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - 'integration/**'
     paths:
       - 'privacy-policy/**'
       - '.github/workflows/privacy-policy-pages.yml'

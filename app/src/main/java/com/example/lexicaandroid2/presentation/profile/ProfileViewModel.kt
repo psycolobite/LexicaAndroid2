@@ -47,7 +47,11 @@ data class ProfileUiState(
     // Reset progression
     val resetDialogStep: Int = 0,        // 0=caché, 1=1er dialog, 2=2ème dialog
     val isResetting: Boolean = false,
-    val resetDoneMessage: String? = null
+    val resetDoneMessage: String? = null,
+    // Suppression de compte
+    val showDeleteAccountDialog: Boolean = false,
+    val isDeletingAccount: Boolean = false,
+    val deleteAccountMessage: String? = null
 )
 
 class ProfileViewModel(
@@ -79,6 +83,71 @@ class ProfileViewModel(
                     }
             } else {
                 onSignInRequested()
+            }
+        }
+    }
+
+    fun onDeleteAccountClicked() {
+        if (!_uiState.value.isAuthenticated) return
+        _uiState.update { it.copy(showDeleteAccountDialog = true, error = null, deleteAccountMessage = null) }
+    }
+
+    fun onDeleteAccountDismissed() {
+        _uiState.update { it.copy(showDeleteAccountDialog = false) }
+    }
+
+    fun onDeleteAccountMessageDismissed() {
+        _uiState.update { it.copy(deleteAccountMessage = null) }
+    }
+
+    fun onDeleteAccountConfirmed() {
+        val uid = _uiState.value.uid
+        if (uid.isNullOrBlank()) {
+            _uiState.update {
+                it.copy(
+                    showDeleteAccountDialog = false,
+                    error = "Aucun compte connecté à supprimer"
+                )
+            }
+            return
+        }
+
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    showDeleteAccountDialog = false,
+                    isDeletingAccount = true,
+                    error = null,
+                    deleteAccountMessage = null
+                )
+            }
+
+            runCatching {
+                authRepository.deleteAccount().getOrThrow()
+                syncManager?.deleteCloudAccountData(uid)
+                resetProgressUseCase?.invoke()
+                runCatching { authRepository.signOut() }
+            }.onSuccess {
+                _uiState.update {
+                    it.copy(
+                        isDeletingAccount = false,
+                        totalWordsLearned = 0,
+                        deleteAccountMessage = "✅ Ton compte et les données synchronisées associées ont été supprimés.",
+                        error = null
+                    )
+                }
+            }.onFailure { error ->
+                val message = when {
+                    error.message?.contains("recent login", ignoreCase = true) == true ->
+                        "Pour supprimer ton compte, reconnecte-toi puis réessaie."
+                    else -> error.message ?: "Erreur lors de la suppression du compte"
+                }
+                _uiState.update {
+                    it.copy(
+                        isDeletingAccount = false,
+                        error = message
+                    )
+                }
             }
         }
     }
@@ -218,7 +287,7 @@ class ProfileViewModel(
                 }
             } catch (e: CancellationException) {
                 throw e
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 // Stats non critiques — ne pas bloquer l'UI
             }
         }

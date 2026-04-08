@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.dp
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.ReviewSessionChallengeKind
 import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
+import com.example.lexicaandroid2.presentation.review.challenge.ModelStatusIndicator
 import kotlinx.coroutines.delay
 
 @Composable
@@ -69,6 +70,8 @@ internal fun OrthographicEventContent(
         (uiState.activeChallengeKind == ReviewSessionChallengeKind.SPELLING || uiState.activeChallengeKind == null)
     val isSemanticChallenge = uiState.currentItemType == ReviewCurrentItemType.CHALLENGE &&
         uiState.activeChallengeKind == ReviewSessionChallengeKind.SEMANTIC
+    val isUsageChallenge = uiState.currentItemType == ReviewCurrentItemType.CHALLENGE &&
+        uiState.activeChallengeKind == ReviewSessionChallengeKind.USAGE
     val resultVisible = uiState.eventResultMessage != null || uiState.eventResultSuccessful != null
     val challengeSuccessVisible = uiState.currentItemType == ReviewCurrentItemType.CHALLENGE && uiState.eventResultSuccessful == true
     val density = LocalDensity.current.density
@@ -95,6 +98,7 @@ internal fun OrthographicEventContent(
         isExtraSpelling -> "Question orthographique"
         isSpellingChallenge -> "Défi orthographique"
         isSemanticChallenge -> "Défi sémantique"
+        isUsageChallenge -> "Défi utilisation"
         else -> uiState.eventInstruction
     }
     Column(
@@ -106,11 +110,11 @@ internal fun OrthographicEventContent(
         }
 
         val frontText = when {
-            isSemanticChallenge -> card?.recto.orEmpty()
+            isSemanticChallenge || isUsageChallenge -> card?.recto.orEmpty()
             else -> card?.verso.orEmpty()
         }
         val answerText = when {
-            isSemanticChallenge -> card?.verso.orEmpty()
+            isSemanticChallenge || isUsageChallenge -> card?.verso.orEmpty()
             else -> card?.recto.orEmpty()
         }
 
@@ -118,7 +122,7 @@ internal fun OrthographicEventContent(
             text = decodeReviewText(frontText),
             availableHeight = minCardHeight,
             preferDisplayStyle = decodeReviewText(frontText).length < 40,
-            serif = isSemanticChallenge
+            serif = isSemanticChallenge || isUsageChallenge
         )
         val answerTextStyle = rememberAdaptiveTextStyle(
             text = decodeReviewText(answerText),
@@ -294,6 +298,12 @@ internal fun OrthographicFixedBottomControls(
     onBack: () -> Unit
 ) {
     val showResult = uiState.eventResultMessage != null || uiState.eventResultSuccessful != null
+    val isSemanticChallenge =
+        uiState.currentItemType == ReviewCurrentItemType.CHALLENGE &&
+            uiState.activeChallengeKind == ReviewSessionChallengeKind.SEMANTIC
+    val isUsageChallenge =
+        uiState.currentItemType == ReviewCurrentItemType.CHALLENGE &&
+            uiState.activeChallengeKind == ReviewSessionChallengeKind.USAGE
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -348,44 +358,62 @@ internal fun OrthographicFixedBottomControls(
                 }
             }
 
+            if (isSemanticChallenge || isUsageChallenge) {
+                ModelStatusIndicator(isModelReady = uiState.semanticModelReady)
+            }
+
             if (!showResult) {
                 OutlinedTextField(
                     value = uiState.eventInput,
                     onValueChange = onInputChanged,
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
+                    singleLine = !isUsageChallenge,
+                    minLines = if (isUsageChallenge) 3 else 1,
+                    maxLines = if (isUsageChallenge) 4 else 1,
                     keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                     keyboardActions = KeyboardActions(onDone = { onValidate() }),
                     placeholder = {
                         Text(
-                            text = if (uiState.activeChallengeKind == ReviewSessionChallengeKind.SEMANTIC) {
-                                "Décris le sens..."
-                            } else {
-                                "Tape le mot..."
+                            text = when (uiState.activeChallengeKind) {
+                                ReviewSessionChallengeKind.SEMANTIC -> "Décris le sens..."
+                                ReviewSessionChallengeKind.USAGE -> "Écris une phrase avec ce mot..."
+                                else -> "Tape le mot..."
                             }
                         )
                     }
                 )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Button(
-                        onClick = onBack,
-                        enabled = uiState.canSkipCurrentEvent,
-                        modifier = Modifier.weight(1f),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                val isExtraSpelling = uiState.currentItemType == ReviewCurrentItemType.EXTRA_SPELLING
+
+                if (isExtraSpelling) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Text(text = "PASSER")
+                        Button(
+                            onClick = onBack,
+                            enabled = uiState.canSkipCurrentEvent,
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        ) {
+                            Text(text = "PASSER")
+                        }
+                        Button(
+                            onClick = onValidate,
+                            enabled = uiState.eventInput.isNotBlank(),
+                            modifier = Modifier.weight(2f)
+                        ) {
+                            Text(text = "VALIDER")
+                        }
                     }
+                } else {
                     Button(
                         onClick = onValidate,
                         enabled = uiState.eventInput.isNotBlank(),
-                        modifier = Modifier.weight(2f)
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(text = "VALIDER")
                     }

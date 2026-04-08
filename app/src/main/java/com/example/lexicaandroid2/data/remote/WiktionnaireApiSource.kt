@@ -7,8 +7,6 @@ import com.google.gson.JsonParser
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import java.text.Normalizer
 import java.util.concurrent.TimeUnit
 
@@ -34,11 +32,10 @@ class WiktionnaireApiSource(
     }
 
     private fun searchCandidateTitles(query: String): List<String> {
-        val encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8.name())
         val url = BASE_API_URL.toHttpUrl().newBuilder()
             .addQueryParameter("action", "query")
             .addQueryParameter("list", "search")
-            .addQueryParameter("srsearch", encodedQuery)
+            .addQueryParameter("srsearch", query)
             .addQueryParameter("srlimit", MAX_TITLES.toString())
             .addQueryParameter("format", "json")
             .addQueryParameter("formatversion", "2")
@@ -117,4 +114,5 @@ class WiktionnaireApiSource(
         private const val TAG = "WiktionnaireApiSource"
     }
 }
+
 

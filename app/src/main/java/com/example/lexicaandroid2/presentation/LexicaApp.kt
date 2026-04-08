@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -39,7 +40,6 @@ import com.example.lexicaandroid2.presentation.games.matching.MatchingScreen
 import com.example.lexicaandroid2.presentation.games.qcm.QcmScreen
 import com.example.lexicaandroid2.presentation.games.hangman.HangmanScreen
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
-import com.example.lexicaandroid2.features.gamification.ui.GamificationDemoScreen
 import com.example.lexicaandroid2.features.gamification.ui.GamificationViewModel
 import com.example.lexicaandroid2.features.gamification.domain.UserStatsRepository
 import com.example.lexicaandroid2.features.auth.domain.repository.AuthRepository
@@ -78,6 +78,9 @@ import com.example.lexicaandroid2.features.sync.SyncManager
 import com.example.lexicaandroid2.features.sync.SyncViewModel
 import com.example.lexicaandroid2.features.sync.SyncUiState
 import com.example.lexicaandroid2.features.sync.SyncConfirmDialog
+import com.example.lexicaandroid2.presentation.review.challenge.ModelDownloadDialog
+import com.example.lexicaandroid2.presentation.review.challenge.ModelDownloadManager
+import com.example.lexicaandroid2.presentation.review.challenge.ModelDownloadViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
@@ -106,6 +109,8 @@ fun LexicaApp(
 ) {
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
+    val reviewUiState by reviewViewModel.uiState.collectAsState()
+    val context = LocalContext.current
 
     // Auth state pour la navigation conditionnelle
     val currentAuthUser by authRepository.currentUser.collectAsState(initial = null)
@@ -119,7 +124,6 @@ fun LexicaApp(
         Screen.MatchingGame.route -> "Correspondance"
         Screen.QcmGame.route -> "QCM"
         Screen.HangmanGame.route -> "Pendu"
-        Screen.Gamification.route -> "Progression"
         Screen.SpellingGame.route -> "Dictée"
         Screen.AnagramsGame.route -> "Anagrammes"
         Screen.ChronoGame.route -> "Mode Chrono"
@@ -143,7 +147,7 @@ fun LexicaApp(
                          currentRoute == Screen.AddWords.route ||
                          currentRoute == Screen.MiniGames.route || currentRoute == Screen.MatchingGame.route ||
                          currentRoute == Screen.QcmGame.route || currentRoute == Screen.HangmanGame.route ||
-                         currentRoute == Screen.Gamification.route || currentRoute == Screen.SpellingGame.route ||
+                         currentRoute == Screen.SpellingGame.route ||
                          currentRoute == Screen.AnagramsGame.route || currentRoute == Screen.ChronoGame.route ||
                          currentRoute == Screen.MemoryGame.route || currentRoute == Screen.FillWordGame.route ||
                          currentRoute == Screen.SemanticGame.route || currentRoute == Screen.SpellingAdvancedGame.route ||
@@ -170,6 +174,21 @@ fun LexicaApp(
             conflictState = pendingConflict,
             onKeepLocal = { syncViewModel?.keepLocal(pendingConflict.uid) },
             onReplaceLocal = { syncViewModel?.confirmReplaceWithCloud(pendingConflict.uid, pendingConflict.cloud) }
+        )
+    }
+
+    LaunchedEffect(reviewViewModel) {
+        reviewViewModel.promptSemanticModelDownloadOnAppLaunch()
+    }
+
+    if (reviewUiState.showSemanticModelDownloadDialog) {
+        val modelDownloadViewModel = remember(reviewUiState.showSemanticModelDownloadDialog) {
+            ModelDownloadViewModel(ModelDownloadManager(context.applicationContext))
+        }
+        ModelDownloadDialog(
+            viewModel = modelDownloadViewModel,
+            onDismiss = { reviewViewModel.dismissSemanticModelDownload() },
+            onSuccess = { reviewViewModel.onSemanticModelDownloaded() }
         )
     }
 
@@ -405,21 +424,6 @@ fun LexicaApp(
                     }
                 )
             }
-            composable(
-                route = Screen.Gamification.route,
-                enterTransition = {
-                    slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(300))
-                },
-                exitTransition = {
-                    slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(300))
-                }
-            ) {
-                val userStats by gamificationViewModel.userStats.collectAsState()
-                GamificationDemoScreen(
-                    userStats = userStats,
-                    onAddXp = { amount -> gamificationViewModel.addXp(amount) }
-                )
-            }
             composable(route = Screen.SpellingGame.route) {
                 SpellingGameScreen(
                     repository = repository,
@@ -491,7 +495,8 @@ fun LexicaApp(
             composable(route = Screen.Admin.route) {
                 AdminScreen(
                     viewModel = adminViewModel,
-                    onBack = { navController.navigateUp() }
+                    onBack = { navController.navigateUp() },
+                    onReviewSettingsChanged = { reviewViewModel.reloadSessionForSettingsChange() }
                 )
             }
             composable(route = Screen.Login.route) {

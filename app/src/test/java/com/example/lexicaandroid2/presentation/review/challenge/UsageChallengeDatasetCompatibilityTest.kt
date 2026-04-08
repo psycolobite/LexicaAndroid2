@@ -116,7 +116,7 @@ class UsageChallengeDatasetCompatibilityTest {
     }
 
     private fun parseRow(line: String): DatasetRow {
-        val parts = line.split(';')
+        val parts = line.split(';').map { it.trim() }
         require(parts.size >= 8) { "Ligne CSV invalide: $line" }
         return DatasetRow(
             caseId = parts[0],
@@ -124,7 +124,7 @@ class UsageChallengeDatasetCompatibilityTest {
             expectedDefinition = parts[3],
             exampleHint = parts[4],
             candidateSentence = parts[5],
-            expectedVerdict = ExpectedVerdict.valueOf(parts[6]),
+            expectedVerdict = ExpectedVerdict.valueOf(parts[6].uppercase()),
             notes = parts[7]
         )
     }
