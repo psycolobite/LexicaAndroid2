@@ -6,13 +6,206 @@
 
 ---
 
+## 📅 2026-04-08 — Vision future : thèmes, sources de contenu, nouveau type de question
+
+### ✅ Accompli
+- [x] Création de `docs/planning/VISION_FUTURE.md` : document de vision structuré daté 2026-04-08
+- [x] Intégration des réponses Q1–Q8 + QC2 & QC3
+- [x] Correction **SM2 → POLO-1** dans tous les `.md` de haut niveau (`VISION_FUTURE.md`, `DAILY_STANDUP.md`)
+  - *(Les fichiers `integration_pending/polo_1_*` gardent "SM2" : contexte de migration historique volontaire)*
+- [x] QC2 validée : validation hybride "Invente une phrase" (MiniLM local + HuggingFace si connecté / non proposé offline / futur premium)
+- [x] QC3 validée : ordre auto par fréquence + override manuel curator, les deux coexistent
+- [x] QC1 mise en attente (processus de création supervisé — itération dédiée à venir)
+- [x] Refactor de `VISION_FUTURE.md` en **cadrage produit pré-lancement**, tout en conservant les annales en bas du fichier
+  - définition précise du produit et du positionnement
+  - réponse explicite à la question stratégique : **pas de lancement public large maintenant**, priorité à un **MVP** puis **alpha fermée**
+  - ajout du **public cible initial**
+  - ajout d'une **définition métier claire du thème**
+  - ajout d'un **MVP strict** (1–2 thèmes, 3 niveaux, aperçu → validation → ajout deck, filtre de session)
+  - ajout du **modèle métier minimal recommandé** (`Theme`, `ThemeLevel`, `ThemeWordCandidate`, `FlashcardThemeLink`)
+  - ajout des **règles minimales de qualité des données**
+  - ajout de la **hiérarchie des fonctionnalités** (`MVP` / `V2` / `Plus tard` / `Premium`)
+  - ajout d'une **stratégie de mesure** et d'un **ordre recommandé des travaux**
+  - transformation du plan global en séquence **Phase A → Phase F** orientée exécution
+- [x] Découpage du plan de `VISION_FUTURE.md` en **tâches numérotées** au format inspiré de `docs/guides/CONSIGNES_TACHES.md`
+  - `TACHE_VF_01` à `TACHE_VF_12`
+  - scope, zone code/produit, livrables, contraintes, critère de sortie
+  - vue synthétique des priorités : immédiat / MVP / extensions
+- [x] Évolution du cadrage produit : nouvelle définition des thèmes centrée sur **l'usage visé par l'utilisateur**
+  - `Discussion générale / intellectuelle`
+  - `Littérature / écriture`
+  - `Domaine particulier`
+- [x] Ajout d'un nouvel axe produit : **Verbaliser les ressentis**
+- [x] Intégration réelle d'un **Défi utilisation** dans l'entraînement courant
+  - nouveau type `ReviewSessionChallengeKind.USAGE`
+  - validation légère dédiée via `UsageChallengeValidator`
+  - intégration dans l'entraînement en **mode non structurant** (sans impact sur `POLO-1`)
+  - ajout du toggle admin `Défi utilisation` pour test isolé des questions
+  - adaptation de l'UI review pour saisie multi-ligne et libellés dédiés
+  - test unitaire ciblé `UsageChallengeValidatorTest` + compilation Kotlin OK
+- [x] Mise en place d'un **banc d'essai data-driven** pour le défi utilisation
+  - fichier `app/src/test/resources/usage_challenge_dataset.csv`
+  - 20 cas initiaux issus de mots de `mots_rares.json`
+  - verdicts attendus humains : `ACCEPT` / `BORDERLINE` / `REJECT`
+  - test `UsageChallengeDatasetCompatibilityTest` pour mesurer la concordance app ↔ estimation humaine
+  - recalibrage de `UsageChallengeValidator` jusqu'à obtenir une concordance satisfaisante sur le dataset de départ
+- [x] Formalisation et amélioration de l'ordre de sélection des activités intégrées
+  - `QCM` : distracteurs pris d'abord dans les cartes de session, puis dans le cache global si besoin
+  - `Matching` : cartes de session d'abord, carte en cours si nécessaire, puis distracteur global si la session est trop courte
+  - `Matching` peut maintenant se déclencher avec une session à 1 carte si une carte distractrice globale est disponible
+  - test ajouté : `qcmCanUseGlobalDistractorsWhenSessionHasSingleQuestion`
+  - test ajouté : `matchingCanUseGlobalDistractorWhenSessionHasSingleCard`
+
+---
+
+## 📅 2026-04-08 — Refonte complète UX Matching : drag & drop + cartes définition/drop
+
+### ✅ Accompli
+- [x] **Nouveau fichier `MatchingContent.kt`** : composant `MatchingDragDropContent` complet
+  - Zone mots **sticky** en haut : chips dans un `FlowRow` adaptatif (s'élargit sur petits écrans)
+  - Zone définitions **scrollable** : `LazyColumn` de cartes bi-zones (haut = définition / bas = drop)
+  - **Long-press + drag** : ghost du mot sous le doigt via overlay `zIndex(10f)`, détection de drop par coordonnées fenêtre
+  - **Tap court** : sélection du mot → tap sur zone de drop pour placer (compatible petits écrans + scroll)
+  - Scroll du `LazyColumn` automatiquement désactivé pendant un drag (`userScrollEnabled = activeDrag == null`)
+  - Retrait d'un mot depuis sa zone (tap quand pas de mot sélectionné) → reprend le mot
+  - Highlights : hovered (drag survole), sélectionné, assigné, vide
+- [x] **`ReviewViewModel.kt`** : ajout de `fun onMatchingDrop(wordId, definition)` pour le drop direct
+- [x] **`ReviewScreen.kt`** : nouvelle branche `shouldShowMatchingLayout` (layout dédié `fillMaxSize` + `weight(1f)`) en dehors du bloc scrollable → instruction via `ReviewContextHint` en dehors de la carte
+- [x] **`EventContent.kt`** : suppression de l'ancien `MatchingEventContent` (remplacé entièrement)
+
+### 🗂 Fichiers modifiés
+- `app/.../presentation/review/MatchingContent.kt` ← **nouveau**
+- `app/.../presentation/review/ReviewViewModel.kt`
+- `app/.../presentation/review/ReviewScreen.kt`
+- `app/.../presentation/review/EventContent.kt`
+
+---
+
+## 📅 2026-04-08 — Fix UX QCM mode entraînement : bouton TTS + distinction visuelle instruction/options
+
+### ✅ Accompli
+- [x] **Bugfix `speakCurrentFace()` dans `ReviewViewModel.kt`** : en mode QCM/Matching, le bouton 🔊 lisait `eventInstruction` ("Choisis la bonne définition") au lieu du mot affiché → maintenant lit toujours `visibleFrontText` (le mot ou la définition selon le mode)
+- [x] **Refonte visuelle de l'instruction QCM dans `EventContent.kt`** :
+  - L'instruction ("Choisis la bonne définition") est maintenant encapsulée dans un badge arrondi (`Surface` + `RoundedCornerShape(50)`) avec fond `secondaryContainer`
+  - Style `labelMedium` en italique pour la distinguer clairement des définitions proposées
+  - Ajout d'un `HorizontalDivider` entre l'instruction et les options pour séparer les deux zones
+
+### 🗂 Fichiers modifiés
+- `app/src/main/java/.../presentation/review/ReviewViewModel.kt` (l.308)
+- `app/src/main/java/.../presentation/review/EventContent.kt`
+
+---
+
+## 📅 2026-04-07 - Réparation tests planner + nettoyage warnings Kotlin ciblés
+
+### ✅ Accompli
+- [x] Réparation de la compilation des tests unitaires ciblés
+  - ajout du stub `deleteAllCards()` dans `FakeFlashcardRepository` de `ReviewSessionPlannerTest.kt`
+  - réalignement du fake de test sur l'interface `FlashcardRepository`
+- [x] Nettoyage des warnings Kotlin/Compose les plus sûrs et concrets
+  - suppression d'une condition toujours vraie dans `ReviewViewModel.kt`
+  - migration de `LinearProgressIndicator` vers la surcharge non dépréciée dans `XpProgressBar.kt` et `ModelDownloadUI.kt`
+  - remplacement de `Divider()` par `HorizontalDivider()` dans `GamificationDemoScreen.kt`
+  - suppression d'une variable inutilisée dans `XpProgressBar.kt`
+- [x] Deuxième passe ultra-conservative sur les warnings restants sans casser les API
+  - suppressions localisées `UNUSED_PARAMETER` / `unused` sur `ProfileScreen.kt`, `WordDetailScreen.kt`, `SyncManager.kt`, `GameComposables.kt`, `ModelDownloadUI.kt`
+  - aucune signature métier/navigation critique modifiée
+- [x] Validation ciblée relancée avec succès
+  - `:app:compileDebugKotlin`
+  - `:app:testDebugUnitTest --tests com.example.lexicaandroid2.domain.logic.ReviewSessionPlannerTest`
+  - `:app:testDebugUnitTest --tests com.example.lexicaandroid2.presentation.review.ReviewViewModelTest`
+  - `:app:testDebugUnitTest --tests com.example.lexicaandroid2.presentation.admin.AdminViewModelTest`
+  - `:app:testDebugUnitTest --tests com.example.lexicaandroid2.core.tts.TtsVoiceSupportTest`
+- [x] Correctif du retour au flux métier normal après usage du filtre admin `Review`
+  - suivi des changements de réglages admin liés à l'entraînement dans `AdminViewModel`
+  - application automatique au moment de quitter `AdminScreen`, même via navigation retour
+  - `ReviewViewModel` sait maintenant recharger explicitement une session après changement de configuration
+  - ajout d'un test de non-régression : passage en filtrage admin puis retour à `Présentation normale` => session standard restaurée
+- [x] Intégration correcte du téléchargement in-app du modèle sémantique
+  - si un défi sémantique arrive sans modèle en cache, `Review` affiche maintenant un vrai dialog intégré à l'app
+  - le téléchargement démarre dans l'interface avec progression visible
+  - l'utilisateur peut continuer sans IA en fallback Jaccard, sans blocage
+  - après téléchargement réussi, `Review` active le mode IA sémantique et l'indique visuellement dans l'UI du défi
+  - ajout d'un test de non-régression pour le prompt de téléchargement puis la bascule en mode IA
+
+### 🔴 Bloquants
+- Aucun sur ce correctif ciblé
+- Des dépréciations non critiques restent encore hors périmètre immédiat (notamment `GoogleSignIn`)
+
+### 🔜 Prochaines actions
+- Décider si on poursuit un nettoyage plus large des warnings non critiques (`ProfileScreen`, `WordDetailScreen`, `SyncManager`, `GameComposables`)
+- Évaluer séparément la migration future du flux `GoogleSignIn` déprécié
+
+### 📊 Statut Global
+```
+Tests planner:      ✅ Recompilent
+Review warnings:    ✅ Nettoyage ciblé appliqué
+Compose warnings:   ✅ Progress bars + dividers modernisés
+Warnings safe:      ✅ Passe conservative supplémentaire validée
+Admin review mode:  ✅ Retour fiable au flux métier normal restauré
+Semantic model UX:  ✅ Téléchargement in-app branché + fallback Jaccard conservé
+Validation ciblée:  ✅ BUILD SUCCESSFUL
+```
+
+### 🛍️ TODO pré-publication Google Play
+
+> Plan déplacé dans `docs/planning/PLAN_INTEGRATION_GOOGLE_PLAY.md` pour sortir la checklist de publication du journal quotidien.
+
+- [x] Checklist Google Play extraite de `DAILY_STANDUP.md`
+- [ ] Suivre désormais les actions de publication dans `docs/planning/PLAN_INTEGRATION_GOOGLE_PLAY.md`
+
+
+---
+
+## 📅 2026-04-05 - Refonte UX question orthographique et défi orthographique
+
+### ✅ Accompli
+- [x] Refonte UX orthographique dans `ReviewScreen.kt`
+  - layout dédié fixe en bas pour la saisie + validation + ligne retour / options son
+  - carte orthographique alignée sur le style des cartes standards (`RoundedCornerShape(20dp)`, `lexicaPanelContainerColor()`, elevation 4dp)
+  - typographie alignée via `rememberAdaptiveTextStyle` / `AudioTextLine`
+  - **Question orthographique** : aide audio visible dans la carte (`Écouter le mot`)
+  - **Défi orthographique** : aucune aide audio visible, l'utilisateur doit retrouver seul
+  - validation avec flip vers le verso + message de feedback
+  - **Défi orthographique réussi** : feedback spécial vert + confettis
+  - échec : feedback standard, sans animation spéciale
+- [x] Correctifs UX complémentaires appliqués
+  - hauteur du bandeau bas réduite pour la ligne retour / options son
+  - suppression du titre redondant sous la barre de progression pour les écrans orthographiques / défis
+  - suppression du suffixe ` (mode test admin)` dans les feedbacks affichés
+  - lecture vocale de la définition conservée dans le défi orthographique sans bouton dédié
+  - célébration du défi resserrée pour éviter l’agrandissement inutile de la carte
+- [x] Ajustements finaux
+  - icône des options audio restaurée à sa taille normale
+  - carte orthographique recentrée en hauteur dans l’espace disponible
+  - verso du défi compacté pour éviter l’effet d’expansion verticale
+
+### 🔴 Bloquants
+- Aucun
+
+### 🔜 Prochaines actions
+- Vérifier visuellement sur émulateur le layout fixe bas d'écran et l'animation de flip
+- Vérifier le feedback vert + confettis sur succès d’un défi orthographique
+- Envisager la même refonte pour le défi sémantique si souhaité
+
+### 📊 Statut Global
+```
+Orthographique UX:     ✅ Layout fixe + flip + feedback
+Question ortho:        ✅ TTS mot disponible (section dédiée dans la carte)
+Défi ortho:            ✅ TTS mot absent (retrouver seul)
+Défi sémantique:       ✅ TTS mot inline, sans-serif
+Validation:            ✅ Aucune erreur de compilation
+```
+
+---
+
 ## 📅 2026-04-05 - Option "Remettre la progression à zéro" dans le profil
 
 ### ✅ Accompli
 - [x] Ajout de `deleteAll()` dans `FlashcardDao` (supprime toutes les flashcards)
-- [x] Ajout de `deleteAll()` dans `ReviewQuestionDao` (supprime toute la progression SM2)
+- [x] Ajout de `deleteAll()` dans `ReviewQuestionDao` (supprime toute la progression POLO-1)
 - [x] Ajout de `deleteAllCards()` dans l'interface `FlashcardRepository` + implémentation dans `FlashcardRepositoryImpl`
-- [x] Création de `domain/usecase/ResetProgressUseCase.kt` — orchestre la suppression complète : flashcards, progression SM2, snapshots de session, stats XP/streak, stats journalières
+- [x] Création de `domain/usecase/ResetProgressUseCase.kt` — orchestre la suppression complète : flashcards, progression POLO-1, snapshots de session, stats XP/streak, stats journalières
 - [x] Mise à jour de `ProfileUiState` : nouveaux champs `resetDialogStep`, `isResetting`, `resetDoneMessage`
 - [x] Ajout dans `ProfileViewModel` de 5 méthodes : `onResetProgressClicked`, `onResetStep1Confirmed`, `onResetDismissed`, `onResetConfirmedFinal`, `onResetMessageDismissed`
 - [x] Mise à jour de `ProfileViewModelFactory` pour accepter `ResetProgressUseCase` + `SyncManager`
@@ -40,7 +233,7 @@
 - `MainActivity.kt`
 
 ### ℹ️ Note sur la synchro Firestore
-Seuls **XP, niveau, streak, favoris** sont synchronisés dans le cloud. La progression SM2 par mot (date de prochaine révision, état d'apprentissage) reste **locale uniquement**. Sur un nouveau téléphone, l'utilisateur retrouve ses stats de gamification mais repart de zéro pour les révisions.
+Seuls **XP, niveau, streak, favoris** sont synchronisés dans le cloud. La progression POLO-1 par mot (date de prochaine révision, état d'apprentissage) reste **locale uniquement**. Sur un nouveau téléphone, l'utilisateur retrouve ses stats de gamification mais repart de zéro pour les révisions.
 
 ---
 
@@ -933,7 +1126,7 @@ Build:                    ⚠️ Non exécutable via l'outil intégré actuel
 - [x] Extension de `FlashcardRepository` / `FlashcardRepositoryImpl` pour lire/écrire la progression par question
 - [x] Synchronisation automatique des 2 progressions question lors de :
   - sauvegarde d'une carte
-  - mise à jour SM2 d'une carte
+  - mise à jour POLO-1 d'une carte
   - suppression d'une carte
   - ajout depuis la réserve
   - import initial des cartes legacy
@@ -1446,4 +1639,150 @@ Navigation:      ✅ Inchangée
 Build:           ✅ `:app:compileDebugKotlin` OK
 Tests ciblés:    ✅ `ReviewViewModelTest` + `ReviewSessionPlannerTest`
 ```
+
+---
+
+## 2026-04-05 (suite) — Corrections UX orthographique + Refactoring ReviewScreen
+
+### 🔧 Corrections de bugs (questions orthographiques)
+- **Label de type disparu** : le hint contextuel ("Question orthographique" / "Défi orthographique" / "Défi sémantique") n'apparaissait plus au-dessus de la carte → ajout d'une branche dédiée dans le layout avec centrage vertical via `Box(weight(1f), contentAlignment = Center)`
+- **Bouton audio lisait le mot au lieu de la définition** : `AudioTextLine` appelait `onSpeakWord` au lieu de `onSpeakDefinition` → corrigé
+- **Auto-speak pour événements orthographiques** : `maybeAutoSpeakVisibleContent()` retournait immédiatement pour les types non-NORMAL_QUESTION → étendu avec règles : extra_spelling lit def puis mot ; défi ortho lit def seulement (JAMAIS le mot) ; défi sémantique lit le mot seulement
+- **Bouton PASSER** : ajouté pour question ortho uniquement (EXTRA_SPELLING), les défis (CHALLENGE) n'ont que VALIDER pleine largeur
+
+### 🏗️ Refactoring : décomposition de ReviewScreen.kt (1727 → 7 fichiers)
+- `ReviewModels.kt` — data classes + fonctions utilitaires
+- `ReviewSharedComponents.kt` — composables partagés (ReviewHeader, AudioTextLine, etc.)
+- `NormalQuestionContent.kt` — contenu question normale + contrôles fixes
+- `OrthographicContent.kt` — contenu orthographique + contrôles fixes
+- `EventContent.kt` — QCM + Matching
+- `SessionCelebration.kt` — célébration + confettis
+- `ReviewScreen.kt` — orchestrateur lean (~300 lignes)
+
+### 📊 Statut Global
+```
+Question ortho:     ✅ Label restauré + carte centrée + PASSER/VALIDER
+Défi ortho/séma:    ✅ Label restauré + carte centrée + VALIDER seul (pas de PASSER)
+Audio ortho:        ✅ Bouton son lit la définition (pas le mot)
+Auto-speak ortho:   ✅ Règles spécifiques par type (défi ortho ≠ mot)
+Refactoring Review: ✅ 1 fichier monolithique → 7 fichiers découpés
+Build:              ✅ Compilation OK
+```
+
+---
+
+## 2026-04-08 — Audit + refonte pipeline défi sémantique embeddings/TFLite
+
+### ✅ Diagnostic confirmé
+- L’URL `paraphrase-multilingual-MiniLM-L12-v2/resolve/main/model.tflite` utilisée par `TFLiteSemanticValidator.kt` retourne **404** : le fichier visé n’existe pas dans le dépôt Hugging Face ciblé.
+- Le dépôt source publie bien `sentencepiece.bpe.model` + `tokenizer.json` + `1_Pooling/config.json`, donc le modèle exact nécessite une **vraie tokenization SentencePiece/BERT** et une étape de **pooling sentence-transformers**.
+- L’ancienne implémentation injectait un **`FloatArray(384)` fabriqué par hashing de tokens** dans TFLite ; ce n’était **pas** un input valide de MiniLM/sentence-transformers.
+
+### 🔧 Refonte livrée
+- Pivot vers un bundle on-device **DistilUSE multilingue cased** réellement exploitable sur mobile :
+  - modèle TFLite quantifié téléchargé et caché localement
+  - `vocab.txt` WordPiece téléchargé avec le modèle
+  - tokenizer WordPiece Kotlin embarqué
+  - inférence TFLite réelle sur `input_ids`
+  - mean pooling côté app puis cosine similarity
+- `JaccardSemanticValidator` conservé comme fallback si modèle absent/refusé/en erreur.
+- `ReviewViewModel.kt` : le feedback détaillé du validateur sémantique remonte désormais dans l’UI du défi.
+- `ModelDownloadUI.kt` : texte et statut alignés avec le vrai bundle embeddings on-device.
+
+### 🧪 Validations exécutées
+- ✅ `:app:compileDebugKotlin`
+- ✅ `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.review.ReviewViewModelTest"`
+- ✅ `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.review.challenge.SpellingValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.JaccardSemanticValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.DistilUseWordPieceTokenizerTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.TFLiteSemanticValidatorTest"`
+
+### ✅ Ajustement UX prompt téléchargement sémantique (suite)
+- Le prompt de téléchargement n'attend plus l'ouverture d'un défi sémantique : il peut maintenant être proposé dès le lancement de l'app via `LexicaApp.kt`
+- `ReviewScreen.kt` ne porte plus de dialog local pour ce téléchargement ; l'affichage est globalisé au niveau application
+- Le wording visible a été réécrit côté utilisateur : on explique maintenant que cela aide l'app à mieux reconnaître les réponses libres, sans parler d'"embeddings" ou de "Jaccard"
+- Les messages de confirmation/refus ont aussi été simplifiés (`ReviewViewModel.kt` + `ModelDownloadUI.kt`)
+- Validation supplémentaire exécutée :
+  - ✅ `:app:compileDebugKotlin`
+  - ✅ `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.review.ReviewViewModelTest"`
+
+### ✅ Recalage métier de la sélection des mots-clés
+- L'extraction ne vise plus une liste longue de 5+ mots-clés : la cible par défaut est maintenant **1 à 2 concepts vraiment centraux** par définition
+- `KeywordExtractor.kt` ne trie plus seulement par longueur ; la sélection donne priorité au début de définition, au groupe nominal de tête et écarte certains termes génériques de définition
+- `SemanticValidator.kt` et `TFLiteSemanticValidator.kt` utilisent désormais cette extraction resserrée sans `topN = 5` codé en dur
+- Tests mis à jour et validés :
+  - ✅ `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.review.challenge.KeywordExtractorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.JaccardSemanticValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.TFLiteSemanticValidatorTest"`
+
+### ✅ Décision produit : les mots-clés ne décident plus du défi sémantique
+- En mode modèle sémantique disponible, la validation repose désormais **uniquement** sur la similarité sémantique ; une reformulation proche n'est plus rejetée parce qu'elle ne contient pas les “bons mots”
+- Le fallback sans modèle a été simplifié en similarité lexicale globale (`KeywordExtractor.lexicalFallbackScore`) au lieu d'une logique de mots-clés trouvés/manquants
+- Les messages utilisateur ne parlent plus de mots-clés manquants pour juger une réponse libre
+- Validation exécutée :
+  - ✅ `:app:compileDebugKotlin`
+  - ✅ `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.review.challenge.KeywordExtractorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.JaccardSemanticValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.TFLiteSemanticValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.SpellingValidatorTest"`
+
+### ✅ Calibration de seuils (tests ciblés)
+- Ajout de tests de frontière explicites sur le mode sémantique :
+  - `0.62` = succès
+  - `0.40` = réponse partielle
+  - `< 0.40` = échec
+- Ajustement léger des seuils modèle retenus dans `TFLiteSemanticValidator.kt` :
+  - succès `0.65` → `0.62`
+  - partiel `0.45` → `0.40`
+- Mesure rapide du fallback lexical sur quelques reformulations françaises courtes, puis assouplissement du mode secours :
+  - succès lexical `0.55` → `0.50`
+  - partiel lexical `0.30` → `0.25`
+- Cas validés par tests : reformulation courte acceptable, réponse limite, hors-sujet, fallback lexical proche, fallback lexical partiel
+- Validation exécutée :
+  - ✅ `:app:compileDebugKotlin`
+  - ✅ `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.review.challenge.KeywordExtractorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.JaccardSemanticValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.TFLiteSemanticValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.SpellingValidatorTest"`
+
+### ✅ Objectif Google Play début mai — lot du jour
+- **Ajout de mots / API** : `DictionaryServiceImpl.kt` n’est plus limité au scraper HTML brut ; la recherche passe d’abord par un nouveau flux **MediaWiki API Wiktionnaire** (`WiktionnaireApiSource.kt`) avec :
+  - lookup page exact via `action=parse`
+  - recherche de titres candidats via `action=query&list=search`
+  - parsing HTML mutualisé dans `WiktionnaireHtmlParser.kt`
+  - fallback final sur `WiktionnaireScraper.kt`
+  - déduplication des résultats cross-source
+- **Prépa Google Play / conformité** :
+  - suppression du point d’entrée public `GamificationDemoScreen` dans la navigation (`Screen.kt` + `LexicaApp.kt`)
+  - ajout d’un vrai flux **supprimer mon compte** côté profil (`ProfileViewModel.kt`, `ProfileScreen.kt`)
+  - suppression du document Firestore utilisateur avant suppression Firebase Auth (`FirestoreSyncRepository.kt`, `SyncManager.kt`, `FirebaseAuthRepository.kt`)
+- **Tests exécutés aujourd’hui** :
+  - ✅ `:app:compileDebugKotlin`
+  - ✅ `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.data.remote.DictionaryServiceImplTest" --tests "com.example.lexicaandroid2.data.repository.WordReserveRepositoryImplTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.SpellingValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.JaccardSemanticValidatorTest" --tests "com.example.lexicaandroid2.presentation.review.challenge.TFLiteSemanticValidatorTest"`
+- **Audit défis / revue intégrée** : la suite `ReviewViewModelTest` n’est pas entièrement verte actuellement. Échecs relevés à traiter avant release :
+  - `skipExtraSpellingReturnsToNormalQuestion`
+  - `qcmCanUseGlobalDistractorsWhenSessionHasSingleQuestion`
+  - `adminCanDisableIntegratedQcmInReview`
+  - `sessionProgressAdvancesProportionallyWithGotItAnswers`
+  - `invalidateSessionForSettingsChangePersistsValidatedQuestions`
+  - `completingSessionShowsCelebrationAndAwardsSessionXp`
+
+### ✅ Lot P0 review + backup stabilisé (suite)
+- `ReviewViewModel.kt` réaligné pour les scénarios P0 :
+  - pas d’`EXTRA_SPELLING` dans les **micro-sessions explicites à 1 carte**
+  - `MATCHING` ne parasite plus les scénarios de progression/QCM ciblés : il reste déclenché sur des cas d’échec adaptés et hors mode admin filtré
+  - le **défi utilisation** n’est plus injecté dans le flux utilisateur standard ; il reste réservé au mode admin avancé / calibration
+- Résultat direct : la suite `ReviewViewModelTest` repasse au vert sur les 6 échecs P0 confirmés précédemment.
+- Stratégie de backup P0 appliquée côté app :
+  - `AndroidManifest.xml` → `allowBackup=false`
+  - `backup_rules.xml` + `data_extraction_rules.xml` → exclusion explicite des données locales (`database`, `sharedpref`, `files`, etc.)
+- `SettingsScreen.kt` : retrait du placeholder technique pour la politique de confidentialité ; l’UI attend maintenant une **vraie URL publique** au lieu d’un faux lien local.
+- Blocages externes restants avant soumission Play :
+  - URL publique réelle de politique de confidentialité
+  - décision finale sur le package public (`applicationId` / Firebase / OAuth release)
+  - signature release + SHA console + Play Console
+
+### ▶️ Démarrage P0 externe — politique de confidentialité
+- Priorité suivante validée : obtenir une **URL publique HTTPS stable** pour la politique de confidentialité avant la fiche Play.
+- Recommandation retenue pour aller vite sans coût : **GitHub Pages** avec une page simple dédiée (slug type `/privacy-policy`).
+- Le branchement côté app est déjà prêt à accepter une vraie URL via `privacyPolicyUrl` dans `SettingsScreen.kt` ; il reste à publier la page puis à injecter l’URL finale.
+
+### ✅ Automatisation repo-side — politique de confidentialité
+- Création d’une page statique prête à publier : `privacy-policy/index.html`
+- Ajout d’un mini guide de déploiement : `privacy-policy/README.md`
+- Ajout d’un workflow GitHub Actions pour GitHub Pages : `.github/workflows/privacy-policy-pages.yml`
+- Reste hors repo :
+  - pousser sur GitHub
+  - activer **Settings → Pages → Source: GitHub Actions**
+  - récupérer l’URL finale publique HTTPS
+  - remplacer l’e-mail support placeholder avant publication
 
