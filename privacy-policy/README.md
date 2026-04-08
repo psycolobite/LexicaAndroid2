@@ -10,11 +10,8 @@ Ce dossier contient une version statique prête à publier de la politique de co
 
 ## À compléter avant publication
 
-Dans `index.html`, remplacez :
-
-- `[À compléter avant publication : e-mail de support]`
-
-par votre vraie adresse de contact support.
+- confirmer que l'adresse `mottet2.paul6@outlook.fr` est bien l'adresse de support publique à afficher ;
+- si nécessaire, remplacer cette adresse directement dans `index.html`.
 
 ## Publication automatique via GitHub Pages
 
@@ -30,7 +27,9 @@ Il se déclenche sur `main` ainsi que sur les branches `integration/**`.
 
 ## URL attendue
 
-Si le dépôt GitHub est `LexicaAndroid2`, l'URL finale devrait ressembler à :
+Le workflow publie directement le contenu du dossier `privacy-policy` à la racine du site GitHub Pages du dépôt.
+
+Si le dépôt GitHub est `LexicaAndroid2`, l'URL finale devrait donc ressembler à :
 
 ```text
 https://<ton-compte-github>.github.io/LexicaAndroid2/

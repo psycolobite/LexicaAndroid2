@@ -1781,9 +1781,12 @@ Build:              ✅ Compilation OK
 - Ajout d’un mini guide de déploiement : `privacy-policy/README.md`
 - Ajout d’un workflow GitHub Actions pour GitHub Pages : `.github/workflows/privacy-policy-pages.yml`
 - Ajustement du workflow pour autoriser aussi la publication depuis les branches `integration/**`, afin de sortir l’URL sans attendre un merge sur `main`
+- Vérification Git locale effectuée : `origin` pointe bien sur `https://github.com/psycolobite/LexicaAndroid2.git`
+- Vérification remote effectuée : la branche distante existante est `origin/integration/espace-de-travail-2026-04-08-suite` ; `main` n’a pas encore été poussée sur GitHub à ce stade
+- Correction de la cible GitHub Pages documentée : le workflow publie le contenu de `privacy-policy/` à la **racine** du site Pages du dépôt, donc l’URL attendue est de type `https://psycolobite.github.io/LexicaAndroid2/` et non `/privacy-policy/`
 - Reste hors repo :
   - pousser sur GitHub
   - activer **Settings → Pages → Source: GitHub Actions**
   - récupérer l’URL finale publique HTTPS
-  - remplacer l’e-mail support placeholder avant publication
+  - confirmer l’e-mail support public final avant publication
 
