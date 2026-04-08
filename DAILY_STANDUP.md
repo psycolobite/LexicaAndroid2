@@ -1791,6 +1791,7 @@ Build:              ✅ Compilation OK
 - Vérification technique après branchement : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
 - Diagnostic complémentaire : la croix rouge visible dans GitHub Actions correspond au run ancien `docs: fix privacy policy pages url guidance` ; les commits suivants n’avaient pas relancé Pages car le workflow ne se déclenche que sur `privacy-policy/**` ou le workflow lui-même
 - Nouveau déclenchement préparé via une micro-mise à jour de `privacy-policy/index.html` (date de mise à jour + notice contact) pour forcer un run Pages après activation
+- Politique de confidentialité retravaillée ensuite pour la publication : suppression de la notice interne destinée au dépôt et renforcement des mentions attendues côté RGPD / Google Play (`base légale`, `durée de conservation`, `transferts`, `droits`, `CNIL`, reformulation de la `sécurité` autour de Firebase / Google Cloud)
 - Reste hors repo :
   - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS
