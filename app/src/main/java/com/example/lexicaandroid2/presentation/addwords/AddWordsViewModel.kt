@@ -44,7 +44,7 @@ data class AddWordsUiState(
     val isLoadingProposed: Boolean = false,
     /**
      * Mots ajoutés pendant la session courante.
-     * Clé : `WordReserveEntity.id` pour la réserve, `WordResult.mot` pour les résultats API.
+     * Clé : `mot.trim()` pour uniformiser les résultats API et réserve locale.
      * Valeur : la Flashcard créée (pour pouvoir la supprimer / mettre en favori).
      * Remis à zéro à chaque entrée sur l'écran.
      */
@@ -63,10 +63,10 @@ class AddWordsViewModel(
 
     private var debounceJob: Job? = null
     private var allCards: List<Flashcard> = emptyList()
+    private var latestSearchRequestId: Long = 0L
 
     init {
-        loadProposedWords()
-        loadAllCards()
+        refreshScreenData(resetSessionMarkers = false, resetSearchState = false)
     }
 
     // ── Entrée sur l'écran ────────────────────────────────────────────────────
@@ -75,98 +75,152 @@ class AddWordsViewModel(
      * À appeler via LaunchedEffect(Unit) dans le composable.
      * Recharge la réserve (sans les mots déjà ajoutés),
      * rafraîchit allCards (corrige le bug "mot supprimé encore visible"),
-     * et remet à zéro les marqueurs de session.
+     * remet à zéro les marqueurs de session et nettoie l'état de recherche.
      */
     fun onScreenEntered() {
-        _uiState.update { it.copy(addedInSession = emptyMap()) }
-        loadProposedWords()
-        loadAllCards()
+        refreshScreenData(resetSessionMarkers = true, resetSearchState = true)
     }
 
     // ── Chargement initial ────────────────────────────────────────────────────
 
-    private fun loadProposedWords() {
+    private fun refreshScreenData(
+        resetSessionMarkers: Boolean,
+        resetSearchState: Boolean
+    ) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoadingProposed = true) }
-            runCatching { wordReserveRepository.getProposedWords(50) }
-                .onSuccess { words -> _uiState.update { it.copy(proposedWords = words, isLoadingProposed = false) } }
-                .onFailure { _uiState.update { it.copy(isLoadingProposed = false) } }
-        }
-    }
+            if (resetSearchState) {
+                debounceJob?.cancel()
+                latestSearchRequestId++
+            }
 
-    private fun loadAllCards() {
-        viewModelScope.launch {
+            _uiState.update { state ->
+                state.copy(
+                    isLoadingProposed = true,
+                    addedInSession = if (resetSessionMarkers) emptyMap() else state.addedInSession,
+                    searchQuery = if (resetSearchState) "" else state.searchQuery,
+                    localMatches = if (resetSearchState) emptyList() else state.localMatches,
+                    apiResults = if (resetSearchState) emptyList() else state.apiResults,
+                    isApiLoading = false,
+                    error = null,
+                    selectedResult = if (resetSearchState) null else state.selectedResult
+                )
+            }
+
+            var latestCards = allCards
             runCatching { flashcardRepository.getAllCards() }
-                .onSuccess { cards -> allCards = cards }
+                .onSuccess { cards ->
+                    allCards = cards
+                    latestCards = cards
+                }
+
+            runCatching { wordReserveRepository.getProposedWords(50) }
+                .onSuccess { words ->
+                    _uiState.update { state ->
+                        state.copy(
+                            proposedWords = filterSuggestedWords(words, latestCards),
+                            localMatches = computeLocalMatches(state.searchQuery, latestCards),
+                            isLoadingProposed = false
+                        )
+                    }
+                }
+                .onFailure {
+                    _uiState.update { state ->
+                        state.copy(
+                            proposedWords = filterSuggestedWords(state.proposedWords, latestCards),
+                            localMatches = computeLocalMatches(state.searchQuery, latestCards),
+                            isLoadingProposed = false
+                        )
+                    }
+                }
         }
     }
 
     // ── Barre de recherche ───────────────────────────────────────────────────
 
     fun onSearchQueryChanged(query: String) {
-        _uiState.update { it.copy(searchQuery = query, error = null, successMessage = null) }
+        debounceJob?.cancel()
+        val requestId = ++latestSearchRequestId
+
+        _uiState.update {
+            it.copy(
+                searchQuery = query,
+                error = null,
+                successMessage = null,
+                isApiLoading = false
+            )
+        }
 
         // Filtre local instantané (dès 2 caractères)
         val trimmed = query.trim()
         if (trimmed.length >= 2) {
-            val matches = allCards.filter {
-                it.recto.contains(trimmed, ignoreCase = true) ||
-                it.verso.contains(trimmed, ignoreCase = true)
-            }.take(5)
+            val matches = computeLocalMatches(trimmed, allCards)
             _uiState.update { it.copy(localMatches = matches) }
         } else {
-            _uiState.update { it.copy(localMatches = emptyList(), apiResults = emptyList()) }
+            _uiState.update {
+                it.copy(
+                    localMatches = emptyList(),
+                    apiResults = emptyList(),
+                    isApiLoading = false,
+                    error = null
+                )
+            }
             return
         }
 
         // Debounce 500ms → recherche API
-        debounceJob?.cancel()
         debounceJob = viewModelScope.launch {
             delay(500)
-            searchApi(trimmed)
+            searchApi(trimmed, requestId)
         }
     }
 
-    private fun searchApi(query: String) {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isApiLoading = true, apiResults = emptyList()) }
-            try {
-                val results = wordReserveRepository.searchOnline(query)
-                val wordResults = results.map { entity ->
-                    WordResult(
-                        mot = entity.mot,
-                        definition = entity.definition,
-                        categorieGrammaticale = entity.categorieGrammaticale,
-                        exemples = entity.exemples,
-                        synonymes = entity.synonymes
-                    )
-                }
-                _uiState.update {
-                    it.copy(
-                        apiResults = wordResults,
-                        isApiLoading = false,
-                        error = if (wordResults.isEmpty() && it.localMatches.isEmpty())
-                            "Pas de résultat — tu peux ajouter le mot manuellement" else null
-                    )
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isApiLoading = false,
-                        error = "Pas de connexion — tu peux ajouter le mot manuellement"
-                    )
-                }
+    private suspend fun searchApi(query: String, requestId: Long) {
+        if (!isSearchRequestStillCurrent(query, requestId)) return
+
+        _uiState.update { it.copy(isApiLoading = true, apiResults = emptyList()) }
+
+        try {
+            val results = wordReserveRepository.searchOnline(query)
+            if (!isSearchRequestStillCurrent(query, requestId)) return
+
+            val wordResults = results.map { entity ->
+                WordResult(
+                    mot = entity.mot,
+                    definition = entity.definition,
+                    categorieGrammaticale = entity.categorieGrammaticale,
+                    exemples = entity.exemples,
+                    synonymes = entity.synonymes
+                )
+            }
+            _uiState.update {
+                it.copy(
+                    apiResults = wordResults,
+                    isApiLoading = false,
+                    error = if (wordResults.isEmpty() && it.localMatches.isEmpty())
+                        "Pas de résultat — tu peux ajouter le mot manuellement" else null
+                )
+            }
+        } catch (e: Exception) {
+            if (!isSearchRequestStillCurrent(query, requestId)) return
+
+            _uiState.update {
+                it.copy(
+                    isApiLoading = false,
+                    error = "Pas de connexion — tu peux ajouter le mot manuellement"
+                )
             }
         }
     }
 
     fun clearSearch() {
         debounceJob?.cancel()
+        latestSearchRequestId++
         _uiState.update {
             it.copy(
                 searchQuery = "",
                 localMatches = emptyList(),
                 apiResults = emptyList(),
+                isApiLoading = false,
                 error = null,
                 successMessage = null
             )
@@ -393,6 +447,31 @@ class AddWordsViewModel(
             _uiState.update { it.copy(successMessage = null) }
         }
     }
+
+    private fun computeLocalMatches(query: String, cards: List<Flashcard>): List<Flashcard> {
+        val trimmed = query.trim()
+        if (trimmed.length < 2) return emptyList()
+
+        return cards.filter {
+            it.recto.contains(trimmed, ignoreCase = true) ||
+                it.verso.contains(trimmed, ignoreCase = true)
+        }.take(5)
+    }
+
+    private fun filterSuggestedWords(
+        words: List<WordReserveEntity>,
+        cards: List<Flashcard>
+    ): List<WordReserveEntity> {
+        val existingWords = cards.mapTo(mutableSetOf()) { it.recto.normalizedWordKey() }
+        return words.filterNot { it.mot.normalizedWordKey() in existingWords }
+    }
+
+    private fun isSearchRequestStillCurrent(query: String, requestId: Long): Boolean {
+        val currentState = _uiState.value
+        return requestId == latestSearchRequestId && currentState.searchQuery.trim() == query
+    }
+
+    private fun String.normalizedWordKey(): String = trim().lowercase()
 }
 
 // ─── Factory ─────────────────────────────────────────────────────────────────

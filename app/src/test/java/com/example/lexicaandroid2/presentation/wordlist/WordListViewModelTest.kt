@@ -18,7 +18,10 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.argThat
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -327,6 +330,87 @@ class WordListViewModelTest {
         verify(repository).setFavorite("1", false)
     }
 
+    @Test
+    fun favoriteSelectedCardsMarksEachSelectedCardAsFavoriteAndClearsSelection() = runTest {
+        whenever(repository.getAllCards()).thenReturn(
+            listOf(card1, card2),
+            listOf(card1.copy(favori = true), card2.copy(favori = true))
+        )
+
+        viewModel.loadWords()
+        viewModel.toggleCardSelection(card1.id)
+        viewModel.toggleCardSelection(card2.id)
+        viewModel.favoriteSelectedCards()
+
+        verify(repository).setFavorite(card1.id, true)
+        verify(repository).setFavorite(card2.id, true)
+        assertTrue(viewModel.uiState.value.selectedCardIds.isEmpty())
+        assertFalse(viewModel.uiState.value.isSelectionMode)
+    }
+
+    @Test
+    fun favoriteSelectedCardsSkipsCardsAlreadyFavorite() = runTest {
+        val alreadyFavorite = card1.copy(favori = true)
+        whenever(repository.getAllCards()).thenReturn(
+            listOf(alreadyFavorite, card2),
+            listOf(alreadyFavorite, card2.copy(favori = true))
+        )
+
+        viewModel.loadWords()
+        viewModel.toggleCardSelection(alreadyFavorite.id)
+        viewModel.toggleCardSelection(card2.id)
+        viewModel.favoriteSelectedCards()
+
+        verify(repository, never()).setFavorite(alreadyFavorite.id, true)
+        verify(repository).setFavorite(card2.id, true)
+        assertTrue(viewModel.uiState.value.selectedCardIds.isEmpty())
+    }
+
+    // endregion
+
+    // region selection
+
+    @Test
+    fun toggleCardSelectionAddsThenRemovesSelection() = runTest {
+        whenever(repository.getAllCards()).thenReturn(listOf(card1, card2))
+
+        viewModel.loadWords()
+        viewModel.toggleCardSelection(card1.id)
+
+        assertTrue(viewModel.uiState.value.isSelectionMode)
+        assertEquals(setOf(card1.id), viewModel.uiState.value.selectedCardIds)
+
+        viewModel.toggleCardSelection(card1.id)
+
+        assertFalse(viewModel.uiState.value.isSelectionMode)
+        assertTrue(viewModel.uiState.value.selectedCardIds.isEmpty())
+    }
+
+    @Test
+    fun selectAllVisibleOnlySelectsCurrentlyFilteredCards() = runTest {
+        whenever(repository.getAllCards()).thenReturn(listOf(card1, card2, knownCard))
+
+        viewModel.loadWords()
+        viewModel.onSearchQueryChanged("coordonnee")
+        viewModel.selectAllVisible()
+
+        assertEquals(setOf(card1.id, card2.id), viewModel.uiState.value.selectedCardIds)
+    }
+
+    @Test
+    fun onSearchQueryChangedKeepsOnlySelectionsStillVisible() = runTest {
+        whenever(repository.getAllCards()).thenReturn(listOf(card1, card2))
+
+        viewModel.loadWords()
+        viewModel.toggleCardSelection(card1.id)
+        viewModel.toggleCardSelection(card2.id)
+
+        viewModel.onSearchQueryChanged("abscisse")
+
+        assertEquals(setOf(card1.id), viewModel.uiState.value.selectedCardIds)
+        assertTrue(viewModel.uiState.value.isSelectionMode)
+    }
+
     // endregion
 
     // region deleteCard
@@ -348,6 +432,48 @@ class WordListViewModelTest {
         viewModel.deleteCard("1")
         assertEquals(1, viewModel.uiState.value.cards.size)
         assertEquals("ordonnee", viewModel.uiState.value.cards.first().recto)
+    }
+
+    @Test
+    fun deleteSelectedCardsDeletesEachSelectedCardAndClearsSelection() = runTest {
+        whenever(repository.getAllCards()).thenReturn(listOf(card1, card2), listOf(knownCard))
+
+        viewModel.loadWords()
+        viewModel.toggleCardSelection(card1.id)
+        viewModel.toggleCardSelection(card2.id)
+        viewModel.deleteSelectedCards()
+
+        verify(repository).deleteCard(card1.id)
+        verify(repository).deleteCard(card2.id)
+        assertEquals(listOf(knownCard), viewModel.uiState.value.cards)
+        assertTrue(viewModel.uiState.value.selectedCardIds.isEmpty())
+        assertFalse(viewModel.uiState.value.isSelectionMode)
+    }
+
+    @Test
+    fun resetProgressForSelectedCardsResetsEachCardAndClearsSelection() = runTest {
+        whenever(repository.getAllCards()).thenReturn(
+            listOf(knownCard, card1),
+            listOf(knownCard.copy(sm2MotVersDef = Sm2Stats(), sm2DefVersMot = Sm2Stats()), card1)
+        )
+
+        viewModel.loadWords()
+        viewModel.toggleCardSelection(knownCard.id)
+        viewModel.resetProgressForSelectedCards()
+
+        verify(repository).updateCardProgress(
+            eq(knownCard.id),
+            argThat {
+                interval == 0 && repetitions == 0 && easeFactor == 2.5 &&
+                    lastReviewDate == null && totalReviews == 0 && correctReviews == 0 && lapses == 0
+            },
+            argThat {
+                interval == 0 && repetitions == 0 && easeFactor == 2.5 &&
+                    lastReviewDate == null && totalReviews == 0 && correctReviews == 0 && lapses == 0
+            }
+        )
+        assertTrue(viewModel.uiState.value.selectedCardIds.isEmpty())
+        assertFalse(viewModel.uiState.value.isSelectionMode)
     }
 
 

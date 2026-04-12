@@ -1,5 +1,6 @@
 package com.example.lexicaandroid2.presentation.common
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
@@ -27,9 +28,11 @@ fun LexicaTopAppBar(
     canNavigateBack: Boolean,
     navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
+    subtitle: String? = null,
     onProfileClick: (() -> Unit)? = null,
     onSettingsClick: (() -> Unit)? = null,
-    useBrandTitle: Boolean = false
+    useBrandTitle: Boolean = false,
+    actionsContent: (@Composable RowScope.() -> Unit)? = null
 ) {
     val navigationIcon: @Composable () -> Unit = {
         if (canNavigateBack) {
@@ -43,6 +46,7 @@ fun LexicaTopAppBar(
     }
 
     val actions: @Composable RowScope.() -> Unit = {
+        actionsContent?.invoke(this)
         if (onSettingsClick != null) {
             IconButton(onClick = onSettingsClick) {
                 Icon(
@@ -64,22 +68,42 @@ fun LexicaTopAppBar(
     if (useBrandTitle) {
         TopAppBar(
             title = {
-                Text(
-                    text = title,
-                    style = MaterialTheme.typography.headlineSmall,
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Column {
+                    Text(
+                        text = title,
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontFamily = FontFamily.SansSerif,
+                        fontWeight = FontWeight.SemiBold
+                    )
+                    subtitle?.takeIf { it.isNotBlank() }?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
             },
-            modifier = modifier.height(40.dp),
+            modifier = modifier.height(if (subtitle.isNullOrBlank()) 40.dp else 56.dp),
             colors = TopAppBarDefaults.topAppBarColors(),
             navigationIcon = navigationIcon,
             actions = actions
         )
     } else {
         CenterAlignedTopAppBar(
-            title = { Text(title) },
-            modifier = modifier.height(40.dp),
+            title = {
+                Column(horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally) {
+                    Text(title)
+                    subtitle?.takeIf { it.isNotBlank() }?.let {
+                        Text(
+                            text = it,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+            },
+            modifier = modifier.height(if (subtitle.isNullOrBlank()) 40.dp else 56.dp),
             colors = TopAppBarDefaults.topAppBarColors(),
             navigationIcon = navigationIcon,
             actions = actions

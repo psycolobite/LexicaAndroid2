@@ -6,7 +6,65 @@
 
 ---
 
+## 📅 2026-04-12 — Sélection multiple dans `Mes mots` + suppression groupée
+
+### ✅ Accompli
+- [x] Ajout d'un **mode sélection multiple par appui long** dans `presentation/wordlist/WordListScreen.kt`
+  - appui long sur une carte => entrée en mode sélection et carte cochée
+  - tap court en mode sélection => ajoute/retire la carte de la sélection
+  - ouverture du détail désactivée pendant la sélection pour éviter les conflits d'action
+- [x] Remplacement du **bandeau d'actions contextuelles** par un **menu `⋮` dans la top bar**
+  - le bandeau `n carte(s) sélectionnée(s)` a été supprimé pour éviter les problèmes d'affichage
+  - un bouton `⋮` apparaît à droite dans la **vraie top bar** (`Mes mots` + catégorie + retour) dès qu'au moins une carte est sélectionnée
+  - le menu contient désormais : `Ajouter aux favoris`, `Supprimer`, `Réinitialiser la progression`
+  - confirmations conservées pour les actions destructives (`Supprimer`, `Réinitialiser la progression`)
+  - la barre de recherche conserve sa largeur normale (plus de rétrécissement lié au menu)
+  - les boutons `favori` et `poubelle` des cartes restent visibles même pendant la sélection multiple
+- [x] Ajout de la **logique de suppression groupée** dans `presentation/wordlist/WordListViewModel.kt`
+  - état `selectedCardIds`
+  - nettoyage automatique de la sélection quand la recherche/le filtre change
+  - rechargement de la liste après suppression du lot
+- [x] Ajout des **actions de lot complémentaires** dans `presentation/wordlist/WordListViewModel.kt`
+  - ajout aux favoris pour toutes les cartes sélectionnées
+  - réinitialisation de la progression pour toutes les cartes sélectionnées
+- [x] Ajout de **tests unitaires ciblés** dans `presentation/wordlist/WordListViewModelTest.kt`
+  - toggle de sélection
+  - sélection de toutes les cartes visibles
+  - conservation uniquement des sélections encore visibles après filtrage
+  - suppression groupée et vidage de la sélection
+  - ajout aux favoris en lot
+  - reset de progression en lot
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListViewModel.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/wordlist/WordListViewModelTest.kt`
+
+---
+
 ## 📅 2026-04-12 — Refonte UX "Ajouter des mots" : présentation unifiée + état ajouté + bug fix
+
+### ✅ Accompli
+- [x] **Correctif suggestions réaffichées à tort au retour sur `Ajouter des mots`**
+  - les `mots suggérés pour toi` sont maintenant rechargés **après** rafraîchissement de la collection réelle de l'utilisateur
+  - les suggestions sont filtrées contre les mots déjà présents dans `flashcards` (comparaison normalisée sur le mot)
+  - les mots ajoutés pendant la session courante restent visibles en **fond vert** jusqu'à ce qu'on quitte l'écran
+  - après sortie/retour sur l'écran, ces mots ne réapparaissent plus dans les suggestions
+  - la recherche locale continue en revanche à remontrer un mot déjà possédé dans `localMatches` si l'utilisateur le cherche explicitement
+- [x] **Correctif recherche AddWords : effacement propre + reset au retour écran**
+  - si la barre de recherche est vidée, les anciens résultats API ne peuvent plus réapparaître après coup
+  - les réponses asynchrones d'une ancienne requête sont désormais ignorées si la requête courante a changé ou a été effacée
+  - à chaque retour sur `Ajouter des mots`, la requête précédente est remise à zéro (`searchQuery`, `localMatches`, `apiResults`, état de chargement)
+- [x] **Tests unitaires ajoutés** pour verrouiller le scénario de régression de `AddWordsViewModel`
+  - mot suggéré ajouté → visible en vert pendant la session
+  - même mot absent des suggestions après `onScreenEntered()`
+  - recherche locale d'un mot déjà possédé toujours fonctionnelle
+  - effacement de recherche qui bloque les résultats fantômes d'une ancienne requête
+  - retour écran qui remet bien la recherche à l'état initial
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModel.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModelTest.kt`
 
 ### ✅ Accompli
 - [x] **Présentation unifiée** : `ApiResultItem` et `ReserveWordItem` remplacés par un seul composable `WordCandidateItem`

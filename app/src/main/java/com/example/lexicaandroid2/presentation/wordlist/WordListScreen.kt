@@ -1,7 +1,10 @@
 package com.example.lexicaandroid2.presentation.wordlist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
@@ -62,6 +66,12 @@ fun WordListScreen(
         viewModel.loadWords()
     }
 
+    LaunchedEffect(uiState.isSelectionMode) {
+        if (uiState.isSelectionMode) {
+            selectedCard = null
+        }
+    }
+
     selectedCard?.let { card ->
         WordDetailDialog(
             card = card,
@@ -79,7 +89,6 @@ fun WordListScreen(
 
     Scaffold(
         topBar = {
-             // Search within MY words (filtering)
              SearchBar(
                  query = uiState.searchQuery,
                  onQueryChange = viewModel::onSearchQueryChanged,
@@ -98,12 +107,22 @@ fun WordListScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(uiState.filteredCards) { card ->
+                items(uiState.filteredCards, key = { it.id }) { card ->
                     WordItem(
                         card = card,
                         progressSummary = uiState.progressByCardId[card.id]
                             ?: ReviewCardProgressSummary.fromFlashcard(card, System.currentTimeMillis()),
-                        onCardClick = { selectedCard = card },
+                        isSelected = card.id in uiState.selectedCardIds,
+                        onCardClick = {
+                            if (uiState.isSelectionMode) {
+                                viewModel.toggleCardSelection(card.id)
+                            } else {
+                                selectedCard = card
+                            }
+                        },
+                        onCardLongClick = {
+                            viewModel.toggleCardSelection(card.id)
+                        },
                         onToggleFavorite = { viewModel.toggleFavorite(card) },
                         onDeleteCard = { viewModel.deleteCard(card.id) }
                     )
@@ -132,7 +151,6 @@ fun WordListScreen(
         }
     }
 }
-
 
 @Composable
 fun SearchBar(
@@ -166,12 +184,14 @@ fun SearchBar(
 }
 
 
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun WordItem(
     card: Flashcard,
     progressSummary: ReviewCardProgressSummary,
+    isSelected: Boolean,
     onCardClick: () -> Unit,
+    onCardLongClick: () -> Unit,
     onToggleFavorite: () -> Unit,
     onDeleteCard: () -> Unit
 ) {
@@ -204,13 +224,22 @@ fun WordItem(
 
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = Color.White,
+        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.White,
         shadowElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = if (isSelected) 1.5.dp else 0.dp,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                shape = RoundedCornerShape(12.dp)
+            )
     ) {
         Column(
             modifier = Modifier
-                .clickable { onCardClick() }
+                .combinedClickable(
+                    onClick = onCardClick,
+                    onLongClick = onCardLongClick
+                )
                 .padding(horizontal = 14.dp, vertical = 12.dp)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
@@ -243,6 +272,17 @@ fun WordItem(
                     horizontalArrangement = Arrangement.spacedBy(2.dp),
                     verticalAlignment = Alignment.Top
                 ) {
+                    if (isSelected) {
+                        Icon(
+                            imageVector = Icons.Default.CheckCircle,
+                            contentDescription = "Sélectionné",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier
+                                .padding(top = 7.dp)
+                                .size(18.dp)
+                        )
+                    }
+
                     IconButton(
                         onClick = onToggleFavorite,
                         modifier = Modifier.size(36.dp)

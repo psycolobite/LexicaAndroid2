@@ -5,11 +5,22 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +46,7 @@ import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModel
 import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModelFactory
 import com.example.lexicaandroid2.presentation.addwords.AddWordsScreen
 import com.example.lexicaandroid2.presentation.addwords.AddWordsViewModel
+import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
 import com.example.lexicaandroid2.presentation.games.MiniGamesScreen
 import com.example.lexicaandroid2.presentation.games.matching.MatchingScreen
 import com.example.lexicaandroid2.presentation.games.qcm.QcmScreen
@@ -110,7 +122,11 @@ fun LexicaApp(
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
     val reviewUiState by reviewViewModel.uiState.collectAsState()
+    val wordListUiState by wordListViewModel.uiState.collectAsState()
     val context = LocalContext.current
+    var showWordListSelectionMenu by remember { mutableStateOf(false) }
+    var showWordListBulkDeleteConfirm by remember { mutableStateOf(false) }
+    var showWordListBulkResetConfirm by remember { mutableStateOf(false) }
 
     // Auth state pour la navigation conditionnelle
     val currentAuthUser by authRepository.currentUser.collectAsState(initial = null)
@@ -141,6 +157,12 @@ fun LexicaApp(
         Screen.Online.route -> "Mode En Ligne"
         Screen.DrivingMode.route -> "Mode voiture"
         else -> if (currentRoute?.startsWith("word/") == true) "Détail du mot" else "Lexica"
+    }
+
+    val wordListSubtitle = if (currentRoute == Screen.WordList.route) {
+        ReviewCardAggregateState.fromFilterKey(wordListUiState.selectedFilter)?.label
+    } else {
+        null
     }
 
     val canNavigateBack = currentRoute == Screen.Review.route || currentRoute == Screen.WordList.route ||
@@ -181,6 +203,14 @@ fun LexicaApp(
         reviewViewModel.promptSemanticModelDownloadOnAppLaunch()
     }
 
+    LaunchedEffect(currentRoute, wordListUiState.isSelectionMode) {
+        if (currentRoute != Screen.WordList.route || !wordListUiState.isSelectionMode) {
+            showWordListSelectionMenu = false
+            showWordListBulkDeleteConfirm = false
+            showWordListBulkResetConfirm = false
+        }
+    }
+
     if (reviewUiState.showSemanticModelDownloadDialog) {
         val modelDownloadViewModel = remember(reviewUiState.showSemanticModelDownloadDialog) {
             ModelDownloadViewModel(ModelDownloadManager(context.applicationContext))
@@ -189,6 +219,52 @@ fun LexicaApp(
             viewModel = modelDownloadViewModel,
             onDismiss = { reviewViewModel.dismissSemanticModelDownload() },
             onSuccess = { reviewViewModel.onSemanticModelDownloaded() }
+        )
+    }
+
+    if (showWordListBulkDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { showWordListBulkDeleteConfirm = false },
+            title = { Text("Supprimer ${wordListUiState.selectedCount} mot(s) ?") },
+            text = { Text("Les cartes sélectionnées seront supprimées définitivement.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showWordListBulkDeleteConfirm = false
+                        wordListViewModel.deleteSelectedCards()
+                    }
+                ) {
+                    Text("Supprimer")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showWordListBulkDeleteConfirm = false }) {
+                    Text("Annuler")
+                }
+            }
+        )
+    }
+
+    if (showWordListBulkResetConfirm) {
+        AlertDialog(
+            onDismissRequest = { showWordListBulkResetConfirm = false },
+            title = { Text("Réinitialiser la progression de ${wordListUiState.selectedCount} mot(s) ?") },
+            text = { Text("Les cartes sélectionnées repasseront à zéro pour leur progression de révision.") },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        showWordListBulkResetConfirm = false
+                        wordListViewModel.resetProgressForSelectedCards()
+                    }
+                ) {
+                    Text("Réinitialiser")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showWordListBulkResetConfirm = false }) {
+                    Text("Annuler")
+                }
+            }
         )
     }
 
@@ -201,6 +277,7 @@ fun LexicaApp(
                 ) {
                     LexicaTopAppBar(
                         title = topBarTitle,
+                        subtitle = wordListSubtitle,
                         canNavigateBack = canNavigateBack,
                         navigateUp = { navController.navigateUp() },
                         modifier = Modifier.fillMaxWidth(),
@@ -218,7 +295,43 @@ fun LexicaApp(
                         onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
                             { navController.navigate(Screen.Settings.route) }
                         } else null,
-                        useBrandTitle = currentRoute == Screen.Dashboard.route
+                        useBrandTitle = currentRoute == Screen.Dashboard.route,
+                        actionsContent = if (currentRoute == Screen.WordList.route && wordListUiState.isSelectionMode) {
+                            {
+                                IconButton(onClick = { showWordListSelectionMenu = true }) {
+                                    Icon(
+                                        imageVector = Icons.Default.MoreVert,
+                                        contentDescription = "Actions de sélection"
+                                    )
+                                }
+                                DropdownMenu(
+                                    expanded = showWordListSelectionMenu,
+                                    onDismissRequest = { showWordListSelectionMenu = false }
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text("Ajouter aux favoris") },
+                                        onClick = {
+                                            showWordListSelectionMenu = false
+                                            wordListViewModel.favoriteSelectedCards()
+                                        }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Supprimer") },
+                                        onClick = {
+                                            showWordListSelectionMenu = false
+                                            showWordListBulkDeleteConfirm = true
+                                        }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Réinitialiser la progression") },
+                                        onClick = {
+                                            showWordListSelectionMenu = false
+                                            showWordListBulkResetConfirm = true
+                                        }
+                                    )
+                                }
+                            }
+                        } else null
                     )
                 }
             }
