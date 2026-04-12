@@ -6,6 +6,35 @@
 
 ---
 
+## 📅 2026-04-12 — Fallback recherche externe dans `Mes mots` + carte préremplie
+
+### ✅ Accompli
+- [x] Activation d'un fallback vers la base de recherche externe dans `presentation/wordlist/WordListViewModel.kt`
+  - recherche en ligne déclenchée quand aucun mot local ne correspond à la requête
+  - filtrage des doublons déjà présents dans la collection
+  - message d'erreur dédié si la base de recherche ne retourne rien ou n'est pas joignable
+- [x] Enrichissement de `presentation/wordlist/WordListScreen.kt`
+  - affichage d'un état de chargement pour la recherche externe
+  - section "résultats proposés depuis la base de recherche"
+  - ouverture d'une fiche d'aperçu avant ajout, avec définition, catégorie grammaticale, exemples, synonymes et source
+  - ajout direct de la carte sans saisie manuelle
+- [x] Sécurisation de l'ajout depuis un résultat externe
+  - prévention des doublons accent/casse-insensibles
+  - confirmation visuelle après ajout dans la collection
+- [x] Ajout de tests unitaires ciblés dans `presentation/wordlist/WordListViewModelTest.kt`
+  - fallback externe quand la recherche locale échoue
+  - absence d'appel externe quand un mot local existe déjà
+  - persistance correcte des champs préremplis
+  - blocage de l'ajout d'un doublon
+
+### 🔜 Vérifications
+- [x] Validation compilateur ciblée via `:app:testDebugUnitTest --tests com.example.lexicaandroid2.presentation.wordlist.WordListViewModelTest`
+  - `:app:compileDebugKotlin` exécuté avec succès dans le pipeline de test
+  - `WordListViewModelTest` vert après ajout du fallback externe et de l'ajout prérempli
+- [ ] Validation visuelle manuelle sur l'écran `Mes mots`
+
+---
+
 ## 📅 2026-04-08 — Vision future : thèmes, sources de contenu, nouveau type de question
 
 ### ✅ Accompli
@@ -1781,9 +1810,25 @@ Build:              ✅ Compilation OK
 - Ajout d’un mini guide de déploiement : `privacy-policy/README.md`
 - Ajout d’un workflow GitHub Actions pour GitHub Pages : `.github/workflows/privacy-policy-pages.yml`
 - Ajustement du workflow pour autoriser aussi la publication depuis les branches `integration/**`, afin de sortir l’URL sans attendre un merge sur `main`
+- Vérification Git locale effectuée : `origin` pointe bien sur `https://github.com/psycolobite/LexicaAndroid2.git`
+- Vérification remote effectuée : la branche distante existante est `origin/integration/espace-de-travail-2026-04-08-suite` ; `main` n’a pas encore été poussée sur GitHub à ce stade
+- Correction de la cible GitHub Pages documentée : le workflow publie le contenu de `privacy-policy/` à la **racine** du site Pages du dépôt, donc l’URL attendue est de type `https://psycolobite.github.io/LexicaAndroid2/` et non `/privacy-policy/`
+- Commit/push documentaire effectué sur `integration/espace-de-travail-2026-04-08-suite` : `74c1757 docs: fix privacy policy pages url guidance`
+- Test HTTP public effectué sur `https://psycolobite.github.io/LexicaAndroid2/` : **404** à ce stade, ce qui confirme que l’activation GitHub Pages côté dépôt reste nécessaire
+- Activation GitHub Pages effectuée ensuite côté dépôt (source : **GitHub Actions**) ; un **nouveau déclenchement** du workflow est nécessaire après cette activation pour sortir du `404` initial
+- URL publique GitHub Pages attendue déjà branchée côté app dans `LexicaApp.kt` : `https://psycolobite.github.io/LexicaAndroid2/`
+- Vérification technique après branchement : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+- Diagnostic complémentaire : la croix rouge visible dans GitHub Actions correspond au run ancien `docs: fix privacy policy pages url guidance` ; les commits suivants n’avaient pas relancé Pages car le workflow ne se déclenche que sur `privacy-policy/**` ou le workflow lui-même
+- Nouveau déclenchement préparé via une micro-mise à jour de `privacy-policy/index.html` (date de mise à jour + notice contact) pour forcer un run Pages après activation
+- Politique de confidentialité retravaillée ensuite pour la publication : suppression de la notice interne destinée au dépôt et renforcement des mentions attendues côté RGPD / Google Play (`base légale`, `durée de conservation`, `transferts`, `droits`, `CNIL`, reformulation de la `sécurité` autour de Firebase / Google Cloud)
+- Audit complémentaire des flux de données réalisé pour préparer la fiche **Google Play Data safety** : confirmation que le cloud Firestore ne synchronise actuellement que `xp`, `level`, `streak`, `lastLoginDate` et `favoriteCardIds` ; la progression détaillée question par question reste locale
+- Politique de confidentialité encore précisée sur deux points techniques réels : les requêtes de recherche externe envoyées au Wiktionnaire et la portée exacte des données synchronisées
+- Préparation repo-side du verrouillage Firestore : ajout de `firestore.rules`, `firebase.json` et `.firebaserc` pour le projet `lexica-6d59a`
+- Correction du flux de suppression de compte dans `ProfileViewModel.kt` : suppression du document Firestore **avant** la suppression du compte Firebase pour rester compatible avec des règles strictes basées sur `auth.uid == userId`
+- Vérification technique après correction du flux : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+- Retour utilisateur : priorité 1 côté Firebase considérée comme faite (`déploiement des règles Firestore` côté projet)
 - Reste hors repo :
-  - pousser sur GitHub
-  - activer **Settings → Pages → Source: GitHub Actions**
+  - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS
-  - remplacer l’e-mail support placeholder avant publication
+  - confirmer l’e-mail support public final avant publication
 

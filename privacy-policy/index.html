@@ -92,14 +92,6 @@
             margin-bottom: 14px;
         }
 
-        .notice {
-            border-left: 4px solid #f59e0b;
-            background: rgba(245, 158, 11, 0.08);
-            padding: 14px 16px;
-            border-radius: 12px;
-            margin-top: 16px;
-        }
-
         ul {
             padding-left: 20px;
         }
@@ -132,11 +124,7 @@
                 Cette politique décrit comment l'application <strong>Lexica</strong> collecte,
                 utilise et protège les données liées à votre utilisation de l'application.
             </p>
-            <p><strong>Dernière mise à jour :</strong> 8 avril 2026</p>
-            <div class="notice">
-                <strong>Avant publication :</strong> remplacez la mention de contact ci-dessous par
-                votre adresse e-mail de support réelle ou le contact officiel que vous souhaitez afficher.
-            </div>
+            <p><strong>Dernière mise à jour :</strong> 9 avril 2026</p>
         </article>
 
         <section>
@@ -152,11 +140,12 @@
             <h2>2. Données traitées</h2>
             <p>Selon les fonctionnalités que vous utilisez, Lexica peut traiter les catégories de données suivantes :</p>
             <ul>
-                <li>données d'authentification (adresse e-mail, identifiant utilisateur) ;</li>
+                <li>données d'authentification (adresse e-mail, identifiant utilisateur et, le cas échéant, nom affiché fourni par votre compte Google) ;</li>
                 <li>données de progression et d'usage dans l'application ;</li>
                 <li>préférences locales et réglages de l'utilisateur ;</li>
                 <li>mots, cartes et contenus ajoutés manuellement dans l'application ;</li>
-                <li>données minimales de synchronisation cloud si vous utilisez un compte.</li>
+                <li>données minimales de synchronisation cloud si vous utilisez un compte ;</li>
+                <li>requêtes de recherche de mots adressées à des services de dictionnaire en ligne lorsque vous utilisez la recherche externe.</li>
             </ul>
         </section>
 
@@ -168,12 +157,23 @@
                 <li>sauvegarder et restaurer certaines données liées à votre compte ;</li>
                 <li>synchroniser votre progression entre plusieurs appareils lorsque cette fonction est activée ;</li>
                 <li>personnaliser l'expérience d'apprentissage ;</li>
+                <li>effectuer à votre demande des recherches de définitions via des services de dictionnaire en ligne ;</li>
                 <li>assurer le bon fonctionnement technique de l'application.</li>
             </ul>
         </section>
 
         <section>
-            <h2>4. Authentification et services tiers</h2>
+            <h2>4. Base légale du traitement</h2>
+            <p>Les traitements décrits dans cette politique reposent principalement sur les bases légales suivantes :</p>
+            <ul>
+                <li><strong>exécution du service</strong> pour créer un compte, vous authentifier et synchroniser votre progression lorsque vous utilisez ces fonctions ;</li>
+                <li><strong>votre demande ou votre choix</strong> lorsque vous activez des fonctions optionnelles, comme la connexion Google ou la synchronisation cloud ;</li>
+                <li><strong>intérêt légitime</strong> pour sécuriser le service, prévenir les dysfonctionnements et assurer la continuité technique de l'application.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>5. Authentification et services tiers</h2>
             <p>Lexica peut utiliser les services tiers suivants :</p>
             <ul>
                 <li><strong>Firebase Authentication</strong> pour la connexion par e-mail/mot de passe ou via un compte Google ;</li>
@@ -181,26 +181,28 @@
                 <li><strong>Google Sign-In</strong> si vous choisissez ce mode de connexion.</li>
             </ul>
             <p>
-                À la date de cette politique, le dépôt de l'application ne montre pas l'usage d'un SDK publicitaire
-                ni d'un SDK d'analytics dédié intégré à l'application.
+                Ces services agissent comme prestataires techniques nécessaires à l'authentification, à l'hébergement
+                et à la synchronisation cloud. À la date de cette politique, l'application ne déclare pas d'SDK
+                publicitaire intégré ni de SDK d'analytics dédié destiné au profilage publicitaire.
             </p>
         </section>
 
         <section>
-            <h2>5. Données synchronisées dans le cloud</h2>
+            <h2>6. Données synchronisées dans le cloud</h2>
             <p>
-                Lorsque vous utilisez la synchronisation cloud, Lexica peut synchroniser certaines données liées à
-                votre progression, notamment des indicateurs comme l'XP, le niveau, la série de jours, la dernière
-                connexion utile à la progression et certains favoris.
+                Lorsque vous utilisez la synchronisation cloud, Lexica synchronise actuellement un jeu limité de
+                données de progression : l'XP, le niveau, la série de jours, la date utile à la progression et
+                la liste des cartes marquées en favori.
             </p>
             <p>
-                Les données d'apprentissage plus détaillées et le contenu local de l'application peuvent rester
-                principalement stockés sur l'appareil selon les fonctionnalités utilisées.
+                Les données d'apprentissage plus détaillées, notamment l'historique fin des révisions, la progression
+                question par question, les contenus locaux et les cartes ajoutées dans l'application, restent
+                principalement stockées sur l'appareil selon les fonctionnalités utilisées.
             </p>
         </section>
 
         <section>
-            <h2>6. Stockage local</h2>
+            <h2>7. Stockage local</h2>
             <p>
                 Lexica conserve également des données en local sur votre appareil afin de permettre l'utilisation
                 courante de l'application, notamment la liste des cartes, la progression d'apprentissage et les
@@ -209,7 +211,7 @@
         </section>
 
         <section>
-            <h2>7. Suppression du compte et des données</h2>
+            <h2>8. Suppression du compte et des données</h2>
             <p>
                 Si vous utilisez un compte, l'application prévoit un flux de suppression du compte depuis l'écran
                 de profil de l'application.
@@ -226,35 +228,78 @@
         </section>
 
         <section>
-            <h2>8. Partage des données</h2>
+            <h2>9. Durée de conservation</h2>
+            <p>Les données sont conservées selon les critères suivants :</p>
+            <ul>
+                <li>les données liées au compte sont conservées tant que votre compte reste actif, sauf obligation légale contraire ;</li>
+                <li>les données synchronisées dans le cloud sont conservées jusqu'à suppression du compte ou suppression de ces données via les fonctions prévues ;</li>
+                <li>les données locales restent sur votre appareil jusqu'à leur suppression par l'application, leur réinitialisation ou la désinstallation de l'application.</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>10. Partage des données</h2>
             <p>
                 Les données ne sont pas revendues. Elles ne sont partagées qu'avec les prestataires techniques
                 nécessaires au fonctionnement de l'application, dans la mesure où vous utilisez leurs services,
                 par exemple Firebase pour l'authentification et la synchronisation.
             </p>
-        </section>
-
-        <section>
-            <h2>9. Sécurité</h2>
             <p>
-                Des mesures raisonnables sont prises pour limiter l'accès non autorisé aux données et pour utiliser
-                les services techniques adaptés au fonctionnement de l'application. Toutefois, aucun système n'offre
-                une sécurité absolue.
+                Si vous utilisez la recherche externe de mots, la requête saisie peut également être transmise aux
+                services consultés pour obtenir la définition recherchée, notamment les services du Wiktionnaire.
             </p>
         </section>
 
         <section>
-            <h2>10. Vos droits</h2>
-            <p>Vous pouvez notamment :</p>
-            <ul>
-                <li>demander la suppression de votre compte lorsque cette option est disponible ;</li>
-                <li>demander des informations sur les données liées à votre usage ;</li>
-                <li>cesser d'utiliser les fonctions de synchronisation en vous déconnectant de l'application.</li>
-            </ul>
+            <h2>11. Sécurité</h2>
+            <p>
+                Pour les données synchronisées dans le cloud, Lexica s'appuie principalement sur les mécanismes de
+                sécurité fournis par <strong>Firebase</strong> et l'infrastructure <strong>Google Cloud</strong>
+                utilisée par ces services, ainsi que sur les contrôles d'accès applicatifs nécessaires au bon
+                fonctionnement du compte utilisateur.
+            </p>
+            <p>
+                Ces mesures visent à réduire les risques d'accès non autorisé, d'altération ou de perte des données.
+                Comme pour tout service numérique, un risque résiduel ne peut toutefois pas être totalement exclu.
+            </p>
         </section>
 
         <section>
-            <h2>11. Évolution de cette politique</h2>
+            <h2>12. Transferts de données</h2>
+            <p>
+                Certains services techniques utilisés par Lexica, notamment ceux fournis par Google / Firebase,
+                peuvent impliquer un traitement de données en dehors de votre pays et, selon les cas, en dehors de
+                l'Espace économique européen. Lorsque ces services sont utilisés, ces transferts s'effectuent dans le
+                cadre des mécanismes contractuels et organisationnels prévus par leurs fournisseurs.
+            </p>
+        </section>
+
+        <section>
+            <h2>13. Vos droits</h2>
+            <p>Vous pouvez notamment :</p>
+            <ul>
+                <li>demander l'accès aux données vous concernant ;</li>
+                <li>demander la rectification de données inexactes ;</li>
+                <li>demander la suppression de votre compte lorsque cette option est disponible ;</li>
+                <li>demander, selon les cas, la limitation du traitement ou vous y opposer ;</li>
+                <li>demander des informations sur les données liées à votre usage ;</li>
+                <li>cesser d'utiliser les fonctions de synchronisation en vous déconnectant de l'application.</li>
+            </ul>
+            <p>
+                Pour exercer ces droits, vous pouvez utiliser le contact support indiqué dans cette politique.
+            </p>
+        </section>
+
+        <section>
+            <h2>14. Réclamation auprès d'une autorité de contrôle</h2>
+            <p>
+                Si vous estimez que vos droits ne sont pas respectés, vous pouvez également introduire une réclamation
+                auprès de l'autorité de contrôle compétente, notamment la <strong>CNIL</strong> pour la France.
+            </p>
+        </section>
+
+        <section>
+            <h2>15. Évolution de cette politique</h2>
             <p>
                 Cette politique peut être mise à jour afin de refléter l'évolution de l'application, de ses services
                 techniques ou de ses obligations de publication. La date de mise à jour figurant en haut de page
@@ -263,7 +308,7 @@
         </section>
 
         <p class="footer">
-            URL recommandée pour Google Play : <code>https://&lt;ton-compte&gt;.github.io/LexicaAndroid2/privacy-policy/</code>
+            URL recommandée pour Google Play : <code>https://&lt;ton-compte&gt;.github.io/LexicaAndroid2/</code>
         </p>
     </main>
 </body>

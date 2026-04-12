@@ -553,6 +553,7 @@ fun LexicaApp(
                 SettingsScreen(
                     viewModel = settingsViewModel,
                     appVersion = appVersion,
+                    privacyPolicyUrl = "https://psycolobite.github.io/LexicaAndroid2/",
                     showAdminEntry = AdminConfig.isAdmin(currentAuthUser?.email),
                     onNavigateToAdmin = { navController.navigate(Screen.Admin.route) },
                     onTrainingSettingsApplied = { reviewViewModel.invalidateSessionForSettingsChange() }
