@@ -41,7 +41,14 @@ data class AddWordsUiState(
     val error: String? = null,
     // mots proposés (réserve locale, affichés quand pas de recherche)
     val proposedWords: List<WordReserveEntity> = emptyList(),
-    val isLoadingProposed: Boolean = false
+    val isLoadingProposed: Boolean = false,
+    /**
+     * Mots ajoutés pendant la session courante.
+     * Clé : `WordReserveEntity.id` pour la réserve, `WordResult.mot` pour les résultats API.
+     * Valeur : la Flashcard créée (pour pouvoir la supprimer / mettre en favori).
+     * Remis à zéro à chaque entrée sur l'écran.
+     */
+    val addedInSession: Map<String, Flashcard> = emptyMap()
 )
 
 // ─── ViewModel ───────────────────────────────────────────────────────────────
@@ -58,6 +65,20 @@ class AddWordsViewModel(
     private var allCards: List<Flashcard> = emptyList()
 
     init {
+        loadProposedWords()
+        loadAllCards()
+    }
+
+    // ── Entrée sur l'écran ────────────────────────────────────────────────────
+
+    /**
+     * À appeler via LaunchedEffect(Unit) dans le composable.
+     * Recharge la réserve (sans les mots déjà ajoutés),
+     * rafraîchit allCards (corrige le bug "mot supprimé encore visible"),
+     * et remet à zéro les marqueurs de session.
+     */
+    fun onScreenEntered() {
+        _uiState.update { it.copy(addedInSession = emptyMap()) }
         loadProposedWords()
         loadAllCards()
     }
@@ -247,12 +268,14 @@ class AddWordsViewModel(
                 )
                 flashcardRepository.saveCard(flashcard)
                 allCards = allCards + flashcard
-            }.onSuccess {
-                _uiState.update {
-                    it.copy(
+                flashcard
+            }.onSuccess { flashcard ->
+                val key = word.mot.trim()
+                _uiState.update { state ->
+                    state.copy(
                         selectedResult = null,
                         manualMode = false,
-                        successMessage = "\"${word.mot}\" ajouté à ta liste !"
+                        addedInSession = state.addedInSession + (key to flashcard)
                     )
                 }
                 clearSuccessAfterDelay()
@@ -268,18 +291,53 @@ class AddWordsViewModel(
         viewModelScope.launch {
             runCatching { wordReserveRepository.addToCollection(word) }
                 .onSuccess {
-                    allCards = allCards + Flashcard(
+                    val flashcard = Flashcard(
                         id = word.id, recto = word.mot, verso = word.definition,
                         synonymes = word.synonymes, exemples = word.exemples,
                         categorieGrammaticale = word.categorieGrammaticale
                     )
+                    allCards = allCards + flashcard
+                    // Clé unifiée sur mot.trim() — même clé que doAddWord() pour que
+                    // l'ajout via PreviewDialog et via bouton direct soient cohérents.
+                    val key = word.mot.trim()
                     _uiState.update { state ->
                         state.copy(
-                            proposedWords = state.proposedWords.filter { it.id != word.id },
-                            successMessage = "\"${word.mot}\" ajouté à ta liste !"
+                            addedInSession = state.addedInSession + (key to flashcard)
                         )
                     }
                     clearSuccessAfterDelay()
+                }
+        }
+    }
+
+    // ── Actions sur les mots ajoutés pendant la session ───────────────────────
+
+    /** Supprime un mot ajouté cette session (par sa clé dans addedInSession). */
+    fun deleteAddedWord(key: String) {
+        val card = _uiState.value.addedInSession[key] ?: return
+        viewModelScope.launch {
+            runCatching { flashcardRepository.deleteCard(card.id) }
+                .onSuccess {
+                    allCards = allCards.filter { it.id != card.id }
+                    _uiState.update { state ->
+                        state.copy(addedInSession = state.addedInSession - key)
+                    }
+                }
+        }
+    }
+
+    /** Bascule le favori d'un mot ajouté cette session. */
+    fun toggleFavoriteAddedWord(key: String) {
+        val card = _uiState.value.addedInSession[key] ?: return
+        val newFavori = !card.favori
+        viewModelScope.launch {
+            runCatching { flashcardRepository.setFavorite(card.id, newFavori) }
+                .onSuccess {
+                    val updated = card.copy(favori = newFavori)
+                    allCards = allCards.map { if (it.id == card.id) updated else it }
+                    _uiState.update { state ->
+                        state.copy(addedInSession = state.addedInSession + (key to updated))
+                    }
                 }
         }
     }
@@ -301,9 +359,7 @@ class AddWordsViewModel(
         }
     }
 
-    fun closeManualMode() {
-        _uiState.update { it.copy(manualMode = false) }
-    }
+    fun closeManualMode() { _uiState.update { it.copy(manualMode = false) } }
 
     fun onManualWordChanged(v: String)       { _uiState.update { it.copy(manualWord = v) } }
     fun onManualDefinitionChanged(v: String) { _uiState.update { it.copy(manualDefinition = v) } }

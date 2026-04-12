@@ -6,7 +6,28 @@
 
 ---
 
-## 📅 2026-04-12 — Rechargement automatique de la réserve de mots
+## 📅 2026-04-12 — Refonte UX "Ajouter des mots" : présentation unifiée + état ajouté + bug fix
+
+### ✅ Accompli
+- [x] **Présentation unifiée** : `ApiResultItem` et `ReserveWordItem` remplacés par un seul composable `WordCandidateItem`
+  - Même layout pour tous : mot bold / définition grise 2 lignes / catégorie grammaticale texte plain violet
+  - Plus de badge/rectangle pour la catégorie dans les résultats API → cohérence visuelle totale
+- [x] **Comportement après ajout** : le mot ne disparaît plus de la liste immédiatement
+  - Fond de la ligne passe en **vert clair** (`#E8F5E9`)
+  - Icône ✓ apparaît à côté du mot
+  - Bouton "Ajouter" remplacé par **⭐ favori** + **🗑️ supprimer**
+  - L'étoile bascule entre plein/vide selon l'état favori (jaune si favori)
+  - La poubelle supprime le mot de la collection et retire la ligne verte
+- [x] **Reset à la re-navigation** : `LaunchedEffect(Unit) { viewModel.onScreenEntered() }`
+  - À chaque retour sur l'écran : `addedInSession` remis à zéro, `proposedWords` rechargé depuis la DB (sans les mots déjà ajoutés), `allCards` rafraîchi
+  - Les lignes vertes disparaissent → liste propre
+- [x] **Bug fix : mots supprimés encore visibles comme "déjà ajouté"**
+  - Cause : `allCards` était chargé une seule fois au `init {}` et jamais rafraîchi
+  - Correction : `onScreenEntered()` appelle `loadAllCards()` → `allCards` toujours à jour par rapport à la DB réelle
+
+### 🔗 Fichiers modifiés
+- `presentation/addwords/AddWordsViewModel.kt` ← `addedInSession`, `onScreenEntered`, `deleteAddedWord`, `toggleFavoriteAddedWord`
+- `presentation/addwords/AddWordsScreen.kt` ← `WordCandidateItem` unifié, `LaunchedEffect`
 
 ### ✅ Accompli
 - [x] **Refill automatique `word_reserve`** : quand la réserve passe sous 100 mots et que l'appareil est connecté à internet, l'app va chercher des mots rares sur le Wiktionnaire pour revenir à 100

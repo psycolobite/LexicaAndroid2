@@ -28,10 +28,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -45,6 +48,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,13 +68,20 @@ import com.example.lexicaandroid2.data.local.WordReserveEntity
 import com.example.lexicaandroid2.data.remote.model.WordResult
 import com.example.lexicaandroid2.domain.model.Flashcard
 
-private val Purple = Color(0xFF6750A4)
+private val Purple      = Color(0xFF6750A4)
 private val PurpleLight = Color(0xFFEDE7F6)
+private val GreenAdded  = Color(0xFFE8F5E9)   // fond vert clair pour les mots ajoutés
+private val GreenDark   = Color(0xFF2E7D32)
 
 @Composable
 fun AddWordsScreen(viewModel: AddWordsViewModel) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedLocalCard by remember { mutableStateOf<Flashcard?>(null) }
+
+    // Recharge la liste + reset session à chaque ouverture de l'écran
+    LaunchedEffect(Unit) {
+        viewModel.onScreenEntered()
+    }
 
     // ── AlertDialog doublon ───────────────────────────────────────────────────
     if (uiState.duplicateCandidate != null) {
@@ -81,26 +92,31 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
         )
     }
 
-    // ── Fiche d'aperçu (dialog plein écran) ───────────────────────────────────
+        // ── Fiche d'aperçu ────────────────────────────────────────────────────────
     uiState.selectedResult?.let { result ->
+        val previewKey   = result.mot.trim()
+        val previewAdded = uiState.addedInSession[previewKey]
         PreviewDialog(
             result = result,
             definition = uiState.previewDefinition,
             synonymes = uiState.previewSynonymes,
+            isAdded = previewAdded != null,
+            isFavorite = previewAdded?.favori == true,
+            onDefinitionChanged = viewModel::onPreviewDefinitionChanged,
+            onSynonymesChanged = viewModel::onPreviewSynonymesChanged,
             onConfirm = viewModel::confirmAddFromPreview,
-            onDismiss = viewModel::closePreview
+            onDismiss = viewModel::closePreview,
+            onDeleteClick = { viewModel.deleteAddedWord(previewKey) },
+            onFavoriteClick = { viewModel.toggleFavoriteAddedWord(previewKey) }
         )
     }
 
-    // ── Détails mot existant ─────────────────────────────────────────────────
+    // ── Détails mot existant ──────────────────────────────────────────────────
     selectedLocalCard?.let { card ->
-        ExistingWordInfoDialog(
-            card = card,
-            onDismiss = { selectedLocalCard = null }
-        )
+        ExistingWordInfoDialog(card = card, onDismiss = { selectedLocalCard = null })
     }
 
-    // ── Formulaire manuel (dialog plein écran) ────────────────────────────────
+    // ── Formulaire manuel ─────────────────────────────────────────────────────
     if (uiState.manualMode) {
         ManualAddDialog(
             state = uiState,
@@ -121,7 +137,7 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
             .fillMaxSize()
             .background(Color(0xFFFAFAFA))
     ) {
-        // ── Barre de recherche ────────────────────────────────────────────────
+        // ── Barre de recherche ─────────────────────────────────────────────────
         Surface(shadowElevation = 4.dp, color = MaterialTheme.colorScheme.surface) {
             OutlinedTextField(
                 value = uiState.searchQuery,
@@ -147,22 +163,8 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
             )
         }
 
-        // ── Message succès ────────────────────────────────────────────────────
-        uiState.successMessage?.let { msg ->
-            Surface(
-                modifier = Modifier.fillMaxWidth(),
-                color = Color(0xFF2E7D32)
-            ) {
-                Text(
-                    text = "✓ $msg",
-                    color = Color.White,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                )
-            }
-        }
 
-        // ── Contenu principal ─────────────────────────────────────────────────
+        // ── Contenu principal ──────────────────────────────────────────────────
         LazyColumn(
             modifier = Modifier.weight(1f),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
@@ -172,10 +174,7 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
             if (uiState.localMatches.isNotEmpty()) {
                 item { SectionHeader(text = "✓ Déjà dans ta liste") }
                 items(uiState.localMatches) { card ->
-                    LocalMatchItem(
-                        card = card,
-                        onClick = { selectedLocalCard = card }
-                    )
+                    LocalMatchItem(card = card, onClick = { selectedLocalCard = card })
                 }
             }
 
@@ -183,9 +182,7 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
             if (uiState.isApiLoading) {
                 item {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp),
+                        modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -199,10 +196,18 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
             if (uiState.apiResults.isNotEmpty()) {
                 item { SectionHeader(text = "🌐 Définitions trouvées") }
                 items(uiState.apiResults) { result ->
-                    ApiResultItem(
-                        result = result,
-                        onPreviewClick = { viewModel.openPreview(result) },
-                        onAddClick = { viewModel.addWordResult(result) }
+                    val key = result.mot.trim()
+                    val added = uiState.addedInSession[key]
+                    WordCandidateItem(
+                        mot = result.mot,
+                        definition = result.definition,
+                        categorieGrammaticale = result.categorieGrammaticale,
+                        isAdded = added != null,
+                        isFavorite = added?.favori == true,
+                        onRowClick = { viewModel.openPreview(result) },
+                        onAddClick = { viewModel.addWordResult(result) },
+                        onDeleteClick = { viewModel.deleteAddedWord(key) },
+                        onFavoriteClick = { viewModel.toggleFavoriteAddedWord(key) }
                     )
                 }
             }
@@ -222,26 +227,30 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
                 }
             }
 
-            // Section : mots suggérés
+            // Section : mots suggérés (réserve locale)
             if (uiState.searchQuery.isBlank()) {
                 if (uiState.isLoadingProposed) {
                     item {
                         Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(24.dp),
+                            modifier = Modifier.fillMaxWidth().padding(24.dp),
                             contentAlignment = Alignment.Center
-                        ) {
-                            CircularProgressIndicator()
-                        }
+                        ) { CircularProgressIndicator() }
                     }
                 } else if (uiState.proposedWords.isNotEmpty()) {
                     item { SectionHeader(text = "💡 Mots suggérés pour toi") }
                     items(uiState.proposedWords) { word ->
-                        ReserveWordItem(
-                            word = word,
-                            onPreviewClick = { viewModel.openPreview(word.toWordResult()) },
-                            onAddClick = { viewModel.addWordFromReserve(word) }
+                        val key   = word.mot.trim()   // même clé que doAddWord / addWordFromReserve
+                        val added = uiState.addedInSession[key]
+                        WordCandidateItem(
+                            mot = word.mot,
+                            definition = word.definition,
+                            categorieGrammaticale = word.categorieGrammaticale,
+                            isAdded = added != null,
+                            isFavorite = added?.favori == true,
+                            onRowClick = { viewModel.openPreview(word.toWordResult()) },
+                            onAddClick = { viewModel.addWordFromReserve(word) },
+                            onDeleteClick = { viewModel.deleteAddedWord(key) },
+                            onFavoriteClick = { viewModel.toggleFavoriteAddedWord(key) }
                         )
                     }
                 }
@@ -251,10 +260,7 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
         }
 
         // ── Bouton ajouter manuellement ────────────────────────────────────────
-        Surface(
-            shadowElevation = 8.dp,
-            color = MaterialTheme.colorScheme.surface
-        ) {
+        Surface(shadowElevation = 8.dp, color = MaterialTheme.colorScheme.surface) {
             Button(
                 onClick = viewModel::openManualMode,
                 modifier = Modifier
@@ -270,21 +276,124 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
     }
 }
 
+// ─── Composant unifié : ligne de mot candidat ─────────────────────────────────
+
+/**
+ * Présentation unique pour tous les mots proposables (réserve locale ET résultats API).
+ *
+ * État normal  : fond blanc, bouton "+ Ajouter" à droite.
+ * État ajouté  : fond vert clair, icône ⭐ (favori) + 🗑️ (supprimer) à droite.
+ * Clic sur la ligne : ouvre la fiche d'aperçu (uniquement si pas encore ajouté).
+ */
+@Composable
+private fun WordCandidateItem(
+    mot: String,
+    definition: String,
+    categorieGrammaticale: String,
+    isAdded: Boolean,
+    isFavorite: Boolean,
+    onRowClick: () -> Unit,
+    onAddClick: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onFavoriteClick: () -> Unit
+) {
+    Surface(
+        shape = RoundedCornerShape(12.dp),
+        color = if (isAdded) GreenAdded else Color.White,
+        shadowElevation = if (isAdded) 0.dp else 2.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onRowClick)   // toujours cliquable (aperçu même si ajouté)
+    ) {
+        Row(
+            modifier = Modifier.padding(14.dp).fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // ── Texte (mot + définition + catégorie) ──────────────────────────
+            Column(modifier = Modifier.weight(1f)) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(mot, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    if (isAdded) {
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Icon(
+                            Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = GreenDark,
+                            modifier = Modifier.size(15.dp)
+                        )
+                    }
+                }
+                Text(
+                    definition,
+                    fontSize = 13.sp,
+                    color = Color.DarkGray,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.padding(top = 2.dp)
+                )
+                if (categorieGrammaticale.isNotBlank()) {
+                    Text(
+                        categorieGrammaticale,
+                        fontSize = 11.sp,
+                        color = Purple,
+                        modifier = Modifier.padding(top = 3.dp)
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            // ── Actions ───────────────────────────────────────────────────────
+            if (isAdded) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(
+                        onClick = onFavoriteClick,
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
+                            contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
+                            tint = if (isFavorite) Color(0xFFFFB800) else Color.Gray,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    IconButton(
+                        onClick = onDeleteClick,
+                        modifier = Modifier.size(36.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Supprimer",
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+            } else {
+                FilledTonalButton(
+                    onClick = onAddClick,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                    modifier = Modifier.height(36.dp)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text("Ajouter", fontSize = 12.sp)
+                }
+            }
+        }
+    }
+}
+
 // ─── Dialog : Détails mot existant ───────────────────────────────────────────
 
 @Composable
-private fun ExistingWordInfoDialog(
-    card: Flashcard,
-    onDismiss: () -> Unit
-) {
+private fun ExistingWordInfoDialog(card: Flashcard, onDismiss: () -> Unit) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(20.dp),
             color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .heightIn(max = 560.dp)
+            modifier = Modifier.fillMaxWidth().padding(16.dp).heightIn(max = 560.dp)
         ) {
             Column {
                 Column(
@@ -297,7 +406,6 @@ private fun ExistingWordInfoDialog(
                     }
                     Text("Déjà dans ta liste", fontSize = 12.sp, color = Purple)
                 }
-
                 Column(
                     modifier = Modifier
                         .weight(1f, fill = false)
@@ -306,30 +414,21 @@ private fun ExistingWordInfoDialog(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     PreviewInfoSection(title = "Définition", content = card.verso)
-
                     if (card.exemples.isNotEmpty()) {
                         PreviewInfoSection(
                             title = "Exemples",
                             content = card.exemples.joinToString("\n") { "• $it" }
                         )
                     }
-
                     if (card.synonymes.isNotEmpty()) {
-                        PreviewInfoSection(
-                            title = "Synonymes",
-                            content = card.synonymes.joinToString(", ")
-                        )
+                        PreviewInfoSection(title = "Synonymes", content = card.synonymes.joinToString(", "))
                     }
-
                     if (card.etymologie.isNotBlank()) {
                         PreviewInfoSection(title = "Étymologie", content = card.etymologie)
                     }
                 }
-
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
                     horizontalArrangement = Arrangement.End
                 ) {
                     Button(onClick = onDismiss) { Text("Fermer") }
@@ -346,32 +445,48 @@ private fun PreviewDialog(
     result: WordResult,
     definition: String,
     synonymes: String,
+    isAdded: Boolean,
+    isFavorite: Boolean,
+    onDefinitionChanged: (String) -> Unit,
+    onSynonymesChanged: (String) -> Unit,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onDeleteClick: () -> Unit,
+    onFavoriteClick: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(20.dp),
             color = MaterialTheme.colorScheme.surface,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-                .heightIn(max = 560.dp)
+            modifier = Modifier.fillMaxWidth().padding(16.dp).heightIn(max = 560.dp)
         ) {
             Column {
+                // ── En-tête ───────────────────────────────────────────────────
                 Column(
                     modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Text(result.mot, fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(result.mot, fontWeight = FontWeight.Bold, fontSize = 18.sp,
+                            modifier = Modifier.weight(1f))
+                        if (isAdded) {
+                            Icon(Icons.Default.CheckCircle, contentDescription = null,
+                                tint = GreenDark, modifier = Modifier.size(18.dp))
+                        }
+                    }
                     if (result.categorieGrammaticale.isNotBlank()) {
                         Text(result.categorieGrammaticale, fontSize = 12.sp, color = Purple)
                     }
                     if (result.source.isNotBlank()) {
                         Text("Source : ${result.source}", fontSize = 12.sp, color = Color.Gray)
                     }
+                    if (isAdded) {
+                        Text("Dans ta liste", fontSize = 12.sp, color = GreenDark,
+                            fontWeight = FontWeight.Medium)
+                    }
                 }
 
+                // ── Corps ─────────────────────────────────────────────────────
                 Column(
                     modifier = Modifier
                         .weight(1f, fill = false)
@@ -380,34 +495,53 @@ private fun PreviewDialog(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     PreviewInfoSection(title = "Définition", content = definition)
-
                     if (result.exemples.isNotEmpty()) {
                         PreviewInfoSection(
                             title = "Exemples",
                             content = result.exemples.joinToString("\n") { "• $it" }
                         )
                     }
-
                     if (synonymes.isNotBlank()) {
                         PreviewInfoSection(title = "Synonymes", content = synonymes)
                     }
-
-                    Text(
-                        text = "Appuie sur Ajouter pour enregistrer ce mot sans le retaper.",
-                        fontSize = 12.sp,
-                        color = Color.Gray
-                    )
+                    if (!isAdded) {
+                        Text("Appuie sur Ajouter pour enregistrer ce mot.",
+                            fontSize = 12.sp, color = Color.Gray)
+                    }
                 }
 
+                // ── Boutons ───────────────────────────────────────────────────
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 14.dp),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TextButton(onClick = onDismiss) { Text("Annuler") }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = onConfirm) { Text("Ajouter") }
+                    if (isAdded) {
+                        // Mot déjà dans la collection : Fermer + Favori + Supprimer
+                        TextButton(onClick = onDismiss) { Text("Fermer") }
+                        Spacer(modifier = Modifier.width(4.dp))
+                        IconButton(onClick = onFavoriteClick, modifier = Modifier.size(40.dp)) {
+                            Icon(
+                                imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
+                                contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
+                                tint = if (isFavorite) Color(0xFFFFB800) else Color.Gray
+                            )
+                        }
+                        IconButton(
+                            onClick = { onDeleteClick(); onDismiss() },
+                            modifier = Modifier.size(40.dp)
+                        ) {
+                            Icon(Icons.Default.Delete, contentDescription = "Supprimer",
+                                tint = MaterialTheme.colorScheme.error)
+                        }
+                    } else {
+                        // Mot pas encore ajouté : Annuler + Ajouter
+                        TextButton(onClick = onDismiss) { Text("Annuler") }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = onConfirm) { Text("Ajouter") }
+                    }
                 }
             }
         }
@@ -437,272 +571,99 @@ private fun ManualAddDialog(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                // Champs obligatoires
                 OutlinedTextField(
-                    value = state.manualWord,
-                    onValueChange = onWordChanged,
-                    label = { Text("Mot *") },
-                    modifier = Modifier.fillMaxWidth(),
+                    value = state.manualWord, onValueChange = onWordChanged,
+                    label = { Text("Mot *") }, modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
                     isError = state.error != null && state.manualWord.isBlank(),
                     shape = RoundedCornerShape(8.dp)
                 )
                 OutlinedTextField(
-                    value = state.manualDefinition,
-                    onValueChange = onDefChanged,
-                    label = { Text("Définition *") },
-                    modifier = Modifier.fillMaxWidth(),
-                    minLines = 3,
-                    maxLines = 6,
+                    value = state.manualDefinition, onValueChange = onDefChanged,
+                    label = { Text("Définition *") }, modifier = Modifier.fillMaxWidth(),
+                    minLines = 3, maxLines = 6,
                     isError = state.error != null && state.manualDefinition.isBlank(),
                     shape = RoundedCornerShape(8.dp)
                 )
-                state.error?.let {
-                    Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-                }
+                state.error?.let { Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp) }
 
                 // Accordéon champs optionnels
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(onClick = onToggleExpanded)
-                        .padding(vertical = 4.dp),
+                    modifier = Modifier.fillMaxWidth().clickable(onClick = onToggleExpanded).padding(vertical = 4.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        "Champs optionnels",
-                        fontSize = 13.sp,
-                        color = Purple,
-                        fontWeight = FontWeight.Medium
-                    )
+                    Text("Champs optionnels", fontSize = 13.sp, color = Purple, fontWeight = FontWeight.Medium)
                     Icon(
                         imageVector = if (state.manualExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = null,
-                        tint = Purple
+                        contentDescription = null, tint = Purple
                     )
                 }
-                AnimatedVisibility(
-                    visible = state.manualExpanded,
-                    enter = expandVertically(),
-                    exit = shrinkVertically()
-                ) {
+                AnimatedVisibility(visible = state.manualExpanded, enter = expandVertically(), exit = shrinkVertically()) {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedTextField(
-                            value = state.manualSynonymes,
-                            onValueChange = onSynChanged,
-                            label = { Text("Synonymes (virgule)") },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        OutlinedTextField(
-                            value = state.manualCategorie,
-                            onValueChange = onCatChanged,
-                            label = { Text("Catégorie grammaticale") },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            placeholder = { Text("ex: nom masculin") },
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        OutlinedTextField(
-                            value = state.manualEtymologie,
-                            onValueChange = onEtyChanged,
-                            label = { Text("Étymologie") },
-                            modifier = Modifier.fillMaxWidth(),
-                            singleLine = true,
-                            shape = RoundedCornerShape(8.dp)
-                        )
-                        OutlinedTextField(
-                            value = state.manualExemples,
-                            onValueChange = onExChanged,
-                            label = { Text("Exemples (virgule)") },
-                            modifier = Modifier.fillMaxWidth(),
-                            minLines = 2,
-                            maxLines = 4,
-                            shape = RoundedCornerShape(8.dp)
-                        )
+                        OutlinedTextField(value = state.manualSynonymes, onValueChange = onSynChanged,
+                            label = { Text("Synonymes (virgule)") }, modifier = Modifier.fillMaxWidth(),
+                            singleLine = true, shape = RoundedCornerShape(8.dp))
+                        OutlinedTextField(value = state.manualCategorie, onValueChange = onCatChanged,
+                            label = { Text("Catégorie grammaticale") }, modifier = Modifier.fillMaxWidth(),
+                            singleLine = true, placeholder = { Text("ex: nom masculin") }, shape = RoundedCornerShape(8.dp))
+                        OutlinedTextField(value = state.manualEtymologie, onValueChange = onEtyChanged,
+                            label = { Text("Étymologie") }, modifier = Modifier.fillMaxWidth(),
+                            singleLine = true, shape = RoundedCornerShape(8.dp))
+                        OutlinedTextField(value = state.manualExemples, onValueChange = onExChanged,
+                            label = { Text("Exemples (virgule)") }, modifier = Modifier.fillMaxWidth(),
+                            minLines = 2, maxLines = 4, shape = RoundedCornerShape(8.dp))
                     }
                 }
             }
         },
-        confirmButton = {
-            Button(onClick = onConfirm) { Text("✅ Ajouter") }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) { Text("Annuler") }
-        }
+        confirmButton = { Button(onClick = onConfirm) { Text("✅ Ajouter") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text("Annuler") } }
     )
 }
 
-// ─── Composants internes ─────────────────────────────────────────────────────
+// ─── Section existant (déjà dans la collection) ───────────────────────────────
 
 @Composable
-private fun SectionHeader(text: String) {
-    Text(
-        text = text,
-        fontWeight = FontWeight.Bold,
-        fontSize = 13.sp,
-        color = Purple,
-        modifier = Modifier.padding(vertical = 4.dp)
-    )
-}
-
-@Composable
-private fun LocalMatchItem(
-    card: Flashcard,
-    onClick: () -> Unit
-) {
+private fun LocalMatchItem(card: Flashcard, onClick: () -> Unit) {
     Surface(
         shape = RoundedCornerShape(10.dp),
         color = PurpleLight,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onClick)
+        modifier = Modifier.fillMaxWidth().clickable(onClick = onClick)
     ) {
         Row(
-            modifier = Modifier
-                .padding(12.dp)
-                .fillMaxWidth(),
+            modifier = Modifier.padding(12.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(
-                Icons.Default.CheckCircle,
-                contentDescription = null,
-                tint = Purple,
-                modifier = Modifier.size(18.dp)
-            )
+            Icon(Icons.Default.CheckCircle, contentDescription = null, tint = Purple, modifier = Modifier.size(18.dp))
             Spacer(modifier = Modifier.width(10.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(card.recto, fontWeight = FontWeight.Bold, fontSize = 14.sp)
-                Text(
-                    card.verso,
-                    fontSize = 12.sp,
-                    color = Color.Gray,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
+                Text(card.verso, fontSize = 12.sp, color = Color.Gray, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             Text("Déjà ajouté", fontSize = 11.sp, color = Purple, fontWeight = FontWeight.Medium)
         }
     }
 }
 
+// ─── Helpers UI ──────────────────────────────────────────────────────────────
+
 @Composable
-private fun ApiResultItem(
-    result: WordResult,
-    onPreviewClick: () -> Unit,
-    onAddClick: () -> Unit
-) {
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = Color.White,
-        shadowElevation = 2.dp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onPreviewClick)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(14.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Text(result.mot, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                    if (result.categorieGrammaticale.isNotBlank()) {
-                        Text(
-                            text = result.categorieGrammaticale,
-                            fontSize = 11.sp,
-                            color = Purple,
-                            modifier = Modifier
-                                .background(PurpleLight, RoundedCornerShape(4.dp))
-                                .padding(horizontal = 6.dp, vertical = 2.dp)
-                        )
-                    }
-                }
-                Text(
-                    result.definition,
-                    fontSize = 13.sp,
-                    color = Color.DarkGray,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.padding(top = 2.dp)
-                )
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            FilledTonalButton(
-                onClick = onAddClick,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                modifier = Modifier.height(36.dp)
-            ) {
-                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Ajouter", fontSize = 12.sp)
-            }
-        }
-    }
+private fun SectionHeader(text: String) {
+    Text(text = text, fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Purple,
+        modifier = Modifier.padding(vertical = 4.dp))
 }
 
 @Composable
-private fun ReserveWordItem(
-    word: WordReserveEntity,
-    onPreviewClick: () -> Unit,
-    onAddClick: () -> Unit
-) {
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = Color.White,
-        shadowElevation = 2.dp,
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onPreviewClick)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(14.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(word.mot, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                Text(
-                    word.definition,
-                    fontSize = 13.sp,
-                    color = Color.Gray,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-                if (word.categorieGrammaticale.isNotBlank()) {
-                    Text(
-                        word.categorieGrammaticale,
-                        fontSize = 11.sp,
-                        color = Purple,
-                        modifier = Modifier.padding(top = 2.dp)
-                    )
-                }
-            }
-            FilledTonalButton(
-                onClick = onAddClick,
-                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-                modifier = Modifier.height(36.dp)
-            ) {
-                Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Ajouter", fontSize = 12.sp)
-            }
-        }
+private fun PreviewInfoSection(title: String, content: String) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(title, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = Purple)
+        Text(content, fontSize = 14.sp, color = Color.DarkGray)
     }
 }
 
-// ─── Dialog : Doublon ───────────────────────────────────────────────────────
+// ─── Dialog : Doublon ────────────────────────────────────────────────────────
 
 @Composable
 private fun DuplicateDialog(
@@ -715,43 +676,15 @@ private fun DuplicateDialog(
         icon = { Icon(Icons.Default.Warning, contentDescription = null, tint = Color(0xFFF57C00)) },
         title = { Text("Mot déjà dans ta liste") },
         text = { Text("\"$word\" est déjà dans ta liste. Veux-tu mettre à jour sa définition ?") },
-        confirmButton = {
-            Button(onClick = onReplace) { Text("Mettre à jour") }
-        },
-        dismissButton = {
-            TextButton(onClick = onCancel) { Text("Annuler") }
-        }
+        confirmButton = { Button(onClick = onReplace) { Text("Mettre à jour") } },
+        dismissButton = { TextButton(onClick = onCancel) { Text("Annuler") } }
     )
 }
 
-// ─── Section : Infos détaillées (aperçu, exemples, synonymes) ─────────────────
+// ─── Extension ───────────────────────────────────────────────────────────────
 
-@Composable
-private fun PreviewInfoSection(title: String, content: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(
-            text = title,
-            fontWeight = FontWeight.SemiBold,
-            fontSize = 13.sp,
-            color = Purple
-        )
-        Text(
-            text = content,
-            fontSize = 14.sp,
-            color = Color.DarkGray
-        )
-    }
-}
-
-// ─── Extension : Conversion Entité vers Résultat API ───────────────────────────
-
-private fun WordReserveEntity.toWordResult(): WordResult {
-    return WordResult(
-        mot = mot,
-        definition = definition,
-        categorieGrammaticale = categorieGrammaticale,
-        exemples = exemples,
-        synonymes = synonymes,
-        source = if (fromApi) "Réserve API" else "Réserve locale"
-    )
-}
+private fun WordReserveEntity.toWordResult() = WordResult(
+    mot = mot, definition = definition, categorieGrammaticale = categorieGrammaticale,
+    exemples = exemples, synonymes = synonymes,
+    source = if (fromApi) "Réserve API" else "Réserve locale"
+)
