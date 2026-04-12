@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.presentation.wordlist
 
 import com.example.lexicaandroid2.data.remote.DictionaryService
+import com.example.lexicaandroid2.data.remote.model.WordResult
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.ReviewQuestionType
@@ -19,7 +20,10 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
@@ -56,6 +60,7 @@ class WordListViewModelTest {
         viewModel = WordListViewModel(repository, dictionaryService)
         runBlocking {
             whenever(repository.getAllQuestionProgress()).thenReturn(emptyList())
+            whenever(dictionaryService.searchWord(any())).thenReturn(emptyList())
         }
     }
 
@@ -135,6 +140,37 @@ class WordListViewModelTest {
         viewModel.loadWords()
         viewModel.onSearchQueryChanged("xyzabc")
         assertTrue(viewModel.uiState.value.filteredCards.isEmpty())
+    }
+
+    @Test
+    fun onSearchQueryChangedWithoutLocalMatchSearchesOnline() = runTest {
+        val apiResult = WordResult(
+            mot = "abnégation",
+            definition = "Action de se sacrifier volontairement.",
+            categorieGrammaticale = "Nom féminin",
+            exemples = listOf("Elle agit avec abnégation."),
+            synonymes = listOf("dévouement"),
+            source = "Wiktionnaire API"
+        )
+        whenever(repository.getAllCards()).thenReturn(listOf(card1, card2))
+        whenever(dictionaryService.searchWord("abnégation")).thenReturn(listOf(apiResult))
+
+        viewModel.loadWords()
+        viewModel.onSearchQueryChanged("abnégation")
+
+        assertEquals(listOf(apiResult), viewModel.uiState.value.apiSearchResults)
+        assertEquals("abnégation", viewModel.uiState.value.apiSearchResults.first().mot)
+    }
+
+    @Test
+    fun onSearchQueryChangedWithLocalMatchDoesNotSearchOnline() = runTest {
+        whenever(repository.getAllCards()).thenReturn(listOf(card1, card2))
+
+        viewModel.loadWords()
+        viewModel.onSearchQueryChanged("abscisse")
+
+        verify(dictionaryService, never()).searchWord("abscisse")
+        assertTrue(viewModel.uiState.value.apiSearchResults.isEmpty())
     }
 
     // endregion
@@ -340,6 +376,50 @@ class WordListViewModelTest {
         viewModel.deleteCard("1")
         assertEquals(1, viewModel.uiState.value.cards.size)
         assertEquals("ordonnee", viewModel.uiState.value.cards.first().recto)
+    }
+
+    @Test
+    fun addWordFromApiSavesPrefilledCardWithAllAvailableFields() = runTest {
+        val apiResult = WordResult(
+            mot = "abnégation",
+            definition = "Action de se sacrifier volontairement.",
+            categorieGrammaticale = "Nom féminin",
+            exemples = listOf("Elle agit avec abnégation."),
+            synonymes = listOf("dévouement"),
+            source = "Wiktionnaire API"
+        )
+        val captor = argumentCaptor<Flashcard>()
+
+        whenever(repository.getAllCards()).thenReturn(emptyList())
+
+        viewModel.loadWords()
+        viewModel.addWordFromApi(apiResult)
+
+        verify(repository).saveCard(captor.capture())
+        assertEquals("abnégation", captor.firstValue.recto)
+        assertEquals("Action de se sacrifier volontairement.", captor.firstValue.verso)
+        assertEquals("Nom féminin", captor.firstValue.categorieGrammaticale)
+        assertEquals(listOf("Elle agit avec abnégation."), captor.firstValue.exemples)
+        assertEquals(listOf("dévouement"), captor.firstValue.synonymes)
+        assertEquals("\"abnégation\" a été ajouté à tes mots", viewModel.uiState.value.successMessage)
+    }
+
+    @Test
+    fun addWordFromApiDoesNotSaveDuplicateWord() = runTest {
+        val existing = Flashcard(id = "42", recto = "abnégation", verso = "ancienne définition")
+        val apiResult = WordResult(
+            mot = "Abnegation",
+            definition = "Nouvelle définition",
+            source = "Wiktionnaire API"
+        )
+
+        whenever(repository.getAllCards()).thenReturn(listOf(existing))
+
+        viewModel.loadWords()
+        viewModel.addWordFromApi(apiResult)
+
+        verify(repository, never()).saveCard(any())
+        assertEquals("\"Abnegation\" est déjà présent dans ta liste", viewModel.uiState.value.apiError)
     }
 
     // endregion

@@ -13,6 +13,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.text.Normalizer
+import java.util.UUID
 
 data class WordListUiState(
     val cards: List<Flashcard> = emptyList(),
@@ -23,7 +25,9 @@ data class WordListUiState(
     val selectedFilter: String? = null,
     val apiSearchResults: List<WordResult> = emptyList(),
     val isApiLoading: Boolean = false,
-    val apiError: String? = null
+    val apiError: String? = null,
+    val apiPreviewResult: WordResult? = null,
+    val successMessage: String? = null
 )
 
 class WordListViewModel(
@@ -54,12 +58,32 @@ class WordListViewModel(
     }
 
     fun onSearchQueryChanged(query: String) {
+        val filteredCards = applyFilters(
+            cards = _uiState.value.cards,
+            query = query,
+            filter = _uiState.value.selectedFilter,
+            progressByCardId = _uiState.value.progressByCardId
+        )
         _uiState.update {
             it.copy(
                 searchQuery = query,
-                filteredCards = applyFilters(it.cards, query, it.selectedFilter, it.progressByCardId)
+                filteredCards = filteredCards,
+                successMessage = null
             )
         }
+
+        val trimmed = query.trim()
+        if (trimmed.length < 2) {
+            clearApiResults()
+            return
+        }
+
+        if (hasCollectionMatch(trimmed)) {
+            clearApiResults()
+            return
+        }
+
+        searchOnline(trimmed)
     }
 
     fun onFilterSelected(filter: String?) {
@@ -93,28 +117,63 @@ class WordListViewModel(
             _uiState.update { it.copy(isApiLoading = true, apiError = null, apiSearchResults = emptyList()) }
             try {
                 val results = dictionaryService.searchWord(query)
+                    .filterNot { isAlreadyInCollection(it.mot) }
                 _uiState.update {
                     it.copy(
                         isApiLoading = false,
                         apiSearchResults = results,
-                        apiError = if (results.isEmpty()) "Aucun résultat trouvé pour '$query'" else null
+                        apiError = if (results.isEmpty()) {
+                            "Aucun mot trouvé dans la base de recherche pour \"$query\""
+                        } else {
+                            null
+                        }
                     )
                 }
             } catch (e: Exception) {
-                 _uiState.update { it.copy(isApiLoading = false, apiError = "Erreur: ${e.message}") }
+                 _uiState.update {
+                     it.copy(
+                         isApiLoading = false,
+                         apiError = "Impossible d'interroger la base de recherche${e.message?.let { message -> " : $message" } ?: ""}"
+                     )
+                 }
             }
         }
     }
 
     fun clearApiResults() {
-        _uiState.update { it.copy(apiSearchResults = emptyList(), apiError = null) }
+        _uiState.update {
+            it.copy(
+                apiSearchResults = emptyList(),
+                apiError = null,
+                isApiLoading = false,
+                apiPreviewResult = null
+            )
+        }
+    }
+
+    fun openApiPreview(result: WordResult) {
+        _uiState.update { it.copy(apiPreviewResult = result) }
+    }
+
+    fun closeApiPreview() {
+        _uiState.update { it.copy(apiPreviewResult = null) }
     }
 
     // Add logic from API result
     fun addWordFromApi(result: WordResult) {
         viewModelScope.launch {
+            if (isAlreadyInCollection(result.mot)) {
+                _uiState.update {
+                    it.copy(
+                        apiPreviewResult = null,
+                        apiError = "\"${result.mot}\" est déjà présent dans ta liste"
+                    )
+                }
+                return@launch
+            }
+
             val card = Flashcard(
-                id = java.util.UUID.randomUUID().toString(),
+                id = UUID.randomUUID().toString(),
                 recto = result.mot,
                 verso = result.definition,
                 categorieGrammaticale = result.categorieGrammaticale,
@@ -124,7 +183,14 @@ class WordListViewModel(
             )
             repository.saveCard(card)
             loadWords() // Refresh list
-            clearApiResults()
+            _uiState.update {
+                it.copy(
+                    apiSearchResults = emptyList(),
+                    apiError = null,
+                    apiPreviewResult = null,
+                    successMessage = "\"${result.mot}\" a été ajouté à tes mots"
+                )
+            }
         }
     }
 
@@ -156,6 +222,25 @@ class WordListViewModel(
         }
 
         return result.sortedBy { it.recto }
+    }
+
+    private fun hasCollectionMatch(query: String): Boolean {
+        return _uiState.value.cards.any {
+            it.recto.contains(query, ignoreCase = true) ||
+                it.verso.contains(query, ignoreCase = true)
+        }
+    }
+
+    private fun isAlreadyInCollection(word: String): Boolean {
+        val normalizedWord = normalize(word)
+        return _uiState.value.cards.any { normalize(it.recto) == normalizedWord }
+    }
+
+    private fun normalize(value: String): String {
+        return Normalizer.normalize(value, Normalizer.Form.NFD)
+            .replace(Regex("\\p{M}+"), "")
+            .lowercase()
+            .trim()
     }
 }
 

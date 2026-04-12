@@ -6,6 +6,35 @@
 
 ---
 
+## 📅 2026-04-12 — Fallback recherche externe dans `Mes mots` + carte préremplie
+
+### ✅ Accompli
+- [x] Activation d'un fallback vers la base de recherche externe dans `presentation/wordlist/WordListViewModel.kt`
+  - recherche en ligne déclenchée quand aucun mot local ne correspond à la requête
+  - filtrage des doublons déjà présents dans la collection
+  - message d'erreur dédié si la base de recherche ne retourne rien ou n'est pas joignable
+- [x] Enrichissement de `presentation/wordlist/WordListScreen.kt`
+  - affichage d'un état de chargement pour la recherche externe
+  - section "résultats proposés depuis la base de recherche"
+  - ouverture d'une fiche d'aperçu avant ajout, avec définition, catégorie grammaticale, exemples, synonymes et source
+  - ajout direct de la carte sans saisie manuelle
+- [x] Sécurisation de l'ajout depuis un résultat externe
+  - prévention des doublons accent/casse-insensibles
+  - confirmation visuelle après ajout dans la collection
+- [x] Ajout de tests unitaires ciblés dans `presentation/wordlist/WordListViewModelTest.kt`
+  - fallback externe quand la recherche locale échoue
+  - absence d'appel externe quand un mot local existe déjà
+  - persistance correcte des champs préremplis
+  - blocage de l'ajout d'un doublon
+
+### 🔜 Vérifications
+- [x] Validation compilateur ciblée via `:app:testDebugUnitTest --tests com.example.lexicaandroid2.presentation.wordlist.WordListViewModelTest`
+  - `:app:compileDebugKotlin` exécuté avec succès dans le pipeline de test
+  - `WordListViewModelTest` vert après ajout du fallback externe et de l'ajout prérempli
+- [ ] Validation visuelle manuelle sur l'écran `Mes mots`
+
+---
+
 ## 📅 2026-04-08 — Vision future : thèmes, sources de contenu, nouveau type de question
 
 ### ✅ Accompli
@@ -1797,6 +1826,7 @@ Build:              ✅ Compilation OK
 - Préparation repo-side du verrouillage Firestore : ajout de `firestore.rules`, `firebase.json` et `.firebaserc` pour le projet `lexica-6d59a`
 - Correction du flux de suppression de compte dans `ProfileViewModel.kt` : suppression du document Firestore **avant** la suppression du compte Firebase pour rester compatible avec des règles strictes basées sur `auth.uid == userId`
 - Vérification technique après correction du flux : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+- Retour utilisateur : priorité 1 côté Firebase considérée comme faite (`déploiement des règles Firestore` côté projet)
 - Reste hors repo :
   - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS
