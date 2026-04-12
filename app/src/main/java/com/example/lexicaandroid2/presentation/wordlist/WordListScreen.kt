@@ -10,12 +10,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -27,14 +28,15 @@ import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -49,6 +51,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.lexicaandroid2.data.remote.model.WordResult
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
@@ -156,7 +159,8 @@ fun WordListScreen(
                     items(uiState.apiSearchResults) { result ->
                         ApiSearchResultItem(
                             result = result,
-                            onPreviewClick = { viewModel.openApiPreview(result) }
+                            onPreviewClick = { viewModel.openApiPreview(result) },
+                            onAddClick = { viewModel.addWordFromApi(result) }
                         )
                     }
                 }
@@ -262,13 +266,16 @@ private fun ExternalSearchLoadingItem() {
 @Composable
 private fun ApiSearchResultItem(
     result: WordResult,
-    onPreviewClick: () -> Unit
+    onPreviewClick: () -> Unit,
+    onAddClick: () -> Unit
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
         color = Color.White,
         shadowElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onPreviewClick)
     ) {
         Column(modifier = Modifier.padding(14.dp)) {
             Row(
@@ -291,10 +298,13 @@ private fun ApiSearchResultItem(
                         )
                     }
                 }
-                OutlinedButton(onClick = onPreviewClick) {
+                FilledTonalButton(
+                    onClick = onAddClick,
+                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp)
+                ) {
                     Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
                     Spacer(modifier = Modifier.size(6.dp))
-                    Text("Proposer la carte")
+                    Text("Ajouter")
                 }
             }
 
@@ -326,67 +336,81 @@ private fun ExternalWordPreviewDialog(
     onDismiss: () -> Unit,
     onConfirmAdd: () -> Unit
 ) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(result.mot, fontWeight = FontWeight.Bold)
-                if (result.categorieGrammaticale.isNotBlank()) {
-                    Text(
-                        text = result.categorieGrammaticale,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RoundedCornerShape(20.dp),
+            color = MaterialTheme.colorScheme.surface,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .heightIn(max = 560.dp)
+        ) {
+            Column {
+                Column(
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    Text(result.mot, fontWeight = FontWeight.Bold)
+                    if (result.categorieGrammaticale.isNotBlank()) {
+                        Text(
+                            text = result.categorieGrammaticale,
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    if (result.source.isNotBlank()) {
+                        Text(
+                            text = "Source : ${result.source}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Gray
+                        )
+                    }
                 }
-                if (result.source.isNotBlank()) {
+
+                Column(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    PreviewSection(title = "Définition", content = result.definition)
+
+                    if (result.exemples.isNotEmpty()) {
+                        PreviewSection(
+                            title = "Exemples",
+                            content = result.exemples.joinToString("\n") { "• $it" }
+                        )
+                    }
+
+                    if (result.synonymes.isNotEmpty()) {
+                        PreviewSection(
+                            title = "Synonymes",
+                            content = result.synonymes.joinToString(", ")
+                        )
+                    }
+
                     Text(
-                        text = "Source : ${result.source}",
+                        text = "Cette carte sera ajoutée automatiquement avec les informations trouvées, sans saisie manuelle.",
                         style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
-                    )
-                }
-            }
-        },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                PreviewSection(title = "Définition", content = result.definition)
-
-                if (result.exemples.isNotEmpty()) {
-                    PreviewSection(
-                        title = "Exemples",
-                        content = result.exemples.joinToString("\n") { "• $it" }
+                        color = Color.Gray,
+                        fontSize = 12.sp
                     )
                 }
 
-                if (result.synonymes.isNotEmpty()) {
-                    PreviewSection(
-                        title = "Synonymes",
-                        content = result.synonymes.joinToString(", ")
-                    )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 14.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(onClick = onDismiss) { Text("Annuler") }
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Button(onClick = onConfirmAdd) { Text("Ajouter") }
                 }
-
-                Text(
-                    text = "Cette carte sera ajoutée automatiquement avec les informations trouvées, sans saisie manuelle.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-            }
-        },
-        confirmButton = {
-            Button(onClick = onConfirmAdd) {
-                Text("Ajouter à mes mots")
-            }
-        },
-        dismissButton = {
-            Button(onClick = onDismiss) {
-                Text("Annuler")
             }
         }
-    )
+    }
 }
 
 @Composable

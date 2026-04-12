@@ -176,6 +176,10 @@ class AddWordsViewModel(
         _uiState.update { it.copy(selectedResult = null) }
     }
 
+    fun addWordResult(result: WordResult) {
+        checkDuplicateAndAdd(result)
+    }
+
     /** Confirmer l'ajout depuis la fiche d'aperçu. */
     fun confirmAddFromPreview() {
         val result = _uiState.value.selectedResult ?: return

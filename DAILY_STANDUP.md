@@ -9,6 +9,9 @@
 ## 📅 2026-04-12 — Fallback recherche externe dans `Mes mots` + carte préremplie
 
 ### ✅ Accompli
+- [x] Intégration des changements validés dans `main`
+  - merge local de `integration/espace-de-travail-2026-04-08-suite` vers `main`
+  - création d'une nouvelle branche de travail datée `integration/detail-ux-recherche-2026-04-12`
 - [x] Activation d'un fallback vers la base de recherche externe dans `presentation/wordlist/WordListViewModel.kt`
   - recherche en ligne déclenchée quand aucun mot local ne correspond à la requête
   - filtrage des doublons déjà présents dans la collection
@@ -21,6 +24,14 @@
 - [x] Sécurisation de l'ajout depuis un résultat externe
   - prévention des doublons accent/casse-insensibles
   - confirmation visuelle après ajout dans la collection
+- [x] Retouches UX de la recherche de mots sur `Ajouter des mots` et `Mes mots`
+  - clic sur toute la ligne d'un résultat web/suggéré pour ouvrir un popup détaillé
+  - ajout possible directement depuis le popup, sans ressaisie
+  - uniformisation du bouton `Ajouter` entre résultats web et suggestions locales
+  - popup compacté (hauteur max réduite + scroll seulement si contenu long)
+  - clic sur un mot déjà présent dans `Ajouter des mots` => popup d'information complet
+- [x] Harmonisation partielle du popup local `WordDetailDialog`
+  - hauteur max ramenée de `700.dp` à `620.dp` pour se rapprocher des nouveaux aperçus compacts
 - [x] Ajout de tests unitaires ciblés dans `presentation/wordlist/WordListViewModelTest.kt`
   - fallback externe quand la recherche locale échoue
   - absence d'appel externe quand un mot local existe déjà
@@ -31,7 +42,8 @@
 - [x] Validation compilateur ciblée via `:app:testDebugUnitTest --tests com.example.lexicaandroid2.presentation.wordlist.WordListViewModelTest`
   - `:app:compileDebugKotlin` exécuté avec succès dans le pipeline de test
   - `WordListViewModelTest` vert après ajout du fallback externe et de l'ajout prérempli
-- [ ] Validation visuelle manuelle sur l'écran `Mes mots`
+- [x] Validation compilation UI ciblée via `:app:compileDebugKotlin`
+- [ ] Validation visuelle manuelle sur `Mes mots` et `Ajouter des mots`
 
 ---
 

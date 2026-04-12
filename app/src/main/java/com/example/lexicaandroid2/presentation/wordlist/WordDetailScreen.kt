@@ -283,7 +283,7 @@ fun WordDetailDialog(
             color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 700.dp)
+                .heightIn(max = 620.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 TopAppBar(
