@@ -14,24 +14,19 @@
   - Anti-doublon : les mots déjà dans `word_reserve` ou dans `flashcards` sont exclus
   - Gestion des erreurs mot par mot : un échec réseau sur un mot passe au suivant sans bloquer
   - Logs détaillés sous le tag `REFILL_RESERVE`
-- [x] Nouveau fichier `domain/usecase/RefillWordReserveUseCase.kt`
-  - Seuil : `THRESHOLD = 100`
-  - Normalisation Unicode pour la comparaison anti-doublon (insensible aux accents/casse)
-- [x] Nouveau fichier `domain/usecase/RareWordsCandidates.kt`
-  - ~200 mots rares/littéraires français (vocabulaire soutenu, philosophique, rhétorique, psychologique)
-  - Mélangés aléatoirement à chaque appel pour varier les propositions
-- [x] Nouveau fichier `core/network/ConnectivityChecker.kt`
-  - Vérification via `NetworkCapabilities.NET_CAPABILITY_INTERNET` (API 23+, sans dépendance externe)
-- [x] `WordReserveDao` : ajout de `getAllMots()` — `SELECT mot FROM word_reserve`
-- [x] `FlashcardDao` : ajout de `getAllMots()` — `SELECT mot FROM flashcards`
+- [x] **Source dynamique (Option A) : API catégories Wiktionnaire** via `WiktionnaireCategorySource`
+  - 10 catégories ciblées : `Registre soutenu en français`, `Vocabulaire de la philosophie`, `Rhétorique`, `Psychologie`, `Linguistique`, `Littérature`, `Droit`, `Politique`, `Médecine`, `Sociologie`
+  - L'app tire des vraies listes de mots existants dans Wiktionnaire (jamais une liste figée codée en dur)
+  - Filtre heuristique : mots simples (pas d'espace), minuscule, ≥ 5 caractères, sans chiffres
+  - Catégories mélangées aléatoirement → variété à chaque refill
+  - **Fallback statique** : si l'API catégories échoue → `RareWordsCandidates` (~200 mots) prend le relais
+- [x] `RefillWordReserveUseCase` mis à jour pour utiliser `WiktionnaireCategorySource` en source primaire
+- [x] **Option D ajoutée au backlog** dans `FEATURES.md` : refill intelligent ciblé selon le profil de l'utilisateur (catégories sous-représentées dans sa collection)
 
 ### 🔗 Fichiers modifiés/créés
-- `app/src/main/java/…/domain/usecase/RefillWordReserveUseCase.kt` ← **nouveau**
-- `app/src/main/java/…/domain/usecase/RareWordsCandidates.kt` ← **nouveau**
-- `app/src/main/java/…/core/network/ConnectivityChecker.kt` ← **nouveau**
-- `app/src/main/java/…/data/local/WordReserveDao.kt` ← `getAllMots()` ajouté
-- `app/src/main/java/…/data/local/FlashcardDao.kt` ← `getAllMots()` ajouté
-- `app/src/main/java/…/MainActivity.kt` ← appel `RefillWordReserveUseCase` ajouté
+- `app/src/main/java/…/data/remote/WiktionnaireCategorySource.kt` ← **nouveau**
+- `app/src/main/java/…/domain/usecase/RefillWordReserveUseCase.kt` ← source catégories intégrée
+- `FEATURES.md` ← Option A (✅) + Option D (backlog)
 
 ---
 
