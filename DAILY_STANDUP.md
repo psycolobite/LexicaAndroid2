@@ -6,7 +6,65 @@
 
 ---
 
+## 📅 2026-04-12 — Rechargement automatique de la réserve de mots
+
+### ✅ Accompli
+- [x] **Refill automatique `word_reserve`** : quand la réserve passe sous 100 mots et que l'appareil est connecté à internet, l'app va chercher des mots rares sur le Wiktionnaire pour revenir à 100
+  - Déclenchement silencieux au démarrage de l'app (`MainActivity`, sur `Dispatchers.IO`)
+  - Anti-doublon : les mots déjà dans `word_reserve` ou dans `flashcards` sont exclus
+  - Gestion des erreurs mot par mot : un échec réseau sur un mot passe au suivant sans bloquer
+  - Logs détaillés sous le tag `REFILL_RESERVE`
+- [x] Nouveau fichier `domain/usecase/RefillWordReserveUseCase.kt`
+  - Seuil : `THRESHOLD = 100`
+  - Normalisation Unicode pour la comparaison anti-doublon (insensible aux accents/casse)
+- [x] Nouveau fichier `domain/usecase/RareWordsCandidates.kt`
+  - ~200 mots rares/littéraires français (vocabulaire soutenu, philosophique, rhétorique, psychologique)
+  - Mélangés aléatoirement à chaque appel pour varier les propositions
+- [x] Nouveau fichier `core/network/ConnectivityChecker.kt`
+  - Vérification via `NetworkCapabilities.NET_CAPABILITY_INTERNET` (API 23+, sans dépendance externe)
+- [x] `WordReserveDao` : ajout de `getAllMots()` — `SELECT mot FROM word_reserve`
+- [x] `FlashcardDao` : ajout de `getAllMots()` — `SELECT mot FROM flashcards`
+
+### 🔗 Fichiers modifiés/créés
+- `app/src/main/java/…/domain/usecase/RefillWordReserveUseCase.kt` ← **nouveau**
+- `app/src/main/java/…/domain/usecase/RareWordsCandidates.kt` ← **nouveau**
+- `app/src/main/java/…/core/network/ConnectivityChecker.kt` ← **nouveau**
+- `app/src/main/java/…/data/local/WordReserveDao.kt` ← `getAllMots()` ajouté
+- `app/src/main/java/…/data/local/FlashcardDao.kt` ← `getAllMots()` ajouté
+- `app/src/main/java/…/MainActivity.kt` ← appel `RefillWordReserveUseCase` ajouté
+
+---
+
 ## 📅 2026-04-12 — Fallback recherche externe dans `Mes mots` + carte préremplie
+
+### ✅ Complément — Recherche locale-only dans `Mes mots`
+- [x] Retrait du fallback web de la barre de recherche de `presentation/wordlist/WordListViewModel.kt`
+  - `onSearchQueryChanged(...)` ne filtre plus que la collection locale
+  - suppression des états et méthodes liés à la recherche externe (`apiSearchResults`, `apiPreviewResult`, `apiError`, `isApiLoading`, etc.)
+- [x] Allègement de `presentation/wordlist/WordListScreen.kt`
+  - suppression des sections UI de résultats externes / popup d'aperçu externe
+  - la barre de recherche de `Mes mots` sert désormais uniquement à chercher dans la liste courante
+- [x] Simplification de l'instanciation `WordListViewModelFactory` dans `MainActivity.kt`
+- [x] Réalignement des tests `WordListViewModelTest.kt` sur un comportement local-only
+
+### ✅ Complément — Correctif crash molette / hover Compose sur émulateur
+- [x] Diagnostic runtime récupéré via `adb logcat`
+  - crash confirmé : `java.lang.IllegalStateException: The ACTION_HOVER_EXIT event was not cleared.` dans `AndroidComposeView`
+- [x] Ajout d'un garde-fou ciblé dans `MainActivity.kt`
+  - override de `dispatchGenericMotionEvent(...)`
+  - interception uniquement du bug Compose connu sur les actions hover/molette (`ACTION_SCROLL`, `ACTION_HOVER_EXIT`, `ACTION_HOVER_MOVE`, `ACTION_HOVER_ENTER`)
+  - les autres `IllegalStateException` continuent d'être relancées normalement
+- [x] Ajout d'un test unitaire `MainActivityInputWorkaroundTest.kt` pour verrouiller la détection du crash contourné
+
+### ✅ Complément — Refonte UX compacte des listes
+- [x] Refonte de `presentation/wordlist/WordListScreen.kt`
+  - structure des cartes `Mes mots` passée d'une `Row` rigide à un layout vertical compact
+  - actions favori/suppression regroupées en haut à droite sans créer de grand vide horizontal
+  - badges d'état déplacés dans un `FlowRow` pour éviter les retours à la ligne cassés et les espaces morts
+  - libellés visuels raccourcis (`Mot → Déf.`, `Déf. → Mot`) pour mieux tenir sur petits écrans
+- [x] Validation ciblée exécutée après refonte
+  - `:app:compileDebugKotlin`
+  - `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.wordlist.WordListViewModelTest"`
 
 ### ✅ Accompli
 - [x] Intégration des changements validés dans `main`
@@ -32,6 +90,20 @@
   - clic sur un mot déjà présent dans `Ajouter des mots` => popup d'information complet
 - [x] Harmonisation partielle du popup local `WordDetailDialog`
   - hauteur max ramenée de `700.dp` à `620.dp` pour se rapprocher des nouveaux aperçus compacts
+- [x] Ajustement UX `Ajouter des mots` : conserver les mots après ajout et les marquer visuellement
+  - ajout depuis suggestions locales : les cartes restent visibles avec fond vert + état `Ajoute`
+  - ajout depuis recherche API : même logique (pas de disparition immédiate, fond vert)
+  - suppression du bandeau de succès global (feedback désormais porté par l'état de chaque carte)
+- [x] Ajustement UX complémentaire `Ajouter des mots`
+  - reset des états verts temporaires au retour sur l'écran (sortie/retour ou rafraîchissement)
+  - ajout via popup synchronisé avec l'état vert de la liste
+  - bouton popup vert quand le mot est déjà ajouté
+  - bouton `Ajouter` bascule maintenant en mode toggle (re-clic = retrait + déverdissement)
+- [x] Correctif `Ajouter des mots` sur les doublons multi-définitions et accents
+  - le doublon est désormais détecté sur `mot + définition` (et non plus sur le mot seul)
+  - plusieurs cartes avec le même mot mais des définitions différentes sont autorisées
+  - la clé visuelle d'état vert est aussi basée sur `mot + définition`
+  - la comparaison conserve les accents (plus de fusion indésirable de mots distincts accentués)
 - [x] Ajout de tests unitaires ciblés dans `presentation/wordlist/WordListViewModelTest.kt`
   - fallback externe quand la recherche locale échoue
   - absence d'appel externe quand un mot local existe déjà

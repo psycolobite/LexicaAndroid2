@@ -112,4 +112,8 @@ interface FlashcardDao {
     /** Efface TOUS les flashcards (réinitialisation complète). */
     @Query("DELETE FROM flashcards")
     suspend fun deleteAll()
+
+    /** Retourne uniquement les mots (colonne mot) — utilisé pour le check anti-doublon du refill. */
+    @Query("SELECT mot FROM flashcards")
+    suspend fun getAllMots(): List<String>
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.view.MotionEvent
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
@@ -54,6 +55,7 @@ import com.example.lexicaandroid2.core.tts.hasFrenchVoiceSupport
 import com.example.lexicaandroid2.presentation.LexicaApp
 
 import com.example.lexicaandroid2.domain.usecase.ResetProgressUseCase
+import com.example.lexicaandroid2.domain.usecase.RefillWordReserveUseCase
 import com.example.lexicaandroid2.presentation.dashboard.DashboardViewModel
 import com.example.lexicaandroid2.presentation.dashboard.DashboardViewModelFactory
 import com.example.lexicaandroid2.data.remote.DictionaryServiceImpl
@@ -187,7 +189,7 @@ class MainActivity : ComponentActivity() {
         val dashboardFactory = DashboardViewModelFactory(repository)
         val dashboardViewModel = ViewModelProvider(this, dashboardFactory)[DashboardViewModel::class.java]
 
-        val wordListFactory = WordListViewModelFactory(repository, dictionaryService)
+        val wordListFactory = WordListViewModelFactory(repository)
         val wordListViewModel = ViewModelProvider(this, wordListFactory)[WordListViewModel::class.java]
 
         val addWordsFactory = AddWordsViewModelFactory(
@@ -208,6 +210,15 @@ class MainActivity : ComponentActivity() {
                      val importer = DataImporter(applicationContext, dao, reviewQuestionDao, reserveDao)
                      importer.importReserve()
                 }
+
+                // Rechargement automatique de la réserve si < 100 mots et connexion disponible
+                RefillWordReserveUseCase(
+                    reserveDao = reserveDao,
+                    flashcardDao = dao,
+                    dictionaryService = dictionaryService,
+                    context = applicationContext
+                ).invoke()
+
             } catch (e: Exception) {
                 Log.e("DATA_IMPORT", "Import FAILED: $e", e)
             }
@@ -280,6 +291,23 @@ class MainActivity : ComponentActivity() {
                 }
     }
 
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
+        return try {
+            super.dispatchGenericMotionEvent(event)
+        } catch (exception: IllegalStateException) {
+            if (shouldIgnoreComposeHoverExitCrash(exception.message, event.actionMasked)) {
+                Log.w(
+                    "MainActivity",
+                    "Événement hover/molette ignoré pour contourner un crash Compose connu (action=${event.actionMasked})",
+                    exception
+                )
+                false
+            } else {
+                throw exception
+            }
+        }
+    }
+
     private fun checkFrenchTtsVoiceAvailability() {
         val checkIntent = Intent(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA)
         if (checkIntent.resolveActivity(packageManager) != null) {
@@ -318,3 +346,15 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
+internal fun shouldIgnoreComposeHoverExitCrash(message: String?, actionMasked: Int): Boolean {
+    if (message?.contains("The ACTION_HOVER_EXIT event was not cleared.") != true) {
+        return false
+    }
+
+    return actionMasked == MotionEvent.ACTION_HOVER_EXIT ||
+        actionMasked == MotionEvent.ACTION_SCROLL ||
+        actionMasked == MotionEvent.ACTION_HOVER_MOVE ||
+        actionMasked == MotionEvent.ACTION_HOVER_ENTER
+}
+

@@ -1,0 +1,1058 @@
+il faut changer la logique d'affichage pour tout les jeux : actuelement dans la TopBar il y a écrit le nom du jeu et en dessous il y a une barre de progression avec le score (je comprends pas bien à quoi elle sert ?), il faut que toutes ces infos soient dans la top bar parceque beaucoup de jeux ont un pb d'affichage ont voit mal les propositions.
+
+Pour correspondance : il y a des infos sur le graphisme de mise en relation dans les taches. Il faut ajouter le fait que après s'être trompé 3 fois sur les combinaison d'une même série de mots l'app montre la bonne réponse. + chaque fois que la personne valide et que c'est faux elle perd la moitié de l'xp lorsque elle fera correctement la série de mot (0xp si 3 essai faux et réponse dévoilé.)
+
+pour QCM : l'ensemble des propositions ne s'affichent pas, il faut qu'il y en ai 4. Même logique que jeu de correspondance après trois essai pour une même question il faut que ça affiche la réponse et même logique de gain xp décroissant. Même logique aussi d'enchainement des questions. Même logique de validation aussi, tout ça c'est à implémenter.
+
+En gros les logiques d'enchainement de validation et de perte d'xp a cause d'echecs il faut l'implémenter partout (sauf les jeux dont le fonctionnement est trop différent.)
+
+Pour jeu du pendu ilk faut créer un vrai dessin original qui se complète, et il faut des indices genre 20% des lettres déjà présente sinon c'est trop dure, ou un indice léger sur la sygnification mais je sais pas comment on peut faire ça.
+
+Pour le jeu de dicter il faut le tts mais on voit ça après.
+
+annagramme : il faut pas qu'on voit la définition.
+
+le jeu définition à compléter n'a aucun intéret pour l'instant je pense qu'on peut le supprimer.
+
+défi du jour : il faut un bouton pour lancer le jeu du jour depuis la page du défi du jour.
+
+
+petit problème de logique métier au niveau de l'ajout de mot.
+dans "ajouter des mots", l'app gère l'ajout différemment celon qu'on ajoute directement depuis le bouton "ajouter" à droite du mot, ou du pop up qui s'ouvre lorsque l'on clique sur le mot pour avoir plus d'informations.
+Mais aussi l'app gère différemment en fonction de si on ajoute un mot depuis la base de donnée ou depuis une recherche. Je pense qu'il faudrait centraliser un peu tout ça.
+
+Les problèmes utilisateurs que je rencontre sont :
+
+Si je cherche un mot déjà présent dans la base depuis la barre, il ne me propose pas celui de la barre mais celui de la recherche. dans ce cas là il faut proposer en priorité le mot de la base. tout en lançant une recherche pour en trouver d'autre.
+
+Il y a une sorte de bueugue genre lorsque je commence une recherche sur la barre et que je supprime tout, il fait quand même une recher par rapport aux premier caractère et les affiche en haut de la page.
+
+Pour des mots d'une recherche, l'ajout depuis le bouton et depuis le pop up fonctionne. Cependant si je quitte la recherche et y retourne, que je retappe le mot depuis la barre il va me le reproposer (c'est bien qu'il le repropose) mais pas avec le fond vert, l'uitlisateur n'a pas l'info comme quoi il a déjà le mot... Il faut corriger ça.
+
+depuis les mots de la base de donné, si j'ajoute depuis le bouton "ajouter", ça met bien le rectangle du mot en fond vert, ça l'ajoute bien et si je quitte la page et que j'y reviens il disparaît, c'est bien.
+Mais si j'ajoute depuis le bouton dans le popup, alors ça ne met pas le fond en vert et si je quitte la page puis reviens le mot est toujours là.
+
+dans le pop up il faut ajouter un bouton pour les mots qui sont ajouté qui permmette de retirer le mot, ça fait assez bizzare de retirer le mot en cliquant sur le "ajouter" au fond rouge.
+
+
+
+
+
+
+
+Il faut qu'on refasse l'UX des listes, il y a un gros problème d'affichage, plusieurs "saut de lignes" ou en tout cas un grand espace vide.
+
+
+
+
+
+
+
+comme tu vois le projet avance bien, cependant il y a un point sur lequel les agent IA ont une grosse laccune : L'UX.
+Ils n'ont pas la capacité d'avoir un oeuil sur l'interface de ce qu'ils code. Qu'existe t il comme outil aujourd'hui pour palier à ce défaut ? existe t il des outils qui donne la vue aux agents ? copilot github ne permet pas le traitement de fichier imagé, mais des IA sont peut être entrainé pour l'ux via d'autres abonnement que je pourrai combiner à celui de copilot
+
+Pour les listes :
+Pouvoir en sélectionner plusieurs
+
+
+c'est top.
+On commence par intégrer tout ça au main et faire une nvlle branche de travail dans intégration avec la date.
+
+ensuite plusieurs détails à régler :
+
+Quand on clique dans la recherche de mot sur la barre d'un mot (pas sur "ajouter" il faut que ça ouvre un pop up avec toutes les informations et la possibilité d'ajouter le mot depuis ce pop up (uniformiser niveau UX avec les infos du mot quand on clique depuis une liste + faire que le popup soit un peu moins haut quitte à changer un peu l'organisation sans supprimer d'info, à part lorsqu'il y a beaucoup de choses écrites)
++ uniformiser design recherche web VS recheche local, au niveau des mots (le bouton "ajouter" est différent entre les deux versions par exemple.
+
+C'est claire ? si tu as des questions pour préciser la chose avant de commencer demande moi.
+
+On va ajouter : 1 notif avec un mot par jour.
+Revoir la logique métier de la proposition de mots.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+prompt algo polo-1
+
+
+parfait, bon allons y pour le plus lourd. Les principes expliqué ci dessous doivent être intégré dans la documentation, remplacement l'ancienne explication de l'algorithme qui était un peu différente et très flou.
+Il existait avant un parametre qui ressemblait à "nombre de cartes par session". On va la remettre dans les parametres avec 10  par défauts et on va expliciter clairement à quoi ça correspond. ici cartes correponds plus à face de cartes, puisque chaque face des cartes est différentié de l'autre comme on l'a vue. On parlera plus bas de question et de type de question pour les différencier.
+
+Les révision dans l'entrainement vont être organisé de cette manière : par session de 10 questionss (par défaut) c'est à dire qu'on tourne en boucle  sur 10 questions, d'abord dans le même ordre (ordre des questions  aléatoires + pas les deux questions d'une même carte qui se suivent). Quand on ajoute une carte ça ajoute les 2 questions de tel sorte qu'initialement elles se suivent dans l'ordre de présentation.
+Les 10 questions sélectionné sont les plus prioritaires (les premières ajoutés si aucunes révision n'ont été faites puis les cartes qui sont "a apprendre" depuis le plus longtemps, c'est à dire les cartes dont le délai de non présentation a expiré depuis le plus longtemps.
+Les questions tournent en boucle sans modification de l'ordre jusqu'à ce que l'une d'elles ai été validé "je l'ai" deux fois (pas nécessairement d'affilé) ou "trop facile" une fois, à ce moment là l'ordre de présentation des questions  continue pareil mais avec la question ayant été validé en moins, jusqu'à ce que toutes les questions de la session aient été validée deux fois (avec un maximum de 5 présentation pour chaques questions par session).
+La première réponse de chaques question pour une session va permettre de déterminer le délai avant que le mot retourne dans la catégorie "a apprendre", pendant ce délai le mot est dans la catégorie "en cours", il n'apparait plus dans la liste "a apprendre" et n'est pas présenté dans l'entrainement.
+Nous allons déterminer ensemble la fonction mathématique de calcul du délai de présentation en nous basant sur la courbe de l'oublie d'ebbinghaus. Les révision sont organisée en intervalle comme suit : t0=10min, t1=1h, t2=1j, t3=1semaine, t4=1 mois,t5= 3 mois, t6=6 mois, t7=1 an, t8=2 ans 4 ans 8 ans 16 ans .... (si il y a des modèles plus optimisé pour éviter la redondance mais tout en présentant le mot un nombre suffisant de fois...) 
+au dela de t2, une première bonne réponse "je l'ai" valide la question pour une session. mais si première réponse "a revoir" alors il faut 2 "je l 'ai"
+Chaques questions va posséder un certain ratio (bonne réponse)/erreur, il faut mettre en place une fonction qui permette de modulé la rapidité de l'avancement en intervalle de chaque questions en fonction de ce ratio, qui pondère les dernières réponses : quatre je l'ai d'affilé (sans arreur en début de session car c'est facile d'avoir un "je l'ai" alors que l'on vient juste de se voir présenter la carte : il faut tenir aussi compte de ça si la carte à été présenté depuis un délai inferieur à celui de l'interval actuel alors ça compte pas pour le calcul.) alors il faut qu'on monte assez vite dans les intervalles, l'utilisateurs connais surement le mots et ça sert à rien de lui représenter.
+Chaque "a revoir" ramène au t0, mais pour une carte avec un ratio élevé on va beaucoup plus vite revenir à l'interval où l'on se trouver juste avant que de temps qu'il y fallu initialement pour y arriver (dans le cas ou il ne fait plus que des "je l'ai") 
+Inversement une carte dificile avec beaucoup de "a revoir" avant de commencer à avoir des "je l'ai" aura un avancement plus long dans les intervalles quand il commencera à avoir des je l'ai. 
+Encore une fois pour le calcul on ne compte pas les présentation dûe au principe de la session, on compte que la première réponse de chaques sessions. 
+
+Le "trop facile" compte pour 3 "je l'ai" dans le calcul.
+
+La modification du paramètre entraine une modification du nombre de questions par session
+Donc on va se retrouver dans les listes "en cours" et "à apprendre" avec des parties de réponses genre connais/a apprendre le mot ou connais/à apprendre la définition en fonction de si il a validé ou non l'une ou l'autres des questions de la carte. Basule dans la liste "connu" les cartes entières, c'est à dire lorsque les 2 questions d'une même carte dépassent t4. Mais même principe, une fois le délai écoulé elles retournent dans "a apprendre" et soit elles sont à nouveau validé directe et retounre dans connu soit retour à t0. Lorsque deux face d'une carte sont dans une même liste je veux pas voir deux "cartes/boutons" on les regroupe en un seul avec une indication comme quoi les deux sont bien là.
+Il faut ajouter un bouton retour dans l'entrainement qui permet d'annuler la réponse donnée à la dernière carte, de revenir à celle ci pour y répondre à nouveau.
+
+Principe à ajouter dans les sessions : 
+- chaques fois au cours d'une sesions qu'on était posé un nombre de question égale au paramètre "nombre de questions par session"  un jeu de correspondance se l'ance dans la page d'entrainement avec 5 des cartes qui ont cours dans la session, en sélectionnant celles qui ont le plus de "à revoir" au cours de la session.
+- Chaques fois qu'une question atteint 3 "à revoir" alors un jeu de qcm portant sur la question (si c'est sur le mot que l'utilisateur buegue on donne le mot et on propose des def et l'uti doit choisir la bonne. si c'est avec la def que l'uti buegue alors on donne la def et on propose des mots) est programmé à une place aléatoire dans l'ordre des questions qui seront posées entre cette question et ça prochaine présentation. QCM toujours sur la page d'entrainement, ne pas lancer la page jeux.
+- Pour chaques questions du type "quel est la définition du mot
+Il y a un conteur qui affiche le nombre de "face de carte"  restantes avant de passer à la prochaine session (si possible un peu classe et design)
+
+
+Les défis : 
+- Les défis sont hors sessions, lorsqu'une question atteint 3 "je l'ai" d'affilé ou 1 "trop facile" comme réponse pour une première présentation de session, alors pour la prochaine première présentation de session il aura un défi. Ce défi dépend du type de question.
+-Pour une question "a quel mot correspond cet définition" c'est un défi ortographique (normalement tu as des info  sur ce que c'est sinon je te dirais)
+-Pour une question "quel est la définition du mot" c'est un défi sémantique, et la on a besoin de notre modèle de word embending contextuel qui d'ailleur ne se charge pas pour l'instant mais on verra ça après.
+
+
+ça fait beaucoup d'infos, reformule tout ça exhaustivement avant de commencer pour que je sois sur qu'on est bien sur la même longueur d'onde.
+
+
+Sa reformulation :
+
+Oui. Reformulation exhaustive, structurée.
+1. Unité de base
+•	On ne raisonne plus en carte pour l’entraînement.
+•	On raisonne en question.
+•	Chaque carte produit 2 questions indépendantes :
+1.	Mot -> Définition
+2.	Définition -> Mot
+•	Ces 2 questions ont :
+•	leur propre état
+•	leur propre historique
+•	leur propre délai
+•	leur propre progression
+•	Donc une même carte peut être :
+•	mot connu / définition à apprendre
+•	ou l’inverse.
+2. Paramètre de session
+•	Il faut remettre dans les réglages un paramètre de type :
+•	Nombre de questions par session
+•	Valeur par défaut :
+•	10
+•	Il faut documenter clairement que :
+•	ce paramètre correspond à des questions/faces de cartes
+•	et non plus à des cartes entières.
+3. Constitution d’une session
+Une session d’entraînement fonctionne comme ceci :
+•	on sélectionne N questions, avec N = nombre de questions par session
+•	par défaut N = 10
+•	ces questions sont les plus prioritaires
+Priorité de sélection
+Ordre voulu :
+1.	si aucune révision n’a encore été faite :
+•	prendre d’abord les plus anciennes cartes ajoutées
+2.	sinon :
+•	prendre les questions qui sont redevenues à apprendre depuis le plus longtemps
+•	donc celles dont le délai est expiré depuis le plus longtemps
+4. Ordre des questions dans la session
+•	Les questions de la session sont ordonnées une première fois.
+•	Cet ordre est :
+•	aléatoire
+•	mais il faut éviter que les 2 questions d’une même carte se suivent
+•	Quand une nouvelle carte est ajoutée :
+•	ses 2 questions sont ajoutées
+•	et au départ elles sont prévues pour se suivre dans l’ordre de présentation
+5. Fonctionnement d’une session
+•	Une session est une boucle sur ces N questions.
+•	On conserve le même ordre de présentation pendant la session.
+•	Une question reste dans la boucle jusqu’à validation.
+Condition de validation d’une question dans la session
+Une question sort de la session quand :
+•	elle a reçu Je l’ai 2 fois dans la session
+•	pas forcément d’affilée
+•	ou Trop facile 1 fois
+Limite par session
+•	Une question ne peut pas être présentée plus de 5 fois dans une même session.
+Réduction progressive de la session
+•	Quand une question est validée, elle est retirée de la boucle.
+•	L’ordre des autres questions reste inchangé.
+•	On continue jusqu’à ce que toutes les questions de la session soient validées.
+6. Rôle de la première réponse de session
+•	Pour chaque question, seule la première réponse donnée dans une session sert au calcul principal du délai.
+•	Les répétitions suivantes dans la même session servent à la mécanique de validation de session, mais ne comptent pas pour le calcul de progression long terme.
+•	Donc :
+•	la session sert à consolider
+•	la première réponse de session sert à recalculer le prochain délai réel.
+7. États métier d’une question
+Une question peut être dans :
+•	À apprendre
+•	En cours
+•	Connu
+Passage en En cours
+•	Quand une question reçoit sa première réponse de session,
+•	on calcule son prochain délai,
+•	pendant ce délai elle n’est plus dans À apprendre
+•	elle passe en En cours
+Passage en Connu
+•	Une carte entière passe dans Connu seulement si ses 2 questions ont dépassé t4
+•	donc si les deux faces ont atteint au moins le niveau 1 mois
+Retour en À apprendre
+•	Quand le délai d’une question expire,
+•	elle redevient À apprendre
+•	même si elle était auparavant dans Connu
+8. Intervalles de révision
+Échelle voulue :
+•	t0 = 10 min
+•	t1 = 1 h
+•	t2 = 1 jour
+•	t3 = 1 semaine
+•	t4 = 1 mois
+•	t5 = 3 mois
+•	t6 = 6 mois
+•	t7 = 1 an
+•	t8 = 2 ans
+•	puis 4 ans, 8 ans, 16 ans, etc.
+9. Logique générale d’évolution d’intervalle
+Vous voulez une logique inspirée d’Ebbinghaus, mais adaptée.
+Règles de base
+•	À revoir :
+•	ramène la question à t0
+•	Je l’ai :
+•	fait progresser selon la qualité de l’historique
+•	Trop facile :
+•	vaut 3 "Je l’ai" dans le calcul
+Règle spéciale au-delà de t2
+•	Si la question est déjà au-delà de t2
+•	alors une première réponse Je l’ai en début de session suffit à valider la question pour la session
+•	mais si la première réponse est À revoir
+•	alors il faut 2 "Je l’ai" dans la session pour la valider
+10. Ratio de réussite / difficulté
+Chaque question doit avoir un indicateur de difficulté basé sur :
+•	bonnes réponses
+•	erreurs
+•	pondération des réponses récentes
+Effet voulu
+•	une question avec beaucoup de réussite récente doit monter plus vite dans les intervalles
+•	une question difficile doit monter plus lentement
+•	après un À revoir, une question historiquement forte doit remonter plus vite vers son ancien niveau
+•	une question historiquement faible doit remonter plus lentement
+Important
+•	si une question est revue trop tôt par rapport à son intervalle courant,
+•	les réponses ne doivent pas artificiellement gonfler sa progression
+•	autrement dit :
+•	si le temps écoulé depuis la dernière vraie présentation est inférieur à l’intervalle attendu,
+•	cela doit moins compter, voire ne pas compter, dans le calcul de maîtrise
+11. Listes produit
+Dans À apprendre et En cours :
+•	on peut avoir des statuts partiels par carte
+•	ex. :
+•	mot connu / définition à apprendre
+•	définition connue / mot à apprendre
+Affichage voulu
+•	si les 2 questions d’une même carte sont dans la même liste,
+•	on ne veut pas 2 cartes/boutons séparés
+•	il faut les regrouper visuellement en un seul élément
+•	avec un indicateur montrant que les 2 faces sont concernées.
+12. Fonction “retour arrière”
+Dans l’entraînement :
+•	il faut un bouton retour
+•	ce bouton annule la dernière réponse donnée
+•	ramène à la question précédente
+•	permet de répondre à nouveau
+13. Mécaniques supplémentaires dans les sessions
+13.1 Matching intégré
+•	Chaque fois qu’au cours d’une session on a posé un nombre de questions égal au paramètre de session,
+•	on lance un mini-jeu de Correspondance dans la page d’entraînement
+•	pas dans la page mini-jeux
+•	ce matching utilise 5 cartes issues de la session
+•	on choisit en priorité les cartes/questions ayant reçu le plus de À revoir dans la session
+13.2 QCM intégré
+•	Dès qu’une question atteint 3 "À revoir" dans une session,
+•	un QCM est programmé
+•	ce QCM doit être inséré à une place aléatoire entre :
+•	la question fautive
+•	et sa prochaine présentation normale
+Sens du QCM
+•	si l’utilisateur échoue sur Mot -> Définition
+•	on montre le mot
+•	on propose plusieurs définitions
+•	si l’utilisateur échoue sur Définition -> Mot
+•	on montre la définition
+•	on propose plusieurs mots
+Contrainte
+•	ce QCM reste dans la page d’entraînement
+•	il ne doit pas ouvrir la page de jeux.
+13.3 Compteur de progression de session
+•	il faut afficher un compteur design
+•	montrant le nombre de faces/questions restantes
+•	avant le passage à la prochaine session
+14. Défis hors session
+Les défis ne font pas partie de la boucle standard.
+Déclenchement
+Un défi est planifié pour la prochaine première présentation de session si une question atteint :
+•	3 "Je l’ai" d’affilée
+•	ou 1 "Trop facile"
+•	sur une première présentation de session
+Type de défi selon le type de question
+•	pour Définition -> Mot
+•	défi orthographique
+•	pour Mot -> Définition
+•	défi sémantique
+•	en s’appuyant à terme sur le modèle d’embeddings contextuels
+15. Documentation à mettre à jour
+•	Il faut remplacer l’ancienne explication de l’algorithme
+•	jugée floue et divergente
+•	par cette nouvelle description
+•	dans la documentation produit/technique concernée
+---
+Points que je considère comme implicites mais importants
+1.	La progression long terme est par question, pas par carte
+2.	La session est une mécanique locale de consolidation
+3.	Le calcul de délai global n’utilise que la première réponse de session
+4.	Les mini-jeux et défis injectés doivent s’intégrer dans le flux d’entraînement
+5.	Les deux faces d’une carte doivent rester totalement indépendantes pour la planification
+---
+Points à confirmer avant implémentation
+Il reste quelques zones à verrouiller :
+A. Phrase incomplète
+Le passage :
+•	Pour chaques questions du type "quel est la définition du mot semble coupé. Il manque probablement une règle.
+B. Ajout d’une nouvelle carte
+Il y a une tension entre :
+•	“éviter que les 2 questions d’une même carte se suivent”
+•	et “quand on ajoute une carte, initialement elles se suivent” À confirmer :
+•	est-ce une exception volontaire pour les nouvelles cartes ?
+C. Fin de session avec questions non validées
+À confirmer :
+•	si une question a atteint 5 présentations sans validation,
+•	est-ce qu’on clôt quand même la session ?
+•	ou est-ce qu’on force un statut spécial ?
+D. QCM / Matching et calcul de délai
+À confirmer :
+•	les résultats du QCM intégré et du Matching intégré
+•	influencent-ils le calcul long terme du délai
+•	ou servent-ils seulement de renforcement local ?
+E. Défi orthographique / sémantique
+À confirmer :
+•	le défi remplace-t-il la question normale
+•	ou vient-il en plus lors de la prochaine première présentation de session ?
+F. Passage en Connu
+À confirmer :
+•	t4 signifie bien :
+•	les 2 questions ont atteint au moins l’intervalle 1 mois
+•	pas seulement qu’elles ont été présentées jusqu’à t4
+---
+Si cette reformulation est validée, l’étape suivante peut être :
+1.	cadrer les fichiers de doc à réécrire
+2.	définir le modèle de données cible pour les questions
+3.	puis implémenter l’algo par couches, sans tout casser d’un coup.
+
+
+Ma réponse : 
+remarques : 
+1- Unité de base
+ non la carte peut avoir mot --> def a apprendre et def --> mot en cours mais pour arriver dans la catégorie "connu" il faut que les deux soit ensemble cf : "Donc on va se retrouver dans les listes "en cours" et "à apprendre" avec des parties de réponses genre connais/a apprendre le mot ou connais/à apprendre la définition en fonction de si il a validé ou non l'une ou l'autres des questions de la carte. Basule dans la liste "connu" les cartes entières, c'est à dire lorsque les 2 questions d'une même carte dépassent t4. Mais même principe, une fois le délai écoulé elles retournent dans "a apprendre" et soit elles sont à nouveau validé directe et retounre dans connu soit retour à t0. Lorsque deux face d'une carte sont dans une même liste je veux pas voir deux "cartes/boutons" on les regroupe en un seul avec une indication comme quoi les deux sont bien là "
+2-Paramètre de session
+évitons "question" dans nombre de questions par session, ça peut porter à confusion dans le sens où l'utilisateur peut penser que c'est le nombre de question qu'on va lui présenter par session alors qu'on va lui en poser beaucoup plus.
+3. Constitution d’une session
+pour la priorité, les questions déjà faites dont le délai est écoulé sont prioritaire sur les questions qui n'ont pas encore été faîtes. De tel sorte qu'on commence de nouvelles cartes que lorsque toutes les question qu'on a déjà commencé sont traité. (les deux peuvent se mélanger au sein d'une session si il n'y a pas assez de questions auquels on a déjà répondu une fois pour constituer une session). je veux dire par question commencé les question auxquels on a déjà répondu une fois et qui sont revenu dans "a apprendre", parceque leurs délai sont écoulé.
+4-Ordre des questions dans la session
+Petite précision : les deux questions d'une même carte se suivent de tel sorte qu'elles soient dans la même session, il se peut que la 10ème quesstion d'une session ai sa jumelle juste après dans l'ordre de selection des questions pour une session, dans ce cas là elles seront pas dans la même tant pis c'est pas grave.
+5- Fonctionnement d’une session
+"Une question sort de la session quand :
+•	elle a reçu Je l’ai 2 fois dans la session
+•	pas forcément d’affilée
+•	ou Trop facile 1 fois"
+oui mais dés lorsqu'une question a pour intervalle actuel supérieur à t2 soit 1j alors une réponse "je l'ai" lors de la première présentation d'une session valide directement la question.
+Aussi, un "trop facile" valide directement la question.
+Le compteur indique le nombre de questions restante à valider.
+7 - États métier d’une question
+La sortie de "a apprendre" ne devient effective que lorsque la session est terminé et le délai ce déclenche à partir de ce moment là.
+une question dans connu, à laquelle on répond directement "je l'ai" retourne forcément dans connu puisque sont délai va augmenter et sera supérieur à t4 ! sauf si l'une des 2 questions de la carte ne passe  pas ("a revoir") eheh !! 
+Si j'ai pas fait de remarques pour un point c'est qu'il est bon.
+10. Ratio de réussite / difficulté
+pour ton commentaire "important" ce que tu décris n'arrivera que dans le cas d'une session pour laquelle on présente plusieurs fois la question.
+pour les 13.1 c'est bien les 5 cartes qui sont choisis puisque le jeu de correspondance combine les deux questions.
+13.2, la question fautive c'est celle qui atteint le 3eme "a revoir" pour la même question par exemple 3 a revoir pour quelle est la définition de turpitude alors qcm sur turpitude programmé avant la prochaine question "quelle est la définition de turpitude"
++ la réussite ou l'échec au qcm ou correspondance n'a pas d'impact sur le calcul mais compte comme un "je l'ai" pour l'avancement dans la session"
+14. Defis hors session
+non je vais changé finalement, ça compte sur 3 je l'ai d'affilé ou 1 "trop facile"  qu'ils soit les premiers d'une session ou non. Déso pour ce changement d'avis.
+
+merci, pour la phrase : 
+Pour chaques questions du type "quel est la définition du mot la suite : 
+Pour chaques questions du type "quel est la définition du mot" présente dans la session, ajouter à un endroit aléatoirement une question du type suivant : Mot flouté mais lue à haute vois, l'utilisateur doit le taper et valider, pour voir s'il sait l'hortographier. Un défi orthographique présent dans une session annule la question de ce type. Cettte question n'a pas d'impact ni sur le calcul ni sur la session. L'utilisateur peut la passer.
+Pour les 2 questions d'une même carte j'ai répondu plus haut, je verrai si c'était claire dans ta prochaine reformulation.
+si une question a atteint 5 "a revoir" alors elle est quand même validé. Cas particulier : si une première réponse est un "je l'ai" non validant puis que l'utilisateur enchaine 5 "a revoir" alors pour le calcul on comptera un "a revoir".
+E. oui les défis remplacent. 
+F. les 2 questions ont un intervalle actuelle qui correspond à t4, donc même une carte qui sera présenté dans 2 jours si ça fait plus de t4 qu'elle attend parceque c'était son délai elle reste dans "connu", mais dés que le délai est écoulée elle passe dans "a apprendre"
+D'ailleur il faut qu'on reformule à apprendre en "a ravailler" je pense.
+ah je viens de penser ; qu'est ce qui se passe si l'utilisateur sort de la session avant de l'avoir terminé et y retourne après ? Il faut que ça enregistre la session en cours pour pouvoir y retourner.
+voilà toutes les fonctionnalitées, maintenant reformule à nouveau puis il faudra passer tout ça en terme oppération informatique puis définir des taches pour parvenir à cet objectif et enfin les réaliser.
+
+sa réponse:
+Oui. Nouvelle reformulation, corrigée avec toutes les remarques.
+1. Principe fondamental
+En interne, la planification de l’entraînement se fait par question :
+•	Mot -> Définition
+•	Définition -> Mot
+Mais côté produit :
+•	une carte peut avoir ses 2 questions dans des états différents
+•	ex. :
+•	mot -> définition = à retravailler
+•	définition -> mot = en cours
+En revanche :
+•	une carte ne passe dans connu que si ses 2 questions sont ensemble au niveau requis
+•	donc connu est une notion carte entière
+•	à retravailler et en cours peuvent être partiels par face
+Si les 2 faces d’une même carte sont dans la même liste :
+•	on les regroupe visuellement
+•	on ne montre pas 2 éléments séparés
+---
+2. Terminologie produit
+Le terme à apprendre doit être remplacé par :
+•	à retravailler
+Le paramètre de session doit revenir dans les réglages avec :
+•	valeur par défaut = 10
+Mais côté UI :
+•	il faut éviter l’expression nombre de questions par session
+•	car l’utilisateur pourrait croire qu’il ne verra que 10 écrans/questions au total
+Donc :
+•	en interne, on parle bien de questions
+•	en UI, il faudra un intitulé plus clair, sans utiliser question de manière trompeuse
+---
+3. Ce qu’est une session
+Une session est construite sur un lot fixe de 10 questions par défaut.
+Ce lot :
+•	est sélectionné au départ
+•	garde son ordre
+•	tourne en boucle
+•	se vide progressivement au fur et à mesure que les questions sont validées
+Important :
+•	l’utilisateur pourra voir plus de 10 écrans pendant la session
+•	car certaines questions reviennent plusieurs fois jusqu’à validation
+---
+4. Priorité de sélection des questions
+Ordre de priorité :
+priorité 1
+Les questions déjà commencées :
+•	donc celles auxquelles on a déjà répondu au moins une fois
+•	et dont le délai est écoulé
+•	donc celles revenues dans à retravailler
+priorité 2
+Les nouvelles questions jamais commencées :
+•	elles ne servent à compléter une session
+•	que s’il n’y a pas assez de questions déjà commencées et revenues à échéance
+Donc :
+•	on commence de nouvelles cartes seulement quand les anciennes questions à retravailler ont été absorbées
+•	sauf si elles sont insuffisantes pour remplir la session
+---
+5. Ordre des questions dans une session
+La session contient un ordre initial.
+Règle voulue :
+•	les 2 questions d’une même carte se suivent pour rester dans la même session
+Mais cas limite accepté :
+•	si la 10e question d’une session a sa jumelle juste après dans l’ordre global
+•	alors la jumelle tombera dans la session suivante
+•	ce n’est pas grave
+Donc :
+•	on cherche à garder les 2 questions ensemble
+•	mais sans forcer si cela casse la taille de session
+---
+6. Boucle de session
+La session tourne en boucle sur son lot de questions.
+Une question reste dans la boucle jusqu’à validation.
+Validation d’une question dans la session
+Une question est validée si :
+•	elle reçoit Je l’ai 2 fois dans la session
+•	ou Trop facile 1 fois
+Règle spéciale
+Si l’intervalle actuel de la question est déjà strictement supérieur à t2 (1 jour) :
+•	alors un Je l’ai donné à la première présentation de la session valide directement la question
+Règle absolue
+•	Trop facile valide toujours directement la question
+Limite
+•	si une question atteint 5 "À revoir" dans la session
+•	elle est quand même considérée comme validée pour sortir de la session
+Cas particulier de calcul
+Si :
+•	la première réponse de session est un Je l’ai non validant
+•	puis l’utilisateur enchaîne 5 "À revoir" alors pour le calcul long terme :
+•	on comptera un À revoir
+---
+7. Compteur de session
+Le compteur de session doit afficher :
+•	le nombre de questions restantes à valider
+•	pas le nombre de questions totales sélectionnées
+•	pas le nombre d’écrans restants
+Le rendu doit être visuel et soigné.
+---
+8. Moment où le délai démarre
+Une question ne quitte pas à retravailler immédiatement après sa première bonne réponse de session.
+La sortie de à retravailler devient effective :
+•	à la fin de la session
+•	c’est à ce moment que le nouveau délai démarre
+Donc :
+•	pendant la session, on continue à travailler localement les questions
+•	puis à la clôture, on applique les nouveaux états/délais
+---
+9. États métier
+à retravailler
+•	question due immédiatement
+•	ou question dont le délai est expiré
+en cours
+•	question validée en session
+•	dont le nouveau délai est lancé
+•	mais qui n’a pas encore atteint le seuil connu
+connu
+Une carte entière est connue si :
+•	ses 2 questions ont un intervalle actuel au niveau t4
+Important :
+•	une carte peut rester connue tant que son délai n’est pas expiré
+•	même si sa prochaine présentation n’est que dans 2 jours
+•	dès que le délai est écoulé :
+•	elle repasse dans à retravailler
+Autre point :
+•	si une question déjà connue reçoit directement Je l’ai
+•	elle reste naturellement au-dessus de t4
+•	donc elle reste connue
+•	sauf si l’autre face de la carte échoue et fait redescendre l’état global de la carte
+---
+10. Intervalles
+Échelle demandée :
+•	t0 = 10 min
+•	t1 = 1 h
+•	t2 = 1 jour
+•	t3 = 1 semaine
+•	t4 = 1 mois
+•	t5 = 3 mois
+•	t6 = 6 mois
+•	t7 = 1 an
+•	t8 = 2 ans
+•	puis 4 ans, 8 ans, 16 ans, etc.
+---
+11. Ce qui compte pour le calcul long terme
+Pour le calcul du prochain intervalle :
+•	seule la première réponse de la question dans la session compte
+Les répétitions suivantes dans la même session :
+•	ne comptent pas pour le calcul long terme
+•	elles servent seulement à la consolidation et à la validation de session
+Le point sur les réponses “trop proches dans le temps” ne concerne donc que :
+•	les re-présentations multiples à l’intérieur d’une même session
+---
+12. Progression / difficulté / ratio
+Chaque question possède une dynamique propre basée sur :
+•	son ratio réussite / erreur
+•	la pondération des réponses récentes
+Effet attendu :
+•	une question historiquement forte remonte vite
+•	une question historiquement faible remonte lentement
+•	À revoir renvoie à t0
+•	Trop facile vaut 3 "Je l’ai"
+Objectif :
+•	après un échec, une question maîtrisée doit pouvoir revenir rapidement vers son ancien niveau
+•	une question fragile doit progresser plus lentement
+---
+13. Session interrompue
+Si l’utilisateur quitte l’entraînement avant la fin :
+•	la session en cours doit être sauvegardée
+•	à son retour il doit pouvoir reprendre exactement la session
+•	avec :
+•	le lot de questions
+•	leur ordre
+•	leur état de validation dans la session
+•	leur historique local de session
+•	les événements programmés (QCM, matching, etc.)
+---
+14. Matching intégré à la session
+Après chaque bloc correspondant à la taille de session :
+•	un jeu de correspondance est lancé dans la page d’entraînement
+•	pas dans la page mini-jeux
+Sélection :
+•	on prend 5 cartes
+•	parmi les cartes de la session
+•	en choisissant celles qui ont eu le plus de À revoir pendant la session
+Impact :
+•	réussite ou échec du matching n’impacte pas le calcul long terme
+•	mais le matching compte comme un Je l’ai pour l’avancement dans la session
+---
+15. QCM intégré à la session
+Dès qu’une même question atteint son 3e "À revoir" :
+•	un QCM est programmé
+Exemple :
+•	Quelle est la définition de turpitude ?
+•	atteint 3 À revoir
+•	alors un QCM sur turpitude est inséré avant la prochaine re-présentation de cette même question
+Positionnement :
+•	il est inséré aléatoirement entre :
+•	l’instant de déclenchement
+•	et la prochaine occurrence de cette question
+Sens :
+•	si la question fautive est Mot -> Définition
+•	on montre le mot
+•	on propose des définitions
+•	si la question fautive est Définition -> Mot
+•	on montre la définition
+•	on propose des mots
+Impact :
+•	le QCM n’impacte pas le calcul long terme
+•	mais il compte comme un Je l’ai pour l’avancement dans la session
+---
+16. Question orthographique intégrée dans la session
+Pour chaque question du type :
+•	Quel est la définition du mot ? donc pour chaque question Mot -> Définition présente dans la session :
+il faut insérer aléatoirement une question supplémentaire :
+•	mot flouté visuellement
+•	mot lu à voix haute
+•	l’utilisateur doit le taper puis valider
+•	pour vérifier l’orthographe
+Règles :
+•	cette question n’a aucun impact
+•	ni sur le calcul
+•	ni sur la validation de session
+•	l’utilisateur peut la passer
+•	si un défi orthographique est déjà présent pour cette question dans la session / au même moment logique,
+•	cette question orthographique supplémentaire est annulée
+---
+17. Défis hors session
+Les défis remplacent une présentation normale.
+Déclenchement :
+•	dès qu’une question atteint 3 "Je l’ai" d’affilée
+•	ou 1 "Trop facile"
+•	peu importe que ce soit la première présentation de session ou non
+Le défi est alors injecté à la prochaine occurrence pertinente, en remplacement.
+Type de défi :
+•	pour Définition -> Mot
+•	défi orthographique
+•	pour Mot -> Définition
+•	défi sémantique
+---
+18. Résumé de l’impact des activités annexes
+Impact sur calcul long terme
+•	question normale : oui, première réponse de session seulement
+•	QCM intégré : non
+•	matching intégré : non
+•	question orthographique intégrée : non
+•	défi : à clarifier ensuite au moment de son implémentation détaillée, mais ici pas défini comme calcul principal
+Impact sur l’avancement de session
+•	question normale : oui
+•	QCM intégré : oui, comme un Je l’ai
+•	matching intégré : oui, comme un Je l’ai
+•	question orthographique intégrée : non
+•	défi remplaçant : oui, puisqu’il remplace une présentation
+---
+19. Ce que cette version fixe par rapport à la précédente
+•	connu est bien une notion carte entière, pas simple question isolée
+•	le paramètre public ne doit pas employer question de manière ambiguë
+•	les questions déjà commencées et revenues à échéance sont prioritaires sur les nouvelles
+•	les 2 faces d’une même carte doivent idéalement se suivre dans une session
+•	la sortie de à retravailler est effective seulement à la fin de session
+•	le compteur porte sur les questions restantes à valider
+•	5 À revoir valident quand même la question pour sortir de session
+•	session interrompue = session reprise
+---
+20. Formulation synthétique du moteur
+Le moteur voulu est donc :
+•	un moteur de planification par question
+•	avec consolidation par session
+•	avec statut produit mixte question/carte
+•	avec délais appliqués en fin de session
+•	avec activités annexes injectées dans le flux
+•	et avec persistance de la session incomplète
+
+
+ma réponse : 
+
+ahhh problème, ce que je t'ai dis dans le message précédent étaient des ajouts aux points dont tu parlais, il ne venaient pas les remplacer.
+ tu as oublié de mettre dans les priorités le fait que à l'interieur des déja commencé il y a une priorité : celles dont le délai est écoulée depuis le plus longtemps.
+Pareils dans celles jamais commencé priorité à celles qui ont été ajouté en premier(il y a le plus de temps.)
+Pour l'ordre : ordre globales avec les 2 questions de chaques cartes ajoutée qui se suivetns dans l'ordre chronologique d'ajout, ordre session : 10 première de l'ordre globaletrier aléatoirement et de tel sorte que les deux questions d'une même cartes ne soient pas demandé successivement.
+précision A AJOUTER pour la règle spécial du 6 c'est que si l'intervalle est supp à t2, si la première réponse est "a revoir" alors il faudra 2 "je l'ai" pour valider.
+9 etats métier
+remplace à retravailler par à travailler.
+14.  précision : le matching compte pour chaques cartes correctement matché même si toutes les cartes ne le sont pas correctement. Même principe que dans les mini jeux, on relie tout puis on valide.
+
+Je veux que tu me propose une fonction pour la calcul du délai.
+Maintenant que tout est claire, ne simplifie pas et n'enlève pas d'infos, modifie la documentation si besoin en ajoutant un ichier "fonctionnement algo délai et présentation cards"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Autre discu et incompréhension après polo-1 7
+
+Lui :
+En gros
+Il y a une tension dans la spec entre deux règles :
+Règle A — validation locale
+Dans la session, une question est validée dès :
+2 x "Je l’ai"
+ou 1 x "Trop facile"
+Donc après 2 "Je l’ai", la question sort normalement de la boucle locale.
+Règle B — déclenchement d’un défi remplaçant
+La spec dit qu’un défi se déclenche à :
+3 x "Je l’ai" d’affilée
+ou 1 x "Trop facile"
+Pourquoi c’est problématique
+Si une question est retirée dès le 2e "Je l’ai", elle n’a en pratique plus l’occasion d’atteindre un 3e "Je l’ai" dans cette même session.
+Donc :
+le trigger 1 x "Trop facile" est clair et fonctionne bien
+le trigger 3 x "Je l’ai" d’affilée est métierement ambigu, voire presque impossible si on applique strictement la règle de validation en 2 x "Je l’ai"
+Ce que ça veut dire concrètement dans le code
+J’ai gardé la branche 3 x "Je l’ai" parce qu’elle est écrite dans la spec, mais :
+avec la logique actuelle de session,
+elle se déclenchera rarement,
+et dans une lecture stricte de la spec, elle peut même être considérée comme inatteignable.
+Autrement dit :
+ce n’est pas un bug technique, c’est surtout une incohérence ou ambiguïté produit.
+Interprétations possibles côté produit
+Il y a au moins 3 façons de résoudre ça :
+Option 1 — garder la validation à 2 x "Je l’ai"
+Alors :
+le défi remplaçant se déclenche surtout sur Trop facile
+le cas 3 x "Je l’ai" devient théorique ou à ignorer
+Option 2 — dire que le défi remplaçant arrive avant la sortie de session
+Exemple :
+2e Je l’ai ne retire pas immédiatement la question
+on laisse une dernière occurrence pour éventuellement déclencher le défi au 3e
+Mais ça change la mécanique de session.
+Option 3 — réinterpréter 3 x "Je l’ai" autrement
+Par exemple :
+3 réussites consécutives au sens large
+ou 3 réussites incluant certaines activités annexes
+ou 3 réussites sur plusieurs sessions
+Mais ce n’est pas explicitement dit dans la spec actuelle.
+Mon avis
+La spec la plus cohérente, telle qu’elle est écrite aujourd’hui, c’est :
+Trop facile => défi remplaçant OK
+3 x "Je l’ai" => point à arbitrer produit, car incompatible avec la validation locale en 2 x "Je l’ai"
+Donc ma phrase voulait dire :
+“J’ai codé le déclenchement 3 x Je l’ai pour rester fidèle au document, mais il y a probablement une décision produit à prendre, parce qu’avec les autres règles de session ce cas a peu de chances d’arriver.”
+Si tu veux, je peux maintenant :
+auditer la spec et te dire précisément quelle règle il faut trancher, ou
+adapter le code pour une interprétation claire de ton choix.
+
+
+
+moi :
+e comprends le problème.
+Le défi est indépendant de la session. Ou plutot dés lors qu'on atteint le nombre suffisant de je l'ai d'affilé, lors de la prochaine fois que la question est posé pour la première fois au sein d'une session alors c'est un défi qui se lance et qui la remplace. les 3 je l'ai d'affilé n'appartiennent pas forcément à la même session.
+C'est plus claire ?
+Tu crois qu'il y a pue avoir d'autres incompréhension de ce type dans le code créer au fur et a mesure de l'avancement dans les étapes de l'intégration de Polo-1 (celles qui tu as faites et celles qu'un autre agent avait faites avant) ?
+
+
+
+Ta règle, reformulée proprement
+Tu dis en substance :
+le défi remplaçant n’est pas un mécanisme purement local à la session en cours
+le seuil 3 x "Je l’ai" d’affilée peut être atteint sur plusieurs sessions
+une fois ce seuil atteint, on ne déclenche pas forcément le défi tout de suite
+à la prochaine première présentation de cette question dans une session ultérieure, la présentation normale est remplacée par un défi
+Donc :
+le compteur de série pour ce déclenchement est persistant
+le défi est consommé au début d’une future session
+il remplace une présentation normale, il ne vient pas en plus
+Conséquence directe sur le code actuel
+Avec cette clarification, oui : le comportement actuel de Review sur les défis n’est pas la bonne lecture métier.
+Aujourd’hui, dans ReviewViewModel :
+maybeScheduleChallenge() déclenche à partir du consecutiveGotItCount local de ReviewSessionQuestionState
+donc dans la session courante
+et le défi est mis dans pendingSessionEvents
+donc il est traité comme un événement intra-session
+Autrement dit :
+ton explication invalide ma lecture précédente
+et elle révèle un vrai écart métier dans l’implémentation actuelle des défis
+
+Est-ce qu’il peut y avoir d’autres incompréhensions du même type ?
+Oui, probablement oui.
+Mais elles ne sont pas partout : le socle Polo‑1 est plutôt cohérent, et les zones risquées sont surtout celles où la spec mélange :
+local de session
+persistance inter-session
+“événement ajouté” vs “événement remplaçant”
+Mon diagnostic global
+Plutôt solide
+Polo-1 1 à Polo-1 4 : base par question, interval engine, planner, validation locale
+principe “première réponse de session = seul impact long terme”
+compteur “questions restantes à valider”
+Plus risqué / potentiellement mal compris
+toute la zone événements annexes
+surtout :
+défis remplaçants
+interaction extra spelling / défi orthographique
+crédit session du matching
+
+Les autres écarts probables, classés par gravité
+1. Critique — Défi remplaçant : intra-session au lieu d’inter-session
+Dans le code actuel :
+ReviewSessionQuestionState.consecutiveGotItCount est local à la session
+ReviewViewModel.maybeScheduleChallenge() s’appuie dessus
+Or avec ta clarification :
+le seuil 3 x "Je l’ai" doit être basé sur une mémoire persistante
+pas sur le seul état local de session
+Donc
+Le bon support ne devrait probablement pas être ReviewSessionQuestionState, mais plutôt :
+une info persistée dans ReviewQuestionProgress
+ou un indicateur dérivé du moteur long terme
+
+2. Critique — Le défi “remplace” une présentation normale, il ne doit pas s’ajouter
+Dans la spec :
+le défi remplace une présentation normale
+Dans le code actuel :
+la réponse normale est déjà donnée via gradeCard()
+puis maybeScheduleChallenge() planifie un événement ensuite
+Donc pour l’instant le défi est plutôt :
+ajouté après coup
+au lieu de prendre la place d’une première présentation future
+Cas typique problématique
+Si l’utilisateur met Trop facile :
+la question est validée localement tout de suite
+puis le défi peut encore apparaître
+donc il vient en plus, pas à la place
+Ça, c’est un vrai écart métier.
+
+3. Critique — La planification future du défi n’est pas persistée au bon niveau
+Ta clarification implique qu’il existe une notion du type :
+“cette question a un défi à consommer lors de sa prochaine première présentation de session”
+Ça, c’est un état inter-session.
+Or actuellement :
+les événements sont gérés dans pendingSessionEvents
+et persistés dans ReviewSessionSnapshotState
+donc seulement pour une session en cours
+Mais si le défi doit attendre une session future :
+il faut un stockage hors snapshot de session
+probablement au niveau de la progression persistante de question
+En clair
+Il manque probablement un concept métier du type :
+pendingReplacementChallenge
+ou nextSessionFirstPresentationMode
+
+4. Majeur — extra spelling peut être annulé trop tard / au mauvais niveau
+La spec dit :
+la question orthographique additionnelle est annulée si un défi orthographique remplaçant est déjà prévu
+Aujourd’hui, dans ReviewViewModel :
+les EXTRA_SPELLING sont créés au démarrage de session par buildInitialExtraSpellingEvents()
+puis retirés plus tard seulement quand maybeScheduleChallenge() voit un défi SPELLING
+Mais avec ta clarification :
+un défi orthographique peut déjà être “prévu” avant même l’ouverture de la session
+parce qu’il a été gagné / armé dans une session précédente
+Donc
+Le filtrage devrait se faire :
+au moment de construire la session
+en consultant un état persistant de défi en attente
+pas seulement pendant la session courante
+
+5. Majeur — Le matching crédite actuellement possiblement trop de questions
+Dans validateMatchingEvent() :
+quand une carte est bien matchée,
+le code appelle applyEventGotIt() sur toutes les questions non validées de la carte
+C’est une interprétation possible, mais elle est loin d’être certaine.
+La spec dit :
+le matching compte comme un Je l’ai
+carte par carte correctement matchée
+Mais comme le moteur de session est par question, il reste une ambiguïté :
+est-ce qu’une carte bien matchée crédite :
+une seule question liée à cette carte ?
+les deux questions de la carte si elles sont dans la session ?
+seulement la question actuellement “en travail” ?
+Donc
+Ce n’est pas forcément faux, mais c’est un vrai point d’interprétation métier.
+
+6. Majeur — Le défi devrait sans doute se brancher sur la “première présentation de session”, pas sur n’importe quel moment
+Ta clarification parle de :
+“la prochaine fois que la question est posée pour la première fois au sein d’une session”
+Ça veut dire qu’il faut probablement distinguer :
+première présentation de la question dans la session
+répétitions suivantes dans la même session
+Aujourd’hui, le code des défis ne s’accroche pas à cette notion persistante future. Il s’accroche à :
+un trigger local pendant gradeCard()
+Donc
+Il manque probablement un mécanisme du style :
+“au loadSession(), si cette question a un défi armé, sa première occurrence devient un défi”
+
+7. Modéré — “volume de travail atteint la taille du lot initial” pour le matching peut être interprété différemment
+Actuellement :
+normalAnswersSinceLastMatching s’incrémente sur les réponses normales
+et déclenche le matching quand il atteint sessionSizeLimit
+C’est cohérent avec une lecture simple.
+Mais le texte produit peut aussi être lu comme :
+nombre de présentations
+ou nombre d’interactions de travail
+ou nombre de questions traitées dans la boucle, événements annexes exclus / inclus
+Donc
+Ce point n’est pas forcément faux, mais il mériterait une décision produit nette.
+
+8. Modéré — La frontière “session locale” / “persistant long terme” n’est pas encore totalement stabilisée pour les annexes
+Le cœur du moteur respecte bien :
+première réponse normale = seule vérité long terme
+Mais pour les annexes, il reste des zones mixtes :
+certaines décisions sont portées par le snapshot
+d’autres par l’état local
+alors que certains déclencheurs devraient en fait être portés par la progression persistante
+En clair
+Le plus gros risque restant n’est pas l’interval engine : c’est où vit la règle métier.
+
+Mon avis synthétique
+Oui, ta clarification change vraiment la compréhension
+Et elle révèle un écart important :
+les défis remplaçants ne doivent pas être modélisés comme de simples événements locaux de session
+Oui, il y a probablement d’autres incompréhensions du même type
+Mais elles sont surtout concentrées dans :
+Polo-1 7
+la jonction entre :
+session locale
+persistance future
+remplacement vs ajout d’événement
+Ce que je crois être le plus probable
+Le plus gros correctif conceptuel à faire sera probablement :
+déplacer la logique “défi armé pour prochaine première présentation” dans la progression persistante par question
+construire la session en tenant compte de cet état
+faire en sorte que le défi remplace la première occurrence concernée
+recalculer ensuite l’interaction avec extra spelling
+
+Conclusion courte
+Oui :
+c’est plus clair
+et oui, il y a probablement d’autres incompréhensions du même genre, surtout dans les annexes
+La plus importante est clairement :
+défi remplaçant = persistant inter-session,
+alors que le code actuel le traite comme événement local intra-session
+Si tu veux, je peux faire maintenant un vrai audit ciblé Polo‑1 et te livrer un tableau simple :
+OK
+ambigu
+à corriger
+pour toutes les étapes Polo-1 1 à Polo-1 7.
+
+Ma réponse
+
+ok bon, on va corriger ensemble le point mis en lumière sur les défis, tu penses que c'est beaucoup de travail ? (les points 1 2 et 3)
+Le point 4 oui tu as raisons il faut prendre cela en compte.
+Pour le point 5. 1 2 3 tu as raisons de les posé, il y a plusierus possibilités : soit pour les couples mot définition affiché dans le jeu de correspondance les deux sont dans la session, dans ce cas la bonne association de ces mots vaut pour un je l'ai pour les deux questions au moment de la validation (même si le reste des associations du jeu sont fausses). Soit seulement l'une des questions du couple mot définition est présente dans la session dans ce cas elle seul prend un "je l'ai" et c'est ignoré pour l'autre question.
+Pour le point 6, la distinction entre première présentation et celles suivante d'une question dans une session doit déjà exister puisque pour le calcul on se sert uniquement de la première réponse de la présentation de chaques questions par cession, c'est bien le cas non ? (attend attend même moi je me souviens plus bien, peut être qu'il y a une histroire de calcul de ratio en fonction des autres réponses aussi ?) Ainsi c'est le défi lorsqu'il est programmé qui va servir au calcul vue qui est la première présentation de la question.
+Pour le point 7 c'est vraiment le nombre d'intéraction de travail comme tu dis, auquels l'utilisateur a répondu peu importe sa réponse, évenement annexe exclu.
+point 8, si je comprends bien ce n'est pas claire quel annexe permet quelle progression et evolution du délai des questions/faces de cartes. Donc : Les défis exactement comme une première présentation, Et valent pour le calcule du prochain délai de présentation. Les jeux valent pour la session mais pas pour le délai, de plus il y a peu de chance qu'ils propose une question posé pour la première fois (je crois que c'est impossible).
+On règle ça d'abord, après on vera soit l'audit soit on finira de lancer l'algo et après audit je sais pas.
+
+
+REGARDE POUR LA PROCHAINE FOIS /
+
+autre problème qu'on a : quand on a aucun mot la page d'accueil disparait. genre j'ai juste un message au centre de l'écran :
+"aucune carte dans la base. Import automatique en cours si vide..."  Mais du coup je peux pas en ajouter vue que toutes les fonctionnalités de l'accueil ont disparut.
+
+J'ai retiré toutes les cartes pour voir si l'entrainement fonctionné à nouveau mais toujours pas, l'entrainement me dit toujours qu'il n'y a pas de carte, il y a surement un pb quelques part.
+RAPPELLE MOI LA LOGIQUE METIER POUR LA CLASSIFICATION DES CARTES DANS LES CAT2GORIES "A APPRENDRE" "CONNU" et "EN COURS"
+normalement les mots dans la catégorie "a apprendre sont tous les mots soit qui viennent d'être ajouté soit dont le délai avant la prochaine présentation a été écoulé. Les autres catégories ont des règles spécifiques pour que les mots fassent parties de l'une ou l'autres rappelle les moi. Ensuite après ma validation on appliquera pour que ça fonctionne parceque là ça fonctionne pas du tout.
+
+sur les questions type question orthographique et défi orthographique, c'est celle qu'on est en train de paufiner.
+La phrase du haut pour indiquer
+
+
+
+la discu :
+
+toi :
+
+Intéressant comme angle d'attaque ! Avant de planifier, j'ai besoin de comprendre la direction. Quelques questions rapides :
+Saisie/édition — tu veux revoir comment l'utilisateur crée et édite ses mots/définitions (formulaire, validation, richesse des champs) ?
+Structure des données — tu veux enrichir ce qu'une carte peut contenir (exemples d'usage, étymologie, synonymes, tags, niveau de difficulté...) ?
+Import/export — tu veux améliorer comment les mots entrent dans l'appli (import CSV/Anki, scraping de dictionnaire, génération via IA...) ?
+Qualité des définitions — tu veux un mécanisme pour s'assurer que les définitions sont claires, complètes, utiles pour l'algo de révision ?
+Plusieurs des axes ci-dessus ?
+
+
+
+moi :
+
+pour l'édition utilisateur rien à faire de ce coté full control utilisateur.
+Non pas forcément. Ou pas pour l'instant en tout cas.
+oui exact.
+pas particulièrement, j'espère qu'elles sont correcte par défaut.
+Comment je vois le future de l'app :
+L'utilisateur pour choisir des "thèmes de mots" :
+plutot type Philosophie
+plutot type littérature (technique genre vocabulaire particulier au théatre à l'analyse de la littérature comme les métaphore, et vocabulaire avancé d'utilisation littéraire : vocabulaire utilisé par les auteurs dans leurs oeuvres.
+Pour ces deux là j'aimerai avoir accès à une grosse base de données de texte classic (accès API) de la même manière que fonctionne reverso pour la traduction, ou les mots interressant pour notre appli sont utilisé et que je pourrai présenté à l'utilisateur pour l'apprentissage.
+vocabulaire générale
+Là l'idéal se serait d'avoir une api genre dico larrousse ou je peux puiser à l'infini et si possible des exemples en situation comme au dessus.
+domaine spécifique : automobile cuisine
+(l'apprentissage d'un domaine passe par l'apprentissage du vocabulaire spécifique à ce domaine !)
+En gros l'ajout des mots passera par ces phases, qui correspondent de manière pertinente aux études de psycho cognitive et aux méthodes des champions de mémoire) :
+d'après le domaine que l'utilisateur aime, des présentation en situation puis des activité pour faire associé le plus de choses possibles à l'utilisa (ça on vera après). puis présentation avec notre supper alg opour garder en mémoire à long terme sur la durée.
+L'utilisateur devra pouvoir après la selection du thème choisir la dificulté parmis 3 proposés et les mots doivent correspondre.
+Il faut qu'on mette un nouveau type de question, basé sur notre modèle d'embendigs ou un autre si celui là peut pas le faire : L'utilisateur doit inventer une phrase ou il utilise correctement le mot (et prouve qu'il sait l'utilisé, ça doit être suffisament détaillé.)
+Avant de commencer plusieurs choses, on va intégrer tout ça de manière détaillé au fichier futures , dans une nouvelle section daté. Puis tu me posera des questions sur les points les moins clairs pour qu'on affine, après on fera un plan globale pour l'execution.
+
+toi :
+Le fichier docs/planning/VISION_FUTURE.md est créé. Voici les 8 questions d'affinage pour qu'on cible juste avant de planifier l'exécution :
+
+Q1 — Thèmes : fixes ou personnalisables ? La liste Philosophie / Littérature / Vocabulaire général / Domaines est-elle fermée dans l'app, ou l'utilisateur peut-il créer ses propres thèmes ?
+Q2 — Périmètre linguistique Français uniquement pour l'instant, ou tu envisages le multilangue à terme ?
+Q3 — Domaines spécifiques : liste fermée ou libre ? Tu proposes automobile/cuisine en exemple — est-ce une liste fixe dans l'app ou l'utilisateur peut saisir n'importe quel domaine ?
+Q4 — Validation "Invente une phrase" : jusqu'où ? Le MiniLM embarqué peut vérifier la cohérence sémantique mais pas vraiment la qualité d'usage. Tu préfères : validation partielle locale (suffit pour MVP) ou validation fine via API LLM (GPT ou autre) dès le départ ?
+Q5 — Curriculum progressif ou libre ? Quand l'utilisateur choisit un thème + niveau, les mots arrivent dans un ordre pédagogique défini ou il pioche librement dans le catalogue ?
+Q6 — Validation avant intégration au deck Les mots suggérés via API s'ajoutent automatiquement ou l'utilisateur valide/rejette chaque mot avant qu'il entre dans sa révision ?
+Q7 — Online ou offline pour les exemples en situation ? Les extraits de textes classiques nécessitent-ils une connexion à chaque fois, ou tu veux un cache/mode offline ?
+Q8 — Relation avec le deck existant Les mots des thèmes viennent s'ajouter au deck personnel existant, ou c'est un espace de révision séparé ?
+
+
+
+
+
+moi :
+
+Q1 très pertinente : en vrai j'en sais rien. Le mécanisme auxquel j'avais pensé concerne les thèmes annexe, je voudrais que lorsque l'utilisateur formule un nouveau souhait de thème qui n'existe pas, ça lance un processu de création qui permette de le formé et que je puisse le supervisé. Pour les thèmes généraux il faut gérer les difficultés mais oui ça doit être plus pratique si c'est à peu près le même pour tout le monde...
+Q2 que français.
+Q3 limité à toutes les listes existantes, et qui devrait s'étandre avec le temps et les demandes !
+Q4 il faut qu'on trouve un système qui nous peermettre d'intégrer ça, que ça fonctionne, sans clée API payante... Il faut quelque chose d'assez fin, le but c'est de vérifier que l'utilisateur sait utiliser le mot !
+Q5 ordre pédagogique se serait le top mais je sais pas trop comment on va faire.
+Q6 système de validation
+Q7 Si y'a des thèmes fixes et pour "tout le monde" on peut en mettre un peu en cache. Sinon online.
+Q8 dans l'algo de entrainement c'est tout mélanger par défaut mais on ajoutera un filtre pour que l'uti puisse selectionner des thèmes s'il veut.
+
+
+
+toi :
+Le doc est à jour. Il reste 3 points à trancher avant de lancer l'exécution :
+
+QC1 — Comment tu supervises la création d'un thème à la demande ?
+Le mode admin est déjà dans l'app. La voie la plus élégante serait :
+L'utilisateur soumet sa demande in-app → elle remonte dans Firebase Firestore
+Toi (en mode admin) tu la vois directement dans l'app, tu crées le thème mot par mot, et il est pushé à tous les utilisateurs via Firestore
+C'est autosuffisant, pas de console Firebase à ouvrir. Ça te parle ?
+
+QC2 — Validation "Invente une phrase" : Option A, B ou C ?
+Ma recommandation : Option C (hybride)
+Offline/immédiat : mot présent dans la phrase + longueur > 8 mots + score MiniLM ≥ 0.55 vs les exemples de bon usage stockés dans la carte → validation locale
+Si connecté : confirmation via HuggingFace Inference API gratuite (modèle NLI cross-encoder/nli-MiniLM2-L6-H768) pour un verdict plus fin
+Résultat : 3 niveaux de feedback — ✅ Très bien / ⚠️ À améliorer / ❌ Hors contexte
+C'est faisable sans aucun coût. Est-ce que ce niveau de précision te semble suffisant ?
+
+QC3 — Ordre pédagogique dans un thème : qui décide ?
+Deux approches :
+Auto : trier par fréquence décroissante (du plus courant au plus rare) → simple, données disponibles
+Manuel (curator) : toi tu définis l'ordre dans l'outil admin → plus de contrôle, plus de travail
+Les deux peuvent coexister : ordre auto par défaut, override manuel si tu veux structurer conceptuellement (ex : en Philosophie, grouper les termes épistémologiques ensemble avant les termes ontologiques).
+
+
+moi:
+
+QC1 on laisse de cote pour l'instant
+QC2 euh c'est quoi les autres choix ? ça me paraît bien, mais si mode offline on présente pas ce genre de question (plus tard ce sera une "fonctionnalité premium"
+QC3 auto et oui pour
+
+
