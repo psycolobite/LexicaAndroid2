@@ -195,8 +195,6 @@ fun WordItem(
     onToggleFavorite: () -> Unit,
     onDeleteCard: () -> Unit
 ) {
-    val (stateText, stateColor) = progressSummary.aggregateState.toLabelAndColor()
-
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
     if (showDeleteConfirm) {
@@ -314,13 +312,12 @@ fun WordItem(
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                StatusChip(label = stateText, color = stateColor)
                 QuestionStateChip(
-                    label = "Mot → Déf.",
+                    label = "la définition",
                     state = progressSummary.wordToDefinitionState
                 )
                 QuestionStateChip(
-                    label = "Déf. → Mot",
+                    label = "le mot",
                     state = progressSummary.definitionToWordState
                 )
             }
@@ -340,21 +337,6 @@ private fun QuestionStateChip(
     ) {
         Text(
             text = "$label • ${state.label}",
-            color = color,
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
-        )
-    }
-}
-
-@Composable
-private fun StatusChip(label: String, color: Color) {
-    Surface(
-        color = color.copy(alpha = 0.12f),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Text(
-            text = label,
             color = color,
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)

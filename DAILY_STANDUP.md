@@ -27,6 +27,20 @@
 - [x] Ajout des **actions de lot complémentaires** dans `presentation/wordlist/WordListViewModel.kt`
   - ajout aux favoris pour toutes les cartes sélectionnées
   - réinitialisation de la progression pour toutes les cartes sélectionnées
+- [x] Ajout d'une **hiérarchie de recherche** dans `Mes mots` / `À travailler` / `En cours` / `Connu`
+  - priorité 1 : correspondance dans le **mot** (`recto`)
+  - priorité 2 : correspondance dans la **définition** (`verso`)
+  - priorité 3 : correspondance dans les **autres champs** (synonymes, exemples, catégorie grammaticale, registre, étymologie, notes)
+  - à priorité égale, l'ordre reste stable et alphabétique par mot
+  - le filtre de catégorie continue de s'appliquer normalement avant le classement par pertinence
+- [x] Ajustement léger de libellés sur les cartes de listes
+  - `Mot → Déf.` remplacé par `la définition`
+  - `Déf. → Mot` remplacé par `le mot`
+  - suppression de la puce d'état global redondante sur les cartes (l'information est déjà portée par la liste courante)
+- [x] Correctif UX dashboard + popup détail
+  - suppression du flash `Aucune carte pour le moment` au lancement tant que le premier chargement des stats n'est pas terminé
+  - le popup détail d'un mot ouvert depuis les listes a maintenant une petite marge au-dessus de la ligne du haut
+  - l'espace entre cette ligne du haut et les informations du popup a été réduit
 - [x] Ajout de **tests unitaires ciblés** dans `presentation/wordlist/WordListViewModelTest.kt`
   - toggle de sélection
   - sélection de toutes les cartes visibles
@@ -34,6 +48,8 @@
   - suppression groupée et vidage de la sélection
   - ajout aux favoris en lot
   - reset de progression en lot
+  - priorité mot > définition > autres champs
+  - conservation de cette priorité à l'intérieur d'une liste filtrée
 
 ### 🔗 Fichiers modifiés
 - `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListScreen.kt`
@@ -55,6 +71,9 @@
   - si la barre de recherche est vidée, les anciens résultats API ne peuvent plus réapparaître après coup
   - les réponses asynchrones d'une ancienne requête sont désormais ignorées si la requête courante a changé ou a été effacée
   - à chaque retour sur `Ajouter des mots`, la requête précédente est remise à zéro (`searchQuery`, `localMatches`, `apiResults`, état de chargement)
+- [x] **Optimisation légère de réactivité sur `Ajouter des mots`**
+  - réduction prudente du debounce de recherche externe de `500 ms` à `300 ms`
+  - aucun changement de logique métier ou de ranking, uniquement un délai artificiel raccourci pour améliorer la perception de vitesse
 - [x] **Tests unitaires ajoutés** pour verrouiller le scénario de régression de `AddWordsViewModel`
   - mot suggéré ajouté → visible en vert pendant la session
   - même mot absent des suggestions après `onScreenEntered()`
@@ -1989,4 +2008,26 @@ Build:              ✅ Compilation OK
   - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS
   - confirmer l’e-mail support public final avant publication
+
+
+---
+
+## 📅 2026-04-14 — Ajustement icône launcher + embellissement splash screen
+
+### ✅ Accompli
+- [x] **Icône launcher Android dézoomée d’environ 25%**
+  - `app/src/main/res/drawable/ic_launcher_foreground.xml` encapsulé dans un `group` avec `scaleX/scaleY = 0.75`
+  - réduction visuelle centrée sans changer la direction artistique de l’icône
+- [x] **Splash screen de lancement rendu plus esthétique**
+  - création d’un logo dédié `app/src/main/res/drawable/ic_splash_logo.xml`
+  - palette splash dédiée ajoutée dans `app/src/main/res/values/colors.xml`
+  - thèmes de démarrage clair/sombre modernisés dans `app/src/main/res/values/themes.xml` et `app/src/main/res/values-night/themes.xml`
+  - usage de `Theme.SplashScreen.IconBackground` + fond d’icône pour un rendu plus premium au lancement
+- [x] **Validation technique ciblée à exécuter après retouche ressources**
+  - build debug relancé pour vérifier le merge des ressources et les thèmes
+
+### 🔜 Vérifications
+- [ ] Vérifier visuellement sur appareil/émulateur que l’icône paraît bien ~25% plus petite sur le launcher
+- [ ] Vérifier le rendu du splash en mode clair et en mode sombre
+- [ ] Décider plus tard si les fallbacks launcher legacy API < 26 (`mipmap-*/ic_launcher.webp`) doivent aussi être régénérés pour cohérence totale
 

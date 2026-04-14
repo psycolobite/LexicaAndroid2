@@ -58,6 +58,10 @@ class AddWordsViewModel(
     private val flashcardRepository: FlashcardRepository
 ) : ViewModel() {
 
+    private companion object {
+        const val SEARCH_DEBOUNCE_MS = 300L
+    }
+
     private val _uiState = MutableStateFlow(AddWordsUiState())
     val uiState: StateFlow<AddWordsUiState> = _uiState.asStateFlow()
 
@@ -167,9 +171,9 @@ class AddWordsViewModel(
             return
         }
 
-        // Debounce 500ms → recherche API
+        // Debounce réduit pour une recherche plus réactive sans spammer l'API
         debounceJob = viewModelScope.launch {
-            delay(500)
+            delay(SEARCH_DEBOUNCE_MS)
             searchApi(trimmed, requestId)
         }
     }

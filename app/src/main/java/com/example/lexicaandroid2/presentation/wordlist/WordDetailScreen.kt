@@ -39,6 +39,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModel
@@ -288,7 +289,9 @@ fun WordDetailDialog(
             Column(modifier = Modifier.fillMaxWidth()) {
                 TopAppBar(
                     title = { Text(card.recto, fontWeight = FontWeight.Bold) },
-                    modifier = Modifier.height(40.dp),
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .height(40.dp),
                     colors = TopAppBarDefaults.topAppBarColors(),
                     actions = {
                         IconButton(onClick = onToggleFavorite) {
@@ -320,7 +323,8 @@ fun WordDetailDialog(
                             progressSummary = ReviewCardProgressSummary.fromFlashcard(
                                 card,
                                 System.currentTimeMillis()
-                            )
+                            ),
+                            topPadding = 6.dp
                         )
                     }
                 }
@@ -341,12 +345,13 @@ fun WordDetailDialog(
 @Composable
 private fun WordDetailContent(
     card: Flashcard,
-    progressSummary: ReviewCardProgressSummary
+    progressSummary: ReviewCardProgressSummary,
+    topPadding: Dp = 16.dp
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp)
+            .padding(top = topPadding)
     ) {
         if (card.categorieGrammaticale.isNotBlank() || card.registre.isNotBlank()) {
             Row(

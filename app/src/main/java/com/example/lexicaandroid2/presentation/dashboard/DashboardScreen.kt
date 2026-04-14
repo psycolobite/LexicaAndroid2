@@ -93,7 +93,7 @@ private fun DashboardContent(
     )
     Spacer(modifier = Modifier.height(8.dp))
 
-    if (uiState.totalCount == 0) {
+    if (uiState.hasLoadedOnce && uiState.totalCount == 0) {
         DashboardEmptyState(
             isLoading = uiState.isLoading,
             onNavigateToAddWords = onNavigateToAddWords

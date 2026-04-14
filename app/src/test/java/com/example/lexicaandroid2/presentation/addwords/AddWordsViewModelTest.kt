@@ -106,7 +106,7 @@ class AddWordsViewModelTest {
         advanceUntilIdle()
 
         viewModel.onSearchQueryChanged("abn")
-        advanceTimeBy(500)
+        advanceTimeBy(300)
         advanceUntilIdle()
 
         viewModel.clearSearch()
@@ -129,7 +129,7 @@ class AddWordsViewModelTest {
         advanceUntilIdle()
 
         viewModel.onSearchQueryChanged("abn")
-        advanceTimeBy(500)
+        advanceTimeBy(300)
         advanceUntilIdle()
 
         assertEquals("abn", viewModel.uiState.value.searchQuery)

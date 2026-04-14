@@ -154,20 +154,47 @@ class WordListViewModel(
     ): List<Flashcard> {
         var result = cards
 
-        if (query.isNotBlank()) {
-            result = result.filter {
-                it.recto.contains(query, ignoreCase = true) ||
-                it.verso.contains(query, ignoreCase = true)
-            }
-        }
-
         if (filter != null) {
             result = result.filter {
                 progressByCardId[it.id]?.matchesFilter(filter) == true
             }
         }
 
+        if (query.isNotBlank()) {
+            val normalizedQuery = query.trim()
+            result = result
+                .mapNotNull { card ->
+                    card.searchMatchPriority(normalizedQuery)?.let { priority -> card to priority }
+                }
+                .sortedWith(
+                    compareBy<Pair<Flashcard, Int>>(
+                        { it.second },
+                        { it.first.recto.lowercase() },
+                        { it.first.verso.lowercase() },
+                        { it.first.id }
+                    )
+                )
+                .map { it.first }
+            return result
+        }
+
         return result.sortedBy { it.recto }
+    }
+
+    private fun Flashcard.searchMatchPriority(query: String): Int? {
+        if (query.isBlank()) return null
+
+        return when {
+            recto.contains(query, ignoreCase = true) -> 0
+            verso.contains(query, ignoreCase = true) -> 1
+            synonymes.any { it.contains(query, ignoreCase = true) } ||
+                exemples.any { it.contains(query, ignoreCase = true) } ||
+                categorieGrammaticale.contains(query, ignoreCase = true) ||
+                registre.contains(query, ignoreCase = true) ||
+                etymologie.contains(query, ignoreCase = true) ||
+                notesPersonnelles.contains(query, ignoreCase = true) -> 2
+            else -> null
+        }
     }
 
     private fun WordListUiState.withCards(

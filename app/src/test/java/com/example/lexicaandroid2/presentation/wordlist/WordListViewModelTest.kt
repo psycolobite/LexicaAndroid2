@@ -148,6 +148,61 @@ class WordListViewModelTest {
         assertEquals("abnégation", viewModel.uiState.value.searchQuery)
     }
 
+    @Test
+    fun onSearchQueryChangedPrioritizesRectoThenVersoThenOtherFields() = runTest {
+        val notesMatchCard = Flashcard(
+            id = "5",
+            recto = "abime",
+            verso = "trou profond",
+            notesPersonnelles = "pense au motif euclidien"
+        )
+        val versoMatchCard = Flashcard(
+            id = "6",
+            recto = "prisme",
+            verso = "forme avec teinte bleue"
+        )
+        val rectoMatchCard = Flashcard(
+            id = "7",
+            recto = "euphonie",
+            verso = "harmonie sonore"
+        )
+
+        whenever(repository.getAllCards()).thenReturn(listOf(notesMatchCard, versoMatchCard, rectoMatchCard))
+
+        viewModel.loadWords()
+        viewModel.onSearchQueryChanged("eu")
+
+        assertEquals(
+            listOf(rectoMatchCard.id, versoMatchCard.id, notesMatchCard.id),
+            viewModel.uiState.value.filteredCards.map { it.id }
+        )
+    }
+
+    @Test
+    fun onSearchQueryChangedMatchesOtherFieldsAfterDefinition() = runTest {
+        val synonymMatchCard = Flashcard(
+            id = "8",
+            recto = "sagace",
+            verso = "qui comprend vite",
+            synonymes = listOf("perspicace", "astucieux")
+        )
+        val versoMatchCard = Flashcard(
+            id = "9",
+            recto = "mesure",
+            verso = "attitude perspicace dans le jugement"
+        )
+
+        whenever(repository.getAllCards()).thenReturn(listOf(synonymMatchCard, versoMatchCard))
+
+        viewModel.loadWords()
+        viewModel.onSearchQueryChanged("perspic")
+
+        assertEquals(
+            listOf(versoMatchCard.id, synonymMatchCard.id),
+            viewModel.uiState.value.filteredCards.map { it.id }
+        )
+    }
+
     // endregion
 
     // region onFilterSelected
@@ -307,6 +362,68 @@ class WordListViewModelTest {
 
         assertEquals(1, viewModel.uiState.value.filteredCards.size)
         assertEquals(card1.id, viewModel.uiState.value.filteredCards.first().id)
+    }
+
+    @Test
+    fun onFilterSelectedKeepsSearchPriorityWithinFilteredCards() = runTest {
+        val knownRectoMatch = knownCard.copy(recto = "euphorie")
+        val knownOtherMatch = knownCard.copy(
+            id = "10",
+            recto = "zenith",
+            verso = "sommet calme",
+            exemples = listOf("Une lueur euphorique dans la pièce")
+        )
+
+        whenever(repository.getAllCards()).thenReturn(listOf(knownOtherMatch, knownRectoMatch))
+        whenever(repository.getAllQuestionProgress()).thenReturn(
+            listOf(
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(knownRectoMatch.id),
+                    cardId = knownRectoMatch.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 0,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(knownRectoMatch.id),
+                    cardId = knownRectoMatch.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 1,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.WORD_TO_DEFINITION.questionId(knownOtherMatch.id),
+                    cardId = knownOtherMatch.id,
+                    questionType = ReviewQuestionType.WORD_TO_DEFINITION,
+                    globalOrder = 2,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                ),
+                ReviewQuestionProgress(
+                    questionId = ReviewQuestionType.DEFINITION_TO_WORD.questionId(knownOtherMatch.id),
+                    cardId = knownOtherMatch.id,
+                    questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                    globalOrder = 3,
+                    intervalIndex = 4,
+                    nextDueAt = System.currentTimeMillis() + 60_000L,
+                    firstAnsweredAt = System.currentTimeMillis() - 120_000L
+                )
+            )
+        )
+
+        viewModel.loadWords()
+        viewModel.onFilterSelected("KNOWN")
+        viewModel.onSearchQueryChanged("euph")
+
+        assertEquals(
+            listOf(knownRectoMatch.id, knownOtherMatch.id),
+            viewModel.uiState.value.filteredCards.map { it.id }
+        )
     }
 
     // endregion
