@@ -106,7 +106,7 @@ fun SearchTopBar(
     onNavigateBack: () -> Unit
 ) {
     TopAppBar(
-        modifier = Modifier.height(40.dp),
+        modifier = Modifier.heightIn(min = 64.dp),
         title = {
             TextField(
                 value = query,

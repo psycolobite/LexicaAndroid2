@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.presentation.wordlist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -54,6 +56,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.example.lexicaandroid2.presentation.common.EditWordIconButton
 
 data class WordDetailUiState(
     val card: Flashcard? = null,
@@ -121,6 +124,10 @@ class WordDetailViewModel(
             // Pas de reload après suppression, le composable gérera la navigation
         }
     }
+
+    fun refreshCard() {
+        loadCard()
+    }
 }
 
 class WordDetailViewModelFactory(
@@ -139,7 +146,8 @@ class WordDetailViewModelFactory(
 fun WordDetailScreen(
     cardId: String,
     viewModel: WordDetailViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onEditCard: (Flashcard) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val card = uiState.card
@@ -191,7 +199,6 @@ fun WordDetailScreen(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 },
-                modifier = Modifier.height(40.dp),
                 colors = TopAppBarDefaults.topAppBarColors(),
                 actions = {
                     if (card != null) {
@@ -209,6 +216,7 @@ fun WordDetailScreen(
                                 tint = MaterialTheme.colorScheme.error
                             )
                         }
+                        EditWordIconButton(onClick = { onEditCard(card) })
                     }
                 }
             )
@@ -250,7 +258,8 @@ fun WordDetailDialog(
     card: Flashcard,
     onDismiss: () -> Unit,
     onToggleFavorite: () -> Unit,
-    onDeleteCard: () -> Unit
+    onDeleteCard: () -> Unit,
+    onEditCard: () -> Unit
 ) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
@@ -289,26 +298,8 @@ fun WordDetailDialog(
             Column(modifier = Modifier.fillMaxWidth()) {
                 TopAppBar(
                     title = { Text(card.recto, fontWeight = FontWeight.Bold) },
-                    modifier = Modifier
-                        .padding(top = 6.dp)
-                        .height(40.dp),
-                    colors = TopAppBarDefaults.topAppBarColors(),
-                    actions = {
-                        IconButton(onClick = onToggleFavorite) {
-                            Icon(
-                                imageVector = if (card.favori) Icons.Filled.Star else Icons.Outlined.Star,
-                                contentDescription = "Favori",
-                                tint = if (card.favori) Color(0xFFFFB800) else Color.Gray
-                            )
-                        }
-                        IconButton(onClick = { showDeleteConfirm = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Supprimer",
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
+                    modifier = Modifier.padding(top = 6.dp),
+                    colors = TopAppBarDefaults.topAppBarColors()
                 )
 
                 LazyColumn(
@@ -329,13 +320,36 @@ fun WordDetailDialog(
                     }
                 }
 
-                Button(
-                    onClick = onDismiss,
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Fermer")
+                    Button(onClick = onDismiss) {
+                        Text("Fermer")
+                    }
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                    ) {
+                        IconButton(onClick = onToggleFavorite) {
+                            Icon(
+                                imageVector = if (card.favori) Icons.Filled.Star else Icons.Outlined.Star,
+                                contentDescription = "Favori",
+                                tint = if (card.favori) Color(0xFFFFB800) else Color.Gray
+                            )
+                        }
+                        IconButton(onClick = { showDeleteConfirm = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Supprimer",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                        EditWordIconButton(onClick = onEditCard)
+                    }
                 }
             }
         }
@@ -456,11 +470,23 @@ fun DetailSection(title: String, content: String) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        Text(
-            text = content,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-        )
+        Surface(
+            shape = RoundedCornerShape(14.dp),
+            color = Color.White,
+            tonalElevation = 1.dp,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = content,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 220.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(12.dp)
+            )
+        }
     }
 }
 

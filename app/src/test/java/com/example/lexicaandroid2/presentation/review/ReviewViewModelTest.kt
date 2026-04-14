@@ -39,11 +39,17 @@ import org.mockito.kotlin.atLeastOnce
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import kotlin.random.Random
 
 @ExperimentalCoroutinesApi
 class ReviewViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
+    private val zeroRandom = object : Random() {
+        override fun nextBits(bitCount: Int): Int = 0
+
+        override fun nextInt(until: Int): Int = 0
+    }
     private lateinit var repository: FlashcardRepository
     private lateinit var snapshotRepository: ReviewSessionSnapshotRepository
     private lateinit var dailyStatDao: DailyReviewStatDao
@@ -95,7 +101,8 @@ class ReviewViewModelTest {
             repository = repository,
             sm2Algorithm = Sm2Algorithm,
             dailyStatDao = dailyStatDao,
-            reviewSessionSnapshotRepository = snapshotRepository
+            reviewSessionSnapshotRepository = snapshotRepository,
+            random = zeroRandom
         )
 
         whenever(snapshotRepository.getActiveSession()).thenReturn(null)
@@ -113,30 +120,128 @@ class ReviewViewModelTest {
     }
 
     @Test
-    fun loadSessionWithWordToDefinitionCanStartOnExtraSpellingEvent() = runTest {
-        whenever(repository.countNeverStartedQuestionProgress()).thenReturn(1)
-        whenever(repository.getNeverStartedQuestionProgress(any())).thenReturn(listOf(questionWord))
+    fun loadSessionWithReviewedDefinitionToWordCanStartOnExtraSpellingEvent() = runTest {
+        val reviewedDefinitionQuestion = question(
+            cardId = cardDef.id,
+            type = ReviewQuestionType.DEFINITION_TO_WORD,
+            globalOrder = 1,
+            firstAnsweredAt = 1L
+        )
+        whenever(repository.countStartedDueQuestionProgress(any())).thenReturn(1)
+        whenever(repository.getStartedDueQuestionProgress(any(), any())).thenReturn(listOf(reviewedDefinitionQuestion))
 
         viewModel.loadSession()
+        advanceUntilIdle()
 
         assertEquals(ReviewCurrentItemType.EXTRA_SPELLING, viewModel.uiState.value.currentItemType)
         assertTrue(viewModel.uiState.value.canSkipCurrentEvent)
+        assertEquals(cardDef, viewModel.uiState.value.currentCard)
+        assertEquals(ReviewPresentationMode.DEFINITION_TO_WORD, viewModel.uiState.value.presentationMode)
+    }
+
+    @Test
+    fun reviewedWordToDefinitionDoesNotTriggerExtraSpellingReplacement() = runTest {
+        val reviewedWordQuestion = question(
+            cardId = cardWord.id,
+            type = ReviewQuestionType.WORD_TO_DEFINITION,
+            globalOrder = 0,
+            firstAnsweredAt = 1L
+        )
+        whenever(repository.countStartedDueQuestionProgress(any())).thenReturn(1)
+        whenever(repository.getStartedDueQuestionProgress(any(), any())).thenReturn(listOf(reviewedWordQuestion))
+
+        viewModel.loadSession()
+        advanceUntilIdle()
+
+        assertEquals(ReviewCurrentItemType.NORMAL_QUESTION, viewModel.uiState.value.currentItemType)
         assertEquals(cardWord, viewModel.uiState.value.currentCard)
     }
 
     @Test
-    fun skipExtraSpellingReturnsToNormalQuestion() = runTest {
-        whenever(repository.countNeverStartedQuestionProgress()).thenReturn(1)
-        whenever(repository.getNeverStartedQuestionProgress(any())).thenReturn(listOf(questionWord))
+    fun skipExtraSpellingCountsAsAgainAndReturnsToNormalQuestion() = runTest {
+        val reviewedDefinitionQuestion = question(
+            cardId = cardDef.id,
+            type = ReviewQuestionType.DEFINITION_TO_WORD,
+            globalOrder = 1,
+            firstAnsweredAt = 1L
+        )
+        whenever(repository.countStartedDueQuestionProgress(any())).thenReturn(1)
+        whenever(repository.getStartedDueQuestionProgress(any(), any())).thenReturn(listOf(reviewedDefinitionQuestion))
 
         viewModel.loadSession()
+        advanceUntilIdle()
         viewModel.skipActiveEvent()
+        advanceUntilIdle()
         assertNotNull(viewModel.uiState.value.eventResultMessage)
 
         viewModel.continueAfterEventResult()
+        advanceUntilIdle()
 
         assertEquals(ReviewCurrentItemType.NORMAL_QUESTION, viewModel.uiState.value.currentItemType)
-        assertEquals(cardWord, viewModel.uiState.value.currentCard)
+        assertEquals(cardDef, viewModel.uiState.value.currentCard)
+        assertEquals(ReviewPresentationMode.DEFINITION_TO_WORD, viewModel.uiState.value.presentationMode)
+        assertFalse(viewModel.uiState.value.isSessionFinished)
+    }
+
+    @Test
+    fun successfulExtraSpellingValidatesQuestionAndFinishesSession() = runTest {
+        val reviewedDefinitionQuestion = question(
+            cardId = cardDef.id,
+            type = ReviewQuestionType.DEFINITION_TO_WORD,
+            globalOrder = 1,
+            firstAnsweredAt = 1L
+        )
+        whenever(repository.countStartedDueQuestionProgress(any())).thenReturn(1)
+        whenever(repository.getStartedDueQuestionProgress(any(), any())).thenReturn(listOf(reviewedDefinitionQuestion))
+
+        viewModel.loadSession()
+        advanceUntilIdle()
+        viewModel.onEventInputChanged(cardDef.recto)
+        viewModel.submitActiveEvent()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.eventResultSuccessful == true)
+
+        viewModel.continueAfterEventResult()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.isSessionFinished)
+        verify(repository).saveQuestionProgress(
+            argThat<List<ReviewQuestionProgress>> {
+                size == 1 && first().questionId == reviewedDefinitionQuestion.questionId
+            }
+        )
+    }
+
+    @Test
+    fun eligibleExtraSpellingCanBeSkippedForCurrentSessionByRandomGate() = runTest {
+        val noExtraRandom = object : Random() {
+            override fun nextBits(bitCount: Int): Int = Int.MAX_VALUE
+
+            override fun nextInt(until: Int): Int = (until - 1).coerceAtLeast(0)
+        }
+        val reviewedDefinitionQuestion = question(
+            cardId = cardDef.id,
+            type = ReviewQuestionType.DEFINITION_TO_WORD,
+            globalOrder = 1,
+            firstAnsweredAt = 1L
+        )
+        whenever(repository.countStartedDueQuestionProgress(any())).thenReturn(1)
+        whenever(repository.getStartedDueQuestionProgress(any(), any())).thenReturn(listOf(reviewedDefinitionQuestion))
+
+        viewModel = ReviewViewModel(
+            repository = repository,
+            sm2Algorithm = Sm2Algorithm,
+            dailyStatDao = dailyStatDao,
+            reviewSessionSnapshotRepository = snapshotRepository,
+            random = noExtraRandom
+        )
+
+        viewModel.loadSession()
+        advanceUntilIdle()
+
+        assertEquals(ReviewCurrentItemType.NORMAL_QUESTION, viewModel.uiState.value.currentItemType)
+        assertEquals(cardDef, viewModel.uiState.value.currentCard)
     }
 
     @Test
@@ -660,10 +765,7 @@ class ReviewViewModelTest {
         viewModel.loadSession(limit = 2)
         advanceUntilIdle()
 
-        assertTrue(
-            viewModel.uiState.value.currentItemType == ReviewCurrentItemType.NORMAL_QUESTION ||
-                viewModel.uiState.value.currentItemType == ReviewCurrentItemType.EXTRA_SPELLING
-        )
+        assertEquals(ReviewCurrentItemType.NORMAL_QUESTION, viewModel.uiState.value.currentItemType)
         assertEquals(2, viewModel.uiState.value.totalInSession)
         assertTrue(viewModel.uiState.value.currentCard in listOf(cardWord, cardDef))
         assertTrue(
@@ -919,7 +1021,7 @@ class ReviewViewModelTest {
     @Test
     fun loadSessionDiscardsSnapshotWhenUserSessionSizeChanged() = runTest {
         val userPrefs = mock<UserPrefsRepository>()
-        whenever(userPrefs.cardsPerSession).thenReturn(2)
+        whenever(userPrefs.cardsPerSession).thenReturn(4)
 
         val snapshotPlan = ReviewSessionPlan(
             selectedQuestions = listOf(questionWord),

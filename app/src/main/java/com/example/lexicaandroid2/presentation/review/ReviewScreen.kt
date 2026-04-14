@@ -32,6 +32,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.lexicaandroid2.domain.model.ReviewSessionChallengeKind
+import com.example.lexicaandroid2.presentation.navigation.Screen
 import kotlinx.coroutines.delay
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -93,6 +94,9 @@ fun ReviewScreen(
                     showAudioOptions = showAudioOptions,
                     onShowAudioOptionsChange = { showAudioOptions = it },
                     onUndo = { viewModel.undoLastAnswer() },
+                    onEdit = {
+                        current?.let { navController.navigate(Screen.EditWord().createRoute(it.id)) }
+                    },
                     onToggleAutoSpeakWord = { viewModel.toggleAutoSpeakWord() },
                     onToggleAutoSpeakDefinition = { viewModel.toggleAutoSpeakDefinition() },
                     onReveal = { viewModel.toggleAnswerReveal() },

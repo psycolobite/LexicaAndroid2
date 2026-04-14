@@ -32,8 +32,10 @@ data class AddWordsUiState(
     val manualDefinition: String = "",
     val manualSynonymes: String = "",
     val manualCategorie: String = "",
+    val manualRegistre: String = "",
     val manualEtymologie: String = "",
     val manualExemples: String = "",
+    val manualNotes: String = "",
     val manualExpanded: Boolean = false,                    // accordéon champs optionnels
     val duplicateCandidate: Flashcard? = null,              // doublon détecté → AlertDialog
     val pendingWord: WordResult? = null,                    // mot en attente après résolution doublon
@@ -123,6 +125,7 @@ class AddWordsViewModel(
                         state.copy(
                             proposedWords = filterSuggestedWords(words, latestCards),
                             localMatches = computeLocalMatches(state.searchQuery, latestCards),
+                            addedInSession = reconcileAddedInSession(state.addedInSession, latestCards),
                             isLoadingProposed = false
                         )
                     }
@@ -132,6 +135,7 @@ class AddWordsViewModel(
                         state.copy(
                             proposedWords = filterSuggestedWords(state.proposedWords, latestCards),
                             localMatches = computeLocalMatches(state.searchQuery, latestCards),
+                            addedInSession = reconcileAddedInSession(state.addedInSession, latestCards),
                             isLoadingProposed = false
                         )
                     }
@@ -204,7 +208,7 @@ class AddWordsViewModel(
                         "Pas de résultat — tu peux ajouter le mot manuellement" else null
                 )
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             if (!isSearchRequestStillCurrent(query, requestId)) return
 
             _uiState.update {
@@ -272,7 +276,7 @@ class AddWordsViewModel(
 
     // ── Gestion des doublons ─────────────────────────────────────────────────
 
-    private fun checkDuplicateAndAdd(word: WordResult) {
+    private fun checkDuplicateAndAdd(word: WordResult, manualFlashcard: Flashcard? = null) {
         val duplicate = allCards.firstOrNull {
             it.recto.equals(word.mot.trim(), ignoreCase = true)
         }
@@ -281,7 +285,7 @@ class AddWordsViewModel(
                 it.copy(duplicateCandidate = duplicate, pendingWord = word)
             }
         } else {
-            doAddWord(word)
+            doAddWord(word, manualFlashcard)
         }
     }
 
@@ -313,10 +317,10 @@ class AddWordsViewModel(
         _uiState.update { it.copy(duplicateCandidate = null, pendingWord = null) }
     }
 
-    private fun doAddWord(word: WordResult) {
+    private fun doAddWord(word: WordResult, manualFlashcard: Flashcard? = null) {
         viewModelScope.launch {
             runCatching {
-                val flashcard = Flashcard(
+                val flashcard = manualFlashcard ?: Flashcard(
                     id = UUID.randomUUID().toString(),
                     recto = word.mot.trim(),
                     verso = word.definition.trim(),
@@ -410,8 +414,10 @@ class AddWordsViewModel(
                 manualDefinition = "",
                 manualSynonymes = "",
                 manualCategorie = "",
+                manualRegistre = "",
                 manualEtymologie = "",
                 manualExemples = "",
+                manualNotes = "",
                 manualExpanded = false
             )
         }
@@ -423,9 +429,15 @@ class AddWordsViewModel(
     fun onManualDefinitionChanged(v: String) { _uiState.update { it.copy(manualDefinition = v) } }
     fun onManualSynonymesChanged(v: String)  { _uiState.update { it.copy(manualSynonymes = v) } }
     fun onManualCategorieChanged(v: String)  { _uiState.update { it.copy(manualCategorie = v) } }
+    fun onManualRegistreChanged(v: String)   { _uiState.update { it.copy(manualRegistre = v) } }
     fun onManualEtymologieChanged(v: String) { _uiState.update { it.copy(manualEtymologie = v) } }
     fun onManualExemplesChanged(v: String)   { _uiState.update { it.copy(manualExemples = v) } }
+    fun onManualNotesChanged(v: String)      { _uiState.update { it.copy(manualNotes = v) } }
     fun toggleManualExpanded()               { _uiState.update { it.copy(manualExpanded = !it.manualExpanded) } }
+
+    fun refreshAfterCardEdit() {
+        refreshScreenData(resetSessionMarkers = false, resetSearchState = false)
+    }
 
     fun confirmManualAdd() {
         val state = _uiState.value
@@ -436,11 +448,22 @@ class AddWordsViewModel(
         val word = WordResult(
             mot = state.manualWord.trim(),
             definition = state.manualDefinition.trim(),
-            synonymes = state.manualSynonymes.split(",").map { it.trim() }.filter { it.isNotBlank() },
-            exemples = state.manualExemples.split(",").map { it.trim() }.filter { it.isNotBlank() },
+            synonymes = splitOptionalListField(state.manualSynonymes),
+            exemples = splitOptionalListField(state.manualExemples),
             categorieGrammaticale = state.manualCategorie.trim()
         )
-        checkDuplicateAndAdd(word)
+        val manualFlashcard = Flashcard(
+            id = UUID.randomUUID().toString(),
+            recto = word.mot,
+            verso = word.definition,
+            synonymes = word.synonymes,
+            exemples = word.exemples,
+            categorieGrammaticale = word.categorieGrammaticale,
+            registre = state.manualRegistre.trim(),
+            etymologie = state.manualEtymologie.trim(),
+            notesPersonnelles = state.manualNotes.trim()
+        )
+        checkDuplicateAndAdd(word, manualFlashcard)
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
@@ -469,6 +492,22 @@ class AddWordsViewModel(
         val existingWords = cards.mapTo(mutableSetOf()) { it.recto.normalizedWordKey() }
         return words.filterNot { it.mot.normalizedWordKey() in existingWords }
     }
+
+    private fun reconcileAddedInSession(
+        existing: Map<String, Flashcard>,
+        latestCards: List<Flashcard>
+    ): Map<String, Flashcard> {
+        if (existing.isEmpty()) return emptyMap()
+        val latestById = latestCards.associateBy { it.id }
+        return existing.values.mapNotNull { card ->
+            latestById[card.id]?.let { updated -> updated.recto.trim() to updated }
+        }.toMap()
+    }
+
+    private fun splitOptionalListField(value: String): List<String> = value
+        .split('\n', ',')
+        .map { it.trim() }
+        .filter { it.isNotBlank() }
 
     private fun isSearchRequestStillCurrent(query: String, requestId: Long): Boolean {
         val currentState = _uiState.value

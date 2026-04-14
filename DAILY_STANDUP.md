@@ -6,6 +6,69 @@
 
 ---
 
+ ## 📅 2026-04-14 — Bouton Modifier multi-écrans + éditeur prérempli + top bars sécurisées
+
+### ✅ Accompli
+- [x] Ajout d'un **flux d'édition dédié** avec écran `Modifier mon mot`
+  - nouvelle route `edit_word/{cardId}`
+  - écran prérempli depuis la carte existante
+  - sauvegarde via mise à jour du contenu **sans écraser la progression de révision**
+  - validation anti-doublon sur le mot modifié
+- [x] Ajout du **bouton Modifier** dans les zones demandées
+  - `Mes mots` : cartes inline + popup détail
+  - `Ajouter des mots` : cartes vertes inline + popup de validation + popup mot déjà présent
+  - `Apprendre mes mots` : sur le recto/verso de la carte + bouton centré dans la ligne retour / audio
+- [x] Harmonisation du formulaire d'ajout manuel
+  - formulaire partagé entre ajout manuel et édition
+  - ajout des champs optionnels `registre` et `notes personnelles`
+  - parsing plus souple des listes (`synonymes`, `exemples`) via virgules **ou** retours ligne
+- [x] Amélioration de lisibilité des contenus longs
+  - blocs scrollables pour les longues définitions / exemples / étymologies dans les popups et détails
+- [x] Correctif top bars
+  - suppression des hauteurs forcées trop basses
+  - hauteur minimale augmentée sur les top bars principales / jeux / recherche / détail mot
+- [x] Validation technique
+  - tests unitaires ajoutés pour l'éditeur et le refresh après renommage côté `AddWordsViewModel`
+  - `:app:testDebugUnitTest` ciblé **OK**
+  - `:app:assembleDebug` **OK**
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/presentation/common/WordEditComponents.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/editword/EditWordScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/navigation/Screen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/LexicaApp.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModel.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordDetailScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/ReviewScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/NormalQuestionContent.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/common/LexicaTopAppBar.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/games/common/GameComposables.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/search/SearchScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/repository/FlashcardRepository.kt`
+- `app/src/main/java/com/example/lexicaandroid2/data/repository/FlashcardRepositoryImpl.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModelTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/editword/EditWordViewModelTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/domain/logic/ReviewSessionPlannerTest.kt`
+
+### 🔁 Ajustement complémentaire (retour QA)
+- [x] **Seed initial réduit de 18 à 5 cartes** pour un premier lancement moins chargé
+  - import initial désormais limité à 5 cartes depuis `local_storage.json`
+  - la réserve de mots reste importée séparément, sans être affectée par cette limite
+- [x] **Nettoyage des boutons dans l'entraînement**
+  - suppression du bouton `Modifier` directement sur la carte
+  - remplacement du bouton texte `Modifier` sur la ligne d'options par une simple icône centrée
+  - boutons `favori` + `poubelle` repositionnés uniquement **en bas à droite** sur recto et verso
+  - teintes restaurées : étoile jaune/grise, poubelle en couleur d'erreur
+
+### 🔗 Fichiers modifiés (complément)
+- `app/src/main/java/com/example/lexicaandroid2/data/importer/DataImporter.kt`
+- `app/src/main/java/com/example/lexicaandroid2/MainActivity.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/NormalQuestionContent.kt`
+
+---
+
 ## 📅 2026-04-12 — Sélection multiple dans `Mes mots` + suppression groupée
 
 ### ✅ Accompli
@@ -2025,9 +2088,41 @@ Build:              ✅ Compilation OK
   - usage de `Theme.SplashScreen.IconBackground` + fond d’icône pour un rendu plus premium au lancement
 - [x] **Validation technique ciblée à exécuter après retouche ressources**
   - build debug relancé pour vérifier le merge des ressources et les thèmes
+- [x] **Durcissement anti-crash Compose hover/molette**
+  - `MainActivity.kt` : garde-fou étendu aux dispatchs `generic motion`, `hover` et `touch` pour limiter les plantages fréquents liés au bug Compose `ACTION_HOVER_EXIT`
+  - `MainActivityInputWorkaroundTest.kt` complété
+- [x] **Ajustement POLO-1 — question orthographique remplaçante**
+  - la question orthographique remplace désormais certaines questions `Définition -> Mot`
+  - condition d’éligibilité : question déjà validée au moins une fois lors d’une session précédente (`firstAnsweredAt != null`)
+  - réussite : validation directe de la question pour la session
+  - échec ou passage : vaut `À revoir`
+- [x] **Texte de skip orthographique adouci**
+  - `Vous avez passé la question`
+- [x] **Taille de session minimale remontée à 4**
+  - réglages utilisateur, réglages admin et résolution runtime de `Review` réalignés
+- [x] **Fermeture globale du clavier au tap hors champ**
+  - wrapper racine Compose ajouté dans `LexicaApp.kt` pour retirer le focus lors d’un tap dans l’app hors saisie active
+- [x] **Refonte de la sync compte/cloud**
+  - la progression cloud ne se limite plus à `xp/niveau/streak/favoris` : extension vers cartes, progression question par question et stats quotidiennes
+  - `SyncManager.kt`, `SyncViewModel.kt`, `SyncConfirmDialog.kt` et `FirestoreSyncRepository.kt` réalignés pour gérer compte cloud vide, import cloud, écrasement local et envoi du local vers le compte
+  - `MainActivity.kt` ajusté pour ne plus réinjecter silencieusement les données seed quand un compte authentifié doit charger sa propre progression
+  - `firestore.rules` étendu aux sous-collections utilisateur nécessaires à la synchro complète
+- [x] **Question orthographique POLO-1 non remplaçante**
+  - abandon de l’activation systématiquement remplaçante en première position
+  - planification initiale aléatoire, limitée à une session éligible sur deux et plafonnée à ~30% des questions
+  - succès/échec appliqués à la question cible sans supposer que l’orthographique remplace la question courante
+- [x] **UI de résultat orthographique allégée**
+  - suppression de la ligne redondante du mot correct
+  - affichage de `Vous avez écrit : ...` en cas d’échec avec saisie utilisateur présente
+- [x] **Validation technique ciblée relancée**
+  - `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+  - `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.MainActivityInputWorkaroundTest" --tests "com.example.lexicaandroid2.domain.logic.ReviewSessionEngineTest" --tests "com.example.lexicaandroid2.presentation.review.ReviewViewModelTest" --tests "com.example.lexicaandroid2.presentation.admin.AdminViewModelTest"` → **BUILD SUCCESSFUL**
 
 ### 🔜 Vérifications
 - [ ] Vérifier visuellement sur appareil/émulateur que l’icône paraît bien ~25% plus petite sur le launcher
 - [ ] Vérifier le rendu du splash en mode clair et en mode sombre
+- [ ] Vérifier sur appareil Samsung / émulateur que le scroll souris ne provoque plus de crash Compose remontant comme "défaillance fréquente"
+- [ ] Vérifier sur appareil réel les nouveaux dialogues de choix compte/local (`compte vide`, `charger le compte`, `envoyer le local`) et le comportement après changement de compte sur le même téléphone
+- [ ] Vérifier que le clavier se ferme bien sur les écrans de connexion, inscription, ajout de mots et question orthographique sans gêner la saisie
 - [ ] Décider plus tard si les fallbacks launcher legacy API < 26 (`mipmap-*/ic_launcher.webp`) doivent aussi être régénérés pour cohérence totale
 

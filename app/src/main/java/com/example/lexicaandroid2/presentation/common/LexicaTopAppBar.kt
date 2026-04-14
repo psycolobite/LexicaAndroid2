@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.presentation.common
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.AccountCircle
@@ -18,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.height
 import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +84,7 @@ fun LexicaTopAppBar(
                     }
                 }
             },
-            modifier = modifier.height(if (subtitle.isNullOrBlank()) 40.dp else 56.dp),
+            modifier = modifier.heightIn(min = if (subtitle.isNullOrBlank()) 64.dp else 76.dp),
             colors = TopAppBarDefaults.topAppBarColors(),
             navigationIcon = navigationIcon,
             actions = actions
@@ -103,7 +103,7 @@ fun LexicaTopAppBar(
                     }
                 }
             },
-            modifier = modifier.height(if (subtitle.isNullOrBlank()) 40.dp else 56.dp),
+            modifier = modifier.heightIn(min = if (subtitle.isNullOrBlank()) 64.dp else 76.dp),
             colors = TopAppBarDefaults.topAppBarColors(),
             navigationIcon = navigationIcon,
             actions = actions

@@ -143,6 +143,32 @@ class AddWordsViewModelTest {
         assertTrue(!viewModel.uiState.value.isApiLoading)
     }
 
+    @Test
+    fun refreshAfterCardEditRekeysAddedWordWhenTheCardWasRenamed() = runTest {
+        val originalCard = suggestedWord.toFlashcard()
+        val renamedCard = originalCard.copy(recto = "abnégation modifiée", registre = "soutenu")
+
+        whenever(flashcardRepository.getAllCards())
+            .thenReturn(emptyList(), listOf(renamedCard))
+        whenever(wordReserveRepository.getProposedWords(50))
+            .thenReturn(listOf(suggestedWord), emptyList())
+
+        val viewModel = AddWordsViewModel(wordReserveRepository, flashcardRepository)
+        advanceUntilIdle()
+
+        viewModel.addWordFromReserve(suggestedWord)
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.addedInSession.containsKey(suggestedWord.mot.trim()))
+
+        viewModel.refreshAfterCardEdit()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.addedInSession.containsKey("abnégation modifiée"))
+        assertEquals("soutenu", viewModel.uiState.value.addedInSession.getValue("abnégation modifiée").registre)
+        assertTrue(!viewModel.uiState.value.addedInSession.containsKey(suggestedWord.mot.trim()))
+    }
+
     private fun WordReserveEntity.toFlashcard() = Flashcard(
         id = id,
         recto = mot,

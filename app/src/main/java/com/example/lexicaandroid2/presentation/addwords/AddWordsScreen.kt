@@ -1,8 +1,5 @@
 package com.example.lexicaandroid2.presentation.addwords
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,8 +26,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Warning
@@ -67,6 +62,9 @@ import androidx.compose.ui.window.Dialog
 import com.example.lexicaandroid2.data.local.WordReserveEntity
 import com.example.lexicaandroid2.data.remote.model.WordResult
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.presentation.common.EditWordCompactButton
+import com.example.lexicaandroid2.presentation.common.EditWordIconButton
+import com.example.lexicaandroid2.presentation.common.WordEditorForm
 
 private val Purple      = Color(0xFF6750A4)
 private val PurpleLight = Color(0xFFEDE7F6)
@@ -74,7 +72,10 @@ private val GreenAdded  = Color(0xFFE8F5E9)   // fond vert clair pour les mots a
 private val GreenDark   = Color(0xFF2E7D32)
 
 @Composable
-fun AddWordsScreen(viewModel: AddWordsViewModel) {
+fun AddWordsScreen(
+    viewModel: AddWordsViewModel,
+    onEditCard: (Flashcard) -> Unit
+) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedLocalCard by remember { mutableStateOf<Flashcard?>(null) }
 
@@ -102,18 +103,29 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
             synonymes = uiState.previewSynonymes,
             isAdded = previewAdded != null,
             isFavorite = previewAdded?.favori == true,
-            onDefinitionChanged = viewModel::onPreviewDefinitionChanged,
-            onSynonymesChanged = viewModel::onPreviewSynonymesChanged,
             onConfirm = viewModel::confirmAddFromPreview,
             onDismiss = viewModel::closePreview,
             onDeleteClick = { viewModel.deleteAddedWord(previewKey) },
-            onFavoriteClick = { viewModel.toggleFavoriteAddedWord(previewKey) }
+            onFavoriteClick = { viewModel.toggleFavoriteAddedWord(previewKey) },
+            onEditClick = {
+                previewAdded?.let {
+                    viewModel.closePreview()
+                    onEditCard(it)
+                }
+            }
         )
     }
 
     // ── Détails mot existant ──────────────────────────────────────────────────
     selectedLocalCard?.let { card ->
-        ExistingWordInfoDialog(card = card, onDismiss = { selectedLocalCard = null })
+        ExistingWordInfoDialog(
+            card = card,
+            onDismiss = { selectedLocalCard = null },
+            onEditClick = {
+                selectedLocalCard = null
+                onEditCard(card)
+            }
+        )
     }
 
     // ── Formulaire manuel ─────────────────────────────────────────────────────
@@ -124,8 +136,10 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
             onDefChanged = viewModel::onManualDefinitionChanged,
             onSynChanged = viewModel::onManualSynonymesChanged,
             onCatChanged = viewModel::onManualCategorieChanged,
+            onRegChanged = viewModel::onManualRegistreChanged,
             onEtyChanged = viewModel::onManualEtymologieChanged,
             onExChanged = viewModel::onManualExemplesChanged,
+            onNotesChanged = viewModel::onManualNotesChanged,
             onToggleExpanded = viewModel::toggleManualExpanded,
             onConfirm = viewModel::confirmManualAdd,
             onDismiss = viewModel::closeManualMode
@@ -207,7 +221,8 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
                         onRowClick = { viewModel.openPreview(result) },
                         onAddClick = { viewModel.addWordResult(result) },
                         onDeleteClick = { viewModel.deleteAddedWord(key) },
-                        onFavoriteClick = { viewModel.toggleFavoriteAddedWord(key) }
+                            onFavoriteClick = { viewModel.toggleFavoriteAddedWord(key) },
+                            onEditClick = { added?.let(onEditCard) }
                     )
                 }
             }
@@ -250,7 +265,8 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
                             onRowClick = { viewModel.openPreview(word.toWordResult()) },
                             onAddClick = { viewModel.addWordFromReserve(word) },
                             onDeleteClick = { viewModel.deleteAddedWord(key) },
-                            onFavoriteClick = { viewModel.toggleFavoriteAddedWord(key) }
+                            onFavoriteClick = { viewModel.toggleFavoriteAddedWord(key) },
+                            onEditClick = { added?.let(onEditCard) }
                         )
                     }
                 }
@@ -295,7 +311,8 @@ private fun WordCandidateItem(
     onRowClick: () -> Unit,
     onAddClick: () -> Unit,
     onDeleteClick: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onEditClick: () -> Unit
 ) {
     Surface(
         shape = RoundedCornerShape(12.dp),
@@ -346,7 +363,10 @@ private fun WordCandidateItem(
 
             // ── Actions ───────────────────────────────────────────────────────
             if (isAdded) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     IconButton(
                         onClick = onFavoriteClick,
                         modifier = Modifier.size(36.dp)
@@ -369,6 +389,7 @@ private fun WordCandidateItem(
                             modifier = Modifier.size(20.dp)
                         )
                     }
+                    EditWordIconButton(onClick = onEditClick)
                 }
             } else {
                 FilledTonalButton(
@@ -388,7 +409,11 @@ private fun WordCandidateItem(
 // ─── Dialog : Détails mot existant ───────────────────────────────────────────
 
 @Composable
-private fun ExistingWordInfoDialog(card: Flashcard, onDismiss: () -> Unit) {
+private fun ExistingWordInfoDialog(
+    card: Flashcard,
+    onDismiss: () -> Unit,
+    onEditClick: () -> Unit
+) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(20.dp),
@@ -429,8 +454,10 @@ private fun ExistingWordInfoDialog(card: Flashcard, onDismiss: () -> Unit) {
                 }
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 14.dp),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    EditWordCompactButton(onClick = onEditClick)
                     Button(onClick = onDismiss) { Text("Fermer") }
                 }
             }
@@ -447,12 +474,11 @@ private fun PreviewDialog(
     synonymes: String,
     isAdded: Boolean,
     isFavorite: Boolean,
-    onDefinitionChanged: (String) -> Unit,
-    onSynonymesChanged: (String) -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     onDeleteClick: () -> Unit,
-    onFavoriteClick: () -> Unit
+    onFavoriteClick: () -> Unit,
+    onEditClick: () -> Unit
 ) {
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -519,22 +545,28 @@ private fun PreviewDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (isAdded) {
-                        // Mot déjà dans la collection : Fermer + Favori + Supprimer
+                        // Mot déjà dans la collection : Fermer + Favori + Modifier + Supprimer
                         TextButton(onClick = onDismiss) { Text("Fermer") }
                         Spacer(modifier = Modifier.width(4.dp))
-                        IconButton(onClick = onFavoriteClick, modifier = Modifier.size(40.dp)) {
-                            Icon(
-                                imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
-                                contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
-                                tint = if (isFavorite) Color(0xFFFFB800) else Color.Gray
-                            )
-                        }
-                        IconButton(
-                            onClick = { onDeleteClick(); onDismiss() },
-                            modifier = Modifier.size(40.dp)
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(2.dp)
                         ) {
-                            Icon(Icons.Default.Delete, contentDescription = "Supprimer",
-                                tint = MaterialTheme.colorScheme.error)
+                            IconButton(onClick = onFavoriteClick, modifier = Modifier.size(40.dp)) {
+                                Icon(
+                                    imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
+                                    contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
+                                    tint = if (isFavorite) Color(0xFFFFB800) else Color.Gray
+                                )
+                            }
+                            EditWordIconButton(onClick = onEditClick, modifier = Modifier.size(40.dp))
+                            IconButton(
+                                onClick = { onDeleteClick(); onDismiss() },
+                                modifier = Modifier.size(40.dp)
+                            ) {
+                                Icon(Icons.Default.Delete, contentDescription = "Supprimer",
+                                    tint = MaterialTheme.colorScheme.error)
+                            }
                         }
                     } else {
                         // Mot pas encore ajouté : Annuler + Ajouter
@@ -557,8 +589,10 @@ private fun ManualAddDialog(
     onDefChanged: (String) -> Unit,
     onSynChanged: (String) -> Unit,
     onCatChanged: (String) -> Unit,
+    onRegChanged: (String) -> Unit,
     onEtyChanged: (String) -> Unit,
     onExChanged: (String) -> Unit,
+    onNotesChanged: (String) -> Unit,
     onToggleExpanded: () -> Unit,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit
@@ -571,51 +605,27 @@ private fun ManualAddDialog(
                 modifier = Modifier.verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                OutlinedTextField(
-                    value = state.manualWord, onValueChange = onWordChanged,
-                    label = { Text("Mot *") }, modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Words),
-                    isError = state.error != null && state.manualWord.isBlank(),
-                    shape = RoundedCornerShape(8.dp)
+                WordEditorForm(
+                    word = state.manualWord,
+                    definition = state.manualDefinition,
+                    synonymes = state.manualSynonymes,
+                    categorie = state.manualCategorie,
+                    registre = state.manualRegistre,
+                    etymologie = state.manualEtymologie,
+                    exemples = state.manualExemples,
+                    notes = state.manualNotes,
+                    optionalExpanded = state.manualExpanded,
+                    error = state.error,
+                    onWordChanged = onWordChanged,
+                    onDefinitionChanged = onDefChanged,
+                    onSynonymesChanged = onSynChanged,
+                    onCategorieChanged = onCatChanged,
+                    onRegistreChanged = onRegChanged,
+                    onEtymologieChanged = onEtyChanged,
+                    onExemplesChanged = onExChanged,
+                    onNotesChanged = onNotesChanged,
+                    onToggleExpanded = onToggleExpanded
                 )
-                OutlinedTextField(
-                    value = state.manualDefinition, onValueChange = onDefChanged,
-                    label = { Text("Définition *") }, modifier = Modifier.fillMaxWidth(),
-                    minLines = 3, maxLines = 6,
-                    isError = state.error != null && state.manualDefinition.isBlank(),
-                    shape = RoundedCornerShape(8.dp)
-                )
-                state.error?.let { Text(it, color = MaterialTheme.colorScheme.error, fontSize = 12.sp) }
-
-                // Accordéon champs optionnels
-                Row(
-                    modifier = Modifier.fillMaxWidth().clickable(onClick = onToggleExpanded).padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Champs optionnels", fontSize = 13.sp, color = Purple, fontWeight = FontWeight.Medium)
-                    Icon(
-                        imageVector = if (state.manualExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                        contentDescription = null, tint = Purple
-                    )
-                }
-                AnimatedVisibility(visible = state.manualExpanded, enter = expandVertically(), exit = shrinkVertically()) {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        OutlinedTextField(value = state.manualSynonymes, onValueChange = onSynChanged,
-                            label = { Text("Synonymes (virgule)") }, modifier = Modifier.fillMaxWidth(),
-                            singleLine = true, shape = RoundedCornerShape(8.dp))
-                        OutlinedTextField(value = state.manualCategorie, onValueChange = onCatChanged,
-                            label = { Text("Catégorie grammaticale") }, modifier = Modifier.fillMaxWidth(),
-                            singleLine = true, placeholder = { Text("ex: nom masculin") }, shape = RoundedCornerShape(8.dp))
-                        OutlinedTextField(value = state.manualEtymologie, onValueChange = onEtyChanged,
-                            label = { Text("Étymologie") }, modifier = Modifier.fillMaxWidth(),
-                            singleLine = true, shape = RoundedCornerShape(8.dp))
-                        OutlinedTextField(value = state.manualExemples, onValueChange = onExChanged,
-                            label = { Text("Exemples (virgule)") }, modifier = Modifier.fillMaxWidth(),
-                            minLines = 2, maxLines = 4, shape = RoundedCornerShape(8.dp))
-                    }
-                }
             }
         },
         confirmButton = { Button(onClick = onConfirm) { Text("✅ Ajouter") } },
@@ -659,7 +669,22 @@ private fun SectionHeader(text: String) {
 private fun PreviewInfoSection(title: String, content: String) {
     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(title, fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = Purple)
-        Text(content, fontSize = 14.sp, color = Color.DarkGray)
+        Surface(
+            shape = RoundedCornerShape(12.dp),
+            color = Color(0xFFF7F4FF),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = content,
+                fontSize = 14.sp,
+                color = Color.DarkGray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 180.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(12.dp)
+            )
+        }
     }
 }
 

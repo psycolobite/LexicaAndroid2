@@ -47,6 +47,55 @@ object ReviewSessionEngine {
         )
     }
 
+    fun validateCurrentQuestionFromExtraSpelling(
+        state: ReviewSessionState,
+        answeredAt: Long = System.currentTimeMillis()
+    ): ReviewSessionState {
+        if (state.isFinished) return state
+
+        val currentQuestionId = state.currentQuestionId
+            ?: error("Cannot validate a session with no current question")
+        return applyAnswerToQuestion(
+            state = state,
+            questionId = currentQuestionId,
+            answer = ReviewAnswer.GOT_IT,
+            answeredAt = answeredAt,
+            countsForLongTerm = true,
+            countsAsPresentation = true,
+            advanceFromCurrentQuestion = true,
+            forcedValidationReason = ReviewSessionValidationReason.EXTRA_SPELLING_SUCCESS
+        )
+    }
+
+    fun applyExtraSpellingSuccess(
+        state: ReviewSessionState,
+        questionId: String,
+        answeredAt: Long = System.currentTimeMillis()
+    ): ReviewSessionState = applyAnswerToQuestion(
+        state = state,
+        questionId = questionId,
+        answer = ReviewAnswer.GOT_IT,
+        answeredAt = answeredAt,
+        countsForLongTerm = true,
+        countsAsPresentation = false,
+        advanceFromCurrentQuestion = false,
+        forcedValidationReason = ReviewSessionValidationReason.EXTRA_SPELLING_SUCCESS
+    )
+
+    fun applyExtraSpellingFailure(
+        state: ReviewSessionState,
+        questionId: String,
+        answeredAt: Long = System.currentTimeMillis()
+    ): ReviewSessionState = applyAnswerToQuestion(
+        state = state,
+        questionId = questionId,
+        answer = ReviewAnswer.AGAIN,
+        answeredAt = answeredAt,
+        countsForLongTerm = true,
+        countsAsPresentation = false,
+        advanceFromCurrentQuestion = false
+    )
+
     fun applyEventGotIt(
         state: ReviewSessionState,
         questionId: String,
@@ -139,7 +188,8 @@ object ReviewSessionEngine {
         answeredAt: Long,
         countsForLongTerm: Boolean,
         countsAsPresentation: Boolean,
-        advanceFromCurrentQuestion: Boolean
+        advanceFromCurrentQuestion: Boolean,
+        forcedValidationReason: ReviewSessionValidationReason? = null
     ): ReviewSessionState {
         if (state.isFinished) return state
 
@@ -151,7 +201,8 @@ object ReviewSessionEngine {
             answer = answer,
             answeredAt = answeredAt,
             countsForLongTerm = countsForLongTerm,
-            countsAsPresentation = countsAsPresentation
+            countsAsPresentation = countsAsPresentation,
+            forcedValidationReason = forcedValidationReason
         )
         val updatedQuestionStates = state.questionStates + (questionId to updatedQuestionState)
         val remainingQuestions = updatedQuestionStates.values.count { !it.isValidated }
@@ -197,7 +248,8 @@ object ReviewSessionEngine {
         answer: ReviewAnswer,
         answeredAt: Long,
         countsForLongTerm: Boolean,
-        countsAsPresentation: Boolean
+        countsAsPresentation: Boolean,
+        forcedValidationReason: ReviewSessionValidationReason? = null
     ): ReviewSessionQuestionState {
         val isFirstPresentation = countsAsPresentation && questionState.presentationCount == 0
         val firstAnswer = if (countsForLongTerm) questionState.firstAnswer ?: answer else questionState.firstAnswer
@@ -210,7 +262,7 @@ object ReviewSessionEngine {
             ReviewAnswer.TOO_EASY -> questionState.consecutiveGotItCount + 3
             ReviewAnswer.AGAIN -> 0
         }
-        val validationReason = resolveValidationReason(
+        val validationReason = forcedValidationReason ?: resolveValidationReason(
             questionState = questionState,
             answer = answer,
             isFirstPresentation = isFirstPresentation,

@@ -14,9 +14,15 @@ interface DailyReviewStatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsert(stat: DailyReviewStat)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAll(stats: List<DailyReviewStat>)
+
     /** Récupère les stats d'une date précise (ou null si aucune révision ce jour). */
     @Query("SELECT * FROM daily_review_stats WHERE dateKey = :date")
     suspend fun getByDate(date: String): DailyReviewStat?
+
+    @Query("SELECT * FROM daily_review_stats ORDER BY dateKey ASC")
+    suspend fun getAllOnce(): List<DailyReviewStat>
 
     /** Efface toutes les stats quotidiennes (usage admin uniquement). */
     @Query("DELETE FROM daily_review_stats")

@@ -32,7 +32,7 @@ class UserPrefsRepository(context: Context) {
 
     var cardsPerSession: Int
         get() = prefs.getInt(KEY_CARDS_PER_SESSION, DEFAULT_CARDS_PER_SESSION)
-        set(value) = prefs.edit { putInt(KEY_CARDS_PER_SESSION, value.coerceIn(2, 50)) }
+        set(value) = prefs.edit { putInt(KEY_CARDS_PER_SESSION, value.coerceIn(4, 50)) }
 
     var showDefinitionFirst: Boolean
         get() = prefs.getBoolean(KEY_SHOW_DEFINITION_FIRST, false)

@@ -197,8 +197,8 @@ fun AdminScreen(
                         Slider(
                             value = uiState.sessionSize.toFloat(),
                             onValueChange = { viewModel.setSessionSize(it.toInt()) },
-                            valueRange = 2f..50f,
-                            steps = 47,
+                            valueRange = 4f..50f,
+                            steps = 45,
                             modifier = Modifier.fillMaxWidth()
                         )
 

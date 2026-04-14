@@ -186,6 +186,7 @@ class ReviewSessionPlannerTest {
         override suspend fun saveQuestionProgress(progressList: List<ReviewQuestionProgress>) = Unit
         override suspend fun saveCard(card: Flashcard) = Unit
         override suspend fun updateCardProgress(cardId: String, motVersDef: Sm2Stats, defVersMot: Sm2Stats) = Unit
+        override suspend fun updateCardContent(card: Flashcard) = Unit
         override suspend fun setFavorite(cardId: String, isFavorite: Boolean) = Unit
         override suspend fun deleteCard(cardId: String) = Unit
         override suspend fun getStatsByState(): Map<String, Int> = emptyMap()

@@ -43,7 +43,19 @@ dans le pop up il faut ajouter un bouton pour les mots qui sont ajouté qui perm
 Il faut qu'on refasse l'UX des listes, il y a un gros problème d'affichage, plusieurs "saut de lignes" ou en tout cas un grand espace vide.
 
 
+on va ajouter un bouton pour modifier les cartes, que l'utilisateur pourra utiliser depuis plusieurs endroits :
+Il doit s'afficher depuis les lises (sur les cartes in line, en dessous du bouton poubelle ; et sur les informations suplémentaires pop-up des cartes ,sous le bouton poubelle)
+dans l'entrainement, centré sur la ligne où il y a les boutons de retour et d'option du son.
+Dans la page "ajouter des mots" sur les cartes in-line lorsqu'elles sont "ajouté" avec fond vert, en dessous du bouton poubelle, mais aussi dans le pop-up d'information des cartes lorsqu'elles sont "validé", au dessus de la poubelle.
+il faut aussi que les boutons de mise en favoris et poubelle apparraissent sur le recto de la carte.
 
+
+
+
+
+
+pour L'algo Polo-1 il y a quelques points à modifier :
+- il ne faut pas que les deux types de questions d'une carte tombe séparé par au moins de 2 autres questions, à part si il n'y a pas assez de question dans la session. ici les questions et défis orthographique "valent" (dans le sens ou il ne doivent pas être présenté sans 2 autres questions entre) pour  défition --> mot  et défi sémantique vaut pour mot --> définition. Ici par 2 questions j'entends tout type de questions (simple défi annexe...)
 
 
 

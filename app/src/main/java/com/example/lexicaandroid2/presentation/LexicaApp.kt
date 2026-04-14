@@ -1,8 +1,10 @@
 package com.example.lexicaandroid2.presentation
 
+import android.view.MotionEvent
 import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,9 +23,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.navigation.NavHostController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -46,6 +51,9 @@ import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModel
 import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModelFactory
 import com.example.lexicaandroid2.presentation.addwords.AddWordsScreen
 import com.example.lexicaandroid2.presentation.addwords.AddWordsViewModel
+import com.example.lexicaandroid2.presentation.editword.EditWordScreen
+import com.example.lexicaandroid2.presentation.editword.EditWordViewModel
+import com.example.lexicaandroid2.presentation.editword.EditWordViewModelFactory
 import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
 import com.example.lexicaandroid2.presentation.games.MiniGamesScreen
 import com.example.lexicaandroid2.presentation.games.matching.MatchingScreen
@@ -87,6 +95,7 @@ import com.example.lexicaandroid2.presentation.online.OnlineScreen
 import com.example.lexicaandroid2.presentation.utilisation.UtilisationScreen
 import com.example.lexicaandroid2.domain.usecase.ResetProgressUseCase
 import com.example.lexicaandroid2.features.sync.SyncManager
+import com.example.lexicaandroid2.features.sync.SyncConflictKind
 import com.example.lexicaandroid2.features.sync.SyncViewModel
 import com.example.lexicaandroid2.features.sync.SyncUiState
 import com.example.lexicaandroid2.features.sync.SyncConfirmDialog
@@ -95,6 +104,9 @@ import com.example.lexicaandroid2.presentation.review.challenge.ModelDownloadMan
 import com.example.lexicaandroid2.presentation.review.challenge.ModelDownloadViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 
+private const val EDITED_CARD_RESULT_KEY = "edited_card_id"
+
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun LexicaApp(
     reviewViewModel: ReviewViewModel,
@@ -124,6 +136,7 @@ fun LexicaApp(
     val reviewUiState by reviewViewModel.uiState.collectAsState()
     val wordListUiState by wordListViewModel.uiState.collectAsState()
     val context = LocalContext.current
+    val focusManager = LocalFocusManager.current
     var showWordListSelectionMenu by remember { mutableStateOf(false) }
     var showWordListBulkDeleteConfirm by remember { mutableStateOf(false) }
     var showWordListBulkResetConfirm by remember { mutableStateOf(false) }
@@ -156,6 +169,7 @@ fun LexicaApp(
         Screen.Utilisation.route -> "Utilisation"
         Screen.Online.route -> "Mode En Ligne"
         Screen.DrivingMode.route -> "Mode voiture"
+        Screen.EditWord().route -> "Modifier mon mot"
         else -> if (currentRoute?.startsWith("word/") == true) "Détail du mot" else "Lexica"
     }
 
@@ -180,6 +194,7 @@ fun LexicaApp(
                          currentRoute == Screen.Utilisation.route ||
                          currentRoute == Screen.Online.route ||
                          currentRoute == Screen.DrivingMode.route ||
+                          currentRoute?.startsWith("edit_word/") == true ||
                          currentRoute?.startsWith("word/") == true
 
     val shouldShowTopBar = currentRoute !in GAME_ROUTES &&
@@ -195,7 +210,28 @@ fun LexicaApp(
         SyncConfirmDialog(
             conflictState = pendingConflict,
             onKeepLocal = { syncViewModel?.keepLocal(pendingConflict.uid) },
-            onReplaceLocal = { syncViewModel?.confirmReplaceWithCloud(pendingConflict.uid, pendingConflict.cloud) }
+            onReplaceLocal = {
+                when (pendingConflict.kind) {
+                    SyncConflictKind.EMPTY_CLOUD_ACCOUNT -> syncViewModel?.startFreshOnEmptyCloudAccount(pendingConflict.uid)
+                    SyncConflictKind.CLOUD_VS_LOCAL -> pendingConflict.cloud?.let {
+                        syncViewModel?.confirmReplaceWithCloud(pendingConflict.uid, it)
+                    }
+                }
+            }
+        )
+    }
+
+    val syncMessage = syncUiState as? SyncUiState.Message
+    if (syncMessage != null) {
+        AlertDialog(
+            onDismissRequest = { syncViewModel?.dismissMessage() },
+            title = { Text("Synchronisation") },
+            text = { Text(syncMessage.text) },
+            confirmButton = {
+                Button(onClick = { syncViewModel?.dismissMessage() }) {
+                    Text("OK")
+                }
+            }
         )
     }
 
@@ -268,94 +304,104 @@ fun LexicaApp(
         )
     }
 
-    Scaffold(
-        topBar = {
-            if (shouldShowTopBar) {
-                Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.TopStart
-                ) {
-                    LexicaTopAppBar(
-                        title = topBarTitle,
-                        subtitle = wordListSubtitle,
-                        canNavigateBack = canNavigateBack,
-                        navigateUp = { navController.navigateUp() },
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .pointerInteropFilter { event ->
+                if (event.actionMasked == MotionEvent.ACTION_DOWN) {
+                    focusManager.clearFocus(force = false)
+                }
+                false
+            }
+    ) {
+        Scaffold(
+            topBar = {
+                if (shouldShowTopBar) {
+                    Box(
                         modifier = Modifier.fillMaxWidth(),
-                        onProfileClick = if (currentRoute == Screen.Dashboard.route) {
-                            {
-                                if (currentAuthUser != null) {
-                                    navController.navigate(Screen.Profile.route)
-                                } else {
-                                    navController.navigate(Screen.Login.route)
+                        contentAlignment = Alignment.TopStart
+                    ) {
+                        LexicaTopAppBar(
+                            title = topBarTitle,
+                            subtitle = wordListSubtitle,
+                            canNavigateBack = canNavigateBack,
+                            navigateUp = { navController.navigateUp() },
+                            modifier = Modifier.fillMaxWidth(),
+                            onProfileClick = if (currentRoute == Screen.Dashboard.route) {
+                                {
+                                    if (currentAuthUser != null) {
+                                        navController.navigate(Screen.Profile.route)
+                                    } else {
+                                        navController.navigate(Screen.Login.route)
+                                    }
                                 }
+                            } else if (currentRoute == Screen.Profile.route) {
+                                { }
+                            } else null,
+                            onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
+                                { navController.navigate(Screen.Settings.route) }
+                            } else null,
+                            useBrandTitle = currentRoute == Screen.Dashboard.route,
+                            actionsContent = if (currentRoute == Screen.WordList.route && wordListUiState.isSelectionMode) {
+                                {
+                                    IconButton(onClick = { showWordListSelectionMenu = true }) {
+                                        Icon(
+                                            imageVector = Icons.Default.MoreVert,
+                                            contentDescription = "Actions de sélection"
+                                        )
+                                    }
+                                    DropdownMenu(
+                                        expanded = showWordListSelectionMenu,
+                                        onDismissRequest = { showWordListSelectionMenu = false }
+                                    ) {
+                                        DropdownMenuItem(
+                                            text = { Text("Ajouter aux favoris") },
+                                            onClick = {
+                                                showWordListSelectionMenu = false
+                                                wordListViewModel.favoriteSelectedCards()
+                                            }
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text("Supprimer") },
+                                            onClick = {
+                                                showWordListSelectionMenu = false
+                                                showWordListBulkDeleteConfirm = true
+                                            }
+                                        )
+                                        DropdownMenuItem(
+                                            text = { Text("Réinitialiser la progression") },
+                                            onClick = {
+                                                showWordListSelectionMenu = false
+                                                showWordListBulkResetConfirm = true
+                                            }
+                                        )
+                                    }
+                                }
+                            } else null
+                        )
+                    }
+                }
+            },
+            bottomBar = {
+                if (shouldShowBottomBar(currentRoute)) {
+                    LexicaBottomNavBar(
+                        currentRoute = currentRoute,
+                        onNavigate = { route ->
+                            navController.navigate(route) {
+                                popUpTo(navController.graph.findStartDestination().id) { saveState = true }
+                                launchSingleTop = true
+                                restoreState = true
                             }
-                        } else if (currentRoute == Screen.Profile.route) {
-                            { }
-                        } else null,
-                        onSettingsClick = if (currentRoute == Screen.Dashboard.route) {
-                            { navController.navigate(Screen.Settings.route) }
-                        } else null,
-                        useBrandTitle = currentRoute == Screen.Dashboard.route,
-                        actionsContent = if (currentRoute == Screen.WordList.route && wordListUiState.isSelectionMode) {
-                            {
-                                IconButton(onClick = { showWordListSelectionMenu = true }) {
-                                    Icon(
-                                        imageVector = Icons.Default.MoreVert,
-                                        contentDescription = "Actions de sélection"
-                                    )
-                                }
-                                DropdownMenu(
-                                    expanded = showWordListSelectionMenu,
-                                    onDismissRequest = { showWordListSelectionMenu = false }
-                                ) {
-                                    DropdownMenuItem(
-                                        text = { Text("Ajouter aux favoris") },
-                                        onClick = {
-                                            showWordListSelectionMenu = false
-                                            wordListViewModel.favoriteSelectedCards()
-                                        }
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Supprimer") },
-                                        onClick = {
-                                            showWordListSelectionMenu = false
-                                            showWordListBulkDeleteConfirm = true
-                                        }
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Réinitialiser la progression") },
-                                        onClick = {
-                                            showWordListSelectionMenu = false
-                                            showWordListBulkResetConfirm = true
-                                        }
-                                    )
-                                }
-                            }
-                        } else null
+                        }
                     )
                 }
             }
-        },
-        bottomBar = {
-            if (shouldShowBottomBar(currentRoute)) {
-                LexicaBottomNavBar(
-                    currentRoute = currentRoute,
-                    onNavigate = { route ->
-                        navController.navigate(route) {
-                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                )
-            }
-        }
-    ) { innerPadding ->
-        NavHost(
-            navController = navController,
-            startDestination = if (isInitiallyAuthenticated) Screen.Dashboard.route else Screen.Login.route,
-            modifier = Modifier.padding(innerPadding)
-        ) {
+        ) { innerPadding ->
+            NavHost(
+                navController = navController,
+                startDestination = if (isInitiallyAuthenticated) Screen.Dashboard.route else Screen.Login.route,
+                modifier = Modifier.padding(innerPadding)
+            ) {
             composable(
                 route = Screen.Dashboard.route,
                 enterTransition = {
@@ -401,7 +447,14 @@ fun LexicaApp(
                 exitTransition = {
                     slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(300))
                 }
-            ) {
+            ) { backStackEntry ->
+                val editedCardId = backStackEntry.savedStateHandle.get<String>(EDITED_CARD_RESULT_KEY)
+                LaunchedEffect(editedCardId) {
+                    if (editedCardId != null) {
+                        reviewViewModel.reloadSessionForSettingsChange()
+                        backStackEntry.savedStateHandle.remove<String>(EDITED_CARD_RESULT_KEY)
+                    }
+                }
                 ReviewScreen(
                     viewModel = reviewViewModel,
                     navController = navController
@@ -436,8 +489,17 @@ fun LexicaApp(
                     wordListViewModel.onFilterSelected(filter.takeIf { !it.isNullOrBlank() })
                 }
 
+                val editedCardId = backStackEntry.savedStateHandle.get<String>(EDITED_CARD_RESULT_KEY)
+                LaunchedEffect(editedCardId) {
+                    if (editedCardId != null) {
+                        wordListViewModel.loadWords()
+                        backStackEntry.savedStateHandle.remove<String>(EDITED_CARD_RESULT_KEY)
+                    }
+                }
+
                 WordListScreen(
-                    viewModel = wordListViewModel
+                    viewModel = wordListViewModel,
+                    onEditCard = { card -> navController.navigate(Screen.EditWord().createRoute(card.id)) }
                 )
             }
             composable(
@@ -448,9 +510,17 @@ fun LexicaApp(
                 exitTransition = {
                     slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(300))
                 }
-            ) {
+            ) { backStackEntry ->
+                val editedCardId = backStackEntry.savedStateHandle.get<String>(EDITED_CARD_RESULT_KEY)
+                LaunchedEffect(editedCardId) {
+                    if (editedCardId != null) {
+                        addWordsViewModel.refreshAfterCardEdit()
+                        backStackEntry.savedStateHandle.remove<String>(EDITED_CARD_RESULT_KEY)
+                    }
+                }
                 AddWordsScreen(
-                    viewModel = addWordsViewModel
+                    viewModel = addWordsViewModel,
+                    onEditCard = { card -> navController.navigate(Screen.EditWord().createRoute(card.id)) }
                 )
             }
             composable(
@@ -641,10 +711,36 @@ fun LexicaApp(
                 val cardId = backStackEntry.arguments?.getString("cardId") ?: return@composable
                 val factory = WordDetailViewModelFactory(cardId, repository)
                 val detailViewModel: WordDetailViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory)
+                val editedCardId = backStackEntry.savedStateHandle.get<String>(EDITED_CARD_RESULT_KEY)
+                LaunchedEffect(editedCardId) {
+                    if (editedCardId != null) {
+                        detailViewModel.refreshCard()
+                        backStackEntry.savedStateHandle.remove<String>(EDITED_CARD_RESULT_KEY)
+                    }
+                }
                 WordDetailScreen(
                     cardId = cardId,
                     viewModel = detailViewModel,
-                    onBack = { navController.navigateUp() }
+                    onBack = { navController.navigateUp() },
+                    onEditCard = { card -> navController.navigate(Screen.EditWord().createRoute(card.id)) }
+                )
+            }
+            composable(
+                route = Screen.EditWord().route,
+                arguments = listOf(navArgument("cardId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val cardId = backStackEntry.arguments?.getString("cardId") ?: return@composable
+                val factory = EditWordViewModelFactory(cardId = cardId, repository = repository)
+                val editWordViewModel: EditWordViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory)
+                EditWordScreen(
+                    viewModel = editWordViewModel,
+                    onSaved = { updatedCardId ->
+                        navController.previousBackStackEntry
+                            ?.savedStateHandle
+                            ?.set(EDITED_CARD_RESULT_KEY, updatedCardId)
+                        navController.navigateUp()
+                    },
+                    onCancel = { navController.navigateUp() }
                 )
             }
             composable(route = Screen.DailyChallenge.route) {
@@ -680,6 +776,7 @@ fun LexicaApp(
             }
             composable(route = Screen.Online.route) {
                 OnlineScreen()
+            }
             }
         }
     }

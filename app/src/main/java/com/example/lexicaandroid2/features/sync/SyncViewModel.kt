@@ -31,13 +31,18 @@ sealed class SyncUiState {
      */
     data class PendingConflict(
         val uid: String,
-        val cloud: CloudProgress,
-        val localXp: Long,
-        val localLevel: Int
+        val kind: SyncConflictKind,
+        val cloud: CloudProgress?,
+        val local: LocalProgressSummary
     ) : SyncUiState()
 
     /** Message non-bloquant (succès ou erreur légère). */
     data class Message(val text: String) : SyncUiState()
+}
+
+enum class SyncConflictKind {
+    EMPTY_CLOUD_ACCOUNT,
+    CLOUD_VS_LOCAL
 }
 
 /**
@@ -96,9 +101,20 @@ class SyncViewModel(
     private fun syncExistingAuthenticatedSession(uid: String) {
         viewModelScope.launch {
             when (val result = syncManager.checkOnLogin(uid)) {
-                is SyncCheckResult.NoCloudData -> {
-                    syncManager.uploadLocalToCloud(uid)
-                    _uiState.update { SyncUiState.Idle }
+                is SyncCheckResult.EmptyCloudAccount -> {
+                    if (result.requiresChoice) {
+                        _uiState.update {
+                            SyncUiState.PendingConflict(
+                                uid = uid,
+                                kind = SyncConflictKind.EMPTY_CLOUD_ACCOUNT,
+                                cloud = null,
+                                local = result.local
+                            )
+                        }
+                    } else {
+                        syncManager.uploadLocalToCloud(uid)
+                        _uiState.update { SyncUiState.Idle }
+                    }
                 }
                 is SyncCheckResult.EmptyLocalImport -> {
                     try {
@@ -111,8 +127,14 @@ class SyncViewModel(
                     _uiState.update { SyncUiState.Idle }
                 }
                 is SyncCheckResult.Conflict -> {
-                    syncManager.uploadLocalToCloud(uid)
-                    _uiState.update { SyncUiState.Idle }
+                    _uiState.update {
+                        SyncUiState.PendingConflict(
+                            uid = uid,
+                            kind = SyncConflictKind.CLOUD_VS_LOCAL,
+                            cloud = result.cloud,
+                            local = result.local
+                        )
+                    }
                 }
                 is SyncCheckResult.NetworkError -> {
                     _uiState.update { SyncUiState.Idle }
@@ -129,18 +151,28 @@ class SyncViewModel(
         viewModelScope.launch {
             _uiState.update { SyncUiState.Loading }
             when (val result = syncManager.checkOnLogin(uid)) {
-                is SyncCheckResult.NoCloudData -> {
-                    // Premier appareil — upload silencieux
-                    syncManager.uploadLocalToCloud(uid)
-                    _uiState.update { SyncUiState.Idle }
-                    Log.d(TAG, "No cloud data — uploaded local progress")
+                is SyncCheckResult.EmptyCloudAccount -> {
+                    if (result.requiresChoice) {
+                        _uiState.update {
+                            SyncUiState.PendingConflict(
+                                uid = uid,
+                                kind = SyncConflictKind.EMPTY_CLOUD_ACCOUNT,
+                                cloud = null,
+                                local = result.local
+                            )
+                        }
+                    } else {
+                        syncManager.uploadLocalToCloud(uid)
+                        _uiState.update { SyncUiState.Idle }
+                        Log.d(TAG, "Empty cloud account — uploaded current local baseline")
+                    }
                 }
                 is SyncCheckResult.EmptyLocalImport -> {
                     // Import silencieux : progression locale vide
                     try {
                         syncManager.silentImportFromCloud(uid, result.cloudProgress)
                         _uiState.update {
-                            SyncUiState.Message("✅ Progression récupérée depuis le cloud (XP ${result.cloudProgress.xp})")
+                            SyncUiState.Message("✅ Progression du compte récupérée depuis le cloud")
                         }
                     } catch (e: Exception) {
                         _uiState.update { SyncUiState.Message("⚠️ Import cloud partiel : ${e.message}") }
@@ -155,9 +187,9 @@ class SyncViewModel(
                     _uiState.update {
                         SyncUiState.PendingConflict(
                             uid = uid,
+                            kind = SyncConflictKind.CLOUD_VS_LOCAL,
                             cloud = result.cloud,
-                            localXp = result.localXp,
-                            localLevel = result.localLevel
+                            local = result.local
                         )
                     }
                 }
@@ -186,6 +218,18 @@ class SyncViewModel(
         }
     }
 
+    fun startFreshOnEmptyCloudAccount(uid: String) {
+        viewModelScope.launch {
+            _uiState.update { SyncUiState.Loading }
+            try {
+                syncManager.resetLocalAndUploadEmpty(uid)
+                _uiState.update { SyncUiState.Message("✅ Compte initialisé à zéro") }
+            } catch (e: Exception) {
+                _uiState.update { SyncUiState.Message("❌ Impossible d'initialiser ce compte : ${e.message}") }
+            }
+        }
+    }
+
     /**
      * L'utilisateur choisit de conserver sa progression locale.
      * Upload local → cloud et ferme le dialog.
@@ -194,7 +238,7 @@ class SyncViewModel(
         viewModelScope.launch {
             _uiState.update { SyncUiState.Loading }
             syncManager.uploadLocalToCloud(uid)
-            _uiState.update { SyncUiState.Idle }
+            _uiState.update { SyncUiState.Message("✅ Progression locale envoyée vers le compte") }
             Log.d(TAG, "User kept local progress — uploaded to cloud")
         }
     }

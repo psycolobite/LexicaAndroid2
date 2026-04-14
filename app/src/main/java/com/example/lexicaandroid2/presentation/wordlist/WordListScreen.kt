@@ -2,7 +2,6 @@ package com.example.lexicaandroid2.presentation.wordlist
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -11,11 +10,8 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,7 +33,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -54,10 +49,12 @@ import androidx.compose.ui.unit.dp
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
 import com.example.lexicaandroid2.domain.model.ReviewCardProgressSummary
+import com.example.lexicaandroid2.presentation.common.EditWordIconButton
 
 @Composable
 fun WordListScreen(
-    viewModel: WordListViewModel
+    viewModel: WordListViewModel,
+    onEditCard: (Flashcard) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedCard by remember { mutableStateOf<Flashcard?>(null) }
@@ -83,6 +80,10 @@ fun WordListScreen(
             onDeleteCard = {
                 viewModel.deleteCard(card.id)
                 selectedCard = null
+            },
+            onEditCard = {
+                selectedCard = null
+                onEditCard(card)
             }
         )
     }
@@ -124,7 +125,8 @@ fun WordListScreen(
                             viewModel.toggleCardSelection(card.id)
                         },
                         onToggleFavorite = { viewModel.toggleFavorite(card) },
-                        onDeleteCard = { viewModel.deleteCard(card.id) }
+                        onDeleteCard = { viewModel.deleteCard(card.id) },
+                        onEditCard = { onEditCard(card) }
                     )
                 }
 
@@ -193,7 +195,8 @@ fun WordItem(
     onCardClick: () -> Unit,
     onCardLongClick: () -> Unit,
     onToggleFavorite: () -> Unit,
-    onDeleteCard: () -> Unit
+    onDeleteCard: () -> Unit,
+    onEditCard: () -> Unit
 ) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
@@ -266,9 +269,9 @@ fun WordItem(
                         color = Color.Gray
                     )
                 }
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(2.dp),
-                    verticalAlignment = Alignment.Top
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(2.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     if (isSelected) {
                         Icon(
@@ -304,6 +307,8 @@ fun WordItem(
                             modifier = Modifier.size(20.dp)
                         )
                     }
+
+                    EditWordIconButton(onClick = onEditCard)
                 }
             }
 

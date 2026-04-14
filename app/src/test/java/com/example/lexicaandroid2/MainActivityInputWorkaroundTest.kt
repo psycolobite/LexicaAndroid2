@@ -12,6 +12,7 @@ class MainActivityInputWorkaroundTest {
         val message = "The ACTION_HOVER_EXIT event was not cleared."
 
         assertTrue(shouldIgnoreComposeHoverExitCrash(message, MotionEvent.ACTION_SCROLL))
+        assertTrue(shouldIgnoreComposeHoverExitCrash(message, MotionEvent.ACTION_HOVER_ENTER))
         assertTrue(shouldIgnoreComposeHoverExitCrash(message, MotionEvent.ACTION_HOVER_EXIT))
         assertTrue(shouldIgnoreComposeHoverExitCrash(message, MotionEvent.ACTION_HOVER_MOVE))
     }

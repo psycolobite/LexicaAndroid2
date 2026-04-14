@@ -164,9 +164,13 @@ class MainActivity : ComponentActivity() {
         // SyncManager partagé entre SyncViewModel et ProfileViewModel (pour invalidation post-reset)
         val syncManager = SyncManager(
             firestoreSyncRepository = com.example.lexicaandroid2.features.sync.FirestoreSyncRepository(),
+            flashcardDao = dao,
+            reviewQuestionDao = reviewQuestionDao,
+            reviewSessionSnapshotDao = reviewSessionSnapshotDao,
             userStatsDao = userStatsDao,
             userStatsRepository = userStatsRepository,
-            flashcardRepository = repository
+            flashcardRepository = repository,
+            dailyReviewStatDao = dailyReviewStatDao
         )
         val syncViewModel = ViewModelProvider(
             this, SyncViewModelFactory(authRepository, syncManager)
@@ -201,11 +205,15 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 if (dao.count() == 0) {
-                    val importer = DataImporter(applicationContext, dao, reviewQuestionDao, reserveDao)
-                    Log.d("DATA_IMPORT", "Starting import...")
-                    importer.importFromAssets()
-                    importer.importReserve()
-                    Log.d("DATA_IMPORT", "Import complete")
+                    if (FirebaseAuth.getInstance().currentUser == null) {
+                        val importer = DataImporter(applicationContext, dao, reviewQuestionDao, reserveDao)
+                        Log.d("DATA_IMPORT", "Starting import...")
+                        importer.importFromAssets(maxCards = 5)
+                        importer.importReserve()
+                        Log.d("DATA_IMPORT", "Import complete")
+                    } else {
+                        Log.d("DATA_IMPORT", "Skipping seed import because an authenticated account will provide its own data")
+                    }
                 } else if (reserveDao.count() == 0) {
                      val importer = DataImporter(applicationContext, dao, reviewQuestionDao, reserveDao)
                      importer.importReserve()
@@ -291,14 +299,27 @@ class MainActivity : ComponentActivity() {
                 }
     }
 
-    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean {
-        return try {
+    override fun dispatchGenericMotionEvent(event: MotionEvent): Boolean =
+        dispatchComposePointerEventSafely(event) {
             super.dispatchGenericMotionEvent(event)
+        }
+
+    override fun dispatchTouchEvent(event: MotionEvent): Boolean =
+        dispatchComposePointerEventSafely(event) {
+            super.dispatchTouchEvent(event)
+        }
+
+    private inline fun dispatchComposePointerEventSafely(
+        event: MotionEvent,
+        dispatch: () -> Boolean
+    ): Boolean {
+        return try {
+            dispatch()
         } catch (exception: IllegalStateException) {
             if (shouldIgnoreComposeHoverExitCrash(exception.message, event.actionMasked)) {
                 Log.w(
                     "MainActivity",
-                    "Événement hover/molette ignoré pour contourner un crash Compose connu (action=${event.actionMasked})",
+                    "Événement pointeur ignoré pour contourner un crash Compose connu (action=${event.actionMasked})",
                     exception
                 )
                 false

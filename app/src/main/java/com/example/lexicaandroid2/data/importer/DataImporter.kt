@@ -24,9 +24,12 @@ class DataImporter(
     private val reserveDao: WordReserveDao? = null, // Optional for backward combat
     private val gson: Gson = Gson()
 ) {
-    suspend fun importFromAssets(assetName: String = "local_storage.json") {
+    suspend fun importFromAssets(
+        assetName: String = "local_storage.json",
+        maxCards: Int? = null
+    ) {
         Log.d(TAG, "Start importing...")
-        val cards = readLegacyCards(assetName)
+        val cards = readLegacyCards(assetName, maxCards)
         Log.d(TAG, "Entities created: ${cards.size} cards")
         if (cards.isEmpty()) {
             return
@@ -76,7 +79,7 @@ class DataImporter(
         }
     }
 
-    private fun readLegacyCards(assetName: String): List<FlashcardEntity> {
+    private fun readLegacyCards(assetName: String, maxCards: Int? = null): List<FlashcardEntity> {
         context.assets.open(assetName).use { stream ->
             InputStreamReader(stream).use { reader ->
                 val root = gson.fromJson(reader, LegacyStorage::class.java)
@@ -84,7 +87,8 @@ class DataImporter(
                 val cards = root?.cartes ?: emptyMap()
                 val normalized = gson.fromJson<Map<String, LegacyCard>>(gson.toJson(cards), mapType)
                 Log.d(TAG, "JSON read successfully")
-                return normalized.values.map { it.toEntity() }
+                val selectedCards = maxCards?.let { normalized.values.take(it) } ?: normalized.values.toList()
+                return selectedCards.map { it.toEntity() }
             }
         }
     }
