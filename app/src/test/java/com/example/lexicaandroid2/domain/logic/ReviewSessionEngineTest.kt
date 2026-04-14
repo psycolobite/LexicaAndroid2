@@ -271,6 +271,47 @@ class ReviewSessionEngineTest {
         assertNull(updated.progress.pendingReplacementChallengeKind)
     }
 
+    @Test
+    fun answerCurrentQuestionSkipsSameCardFamilyWhenTwoOtherPresentationsAreNotYetPassed() {
+        val questionAWord = question("card-a", ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 0)
+        val questionBWord = question("card-b", ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 1)
+        val questionADef = question("card-a", ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 2)
+        val plan = ReviewSessionPlan(
+            selectedQuestions = listOf(questionAWord, questionBWord, questionADef),
+            sessionOrder = listOf(questionAWord, questionBWord, questionADef),
+            remainingQuestionsCount = 0
+        )
+
+        val state = ReviewSessionEngine.answerCurrentQuestion(
+            state = ReviewSessionEngine.start(plan),
+            answer = ReviewAnswer.GOT_IT,
+            answeredAt = 1_000L,
+            recentPresentationKeys = listOf("card:card-a", "card:card-a")
+        )
+
+        assertEquals(questionBWord.questionId, state.currentQuestionId)
+    }
+
+    @Test
+    fun answerCurrentQuestionAllowsSameCardFamilyWhenNoAlternativeExists() {
+        val questionAWord = question("card-a", ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 0)
+        val questionADef = question("card-a", ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 1)
+        val plan = ReviewSessionPlan(
+            selectedQuestions = listOf(questionAWord, questionADef),
+            sessionOrder = listOf(questionAWord, questionADef),
+            remainingQuestionsCount = 0
+        )
+
+        val state = ReviewSessionEngine.answerCurrentQuestion(
+            state = ReviewSessionEngine.start(plan),
+            answer = ReviewAnswer.GOT_IT,
+            answeredAt = 1_000L,
+            recentPresentationKeys = listOf("card:card-a", "card:card-a")
+        )
+
+        assertEquals(questionADef.questionId, state.currentQuestionId)
+    }
+
     private fun singleQuestionPlan(question: ReviewQuestionProgress): ReviewSessionPlan = ReviewSessionPlan(
         selectedQuestions = listOf(question),
         sessionOrder = listOf(question),

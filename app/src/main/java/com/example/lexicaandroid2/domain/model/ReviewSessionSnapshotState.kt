@@ -18,6 +18,8 @@ data class ReviewSessionSnapshotState(
     val eventResultSuccessful: Boolean? = null,
     val eventResultMessage: String? = null,
     val eventResultCorrectAnswer: String? = null,
+    val recentPresentedItemKeys: List<String>? = null,
+    val lastPresentedItemInstanceKey: String? = null,
     val normalAnswersSinceLastMatching: Int = 0,
     val sessionSizeLimit: Int = 0,
     val adminNormalPresentationEnabled: Boolean? = null,

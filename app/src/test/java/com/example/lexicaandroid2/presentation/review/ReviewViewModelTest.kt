@@ -10,8 +10,10 @@ import com.example.lexicaandroid2.domain.model.ReviewSessionChallengeKind
 import com.example.lexicaandroid2.domain.model.ReviewSessionEvent
 import com.example.lexicaandroid2.domain.model.ReviewSessionEventType
 import com.example.lexicaandroid2.domain.model.ReviewSessionPlan
+import com.example.lexicaandroid2.domain.model.ReviewSessionQuestionState
 import com.example.lexicaandroid2.domain.model.ReviewSessionSnapshot
 import com.example.lexicaandroid2.domain.model.ReviewSessionSnapshotState
+import com.example.lexicaandroid2.domain.model.ReviewSessionState
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.domain.repository.ReviewSessionSnapshotRepository
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
@@ -388,6 +390,112 @@ class ReviewViewModelTest {
         assertEquals(ReviewCurrentItemType.QCM, viewModel.uiState.value.currentItemType)
         assertEquals(4, viewModel.uiState.value.eventOptions.size)
         assertTrue(viewModel.uiState.value.eventOptions.contains(cardWord.verso))
+    }
+
+    @Test
+    fun dueExtraSpellingWaitsWhenAnotherQuestionCanRespectSpacing() = runTest {
+        val questionA = question(cardDef.id, ReviewQuestionType.DEFINITION_TO_WORD, 0, firstAnsweredAt = 1L)
+        val questionB = question(cardWord.id, ReviewQuestionType.WORD_TO_DEFINITION, 1, firstAnsweredAt = 1L)
+        val plan = ReviewSessionPlan(
+            selectedQuestions = listOf(questionA, questionB),
+            sessionOrder = listOf(questionA, questionB),
+            remainingQuestionsCount = 0
+        )
+        val restoredState = ReviewSessionState(
+            sessionOrderQuestionIds = listOf(questionA.questionId, questionB.questionId),
+            questionStates = mapOf(
+                questionA.questionId to ReviewSessionQuestionState(progress = questionA, presentationCount = 1),
+                questionB.questionId to ReviewSessionQuestionState(progress = questionB)
+            ),
+            currentQuestionId = questionB.questionId,
+            currentOrderIndex = 1,
+            remainingQuestionsToValidate = 2,
+            isFinished = false
+        )
+        whenever(snapshotRepository.getActiveSession()).thenReturn(
+            ReviewSessionSnapshot(
+                createdAt = 1L,
+                updatedAt = 2L,
+                state = ReviewSessionSnapshotState(
+                    sessionCards = listOf(cardDef, cardWord),
+                    sessionPlan = plan,
+                    sessionState = restoredState,
+                    pendingSessionEvents = listOf(
+                        ReviewSessionEvent(
+                            eventId = "extra-blocked",
+                            type = ReviewSessionEventType.EXTRA_SPELLING,
+                            questionId = questionA.questionId,
+                            cardId = cardDef.id,
+                            correctAnswer = cardDef.recto,
+                            countdownBeforeDisplay = 0,
+                            isSkippable = true,
+                            appliesSessionCredit = true
+                        )
+                    ),
+                    recentPresentedItemKeys = listOf("card:${cardDef.id}", "event:matching-before"),
+                    lastPresentedItemInstanceKey = "event:matching-before",
+                    sessionSizeLimit = 2
+                )
+            )
+        )
+
+        viewModel.loadSession(limit = 2)
+        advanceUntilIdle()
+
+        assertEquals(ReviewCurrentItemType.NORMAL_QUESTION, viewModel.uiState.value.currentItemType)
+        assertEquals(cardWord, viewModel.uiState.value.currentCard)
+    }
+
+    @Test
+    fun dueExtraSpellingCanStillAppearWhenNoOtherQuestionFitsSpacing() = runTest {
+        val questionA = question(cardDef.id, ReviewQuestionType.DEFINITION_TO_WORD, 0, firstAnsweredAt = 1L)
+        val plan = ReviewSessionPlan(
+            selectedQuestions = listOf(questionA),
+            sessionOrder = listOf(questionA),
+            remainingQuestionsCount = 0
+        )
+        val restoredState = ReviewSessionState(
+            sessionOrderQuestionIds = listOf(questionA.questionId),
+            questionStates = mapOf(
+                questionA.questionId to ReviewSessionQuestionState(progress = questionA, presentationCount = 1)
+            ),
+            currentQuestionId = questionA.questionId,
+            currentOrderIndex = 0,
+            remainingQuestionsToValidate = 1,
+            isFinished = false
+        )
+        whenever(snapshotRepository.getActiveSession()).thenReturn(
+            ReviewSessionSnapshot(
+                createdAt = 1L,
+                updatedAt = 2L,
+                state = ReviewSessionSnapshotState(
+                    sessionCards = listOf(cardDef),
+                    sessionPlan = plan,
+                    sessionState = restoredState,
+                    pendingSessionEvents = listOf(
+                        ReviewSessionEvent(
+                            eventId = "extra-forced",
+                            type = ReviewSessionEventType.EXTRA_SPELLING,
+                            questionId = questionA.questionId,
+                            cardId = cardDef.id,
+                            correctAnswer = cardDef.recto,
+                            countdownBeforeDisplay = 0,
+                            isSkippable = true,
+                            appliesSessionCredit = true
+                        )
+                    ),
+                    recentPresentedItemKeys = listOf("card:${cardDef.id}", "event:matching-before"),
+                    lastPresentedItemInstanceKey = "event:matching-before",
+                    sessionSizeLimit = 1
+                )
+            )
+        )
+
+        viewModel.loadSession(limit = 1)
+        advanceUntilIdle()
+
+        assertEquals(ReviewCurrentItemType.EXTRA_SPELLING, viewModel.uiState.value.currentItemType)
+        assertEquals(cardDef, viewModel.uiState.value.currentCard)
     }
 
     @Test

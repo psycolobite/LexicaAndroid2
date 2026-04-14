@@ -90,6 +90,22 @@ class ReviewSessionPlannerTest {
     }
 
     @Test
+    fun buildSessionOrderKeepsTwoOtherQuestionsBetweenSameCardWhenPossible() {
+        val planner = ReviewSessionPlanner(FakeFlashcardRepository(), Random(0))
+        val selected = listOf(
+            question(cardId = "card-a", type = ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 0),
+            question(cardId = "card-a", type = ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 1),
+            question(cardId = "card-b", type = ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 2),
+            question(cardId = "card-c", type = ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 3)
+        )
+
+        val sessionOrder = planner.buildSessionOrder(selected)
+        val indicesByCardId = sessionOrder.withIndex().groupBy({ it.value.cardId }, { it.index })
+
+        assertEquals(listOf(0, 3), indicesByCardId.getValue("card-a"))
+    }
+
+    @Test
     fun buildSessionOrderAcceptsTwinAdjacencyWhenUnavoidable() {
         val planner = ReviewSessionPlanner(FakeFlashcardRepository(), Random(0))
         val selected = listOf(

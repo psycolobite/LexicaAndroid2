@@ -9,6 +9,7 @@ import com.example.lexicaandroid2.domain.logic.ReviewSessionPlanner
 import com.example.lexicaandroid2.domain.logic.ReviewIntervalEngine
 import com.example.lexicaandroid2.domain.logic.Sm2Algorithm
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY
 import com.example.lexicaandroid2.domain.model.ReviewAnswer
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.ReviewQuestionType
@@ -20,6 +21,7 @@ import com.example.lexicaandroid2.domain.model.ReviewSessionQuestionState
 import com.example.lexicaandroid2.domain.model.ReviewSessionSnapshot
 import com.example.lexicaandroid2.domain.model.ReviewSessionSnapshotState
 import com.example.lexicaandroid2.domain.model.ReviewSessionState
+import com.example.lexicaandroid2.domain.model.toSessionSpacingKey
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import com.example.lexicaandroid2.domain.repository.ReviewSessionSnapshotRepository
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
@@ -80,6 +82,8 @@ class ReviewViewModel(
     private var eventResultMessage: String? = null
     private var eventResultCorrectAnswer: String? = null
     private var normalAnswersSinceLastMatching: Int = 0
+    private var recentPresentedItemKeys: List<String> = emptyList()
+    private var lastPresentedItemInstanceKey: String? = null
     private var sessionSizeLimit: Int = DEFAULT_SESSION_SIZE
     private val appContext = context?.applicationContext
     private val modelDownloadManager = appContext?.let(::ModelDownloadManager)
@@ -233,6 +237,8 @@ class ReviewViewModel(
         activeSessionCreatedAt = System.currentTimeMillis()
         currentUndoSnapshotState = null
         normalAnswersSinceLastMatching = 0
+        recentPresentedItemKeys = emptyList()
+        lastPresentedItemInstanceKey = null
         val extraSpellingEvents = buildInitialExtraSpellingEvents(sanitizedPlan)
         sessionState = extraSpellingEvents.fold(initialSessionState) { state, event ->
             event.questionId?.let { ReviewSessionEngine.markExtraSpellingScheduled(state, it) } ?: state
@@ -252,6 +258,8 @@ class ReviewViewModel(
         resetSessionInternals()
         allCardsCache = loadedCards
         sessionSizeLimit = limit
+        recentPresentedItemKeys = emptyList()
+        lastPresentedItemInstanceKey = null
 
         val forcedEvents = buildForcedAdminTestEvents(limit)
         if (forcedEvents.isEmpty()) {
@@ -411,7 +419,8 @@ class ReviewViewModel(
             var updatedState = ReviewSessionEngine.answerCurrentQuestion(
                 state = activeState,
                 answer = answer,
-                answeredAt = answeredAt
+                answeredAt = answeredAt,
+                recentPresentationKeys = recentPresentedItemKeys
             )
             val updatedQuestionState = updatedState.questionStates.getValue(currentQuestionId)
             normalAnswersSinceLastMatching += 1
@@ -668,7 +677,8 @@ class ReviewViewModel(
                 ReviewSessionEngine.answerCurrentQuestion(
                     state = it,
                     answer = if (isCorrect) ReviewAnswer.GOT_IT else ReviewAnswer.AGAIN,
-                    answeredAt = System.currentTimeMillis()
+                    answeredAt = System.currentTimeMillis(),
+                    recentPresentationKeys = recentPresentedItemKeys
                 )
             }
         }
@@ -898,16 +908,46 @@ class ReviewViewModel(
         }
 
         while (true) {
-            val dueEvent = pendingSessionEvents.firstOrNull { it.countdownBeforeDisplay <= 0 } ?: return
-            pendingSessionEvents = pendingSessionEvents.filterNot { it.eventId == dueEvent.eventId }
-            if (!isPendingEventStillRelevant(dueEvent)) {
+            val dueEvents = pendingSessionEvents.filter { it.countdownBeforeDisplay <= 0 }
+            if (dueEvents.isEmpty()) return
+
+            val staleEventIds = dueEvents
+                .filterNot(::isPendingEventStillRelevant)
+                .map { it.eventId }
+                .toSet()
+            if (staleEventIds.isNotEmpty()) {
+                pendingSessionEvents = pendingSessionEvents.filterNot { it.eventId in staleEventIds }
                 continue
             }
 
+            val dueEvent = dueEvents.firstOrNull { canPresentWithSpacing(it.toSessionSpacingKey()) }
+                ?: dueEvents.firstOrNull()?.takeIf { shouldRelaxSpacingForBlockedEvent() }
+                ?: return
+
+            pendingSessionEvents = pendingSessionEvents.filterNot { it.eventId == dueEvent.eventId }
             activeSessionEvent = dueEvent
             resetEventInteraction(keepResult = false)
             return
         }
+    }
+
+    private fun canPresentWithSpacing(spacingKey: String?): Boolean {
+        if (spacingKey == null) return true
+        return spacingKey !in recentPresentedItemKeys
+            .takeLast(MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY)
+            .toSet()
+    }
+
+    private fun shouldRelaxSpacingForBlockedEvent(): Boolean {
+        val activeState = sessionState ?: return true
+        if (activeState.isFinished) return true
+
+        val currentQuestionSpacingKey = activeState.currentQuestionState
+            ?.takeIf { sessionCardsById.containsKey(it.progress.cardId) }
+            ?.progress
+            ?.toSessionSpacingKey()
+
+        return !canPresentWithSpacing(currentQuestionSpacingKey)
     }
 
     private fun isEligibleForIntegratedExtraSpelling(question: ReviewQuestionProgress): Boolean {
@@ -1150,7 +1190,40 @@ class ReviewViewModel(
     }
 
     private fun publishUiState(isAnswerRevealed: Boolean) {
+        recordCurrentPresentation()
         _uiState.value = buildUiState(isAnswerRevealed)
+    }
+
+    private fun recordCurrentPresentation() {
+        val instanceKey = currentPresentationInstanceKey() ?: return
+        if (instanceKey == lastPresentedItemInstanceKey) return
+
+        val spacingKey = currentPresentationSpacingKey() ?: return
+        recentPresentedItemKeys = (recentPresentedItemKeys + spacingKey)
+            .takeLast(MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY)
+        lastPresentedItemInstanceKey = instanceKey
+    }
+
+    private fun currentPresentationInstanceKey(): String? {
+        activeSessionEvent?.let { return "event:${it.eventId}" }
+
+        val activeState = sessionState ?: return null
+        if (activeState.isFinished) return null
+        val currentQuestionState = activeState.currentQuestionState ?: return null
+        if (sessionCardsById[currentQuestionState.progress.cardId] == null) return null
+
+        return "question:${currentQuestionState.progress.questionId}:${currentQuestionState.presentationCount}"
+    }
+
+    private fun currentPresentationSpacingKey(): String? {
+        activeSessionEvent?.let { return it.toSessionSpacingKey() }
+
+        val activeState = sessionState ?: return null
+        if (activeState.isFinished) return null
+        val currentQuestionState = activeState.currentQuestionState ?: return null
+        if (sessionCardsById[currentQuestionState.progress.cardId] == null) return null
+
+        return currentQuestionState.progress.toSessionSpacingKey()
     }
 
     private fun buildUiState(isAnswerRevealed: Boolean): ReviewUiState {
@@ -1396,17 +1469,27 @@ class ReviewViewModel(
     ): Int {
         if (sessionOrderQuestionIds.isEmpty()) return -1
         val normalizedIndex = currentOrderIndex.coerceAtLeast(-1)
+        val blockedSpacingKeys = recentPresentedItemKeys
+            .takeLast(MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY)
+            .toSet()
+        var fallbackIndex: Int? = null
 
         for (offset in 0 until sessionOrderQuestionIds.size) {
             val candidateIndex = Math.floorMod(normalizedIndex + offset, sessionOrderQuestionIds.size)
             val candidateId = sessionOrderQuestionIds[candidateIndex]
             val candidateState = questionStates.getValue(candidateId)
             if (!candidateState.isValidated) {
-                return candidateIndex
+                if (fallbackIndex == null) {
+                    fallbackIndex = candidateIndex
+                }
+
+                if (candidateState.progress.toSessionSpacingKey() !in blockedSpacingKeys) {
+                    return candidateIndex
+                }
             }
         }
 
-        return -1
+        return fallbackIndex ?: -1
     }
 
     private suspend fun repairMissingQuestionProgressIfNeeded(cards: List<Flashcard>): List<ReviewQuestionProgress>? {
@@ -1514,6 +1597,11 @@ class ReviewViewModel(
         eventResultSuccessful = snapshotState.eventResultSuccessful
         eventResultMessage = snapshotState.eventResultMessage
         eventResultCorrectAnswer = snapshotState.eventResultCorrectAnswer
+        recentPresentedItemKeys = snapshotState.recentPresentedItemKeys
+            .orEmpty()
+            .takeLast(MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY)
+        lastPresentedItemInstanceKey = snapshotState.lastPresentedItemInstanceKey
+            ?: currentPresentationInstanceKey()
         normalAnswersSinceLastMatching = snapshotState.normalAnswersSinceLastMatching
         sessionSizeLimit = snapshotState.sessionSizeLimit.takeIf { it > 0 } ?: DEFAULT_SESSION_SIZE
     }
@@ -1536,6 +1624,8 @@ class ReviewViewModel(
         eventResultSuccessful = eventResultSuccessful,
         eventResultMessage = eventResultMessage,
         eventResultCorrectAnswer = eventResultCorrectAnswer,
+        recentPresentedItemKeys = recentPresentedItemKeys,
+        lastPresentedItemInstanceKey = lastPresentedItemInstanceKey,
         normalAnswersSinceLastMatching = normalAnswersSinceLastMatching,
         sessionSizeLimit = sessionSizeLimit,
         adminNormalPresentationEnabled = isAdminNormalPresentationEnabled(),
@@ -1573,6 +1663,8 @@ class ReviewViewModel(
         activeSessionCreatedAt = null
         currentUndoSnapshotState = null
         normalAnswersSinceLastMatching = 0
+        recentPresentedItemKeys = emptyList()
+        lastPresentedItemInstanceKey = null
         sessionSizeLimit = DEFAULT_SESSION_SIZE
     }
 

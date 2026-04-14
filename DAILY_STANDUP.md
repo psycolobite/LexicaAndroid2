@@ -6,6 +6,31 @@
 
 ---
 
+## 📅 2026-04-14 — Ajustement Polo-1 : espacement minimal des occurrences d’une même carte
+
+### ✅ Accompli
+- [x] Renforcement de `Polo-1` pour éviter qu’une même carte réapparaisse avec moins de **2 autres questions** entre ses occurrences de révision, quand une alternative existe
+- [x] Harmonisation des équivalences métier d’espacement
+  - `définition → mot` ≈ `question orthographique` / `défi orthographique`
+  - `mot → définition` ≈ `défi sémantique`
+- [x] Prise en compte de **tous les items visibles** comme séparateurs valides
+  - questions normales
+  - événements intégrés (`QCM`, `matching`, orthographe, défis)
+- [x] Ajout d’un repli contrôlé quand la session est trop petite pour respecter la contrainte
+- [x] Couverture par tests unitaires sur le planner, le moteur et le `ReviewViewModel`
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/domain/model/ReviewSessionSpacing.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/logic/ReviewSessionPlanner.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/logic/ReviewSessionEngine.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/model/ReviewSessionSnapshotState.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/ReviewViewModel.kt`
+- `app/src/test/java/com/example/lexicaandroid2/domain/logic/ReviewSessionPlannerTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/domain/logic/ReviewSessionEngineTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/review/ReviewViewModelTest.kt`
+
+---
+
  ## 📅 2026-04-14 — Bouton Modifier multi-écrans + éditeur prérempli + top bars sécurisées
 
 ### ✅ Accompli
@@ -66,6 +91,31 @@
 - `app/src/main/java/com/example/lexicaandroid2/data/importer/DataImporter.kt`
 - `app/src/main/java/com/example/lexicaandroid2/MainActivity.kt`
 - `app/src/main/java/com/example/lexicaandroid2/presentation/review/NormalQuestionContent.kt`
+
+### 🔁 Ajustement UX complémentaire (cartes inline `Mes mots`)
+- [x] **Remontée de la ligne d'état sous la définition** sur les cartes inline de `Mes mots`
+  - les infos `la définition • état` et `le mot • état` appartiennent maintenant à la colonne texte
+  - elles ne se calent plus sous la colonne des boutons (`favori`, `poubelle`, `modifier`)
+  - sur petite largeur / police agrandie, le retour à la ligne se fait dans la largeur disponible de la colonne texte sans chevauchement avec les actions
+
+### 🔗 Fichiers modifiés (complément UX liste)
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListScreen.kt`
+
+### 🔁 Ajustement UX complémentaire (actions des pop-ups)
+- [x] **Actions alignées sur une ligne** dans les pop-ups d'information ciblées
+  - `Ajouter des mots` : popup d'une carte déjà ajoutée
+  - `Mes mots` : popup détail d'une carte
+  - les actions restent au même emplacement général, mais sont désormais horizontales pour un rendu plus propre
+
+### 🔗 Fichiers modifiés (complément UX pop-ups)
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordDetailScreen.kt`
+
+### 🔁 Ajustement correctif (cible réelle des pop-ups)
+- [x] **Correction du périmètre** pour l'alignement horizontal des actions
+  - `Ajouter des mots` : cible confirmée = popup d'information des cartes **déjà ajoutées** ouverte au clic sur la carte
+  - `Mes mots` : cible confirmée = popup détail d'une carte
+  - footer d'actions désormais horizontal sur ces deux pop-ups ciblées
 
 ---
 

@@ -541,16 +541,15 @@ private fun PreviewDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 14.dp),
-                    horizontalArrangement = Arrangement.End,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     if (isAdded) {
                         // Mot déjà dans la collection : Fermer + Favori + Modifier + Supprimer
                         TextButton(onClick = onDismiss) { Text("Fermer") }
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(2.dp)
+                        Spacer(modifier = Modifier.weight(1f))
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(4.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             IconButton(onClick = onFavoriteClick, modifier = Modifier.size(40.dp)) {
                                 Icon(
