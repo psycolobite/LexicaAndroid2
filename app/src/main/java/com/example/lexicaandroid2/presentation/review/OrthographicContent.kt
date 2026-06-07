@@ -264,17 +264,24 @@ internal fun OrthographicEventContent(
                                     color = if (challengeSuccessVisible) Color.White else MaterialTheme.colorScheme.onSurface
                                 )
                                 if (!challengeSuccessVisible) {
-                                    Spacer(modifier = Modifier.height(6.dp))
-                                    Text(
-                                        text = if (isExtraSpelling) {
-                                            "Mot correct : ${decodeReviewText(answerText)}"
-                                        } else {
+                                    val secondaryResultText = when {
+                                        isExtraSpelling && uiState.eventInput.isNotBlank() -> {
+                                            "Vous avez écrit : ${decodeReviewText(uiState.eventInput)}"
+                                        }
+                                        !isExtraSpelling -> {
                                             "Réponse attendue : ${decodeReviewText(answerText)}"
-                                        },
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        textAlign = TextAlign.Center,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+                                        }
+                                        else -> null
+                                    }
+                                    if (secondaryResultText != null) {
+                                        Spacer(modifier = Modifier.height(6.dp))
+                                        Text(
+                                            text = secondaryResultText,
+                                            style = MaterialTheme.typography.bodyMedium,
+                                            textAlign = TextAlign.Center,
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
+                                    }
                                 }
                             }
                         }

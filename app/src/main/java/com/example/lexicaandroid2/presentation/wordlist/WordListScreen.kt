@@ -1,24 +1,24 @@
 package com.example.lexicaandroid2.presentation.wordlist
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
@@ -26,11 +26,9 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -48,21 +46,27 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.example.lexicaandroid2.data.remote.model.WordResult
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
 import com.example.lexicaandroid2.domain.model.ReviewCardProgressSummary
+import com.example.lexicaandroid2.presentation.common.EditWordIconButton
 
 @Composable
 fun WordListScreen(
-    viewModel: WordListViewModel
+    viewModel: WordListViewModel,
+    onEditCard: (Flashcard) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedCard by remember { mutableStateOf<Flashcard?>(null) }
 
     LaunchedEffect(Unit) {
         viewModel.loadWords()
+    }
+
+    LaunchedEffect(uiState.isSelectionMode) {
+        if (uiState.isSelectionMode) {
+            selectedCard = null
+        }
     }
 
     selectedCard?.let { card ->
@@ -76,21 +80,16 @@ fun WordListScreen(
             onDeleteCard = {
                 viewModel.deleteCard(card.id)
                 selectedCard = null
+            },
+            onEditCard = {
+                selectedCard = null
+                onEditCard(card)
             }
-        )
-    }
-
-    uiState.apiPreviewResult?.let { result ->
-        ExternalWordPreviewDialog(
-            result = result,
-            onDismiss = viewModel::closeApiPreview,
-            onConfirmAdd = { viewModel.addWordFromApi(result) }
         )
     }
 
     Scaffold(
         topBar = {
-             // Search within MY words (filtering)
              SearchBar(
                  query = uiState.searchQuery,
                  onQueryChange = viewModel::onSearchQueryChanged,
@@ -104,86 +103,36 @@ fun WordListScreen(
                 .padding(padding)
                 .background(Color(0xFFFAFAFA)) // Updated background to match Dashboard
         ) {
-            uiState.successMessage?.let { message ->
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    color = Color(0xFFE8F5E9),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Text(
-                        text = "✓ $message",
-                        color = Color(0xFF1B5E20),
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)
-                    )
-                }
-            }
-
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(uiState.filteredCards) { card ->
+                items(uiState.filteredCards, key = { it.id }) { card ->
                     WordItem(
                         card = card,
                         progressSummary = uiState.progressByCardId[card.id]
                             ?: ReviewCardProgressSummary.fromFlashcard(card, System.currentTimeMillis()),
-                        onCardClick = { selectedCard = card },
+                        isSelected = card.id in uiState.selectedCardIds,
+                        onCardClick = {
+                            if (uiState.isSelectionMode) {
+                                viewModel.toggleCardSelection(card.id)
+                            } else {
+                                selectedCard = card
+                            }
+                        },
+                        onCardLongClick = {
+                            viewModel.toggleCardSelection(card.id)
+                        },
                         onToggleFavorite = { viewModel.toggleFavorite(card) },
-                        onDeleteCard = { viewModel.deleteCard(card.id) }
+                        onDeleteCard = { viewModel.deleteCard(card.id) },
+                        onEditCard = { onEditCard(card) }
                     )
-                }
-
-                if (uiState.searchQuery.isNotBlank() && uiState.isApiLoading) {
-                    item {
-                        ExternalSearchLoadingItem()
-                    }
-                }
-
-                if (uiState.apiSearchResults.isNotEmpty()) {
-                    item {
-                        Text(
-                            text = "🌐 Résultats proposés depuis la base de recherche",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
-                        )
-                    }
-                    items(uiState.apiSearchResults) { result ->
-                        ApiSearchResultItem(
-                            result = result,
-                            onPreviewClick = { viewModel.openApiPreview(result) }
-                        )
-                    }
-                }
-
-                uiState.apiError?.let { error ->
-                    item {
-                        Surface(
-                            shape = RoundedCornerShape(12.dp),
-                            color = Color(0xFFFFF3E0),
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Text(
-                                text = error,
-                                color = Color(0xFF8D6E63),
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(14.dp)
-                            )
-                        }
-                    }
                 }
 
                 if (
                     uiState.searchQuery.isNotBlank() &&
-                    uiState.filteredCards.isEmpty() &&
-                    !uiState.isApiLoading &&
-                    uiState.apiSearchResults.isEmpty() &&
-                    uiState.apiError == null
+                    uiState.filteredCards.isEmpty()
                 ) {
                     item {
                         Surface(
@@ -204,7 +153,6 @@ fun WordListScreen(
         }
     }
 }
-
 
 @Composable
 fun SearchBar(
@@ -237,184 +185,19 @@ fun SearchBar(
     }
 }
 
-@Composable
-private fun ExternalSearchLoadingItem() {
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = Color.White,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 14.dp, vertical = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
-            Text(
-                text = "Recherche dans la base de recherche…",
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.Gray
-            )
-        }
-    }
-}
 
-@Composable
-private fun ApiSearchResultItem(
-    result: WordResult,
-    onPreviewClick: () -> Unit
-) {
-    Surface(
-        shape = RoundedCornerShape(12.dp),
-        color = Color.White,
-        shadowElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth()
-    ) {
-        Column(modifier = Modifier.padding(14.dp)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = result.mot,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    if (result.categorieGrammaticale.isNotBlank()) {
-                        Text(
-                            text = result.categorieGrammaticale,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(top = 2.dp)
-                        )
-                    }
-                }
-                OutlinedButton(onClick = onPreviewClick) {
-                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier.size(16.dp))
-                    Spacer(modifier = Modifier.size(6.dp))
-                    Text("Proposer la carte")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Text(
-                text = result.definition,
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.DarkGray,
-                maxLines = 3,
-                overflow = TextOverflow.Ellipsis
-            )
-
-            if (result.source.isNotBlank()) {
-                Text(
-                    text = "Source : ${result.source}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ExternalWordPreviewDialog(
-    result: WordResult,
-    onDismiss: () -> Unit,
-    onConfirmAdd: () -> Unit
-) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(result.mot, fontWeight = FontWeight.Bold)
-                if (result.categorieGrammaticale.isNotBlank()) {
-                    Text(
-                        text = result.categorieGrammaticale,
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                }
-                if (result.source.isNotBlank()) {
-                    Text(
-                        text = "Source : ${result.source}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = Color.Gray
-                    )
-                }
-            }
-        },
-        text = {
-            Column(
-                modifier = Modifier.verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                PreviewSection(title = "Définition", content = result.definition)
-
-                if (result.exemples.isNotEmpty()) {
-                    PreviewSection(
-                        title = "Exemples",
-                        content = result.exemples.joinToString("\n") { "• $it" }
-                    )
-                }
-
-                if (result.synonymes.isNotEmpty()) {
-                    PreviewSection(
-                        title = "Synonymes",
-                        content = result.synonymes.joinToString(", ")
-                    )
-                }
-
-                Text(
-                    text = "Cette carte sera ajoutée automatiquement avec les informations trouvées, sans saisie manuelle.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray,
-                    fontSize = 12.sp
-                )
-            }
-        },
-        confirmButton = {
-            Button(onClick = onConfirmAdd) {
-                Text("Ajouter à mes mots")
-            }
-        },
-        dismissButton = {
-            Button(onClick = onDismiss) {
-                Text("Annuler")
-            }
-        }
-    )
-}
-
-@Composable
-private fun PreviewSection(title: String, content: String) {
-    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.labelLarge,
-            fontWeight = FontWeight.SemiBold
-        )
-        Text(
-            text = content,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.DarkGray
-        )
-    }
-}
-
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun WordItem(
     card: Flashcard,
     progressSummary: ReviewCardProgressSummary,
+    isSelected: Boolean,
     onCardClick: () -> Unit,
+    onCardLongClick: () -> Unit,
     onToggleFavorite: () -> Unit,
-    onDeleteCard: () -> Unit
+    onDeleteCard: () -> Unit,
+    onEditCard: () -> Unit
 ) {
-    val (stateText, stateColor) = progressSummary.aggregateState.toLabelAndColor()
-
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
     if (showDeleteConfirm) {
@@ -442,69 +225,79 @@ fun WordItem(
 
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = Color.White,
+        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.White,
         shadowElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = if (isSelected) 1.5.dp else 0.dp,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                shape = RoundedCornerShape(12.dp)
+            )
     ) {
         Row(
             modifier = Modifier
-                .clickable { onCardClick() }
-                .padding(16.dp)
+                .combinedClickable(
+                    onClick = onCardClick,
+                    onLongClick = onCardLongClick
+                )
+                .padding(horizontal = 14.dp, vertical = 12.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.Top
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Text(
                     text = card.recto,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = card.verso,
                     style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 2,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     color = Color.Gray
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     QuestionStateChip(
-                        label = "Mot → Définition",
+                        label = "la définition",
                         state = progressSummary.wordToDefinitionState
                     )
                     QuestionStateChip(
-                        label = "Définition → Mot",
+                        label = "le mot",
                         state = progressSummary.definitionToWordState
                     )
                 }
             }
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Surface(
-                    color = stateColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Text(
-                        text = stateText,
-                        color = stateColor,
-                        style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                if (isSelected) {
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = "Sélectionné",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .padding(top = 7.dp)
+                            .size(18.dp)
                     )
                 }
 
                 IconButton(
                     onClick = onToggleFavorite,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
                         imageVector = if (card.favori) Icons.Filled.Star else Icons.Outlined.Star,
@@ -516,7 +309,7 @@ fun WordItem(
 
                 IconButton(
                     onClick = { showDeleteConfirm = true },
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -525,6 +318,8 @@ fun WordItem(
                         modifier = Modifier.size(20.dp)
                     )
                 }
+
+                EditWordIconButton(onClick = onEditCard)
             }
         }
     }

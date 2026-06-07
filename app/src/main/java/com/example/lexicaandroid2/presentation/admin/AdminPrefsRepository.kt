@@ -72,7 +72,7 @@ class AdminPrefsRepository(context: Context) {
     // --- Session size ---
     var sessionSize: Int
         get() = prefs.getInt(KEY_SESSION_SIZE, DEFAULT_SESSION_SIZE)
-        set(value) = prefs.edit { putInt(KEY_SESSION_SIZE, value.coerceIn(2, 50)) }
+        set(value) = prefs.edit { putInt(KEY_SESSION_SIZE, value.coerceIn(4, 50)) }
 
     // --- Game overrides ---
     var qcmQuestionCount: Int

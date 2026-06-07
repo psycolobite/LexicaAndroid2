@@ -1,11 +1,13 @@
 package com.example.lexicaandroid2.domain.logic
 
+import com.example.lexicaandroid2.domain.model.MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY
 import com.example.lexicaandroid2.domain.model.ReviewAnswer
 import com.example.lexicaandroid2.domain.model.ReviewSessionCompletion
 import com.example.lexicaandroid2.domain.model.ReviewSessionPlan
 import com.example.lexicaandroid2.domain.model.ReviewSessionQuestionState
 import com.example.lexicaandroid2.domain.model.ReviewSessionState
 import com.example.lexicaandroid2.domain.model.ReviewSessionValidationReason
+import com.example.lexicaandroid2.domain.model.toSessionSpacingKey
 
 object ReviewSessionEngine {
     private val T2_DURATION_MS = ReviewIntervalEngine.durationForIntervalIndex(2)
@@ -30,7 +32,8 @@ object ReviewSessionEngine {
     fun answerCurrentQuestion(
         state: ReviewSessionState,
         answer: ReviewAnswer,
-        answeredAt: Long = System.currentTimeMillis()
+        answeredAt: Long = System.currentTimeMillis(),
+        recentPresentationKeys: List<String> = emptyList()
     ): ReviewSessionState {
         if (state.isFinished) return state
 
@@ -43,9 +46,63 @@ object ReviewSessionEngine {
             answeredAt = answeredAt,
             countsForLongTerm = true,
             countsAsPresentation = true,
-            advanceFromCurrentQuestion = true
+            advanceFromCurrentQuestion = true,
+            recentPresentationKeys = recentPresentationKeys
         )
     }
+
+    fun validateCurrentQuestionFromExtraSpelling(
+        state: ReviewSessionState,
+        answeredAt: Long = System.currentTimeMillis(),
+        recentPresentationKeys: List<String> = emptyList()
+    ): ReviewSessionState {
+        if (state.isFinished) return state
+
+        val currentQuestionId = state.currentQuestionId
+            ?: error("Cannot validate a session with no current question")
+        return applyAnswerToQuestion(
+            state = state,
+            questionId = currentQuestionId,
+            answer = ReviewAnswer.GOT_IT,
+            answeredAt = answeredAt,
+            countsForLongTerm = true,
+            countsAsPresentation = true,
+            advanceFromCurrentQuestion = true,
+            recentPresentationKeys = recentPresentationKeys,
+            forcedValidationReason = ReviewSessionValidationReason.EXTRA_SPELLING_SUCCESS
+        )
+    }
+
+    fun applyExtraSpellingSuccess(
+        state: ReviewSessionState,
+        questionId: String,
+        answeredAt: Long = System.currentTimeMillis()
+    ): ReviewSessionState = applyAnswerToQuestion(
+        state = state,
+        questionId = questionId,
+        answer = ReviewAnswer.GOT_IT,
+        answeredAt = answeredAt,
+        countsForLongTerm = true,
+        countsAsPresentation = false,
+        advanceFromCurrentQuestion = false,
+        recentPresentationKeys = emptyList(),
+        forcedValidationReason = ReviewSessionValidationReason.EXTRA_SPELLING_SUCCESS
+    )
+
+    fun applyExtraSpellingFailure(
+        state: ReviewSessionState,
+        questionId: String,
+        answeredAt: Long = System.currentTimeMillis()
+    ): ReviewSessionState = applyAnswerToQuestion(
+        state = state,
+        questionId = questionId,
+        answer = ReviewAnswer.AGAIN,
+        answeredAt = answeredAt,
+        countsForLongTerm = true,
+        countsAsPresentation = false,
+        advanceFromCurrentQuestion = false,
+        recentPresentationKeys = emptyList()
+    )
 
     fun applyEventGotIt(
         state: ReviewSessionState,
@@ -58,7 +115,8 @@ object ReviewSessionEngine {
         answeredAt = answeredAt,
         countsForLongTerm = false,
         countsAsPresentation = false,
-        advanceFromCurrentQuestion = false
+        advanceFromCurrentQuestion = false,
+        recentPresentationKeys = emptyList()
     )
 
     fun applyEventAgain(
@@ -72,7 +130,8 @@ object ReviewSessionEngine {
         answeredAt = answeredAt,
         countsForLongTerm = false,
         countsAsPresentation = false,
-        advanceFromCurrentQuestion = false
+        advanceFromCurrentQuestion = false,
+        recentPresentationKeys = emptyList()
     )
 
     fun markQcmScheduled(
@@ -139,7 +198,9 @@ object ReviewSessionEngine {
         answeredAt: Long,
         countsForLongTerm: Boolean,
         countsAsPresentation: Boolean,
-        advanceFromCurrentQuestion: Boolean
+        advanceFromCurrentQuestion: Boolean,
+        recentPresentationKeys: List<String>,
+        forcedValidationReason: ReviewSessionValidationReason? = null
     ): ReviewSessionState {
         if (state.isFinished) return state
 
@@ -151,7 +212,8 @@ object ReviewSessionEngine {
             answer = answer,
             answeredAt = answeredAt,
             countsForLongTerm = countsForLongTerm,
-            countsAsPresentation = countsAsPresentation
+            countsAsPresentation = countsAsPresentation,
+            forcedValidationReason = forcedValidationReason
         )
         val updatedQuestionStates = state.questionStates + (questionId to updatedQuestionState)
         val remainingQuestions = updatedQuestionStates.values.count { !it.isValidated }
@@ -172,13 +234,15 @@ object ReviewSessionEngine {
             advanceFromCurrentQuestion -> findNextUnvalidatedIndex(
                 sessionOrderQuestionIds = state.sessionOrderQuestionIds,
                 currentOrderIndex = state.currentOrderIndex,
-                questionStates = updatedQuestionStates
+                questionStates = updatedQuestionStates,
+                recentPresentationKeys = recentPresentationKeys
             )
             currentQuestionStillAvailable -> state.currentOrderIndex
             else -> findNextUnvalidatedIndex(
                 sessionOrderQuestionIds = state.sessionOrderQuestionIds,
                 currentOrderIndex = state.currentOrderIndex,
-                questionStates = updatedQuestionStates
+                questionStates = updatedQuestionStates,
+                recentPresentationKeys = recentPresentationKeys
             )
         }
         val nextQuestionId = state.sessionOrderQuestionIds[nextOrderIndex]
@@ -197,7 +261,8 @@ object ReviewSessionEngine {
         answer: ReviewAnswer,
         answeredAt: Long,
         countsForLongTerm: Boolean,
-        countsAsPresentation: Boolean
+        countsAsPresentation: Boolean,
+        forcedValidationReason: ReviewSessionValidationReason? = null
     ): ReviewSessionQuestionState {
         val isFirstPresentation = countsAsPresentation && questionState.presentationCount == 0
         val firstAnswer = if (countsForLongTerm) questionState.firstAnswer ?: answer else questionState.firstAnswer
@@ -210,7 +275,7 @@ object ReviewSessionEngine {
             ReviewAnswer.TOO_EASY -> questionState.consecutiveGotItCount + 3
             ReviewAnswer.AGAIN -> 0
         }
-        val validationReason = resolveValidationReason(
+        val validationReason = forcedValidationReason ?: resolveValidationReason(
             questionState = questionState,
             answer = answer,
             isFirstPresentation = isFirstPresentation,
@@ -264,16 +329,29 @@ object ReviewSessionEngine {
     private fun findNextUnvalidatedIndex(
         sessionOrderQuestionIds: List<String>,
         currentOrderIndex: Int,
-        questionStates: Map<String, ReviewSessionQuestionState>
+        questionStates: Map<String, ReviewSessionQuestionState>,
+        recentPresentationKeys: List<String>
     ): Int {
+        val blockedSpacingKeys = recentPresentationKeys
+            .takeLast(MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY)
+            .toSet()
+        var fallbackIndex: Int? = null
+
         for (offset in 1..sessionOrderQuestionIds.size) {
             val candidateIndex = (currentOrderIndex + offset) % sessionOrderQuestionIds.size
             val candidateQuestionId = sessionOrderQuestionIds[candidateIndex]
             val candidateState = questionStates.getValue(candidateQuestionId)
             if (!candidateState.isValidated) {
-                return candidateIndex
+                if (fallbackIndex == null) {
+                    fallbackIndex = candidateIndex
+                }
+
+                val candidateSpacingKey = candidateState.progress.toSessionSpacingKey()
+                if (candidateSpacingKey !in blockedSpacingKeys) {
+                    return candidateIndex
+                }
             }
         }
-        return currentOrderIndex.coerceAtLeast(0)
+        return fallbackIndex ?: currentOrderIndex.coerceAtLeast(0)
     }
 }

@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.presentation.wordlist
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -27,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -39,6 +42,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.ViewModel
@@ -53,6 +57,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import com.example.lexicaandroid2.presentation.common.EditWordIconButton
 
 data class WordDetailUiState(
     val card: Flashcard? = null,
@@ -120,6 +125,10 @@ class WordDetailViewModel(
             // Pas de reload après suppression, le composable gérera la navigation
         }
     }
+
+    fun refreshCard() {
+        loadCard()
+    }
 }
 
 class WordDetailViewModelFactory(
@@ -138,7 +147,8 @@ class WordDetailViewModelFactory(
 fun WordDetailScreen(
     cardId: String,
     viewModel: WordDetailViewModel,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onEditCard: (Flashcard) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val card = uiState.card
@@ -190,7 +200,6 @@ fun WordDetailScreen(
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 },
-                modifier = Modifier.height(40.dp),
                 colors = TopAppBarDefaults.topAppBarColors(),
                 actions = {
                     if (card != null) {
@@ -208,6 +217,7 @@ fun WordDetailScreen(
                                 tint = MaterialTheme.colorScheme.error
                             )
                         }
+                        EditWordIconButton(onClick = { onEditCard(card) })
                     }
                 }
             )
@@ -249,7 +259,8 @@ fun WordDetailDialog(
     card: Flashcard,
     onDismiss: () -> Unit,
     onToggleFavorite: () -> Unit,
-    onDeleteCard: () -> Unit
+    onDeleteCard: () -> Unit,
+    onEditCard: () -> Unit
 ) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
@@ -283,29 +294,13 @@ fun WordDetailDialog(
             color = MaterialTheme.colorScheme.surface,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(max = 700.dp)
+                .heightIn(max = 620.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 TopAppBar(
                     title = { Text(card.recto, fontWeight = FontWeight.Bold) },
-                    modifier = Modifier.height(40.dp),
-                    colors = TopAppBarDefaults.topAppBarColors(),
-                    actions = {
-                        IconButton(onClick = onToggleFavorite) {
-                            Icon(
-                                imageVector = if (card.favori) Icons.Filled.Star else Icons.Outlined.Star,
-                                contentDescription = "Favori",
-                                tint = if (card.favori) Color(0xFFFFB800) else Color.Gray
-                            )
-                        }
-                        IconButton(onClick = { showDeleteConfirm = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Delete,
-                                contentDescription = "Supprimer",
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
+                    modifier = Modifier.padding(top = 6.dp),
+                    colors = TopAppBarDefaults.topAppBarColors()
                 )
 
                 LazyColumn(
@@ -320,18 +315,42 @@ fun WordDetailDialog(
                             progressSummary = ReviewCardProgressSummary.fromFlashcard(
                                 card,
                                 System.currentTimeMillis()
-                            )
+                            ),
+                            topPadding = 6.dp
                         )
                     }
                 }
 
-                Button(
-                    onClick = onDismiss,
+                Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp)
+                        .padding(16.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Fermer")
+                    TextButton(onClick = onDismiss) {
+                        Text("Fermer")
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        IconButton(onClick = onToggleFavorite) {
+                            Icon(
+                                imageVector = if (card.favori) Icons.Filled.Star else Icons.Outlined.Star,
+                                contentDescription = "Favori",
+                                tint = if (card.favori) Color(0xFFFFB800) else Color.Gray
+                            )
+                        }
+                        IconButton(onClick = { showDeleteConfirm = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = "Supprimer",
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                        EditWordIconButton(onClick = onEditCard)
+                    }
                 }
             }
         }
@@ -341,12 +360,13 @@ fun WordDetailDialog(
 @Composable
 private fun WordDetailContent(
     card: Flashcard,
-    progressSummary: ReviewCardProgressSummary
+    progressSummary: ReviewCardProgressSummary,
+    topPadding: Dp = 16.dp
 ) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 16.dp)
+            .padding(top = topPadding)
     ) {
         if (card.categorieGrammaticale.isNotBlank() || card.registre.isNotBlank()) {
             Row(
@@ -451,11 +471,23 @@ fun DetailSection(title: String, content: String) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(bottom = 8.dp)
         )
-        Text(
-            text = content,
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Gray
-        )
+        Surface(
+            shape = RoundedCornerShape(14.dp),
+            color = Color.White,
+            tonalElevation = 1.dp,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(
+                text = content,
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.Gray,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 220.dp)
+                    .verticalScroll(rememberScrollState())
+                    .padding(12.dp)
+            )
+        }
     }
 }
 

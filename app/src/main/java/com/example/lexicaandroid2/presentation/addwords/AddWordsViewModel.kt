@@ -32,8 +32,10 @@ data class AddWordsUiState(
     val manualDefinition: String = "",
     val manualSynonymes: String = "",
     val manualCategorie: String = "",
+    val manualRegistre: String = "",
     val manualEtymologie: String = "",
     val manualExemples: String = "",
+    val manualNotes: String = "",
     val manualExpanded: Boolean = false,                    // accordéon champs optionnels
     val duplicateCandidate: Flashcard? = null,              // doublon détecté → AlertDialog
     val pendingWord: WordResult? = null,                    // mot en attente après résolution doublon
@@ -41,7 +43,14 @@ data class AddWordsUiState(
     val error: String? = null,
     // mots proposés (réserve locale, affichés quand pas de recherche)
     val proposedWords: List<WordReserveEntity> = emptyList(),
-    val isLoadingProposed: Boolean = false
+    val isLoadingProposed: Boolean = false,
+    /**
+     * Mots ajoutés pendant la session courante.
+     * Clé : `mot.trim()` pour uniformiser les résultats API et réserve locale.
+     * Valeur : la Flashcard créée (pour pouvoir la supprimer / mettre en favori).
+     * Remis à zéro à chaque entrée sur l'écran.
+     */
+    val addedInSession: Map<String, Flashcard> = emptyMap()
 )
 
 // ─── ViewModel ───────────────────────────────────────────────────────────────
@@ -51,101 +60,175 @@ class AddWordsViewModel(
     private val flashcardRepository: FlashcardRepository
 ) : ViewModel() {
 
+    private companion object {
+        const val SEARCH_DEBOUNCE_MS = 300L
+    }
+
     private val _uiState = MutableStateFlow(AddWordsUiState())
     val uiState: StateFlow<AddWordsUiState> = _uiState.asStateFlow()
 
     private var debounceJob: Job? = null
     private var allCards: List<Flashcard> = emptyList()
+    private var latestSearchRequestId: Long = 0L
 
     init {
-        loadProposedWords()
-        loadAllCards()
+        refreshScreenData(resetSessionMarkers = false, resetSearchState = false)
+    }
+
+    // ── Entrée sur l'écran ────────────────────────────────────────────────────
+
+    /**
+     * À appeler via LaunchedEffect(Unit) dans le composable.
+     * Recharge la réserve (sans les mots déjà ajoutés),
+     * rafraîchit allCards (corrige le bug "mot supprimé encore visible"),
+     * remet à zéro les marqueurs de session et nettoie l'état de recherche.
+     */
+    fun onScreenEntered() {
+        refreshScreenData(resetSessionMarkers = true, resetSearchState = true)
     }
 
     // ── Chargement initial ────────────────────────────────────────────────────
 
-    private fun loadProposedWords() {
+    private fun refreshScreenData(
+        resetSessionMarkers: Boolean,
+        resetSearchState: Boolean
+    ) {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoadingProposed = true) }
-            runCatching { wordReserveRepository.getProposedWords(50) }
-                .onSuccess { words -> _uiState.update { it.copy(proposedWords = words, isLoadingProposed = false) } }
-                .onFailure { _uiState.update { it.copy(isLoadingProposed = false) } }
-        }
-    }
+            if (resetSearchState) {
+                debounceJob?.cancel()
+                latestSearchRequestId++
+            }
 
-    private fun loadAllCards() {
-        viewModelScope.launch {
+            _uiState.update { state ->
+                state.copy(
+                    isLoadingProposed = true,
+                    addedInSession = if (resetSessionMarkers) emptyMap() else state.addedInSession,
+                    searchQuery = if (resetSearchState) "" else state.searchQuery,
+                    localMatches = if (resetSearchState) emptyList() else state.localMatches,
+                    apiResults = if (resetSearchState) emptyList() else state.apiResults,
+                    isApiLoading = false,
+                    error = null,
+                    selectedResult = if (resetSearchState) null else state.selectedResult
+                )
+            }
+
+            var latestCards = allCards
             runCatching { flashcardRepository.getAllCards() }
-                .onSuccess { cards -> allCards = cards }
+                .onSuccess { cards ->
+                    allCards = cards
+                    latestCards = cards
+                }
+
+            runCatching { wordReserveRepository.getProposedWords(50) }
+                .onSuccess { words ->
+                    _uiState.update { state ->
+                        state.copy(
+                            proposedWords = filterSuggestedWords(words, latestCards),
+                            localMatches = computeLocalMatches(state.searchQuery, latestCards),
+                            addedInSession = reconcileAddedInSession(state.addedInSession, latestCards),
+                            isLoadingProposed = false
+                        )
+                    }
+                }
+                .onFailure {
+                    _uiState.update { state ->
+                        state.copy(
+                            proposedWords = filterSuggestedWords(state.proposedWords, latestCards),
+                            localMatches = computeLocalMatches(state.searchQuery, latestCards),
+                            addedInSession = reconcileAddedInSession(state.addedInSession, latestCards),
+                            isLoadingProposed = false
+                        )
+                    }
+                }
         }
     }
 
     // ── Barre de recherche ───────────────────────────────────────────────────
 
     fun onSearchQueryChanged(query: String) {
-        _uiState.update { it.copy(searchQuery = query, error = null, successMessage = null) }
+        debounceJob?.cancel()
+        val requestId = ++latestSearchRequestId
+
+        _uiState.update {
+            it.copy(
+                searchQuery = query,
+                error = null,
+                successMessage = null,
+                isApiLoading = false
+            )
+        }
 
         // Filtre local instantané (dès 2 caractères)
         val trimmed = query.trim()
         if (trimmed.length >= 2) {
-            val matches = allCards.filter {
-                it.recto.contains(trimmed, ignoreCase = true) ||
-                it.verso.contains(trimmed, ignoreCase = true)
-            }.take(5)
+            val matches = computeLocalMatches(trimmed, allCards)
             _uiState.update { it.copy(localMatches = matches) }
         } else {
-            _uiState.update { it.copy(localMatches = emptyList(), apiResults = emptyList()) }
+            _uiState.update {
+                it.copy(
+                    localMatches = emptyList(),
+                    apiResults = emptyList(),
+                    isApiLoading = false,
+                    error = null
+                )
+            }
             return
         }
 
-        // Debounce 500ms → recherche API
-        debounceJob?.cancel()
+        // Debounce réduit pour une recherche plus réactive sans spammer l'API
         debounceJob = viewModelScope.launch {
-            delay(500)
-            searchApi(trimmed)
+            delay(SEARCH_DEBOUNCE_MS)
+            searchApi(trimmed, requestId)
         }
     }
 
-    private fun searchApi(query: String) {
-        viewModelScope.launch {
-            _uiState.update { it.copy(isApiLoading = true, apiResults = emptyList()) }
-            try {
-                val results = wordReserveRepository.searchOnline(query)
-                val wordResults = results.map { entity ->
-                    WordResult(
-                        mot = entity.mot,
-                        definition = entity.definition,
-                        categorieGrammaticale = entity.categorieGrammaticale,
-                        exemples = entity.exemples,
-                        synonymes = entity.synonymes
-                    )
-                }
-                _uiState.update {
-                    it.copy(
-                        apiResults = wordResults,
-                        isApiLoading = false,
-                        error = if (wordResults.isEmpty() && it.localMatches.isEmpty())
-                            "Pas de résultat — tu peux ajouter le mot manuellement" else null
-                    )
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isApiLoading = false,
-                        error = "Pas de connexion — tu peux ajouter le mot manuellement"
-                    )
-                }
+    private suspend fun searchApi(query: String, requestId: Long) {
+        if (!isSearchRequestStillCurrent(query, requestId)) return
+
+        _uiState.update { it.copy(isApiLoading = true, apiResults = emptyList()) }
+
+        try {
+            val results = wordReserveRepository.searchOnline(query)
+            if (!isSearchRequestStillCurrent(query, requestId)) return
+
+            val wordResults = results.map { entity ->
+                WordResult(
+                    mot = entity.mot,
+                    definition = entity.definition,
+                    categorieGrammaticale = entity.categorieGrammaticale,
+                    exemples = entity.exemples,
+                    synonymes = entity.synonymes
+                )
+            }
+            _uiState.update {
+                it.copy(
+                    apiResults = wordResults,
+                    isApiLoading = false,
+                    error = if (wordResults.isEmpty() && it.localMatches.isEmpty())
+                        "Pas de résultat — tu peux ajouter le mot manuellement" else null
+                )
+            }
+        } catch (_: Exception) {
+            if (!isSearchRequestStillCurrent(query, requestId)) return
+
+            _uiState.update {
+                it.copy(
+                    isApiLoading = false,
+                    error = "Pas de connexion — tu peux ajouter le mot manuellement"
+                )
             }
         }
     }
 
     fun clearSearch() {
         debounceJob?.cancel()
+        latestSearchRequestId++
         _uiState.update {
             it.copy(
                 searchQuery = "",
                 localMatches = emptyList(),
                 apiResults = emptyList(),
+                isApiLoading = false,
                 error = null,
                 successMessage = null
             )
@@ -176,6 +259,10 @@ class AddWordsViewModel(
         _uiState.update { it.copy(selectedResult = null) }
     }
 
+    fun addWordResult(result: WordResult) {
+        checkDuplicateAndAdd(result)
+    }
+
     /** Confirmer l'ajout depuis la fiche d'aperçu. */
     fun confirmAddFromPreview() {
         val result = _uiState.value.selectedResult ?: return
@@ -189,7 +276,7 @@ class AddWordsViewModel(
 
     // ── Gestion des doublons ─────────────────────────────────────────────────
 
-    private fun checkDuplicateAndAdd(word: WordResult) {
+    private fun checkDuplicateAndAdd(word: WordResult, manualFlashcard: Flashcard? = null) {
         val duplicate = allCards.firstOrNull {
             it.recto.equals(word.mot.trim(), ignoreCase = true)
         }
@@ -198,7 +285,7 @@ class AddWordsViewModel(
                 it.copy(duplicateCandidate = duplicate, pendingWord = word)
             }
         } else {
-            doAddWord(word)
+            doAddWord(word, manualFlashcard)
         }
     }
 
@@ -230,10 +317,10 @@ class AddWordsViewModel(
         _uiState.update { it.copy(duplicateCandidate = null, pendingWord = null) }
     }
 
-    private fun doAddWord(word: WordResult) {
+    private fun doAddWord(word: WordResult, manualFlashcard: Flashcard? = null) {
         viewModelScope.launch {
             runCatching {
-                val flashcard = Flashcard(
+                val flashcard = manualFlashcard ?: Flashcard(
                     id = UUID.randomUUID().toString(),
                     recto = word.mot.trim(),
                     verso = word.definition.trim(),
@@ -243,12 +330,14 @@ class AddWordsViewModel(
                 )
                 flashcardRepository.saveCard(flashcard)
                 allCards = allCards + flashcard
-            }.onSuccess {
-                _uiState.update {
-                    it.copy(
+                flashcard
+            }.onSuccess { flashcard ->
+                val key = word.mot.trim()
+                _uiState.update { state ->
+                    state.copy(
                         selectedResult = null,
                         manualMode = false,
-                        successMessage = "\"${word.mot}\" ajouté à ta liste !"
+                        addedInSession = state.addedInSession + (key to flashcard)
                     )
                 }
                 clearSuccessAfterDelay()
@@ -264,18 +353,53 @@ class AddWordsViewModel(
         viewModelScope.launch {
             runCatching { wordReserveRepository.addToCollection(word) }
                 .onSuccess {
-                    allCards = allCards + Flashcard(
+                    val flashcard = Flashcard(
                         id = word.id, recto = word.mot, verso = word.definition,
                         synonymes = word.synonymes, exemples = word.exemples,
                         categorieGrammaticale = word.categorieGrammaticale
                     )
+                    allCards = allCards + flashcard
+                    // Clé unifiée sur mot.trim() — même clé que doAddWord() pour que
+                    // l'ajout via PreviewDialog et via bouton direct soient cohérents.
+                    val key = word.mot.trim()
                     _uiState.update { state ->
                         state.copy(
-                            proposedWords = state.proposedWords.filter { it.id != word.id },
-                            successMessage = "\"${word.mot}\" ajouté à ta liste !"
+                            addedInSession = state.addedInSession + (key to flashcard)
                         )
                     }
                     clearSuccessAfterDelay()
+                }
+        }
+    }
+
+    // ── Actions sur les mots ajoutés pendant la session ───────────────────────
+
+    /** Supprime un mot ajouté cette session (par sa clé dans addedInSession). */
+    fun deleteAddedWord(key: String) {
+        val card = _uiState.value.addedInSession[key] ?: return
+        viewModelScope.launch {
+            runCatching { flashcardRepository.deleteCard(card.id) }
+                .onSuccess {
+                    allCards = allCards.filter { it.id != card.id }
+                    _uiState.update { state ->
+                        state.copy(addedInSession = state.addedInSession - key)
+                    }
+                }
+        }
+    }
+
+    /** Bascule le favori d'un mot ajouté cette session. */
+    fun toggleFavoriteAddedWord(key: String) {
+        val card = _uiState.value.addedInSession[key] ?: return
+        val newFavori = !card.favori
+        viewModelScope.launch {
+            runCatching { flashcardRepository.setFavorite(card.id, newFavori) }
+                .onSuccess {
+                    val updated = card.copy(favori = newFavori)
+                    allCards = allCards.map { if (it.id == card.id) updated else it }
+                    _uiState.update { state ->
+                        state.copy(addedInSession = state.addedInSession + (key to updated))
+                    }
                 }
         }
     }
@@ -290,24 +414,30 @@ class AddWordsViewModel(
                 manualDefinition = "",
                 manualSynonymes = "",
                 manualCategorie = "",
+                manualRegistre = "",
                 manualEtymologie = "",
                 manualExemples = "",
+                manualNotes = "",
                 manualExpanded = false
             )
         }
     }
 
-    fun closeManualMode() {
-        _uiState.update { it.copy(manualMode = false) }
-    }
+    fun closeManualMode() { _uiState.update { it.copy(manualMode = false) } }
 
     fun onManualWordChanged(v: String)       { _uiState.update { it.copy(manualWord = v) } }
     fun onManualDefinitionChanged(v: String) { _uiState.update { it.copy(manualDefinition = v) } }
     fun onManualSynonymesChanged(v: String)  { _uiState.update { it.copy(manualSynonymes = v) } }
     fun onManualCategorieChanged(v: String)  { _uiState.update { it.copy(manualCategorie = v) } }
+    fun onManualRegistreChanged(v: String)   { _uiState.update { it.copy(manualRegistre = v) } }
     fun onManualEtymologieChanged(v: String) { _uiState.update { it.copy(manualEtymologie = v) } }
     fun onManualExemplesChanged(v: String)   { _uiState.update { it.copy(manualExemples = v) } }
+    fun onManualNotesChanged(v: String)      { _uiState.update { it.copy(manualNotes = v) } }
     fun toggleManualExpanded()               { _uiState.update { it.copy(manualExpanded = !it.manualExpanded) } }
+
+    fun refreshAfterCardEdit() {
+        refreshScreenData(resetSessionMarkers = false, resetSearchState = false)
+    }
 
     fun confirmManualAdd() {
         val state = _uiState.value
@@ -318,11 +448,22 @@ class AddWordsViewModel(
         val word = WordResult(
             mot = state.manualWord.trim(),
             definition = state.manualDefinition.trim(),
-            synonymes = state.manualSynonymes.split(",").map { it.trim() }.filter { it.isNotBlank() },
-            exemples = state.manualExemples.split(",").map { it.trim() }.filter { it.isNotBlank() },
+            synonymes = splitOptionalListField(state.manualSynonymes),
+            exemples = splitOptionalListField(state.manualExemples),
             categorieGrammaticale = state.manualCategorie.trim()
         )
-        checkDuplicateAndAdd(word)
+        val manualFlashcard = Flashcard(
+            id = UUID.randomUUID().toString(),
+            recto = word.mot,
+            verso = word.definition,
+            synonymes = word.synonymes,
+            exemples = word.exemples,
+            categorieGrammaticale = word.categorieGrammaticale,
+            registre = state.manualRegistre.trim(),
+            etymologie = state.manualEtymologie.trim(),
+            notesPersonnelles = state.manualNotes.trim()
+        )
+        checkDuplicateAndAdd(word, manualFlashcard)
     }
 
     // ── Helpers ──────────────────────────────────────────────────────────────
@@ -333,6 +474,47 @@ class AddWordsViewModel(
             _uiState.update { it.copy(successMessage = null) }
         }
     }
+
+    private fun computeLocalMatches(query: String, cards: List<Flashcard>): List<Flashcard> {
+        val trimmed = query.trim()
+        if (trimmed.length < 2) return emptyList()
+
+        return cards.filter {
+            it.recto.contains(trimmed, ignoreCase = true) ||
+                it.verso.contains(trimmed, ignoreCase = true)
+        }.take(5)
+    }
+
+    private fun filterSuggestedWords(
+        words: List<WordReserveEntity>,
+        cards: List<Flashcard>
+    ): List<WordReserveEntity> {
+        val existingWords = cards.mapTo(mutableSetOf()) { it.recto.normalizedWordKey() }
+        return words.filterNot { it.mot.normalizedWordKey() in existingWords }
+    }
+
+    private fun reconcileAddedInSession(
+        existing: Map<String, Flashcard>,
+        latestCards: List<Flashcard>
+    ): Map<String, Flashcard> {
+        if (existing.isEmpty()) return emptyMap()
+        val latestById = latestCards.associateBy { it.id }
+        return existing.values.mapNotNull { card ->
+            latestById[card.id]?.let { updated -> updated.recto.trim() to updated }
+        }.toMap()
+    }
+
+    private fun splitOptionalListField(value: String): List<String> = value
+        .split('\n', ',')
+        .map { it.trim() }
+        .filter { it.isNotBlank() }
+
+    private fun isSearchRequestStillCurrent(query: String, requestId: Long): Boolean {
+        val currentState = _uiState.value
+        return requestId == latestSearchRequestId && currentState.searchQuery.trim() == query
+    }
+
+    private fun String.normalizedWordKey(): String = trim().lowercase()
 }
 
 // ─── Factory ─────────────────────────────────────────────────────────────────

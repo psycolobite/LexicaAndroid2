@@ -15,7 +15,8 @@ data class DashboardUiState(
     val learningCount: Int = 0,
     val knownCount: Int = 0,
     val totalCount: Int = 0,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val hasLoadedOnce: Boolean = false
 )
 
 class DashboardViewModel(
@@ -42,12 +43,13 @@ class DashboardViewModel(
                         learningCount = learningC,
                         knownCount = knownC,
                         totalCount = total,
-                        isLoading = false
+                        isLoading = false,
+                        hasLoadedOnce = true
                     )
                 }
             } catch (e: Exception) {
                 // In real app, handle error
-                _uiState.update { it.copy(isLoading = false) }
+                _uiState.update { it.copy(isLoading = false, hasLoadedOnce = true) }
             }
         }
     }

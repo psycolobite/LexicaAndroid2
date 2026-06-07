@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -87,6 +88,41 @@ class AdminViewModelTest {
 
             assertTrue(viewModel.consumePendingReviewSettingsChange())
             assertFalse(viewModel.consumePendingReviewSettingsChange())
+        } finally {
+            Dispatchers.resetMain()
+        }
+    }
+
+    @Test
+    fun setSessionSizeUsesMinimumOfFour() = runTest {
+        Dispatchers.setMain(testDispatcher)
+        try {
+            val adminPrefsRepository = mock<AdminPrefsRepository>()
+            val userStatsRepository = mock<UserStatsRepository>()
+            whenever(userStatsRepository.getUserStats()).thenReturn(flowOf(UserStatsEntity(level = 3)))
+
+            whenever(adminPrefsRepository.normalPresentationEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewWordToDefinitionEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewDefinitionToWordEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.extraSpellingEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewQcmEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.reviewMatchingEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.challengeSemanticEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.challengeOrthoEnabled).thenReturn(true)
+            whenever(adminPrefsRepository.sessionSize).thenReturn(4)
+            whenever(adminPrefsRepository.qcmQuestionCount).thenReturn(AdminPrefsRepository.DEFAULT_QCM_COUNT)
+            whenever(adminPrefsRepository.memoryGridSize).thenReturn(MemoryGridSize.SIZE_4X4)
+
+            val viewModel = AdminViewModel(
+                adminPrefsRepository = adminPrefsRepository,
+                userStatsRepository = userStatsRepository,
+                dailyReviewStatDao = null
+            )
+
+            viewModel.setSessionSize(2)
+
+            verify(adminPrefsRepository).sessionSize = 2
+            assertEquals(4, viewModel.uiState.value.sessionSize)
         } finally {
             Dispatchers.resetMain()
         }

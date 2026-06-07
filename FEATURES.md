@@ -88,5 +88,13 @@
 - [x] **Daily Challenge** 📅 — TACHE_09 ✅
 - [x] **Déverrouillage progressif des jeux par XP** — TACHE_20 ✅
 - [ ] **Spelling avancé (phonetique)** — voir TACHE_06 (Spelling Avance)
+- [x] **Refill automatique réserve de mots (Option A)** — `RefillWordReserveUseCase` : quand `word_reserve < 100` et internet actif, l'app tire des mots depuis les catégories fr.wiktionary.org (registre soutenu, philosophie, rhétorique…) et les insère avec leur définition complète. Fallback statique (`RareWordsCandidates`) si l'API catégories est indisponible. ✅
+
+### 💡 IDÉES FUTURES (Non planifiées)
+
+- [ ] **Refill réserve intelligent par profil utilisateur (Option D)**  
+  Analyser la distribution des `categorieGrammaticale` dans la collection de l'utilisateur → identifier les domaines sous-représentés → cibler les catégories Wiktionnaire correspondantes en priorité lors du refill.  
+  _Exemple : si l'utilisateur a beaucoup de "philosophie" mais peu de "rhétorique", le prochain refill pioche davantage dans `Vocabulaire de la rhétorique en français`._  
+  Dépendances : `RefillWordReserveUseCase` (existant) + analyse de `flashcardDao.getAllCategoriesStats()` (à créer).
 
 ---

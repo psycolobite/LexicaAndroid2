@@ -195,8 +195,8 @@ fun SettingsScreen(
             Slider(
                 value = uiState.cardsPerSession.toFloat(),
                 onValueChange = { viewModel.setCardsPerSession(it.toInt()) },
-                valueRange = 2f..50f,
-                steps = 47,
+                valueRange = 4f..50f,
+                steps = 45,
                 modifier = Modifier.fillMaxWidth()
             )
             Text(

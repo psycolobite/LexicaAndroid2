@@ -22,6 +22,9 @@ interface WordReserveDao {
     @Query("SELECT COUNT(*) FROM word_reserve")
     suspend fun count(): Int
 
+    @Query("SELECT mot FROM word_reserve")
+    suspend fun getAllMots(): List<String>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(words: List<WordReserveEntity>)
 

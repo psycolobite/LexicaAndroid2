@@ -160,7 +160,7 @@ class AdminViewModel(
     }
 
     fun setSessionSize(size: Int) {
-        if (_uiState.value.sessionSize != size.coerceIn(2, 50)) {
+        if (_uiState.value.sessionSize != size.coerceIn(4, 50)) {
             hasPendingReviewSettingsChange = true
         }
         adminPrefsRepository.sessionSize = size

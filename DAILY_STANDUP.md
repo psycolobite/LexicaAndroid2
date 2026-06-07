@@ -6,9 +6,276 @@
 
 ---
 
-## 📅 2026-04-12 — Fallback recherche externe dans `Mes mots` + carte préremplie
+## 📅 2026-04-14 — Ajustement Polo-1 : espacement minimal des occurrences d’une même carte
 
 ### ✅ Accompli
+- [x] Renforcement de `Polo-1` pour éviter qu’une même carte réapparaisse avec moins de **2 autres questions** entre ses occurrences de révision, quand une alternative existe
+- [x] Harmonisation des équivalences métier d’espacement
+  - `définition → mot` ≈ `question orthographique` / `défi orthographique`
+  - `mot → définition` ≈ `défi sémantique`
+- [x] Prise en compte de **tous les items visibles** comme séparateurs valides
+  - questions normales
+  - événements intégrés (`QCM`, `matching`, orthographe, défis)
+- [x] Ajout d’un repli contrôlé quand la session est trop petite pour respecter la contrainte
+- [x] Couverture par tests unitaires sur le planner, le moteur et le `ReviewViewModel`
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/domain/model/ReviewSessionSpacing.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/logic/ReviewSessionPlanner.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/logic/ReviewSessionEngine.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/model/ReviewSessionSnapshotState.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/ReviewViewModel.kt`
+- `app/src/test/java/com/example/lexicaandroid2/domain/logic/ReviewSessionPlannerTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/domain/logic/ReviewSessionEngineTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/review/ReviewViewModelTest.kt`
+
+---
+
+ ## 📅 2026-04-14 — Bouton Modifier multi-écrans + éditeur prérempli + top bars sécurisées
+
+### ✅ Accompli
+- [x] Ajout d'un **flux d'édition dédié** avec écran `Modifier mon mot`
+  - nouvelle route `edit_word/{cardId}`
+  - écran prérempli depuis la carte existante
+  - sauvegarde via mise à jour du contenu **sans écraser la progression de révision**
+  - validation anti-doublon sur le mot modifié
+- [x] Ajout du **bouton Modifier** dans les zones demandées
+  - `Mes mots` : cartes inline + popup détail
+  - `Ajouter des mots` : cartes vertes inline + popup de validation + popup mot déjà présent
+  - `Apprendre mes mots` : sur le recto/verso de la carte + bouton centré dans la ligne retour / audio
+- [x] Harmonisation du formulaire d'ajout manuel
+  - formulaire partagé entre ajout manuel et édition
+  - ajout des champs optionnels `registre` et `notes personnelles`
+  - parsing plus souple des listes (`synonymes`, `exemples`) via virgules **ou** retours ligne
+- [x] Amélioration de lisibilité des contenus longs
+  - blocs scrollables pour les longues définitions / exemples / étymologies dans les popups et détails
+- [x] Correctif top bars
+  - suppression des hauteurs forcées trop basses
+  - hauteur minimale augmentée sur les top bars principales / jeux / recherche / détail mot
+- [x] Validation technique
+  - tests unitaires ajoutés pour l'éditeur et le refresh après renommage côté `AddWordsViewModel`
+  - `:app:testDebugUnitTest` ciblé **OK**
+  - `:app:assembleDebug` **OK**
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/presentation/common/WordEditComponents.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/editword/EditWordScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/navigation/Screen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/LexicaApp.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModel.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordDetailScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/ReviewScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/NormalQuestionContent.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/common/LexicaTopAppBar.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/games/common/GameComposables.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/search/SearchScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/repository/FlashcardRepository.kt`
+- `app/src/main/java/com/example/lexicaandroid2/data/repository/FlashcardRepositoryImpl.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModelTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/editword/EditWordViewModelTest.kt`
+- `app/src/test/java/com/example/lexicaandroid2/domain/logic/ReviewSessionPlannerTest.kt`
+
+### 🔁 Ajustement complémentaire (retour QA)
+- [x] **Seed initial réduit de 18 à 5 cartes** pour un premier lancement moins chargé
+  - import initial désormais limité à 5 cartes depuis `local_storage.json`
+  - la réserve de mots reste importée séparément, sans être affectée par cette limite
+- [x] **Nettoyage des boutons dans l'entraînement**
+  - suppression du bouton `Modifier` directement sur la carte
+  - remplacement du bouton texte `Modifier` sur la ligne d'options par une simple icône centrée
+  - boutons `favori` + `poubelle` repositionnés uniquement **en bas à droite** sur recto et verso
+  - teintes restaurées : étoile jaune/grise, poubelle en couleur d'erreur
+
+### 🔗 Fichiers modifiés (complément)
+- `app/src/main/java/com/example/lexicaandroid2/data/importer/DataImporter.kt`
+- `app/src/main/java/com/example/lexicaandroid2/MainActivity.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/review/NormalQuestionContent.kt`
+
+### 🔁 Ajustement UX complémentaire (cartes inline `Mes mots`)
+- [x] **Remontée de la ligne d'état sous la définition** sur les cartes inline de `Mes mots`
+  - les infos `la définition • état` et `le mot • état` appartiennent maintenant à la colonne texte
+  - elles ne se calent plus sous la colonne des boutons (`favori`, `poubelle`, `modifier`)
+  - sur petite largeur / police agrandie, le retour à la ligne se fait dans la largeur disponible de la colonne texte sans chevauchement avec les actions
+
+### 🔗 Fichiers modifiés (complément UX liste)
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListScreen.kt`
+
+### 🔁 Ajustement UX complémentaire (actions des pop-ups)
+- [x] **Actions alignées sur une ligne** dans les pop-ups d'information ciblées
+  - `Ajouter des mots` : popup d'une carte déjà ajoutée
+  - `Mes mots` : popup détail d'une carte
+  - les actions restent au même emplacement général, mais sont désormais horizontales pour un rendu plus propre
+
+### 🔗 Fichiers modifiés (complément UX pop-ups)
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordDetailScreen.kt`
+
+### 🔁 Ajustement correctif (cible réelle des pop-ups)
+- [x] **Correction du périmètre** pour l'alignement horizontal des actions
+  - `Ajouter des mots` : cible confirmée = popup d'information des cartes **déjà ajoutées** ouverte au clic sur la carte
+  - `Mes mots` : cible confirmée = popup détail d'une carte
+  - footer d'actions désormais horizontal sur ces deux pop-ups ciblées
+
+---
+
+## 📅 2026-04-12 — Sélection multiple dans `Mes mots` + suppression groupée
+
+### ✅ Accompli
+- [x] Ajout d'un **mode sélection multiple par appui long** dans `presentation/wordlist/WordListScreen.kt`
+  - appui long sur une carte => entrée en mode sélection et carte cochée
+  - tap court en mode sélection => ajoute/retire la carte de la sélection
+  - ouverture du détail désactivée pendant la sélection pour éviter les conflits d'action
+- [x] Remplacement du **bandeau d'actions contextuelles** par un **menu `⋮` dans la top bar**
+  - le bandeau `n carte(s) sélectionnée(s)` a été supprimé pour éviter les problèmes d'affichage
+  - un bouton `⋮` apparaît à droite dans la **vraie top bar** (`Mes mots` + catégorie + retour) dès qu'au moins une carte est sélectionnée
+  - le menu contient désormais : `Ajouter aux favoris`, `Supprimer`, `Réinitialiser la progression`
+  - confirmations conservées pour les actions destructives (`Supprimer`, `Réinitialiser la progression`)
+  - la barre de recherche conserve sa largeur normale (plus de rétrécissement lié au menu)
+  - les boutons `favori` et `poubelle` des cartes restent visibles même pendant la sélection multiple
+- [x] Ajout de la **logique de suppression groupée** dans `presentation/wordlist/WordListViewModel.kt`
+  - état `selectedCardIds`
+  - nettoyage automatique de la sélection quand la recherche/le filtre change
+  - rechargement de la liste après suppression du lot
+- [x] Ajout des **actions de lot complémentaires** dans `presentation/wordlist/WordListViewModel.kt`
+  - ajout aux favoris pour toutes les cartes sélectionnées
+  - réinitialisation de la progression pour toutes les cartes sélectionnées
+- [x] Ajout d'une **hiérarchie de recherche** dans `Mes mots` / `À travailler` / `En cours` / `Connu`
+  - priorité 1 : correspondance dans le **mot** (`recto`)
+  - priorité 2 : correspondance dans la **définition** (`verso`)
+  - priorité 3 : correspondance dans les **autres champs** (synonymes, exemples, catégorie grammaticale, registre, étymologie, notes)
+  - à priorité égale, l'ordre reste stable et alphabétique par mot
+  - le filtre de catégorie continue de s'appliquer normalement avant le classement par pertinence
+- [x] Ajustement léger de libellés sur les cartes de listes
+  - `Mot → Déf.` remplacé par `la définition`
+  - `Déf. → Mot` remplacé par `le mot`
+  - suppression de la puce d'état global redondante sur les cartes (l'information est déjà portée par la liste courante)
+- [x] Correctif UX dashboard + popup détail
+  - suppression du flash `Aucune carte pour le moment` au lancement tant que le premier chargement des stats n'est pas terminé
+  - le popup détail d'un mot ouvert depuis les listes a maintenant une petite marge au-dessus de la ligne du haut
+  - l'espace entre cette ligne du haut et les informations du popup a été réduit
+- [x] Ajout de **tests unitaires ciblés** dans `presentation/wordlist/WordListViewModelTest.kt`
+  - toggle de sélection
+  - sélection de toutes les cartes visibles
+  - conservation uniquement des sélections encore visibles après filtrage
+  - suppression groupée et vidage de la sélection
+  - ajout aux favoris en lot
+  - reset de progression en lot
+  - priorité mot > définition > autres champs
+  - conservation de cette priorité à l'intérieur d'une liste filtrée
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/wordlist/WordListViewModel.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/wordlist/WordListViewModelTest.kt`
+
+---
+
+## 📅 2026-04-12 — Refonte UX "Ajouter des mots" : présentation unifiée + état ajouté + bug fix
+
+### ✅ Accompli
+- [x] **Correctif suggestions réaffichées à tort au retour sur `Ajouter des mots`**
+  - les `mots suggérés pour toi` sont maintenant rechargés **après** rafraîchissement de la collection réelle de l'utilisateur
+  - les suggestions sont filtrées contre les mots déjà présents dans `flashcards` (comparaison normalisée sur le mot)
+  - les mots ajoutés pendant la session courante restent visibles en **fond vert** jusqu'à ce qu'on quitte l'écran
+  - après sortie/retour sur l'écran, ces mots ne réapparaissent plus dans les suggestions
+  - la recherche locale continue en revanche à remontrer un mot déjà possédé dans `localMatches` si l'utilisateur le cherche explicitement
+- [x] **Correctif recherche AddWords : effacement propre + reset au retour écran**
+  - si la barre de recherche est vidée, les anciens résultats API ne peuvent plus réapparaître après coup
+  - les réponses asynchrones d'une ancienne requête sont désormais ignorées si la requête courante a changé ou a été effacée
+  - à chaque retour sur `Ajouter des mots`, la requête précédente est remise à zéro (`searchQuery`, `localMatches`, `apiResults`, état de chargement)
+- [x] **Optimisation légère de réactivité sur `Ajouter des mots`**
+  - réduction prudente du debounce de recherche externe de `500 ms` à `300 ms`
+  - aucun changement de logique métier ou de ranking, uniquement un délai artificiel raccourci pour améliorer la perception de vitesse
+- [x] **Tests unitaires ajoutés** pour verrouiller le scénario de régression de `AddWordsViewModel`
+  - mot suggéré ajouté → visible en vert pendant la session
+  - même mot absent des suggestions après `onScreenEntered()`
+  - recherche locale d'un mot déjà possédé toujours fonctionnelle
+  - effacement de recherche qui bloque les résultats fantômes d'une ancienne requête
+  - retour écran qui remet bien la recherche à l'état initial
+
+### 🔗 Fichiers modifiés
+- `app/src/main/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModel.kt`
+- `app/src/test/java/com/example/lexicaandroid2/presentation/addwords/AddWordsViewModelTest.kt`
+
+### ✅ Accompli
+- [x] **Présentation unifiée** : `ApiResultItem` et `ReserveWordItem` remplacés par un seul composable `WordCandidateItem`
+  - Même layout pour tous : mot bold / définition grise 2 lignes / catégorie grammaticale texte plain violet
+  - Plus de badge/rectangle pour la catégorie dans les résultats API → cohérence visuelle totale
+- [x] **Comportement après ajout** : le mot ne disparaît plus de la liste immédiatement
+  - Fond de la ligne passe en **vert clair** (`#E8F5E9`)
+  - Icône ✓ apparaît à côté du mot
+  - Bouton "Ajouter" remplacé par **⭐ favori** + **🗑️ supprimer**
+  - L'étoile bascule entre plein/vide selon l'état favori (jaune si favori)
+  - La poubelle supprime le mot de la collection et retire la ligne verte
+- [x] **Reset à la re-navigation** : `LaunchedEffect(Unit) { viewModel.onScreenEntered() }`
+  - À chaque retour sur l'écran : `addedInSession` remis à zéro, `proposedWords` rechargé depuis la DB (sans les mots déjà ajoutés), `allCards` rafraîchi
+  - Les lignes vertes disparaissent → liste propre
+- [x] **Bug fix : mots supprimés encore visibles comme "déjà ajouté"**
+  - Cause : `allCards` était chargé une seule fois au `init {}` et jamais rafraîchi
+  - Correction : `onScreenEntered()` appelle `loadAllCards()` → `allCards` toujours à jour par rapport à la DB réelle
+
+### 🔗 Fichiers modifiés
+- `presentation/addwords/AddWordsViewModel.kt` ← `addedInSession`, `onScreenEntered`, `deleteAddedWord`, `toggleFavoriteAddedWord`
+- `presentation/addwords/AddWordsScreen.kt` ← `WordCandidateItem` unifié, `LaunchedEffect`
+
+### ✅ Accompli
+- [x] **Refill automatique `word_reserve`** : quand la réserve passe sous 100 mots et que l'appareil est connecté à internet, l'app va chercher des mots rares sur le Wiktionnaire pour revenir à 100
+  - Déclenchement silencieux au démarrage de l'app (`MainActivity`, sur `Dispatchers.IO`)
+  - Anti-doublon : les mots déjà dans `word_reserve` ou dans `flashcards` sont exclus
+  - Gestion des erreurs mot par mot : un échec réseau sur un mot passe au suivant sans bloquer
+  - Logs détaillés sous le tag `REFILL_RESERVE`
+- [x] **Source dynamique (Option A) : API catégories Wiktionnaire** via `WiktionnaireCategorySource`
+  - 10 catégories ciblées : `Registre soutenu en français`, `Vocabulaire de la philosophie`, `Rhétorique`, `Psychologie`, `Linguistique`, `Littérature`, `Droit`, `Politique`, `Médecine`, `Sociologie`
+  - L'app tire des vraies listes de mots existants dans Wiktionnaire (jamais une liste figée codée en dur)
+  - Filtre heuristique : mots simples (pas d'espace), minuscule, ≥ 5 caractères, sans chiffres
+  - Catégories mélangées aléatoirement → variété à chaque refill
+  - **Fallback statique** : si l'API catégories échoue → `RareWordsCandidates` (~200 mots) prend le relais
+- [x] `RefillWordReserveUseCase` mis à jour pour utiliser `WiktionnaireCategorySource` en source primaire
+- [x] **Option D ajoutée au backlog** dans `FEATURES.md` : refill intelligent ciblé selon le profil de l'utilisateur (catégories sous-représentées dans sa collection)
+
+### 🔗 Fichiers modifiés/créés
+- `app/src/main/java/…/data/remote/WiktionnaireCategorySource.kt` ← **nouveau**
+- `app/src/main/java/…/domain/usecase/RefillWordReserveUseCase.kt` ← source catégories intégrée
+- `FEATURES.md` ← Option A (✅) + Option D (backlog)
+
+---
+
+## 📅 2026-04-12 — Fallback recherche externe dans `Mes mots` + carte préremplie
+
+### ✅ Complément — Recherche locale-only dans `Mes mots`
+- [x] Retrait du fallback web de la barre de recherche de `presentation/wordlist/WordListViewModel.kt`
+  - `onSearchQueryChanged(...)` ne filtre plus que la collection locale
+  - suppression des états et méthodes liés à la recherche externe (`apiSearchResults`, `apiPreviewResult`, `apiError`, `isApiLoading`, etc.)
+- [x] Allègement de `presentation/wordlist/WordListScreen.kt`
+  - suppression des sections UI de résultats externes / popup d'aperçu externe
+  - la barre de recherche de `Mes mots` sert désormais uniquement à chercher dans la liste courante
+- [x] Simplification de l'instanciation `WordListViewModelFactory` dans `MainActivity.kt`
+- [x] Réalignement des tests `WordListViewModelTest.kt` sur un comportement local-only
+
+### ✅ Complément — Correctif crash molette / hover Compose sur émulateur
+- [x] Diagnostic runtime récupéré via `adb logcat`
+  - crash confirmé : `java.lang.IllegalStateException: The ACTION_HOVER_EXIT event was not cleared.` dans `AndroidComposeView`
+- [x] Ajout d'un garde-fou ciblé dans `MainActivity.kt`
+  - override de `dispatchGenericMotionEvent(...)`
+  - interception uniquement du bug Compose connu sur les actions hover/molette (`ACTION_SCROLL`, `ACTION_HOVER_EXIT`, `ACTION_HOVER_MOVE`, `ACTION_HOVER_ENTER`)
+  - les autres `IllegalStateException` continuent d'être relancées normalement
+- [x] Ajout d'un test unitaire `MainActivityInputWorkaroundTest.kt` pour verrouiller la détection du crash contourné
+
+### ✅ Complément — Refonte UX compacte des listes
+- [x] Refonte de `presentation/wordlist/WordListScreen.kt`
+  - structure des cartes `Mes mots` passée d'une `Row` rigide à un layout vertical compact
+  - actions favori/suppression regroupées en haut à droite sans créer de grand vide horizontal
+  - badges d'état déplacés dans un `FlowRow` pour éviter les retours à la ligne cassés et les espaces morts
+  - libellés visuels raccourcis (`Mot → Déf.`, `Déf. → Mot`) pour mieux tenir sur petits écrans
+- [x] Validation ciblée exécutée après refonte
+  - `:app:compileDebugKotlin`
+  - `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.presentation.wordlist.WordListViewModelTest"`
+
+### ✅ Accompli
+- [x] Intégration des changements validés dans `main`
+  - merge local de `integration/espace-de-travail-2026-04-08-suite` vers `main`
+  - création d'une nouvelle branche de travail datée `integration/detail-ux-recherche-2026-04-12`
 - [x] Activation d'un fallback vers la base de recherche externe dans `presentation/wordlist/WordListViewModel.kt`
   - recherche en ligne déclenchée quand aucun mot local ne correspond à la requête
   - filtrage des doublons déjà présents dans la collection
@@ -21,6 +288,28 @@
 - [x] Sécurisation de l'ajout depuis un résultat externe
   - prévention des doublons accent/casse-insensibles
   - confirmation visuelle après ajout dans la collection
+- [x] Retouches UX de la recherche de mots sur `Ajouter des mots` et `Mes mots`
+  - clic sur toute la ligne d'un résultat web/suggéré pour ouvrir un popup détaillé
+  - ajout possible directement depuis le popup, sans ressaisie
+  - uniformisation du bouton `Ajouter` entre résultats web et suggestions locales
+  - popup compacté (hauteur max réduite + scroll seulement si contenu long)
+  - clic sur un mot déjà présent dans `Ajouter des mots` => popup d'information complet
+- [x] Harmonisation partielle du popup local `WordDetailDialog`
+  - hauteur max ramenée de `700.dp` à `620.dp` pour se rapprocher des nouveaux aperçus compacts
+- [x] Ajustement UX `Ajouter des mots` : conserver les mots après ajout et les marquer visuellement
+  - ajout depuis suggestions locales : les cartes restent visibles avec fond vert + état `Ajoute`
+  - ajout depuis recherche API : même logique (pas de disparition immédiate, fond vert)
+  - suppression du bandeau de succès global (feedback désormais porté par l'état de chaque carte)
+- [x] Ajustement UX complémentaire `Ajouter des mots`
+  - reset des états verts temporaires au retour sur l'écran (sortie/retour ou rafraîchissement)
+  - ajout via popup synchronisé avec l'état vert de la liste
+  - bouton popup vert quand le mot est déjà ajouté
+  - bouton `Ajouter` bascule maintenant en mode toggle (re-clic = retrait + déverdissement)
+- [x] Correctif `Ajouter des mots` sur les doublons multi-définitions et accents
+  - le doublon est désormais détecté sur `mot + définition` (et non plus sur le mot seul)
+  - plusieurs cartes avec le même mot mais des définitions différentes sont autorisées
+  - la clé visuelle d'état vert est aussi basée sur `mot + définition`
+  - la comparaison conserve les accents (plus de fusion indésirable de mots distincts accentués)
 - [x] Ajout de tests unitaires ciblés dans `presentation/wordlist/WordListViewModelTest.kt`
   - fallback externe quand la recherche locale échoue
   - absence d'appel externe quand un mot local existe déjà
@@ -31,7 +320,8 @@
 - [x] Validation compilateur ciblée via `:app:testDebugUnitTest --tests com.example.lexicaandroid2.presentation.wordlist.WordListViewModelTest`
   - `:app:compileDebugKotlin` exécuté avec succès dans le pipeline de test
   - `WordListViewModelTest` vert après ajout du fallback externe et de l'ajout prérempli
-- [ ] Validation visuelle manuelle sur l'écran `Mes mots`
+- [x] Validation compilation UI ciblée via `:app:compileDebugKotlin`
+- [ ] Validation visuelle manuelle sur `Mes mots` et `Ajouter des mots`
 
 ---
 
@@ -1831,4 +2121,58 @@ Build:              ✅ Compilation OK
   - laisser le workflow GitHub Pages redéployer après activation
   - récupérer l’URL finale publique HTTPS
   - confirmer l’e-mail support public final avant publication
+
+
+---
+
+## 📅 2026-04-14 — Ajustement icône launcher + embellissement splash screen
+
+### ✅ Accompli
+- [x] **Icône launcher Android dézoomée d’environ 25%**
+  - `app/src/main/res/drawable/ic_launcher_foreground.xml` encapsulé dans un `group` avec `scaleX/scaleY = 0.75`
+  - réduction visuelle centrée sans changer la direction artistique de l’icône
+- [x] **Splash screen de lancement rendu plus esthétique**
+  - création d’un logo dédié `app/src/main/res/drawable/ic_splash_logo.xml`
+  - palette splash dédiée ajoutée dans `app/src/main/res/values/colors.xml`
+  - thèmes de démarrage clair/sombre modernisés dans `app/src/main/res/values/themes.xml` et `app/src/main/res/values-night/themes.xml`
+  - usage de `Theme.SplashScreen.IconBackground` + fond d’icône pour un rendu plus premium au lancement
+- [x] **Validation technique ciblée à exécuter après retouche ressources**
+  - build debug relancé pour vérifier le merge des ressources et les thèmes
+- [x] **Durcissement anti-crash Compose hover/molette**
+  - `MainActivity.kt` : garde-fou étendu aux dispatchs `generic motion`, `hover` et `touch` pour limiter les plantages fréquents liés au bug Compose `ACTION_HOVER_EXIT`
+  - `MainActivityInputWorkaroundTest.kt` complété
+- [x] **Ajustement POLO-1 — question orthographique remplaçante**
+  - la question orthographique remplace désormais certaines questions `Définition -> Mot`
+  - condition d’éligibilité : question déjà validée au moins une fois lors d’une session précédente (`firstAnsweredAt != null`)
+  - réussite : validation directe de la question pour la session
+  - échec ou passage : vaut `À revoir`
+- [x] **Texte de skip orthographique adouci**
+  - `Vous avez passé la question`
+- [x] **Taille de session minimale remontée à 4**
+  - réglages utilisateur, réglages admin et résolution runtime de `Review` réalignés
+- [x] **Fermeture globale du clavier au tap hors champ**
+  - wrapper racine Compose ajouté dans `LexicaApp.kt` pour retirer le focus lors d’un tap dans l’app hors saisie active
+- [x] **Refonte de la sync compte/cloud**
+  - la progression cloud ne se limite plus à `xp/niveau/streak/favoris` : extension vers cartes, progression question par question et stats quotidiennes
+  - `SyncManager.kt`, `SyncViewModel.kt`, `SyncConfirmDialog.kt` et `FirestoreSyncRepository.kt` réalignés pour gérer compte cloud vide, import cloud, écrasement local et envoi du local vers le compte
+  - `MainActivity.kt` ajusté pour ne plus réinjecter silencieusement les données seed quand un compte authentifié doit charger sa propre progression
+  - `firestore.rules` étendu aux sous-collections utilisateur nécessaires à la synchro complète
+- [x] **Question orthographique POLO-1 non remplaçante**
+  - abandon de l’activation systématiquement remplaçante en première position
+  - planification initiale aléatoire, limitée à une session éligible sur deux et plafonnée à ~30% des questions
+  - succès/échec appliqués à la question cible sans supposer que l’orthographique remplace la question courante
+- [x] **UI de résultat orthographique allégée**
+  - suppression de la ligne redondante du mot correct
+  - affichage de `Vous avez écrit : ...` en cas d’échec avec saisie utilisateur présente
+- [x] **Validation technique ciblée relancée**
+  - `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+  - `:app:testDebugUnitTest --tests "com.example.lexicaandroid2.MainActivityInputWorkaroundTest" --tests "com.example.lexicaandroid2.domain.logic.ReviewSessionEngineTest" --tests "com.example.lexicaandroid2.presentation.review.ReviewViewModelTest" --tests "com.example.lexicaandroid2.presentation.admin.AdminViewModelTest"` → **BUILD SUCCESSFUL**
+
+### 🔜 Vérifications
+- [ ] Vérifier visuellement sur appareil/émulateur que l’icône paraît bien ~25% plus petite sur le launcher
+- [ ] Vérifier le rendu du splash en mode clair et en mode sombre
+- [ ] Vérifier sur appareil Samsung / émulateur que le scroll souris ne provoque plus de crash Compose remontant comme "défaillance fréquente"
+- [ ] Vérifier sur appareil réel les nouveaux dialogues de choix compte/local (`compte vide`, `charger le compte`, `envoyer le local`) et le comportement après changement de compte sur le même téléphone
+- [ ] Vérifier que le clavier se ferme bien sur les écrans de connexion, inscription, ajout de mots et question orthographique sans gêner la saisie
+- [ ] Décider plus tard si les fallbacks launcher legacy API < 26 (`mipmap-*/ic_launcher.webp`) doivent aussi être régénérés pour cohérence totale
 

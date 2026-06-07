@@ -30,6 +30,9 @@ sealed class Screen(val route: String) {
     data class WordDetail(val cardId: String = "") : Screen("word/{cardId}") {
         fun createRoute(cardId: String) = "word/$cardId"
     }
+    data class EditWord(val cardId: String = "") : Screen("edit_word/{cardId}") {
+        fun createRoute(cardId: String) = "edit_word/$cardId"
+    }
 }
 
 /** Routes de jeux individuels sur lesquelles la barre doit être masquée. */
@@ -48,7 +51,8 @@ val GAME_ROUTES = setOf(
 )
 
 private val BOTTOM_BAR_HIDDEN_ROUTES = GAME_ROUTES + setOf(
-    Screen.Review.route
+    Screen.Review.route,
+    Screen.EditWord().route
 )
 
 /**
@@ -57,6 +61,8 @@ private val BOTTOM_BAR_HIDDEN_ROUTES = GAME_ROUTES + setOf(
  */
 fun shouldShowBottomBar(currentRoute: String?): Boolean {
     if (currentRoute == null) return false
-    return currentRoute !in BOTTOM_BAR_HIDDEN_ROUTES && !currentRoute.startsWith("word/")
+    return currentRoute !in BOTTOM_BAR_HIDDEN_ROUTES &&
+        !currentRoute.startsWith("word/") &&
+        !currentRoute.startsWith("edit_word/")
 }
 

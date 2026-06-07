@@ -7,4 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="lexica_splash_day_bg">#FFF4F8FC</color>
+    <color name="lexica_splash_night_bg">#FF0F2236</color>
+    <color name="lexica_splash_day_icon_bg">#FFE3EEF8</color>
+    <color name="lexica_splash_night_icon_bg">#FF1B4B6F</color>
 </resources>

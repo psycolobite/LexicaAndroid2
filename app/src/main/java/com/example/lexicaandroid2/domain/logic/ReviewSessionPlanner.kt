@@ -1,5 +1,6 @@
 package com.example.lexicaandroid2.domain.logic
 
+import com.example.lexicaandroid2.domain.model.MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.ReviewSessionPlan
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
@@ -74,8 +75,11 @@ class ReviewSessionPlanner(
         val order = mutableListOf<ReviewQuestionProgress>()
 
         while (remaining.isNotEmpty()) {
-            val previousCardId = order.lastOrNull()?.cardId
-            val candidates = remaining.filter { it.cardId != previousCardId }
+            val recentCardIds = order
+                .takeLast(MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY)
+                .map { it.cardId }
+                .toSet()
+            val candidates = remaining.filter { it.cardId !in recentCardIds }
             val pool = if (candidates.isNotEmpty()) candidates else remaining
             val chosen = pool[random.nextInt(pool.size)]
             order += chosen

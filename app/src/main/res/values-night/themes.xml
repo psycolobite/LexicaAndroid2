@@ -1,7 +1,9 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Theme.LexicaAndroid2.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/purple_700</item>
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+<resources>
+    <style name="Theme.LexicaAndroid2.Starting" parent="Theme.SplashScreen.IconBackground">
+        <item name="windowSplashScreenBackground">@color/lexica_splash_night_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/lexica_splash_night_icon_bg</item>
+        <item name="windowSplashScreenAnimationDuration">300</item>
         <item name="postSplashScreenTheme">@style/Theme.LexicaAndroid2</item>
     </style>
 
