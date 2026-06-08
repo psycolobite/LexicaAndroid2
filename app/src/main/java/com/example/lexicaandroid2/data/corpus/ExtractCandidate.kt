@@ -1,51 +1,54 @@
 package com.example.lexicaandroid2.data.corpus
 
 /**
- * Candidat d'extrait — une phrase ou un passage de texte contenant un mot cible,
- * accompagné de métadonnées contextuelles pour l'apprentissage du vocabulaire.
- *
- * Un [ExtractCandidate] est le produit intermédiaire entre le parsing brut du corpus
- * et l'indexation finale. Il peut être filtré, trié ou classé avant d'être stocké.
+ * Candidat d'extrait — représente un passage textuel extrait d'un corpus,
+ * avec ses métadonnées et indicateurs de qualité pour l'apprentissage du vocabulaire.
  */
 data class ExtractCandidate(
-    /** Identifiant unique du candidat */
+    /** Identifiant unique de l'extrait */
     val id: String,
 
-    /** Le mot cible présent dans la phrase */
-    val targetWord: String,
-
-    /** La phrase ou le passage contenant le mot cible */
-    val sentence: String,
-
-    /** Source dont est issu l'extrait (référence au CorpusSource.id) */
+    /** Identifiant de la source d'origine */
     val sourceId: String,
 
-    /** Titre de la source (dénormalisé pour accès rapide) */
-    val sourceTitle: String,
+    /** Contenu textuel de l'extrait */
+    val content: String,
 
-    /** Auteur de la source (dénormalisé) */
-    val sourceAuthor: String,
+    /** Position de départ (en caractères) dans la source originale */
+    val startPosition: Int,
 
-    /** Domaine(s) thématique(s) de la source */
-    val domains: List<String> = emptyList(),
+    /** Position de fin (en caractères) dans la source originale */
+    val endPosition: Int,
 
-    /** Position de la phrase dans le texte source (indice pour référence) */
-    val positionInSource: Int = 0,
+    /** Nombre de mots dans l'extrait */
+    val wordCount: Int,
 
-    /** Score de pertinence de l'extrait (0.0 à 1.0) pour le contexte d'apprentissage */
-    val relevanceScore: Float = 0.5f,
+    /** Mots potentiellement intéressants identifiés dans le texte */
+    val suggestedWords: List<String>,
 
-    /** Si la phrase est trop longue, un extrait tronqué autour du mot cible */
-    val truncatedContext: String? = null,
+    /** Identifiants des thèmes/domaines associés (tags issus de la taxonomie) */
+    val domainTags: List<String>,
 
-    /** Longueur de la phrase en caractères */
-    val sentenceLength: Int = sentence.length
+    /** Registres de langue détectés (ex: soutenu, technique, familier) */
+    val registerTags: List<String>,
+
+    /** Niveau de difficulté estimé (ex: facile, moyen, avancé) */
+    val difficulty: String,
+
+    /** Score de qualité du contexte (0.0 à 1.0) */
+    val contextQuality: Float,
+
+    /** Vrai si la source complète est accessible (ex: via un lien ou une lecture intégrée) */
+    val hasCompleteSource: Boolean
 ) {
     init {
-        require(id.isNotBlank()) { "ExtractCandidate.id ne peut pas être vide" }
-        require(targetWord.isNotBlank()) { "ExtractCandidate.targetWord ne peut pas être vide" }
-        require(sentence.isNotBlank()) { "ExtractCandidate.sentence ne peut pas être vide" }
-        require(sourceId.isNotBlank()) { "ExtractCandidate.sourceId ne peut pas être vide" }
-        require(relevanceScore in 0f..1f) { "relevanceScore doit être entre 0.0 et 1.0" }
+        require(id.isNotBlank()) { "id ne peut pas être vide" }
+        require(sourceId.isNotBlank()) { "sourceId ne peut pas être vide" }
+        require(content.isNotBlank()) { "content ne peut pas être vide" }
+        require(contextQuality in 0.0f..1.0f) { "contextQuality doit être compris entre 0.0f et 1.0f" }
+    }
+
+    companion object {
+        const val MIN_CONTEXT_QUALITY = 0.3f
     }
 }

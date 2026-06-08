@@ -45,6 +45,11 @@
 
 **On Demand:**
 - [`docs/guides/CONSIGNES_TACHES.md`](docs/guides/CONSIGNES_TACHES.md) (when adding new tasks)
+- [`docs/planning/amélioration de la recherche/DESCRIPTION.md`](docs/planning/am%C3%A9lioration%20de%20la%20recherche/DESCRIPTION.md) (brief du prochain chantier recherche)
+- [`docs/planning/amélioration de la recherche/PLAN.md`](docs/planning/am%C3%A9lioration%20de%20la%20recherche/PLAN.md) (plan de passation pour le Chef d'Orchestre)
+- [`docs/planning/amélioration de la recherche/TACHE_FONCTION_RECHERCHE.md`](docs/planning/am%C3%A9lioration%20de%20la%20recherche/TACHE_FONCTION_RECHERCHE.md) (découpage en tâches agents IA)
+- [`docs/planning/amélioration de la synchronisation/description_amelioration_synchronisation.md`](docs/planning/am%C3%A9lioration%20de%20la%20synchronisation/description_amelioration_synchronisation.md) (brief du chantier synchro)
+- [`docs/planning/amélioration de la synchronisation/tache_amelioration_synchronisation.md`](docs/planning/am%C3%A9lioration%20de%20la%20synchronisation/tache_amelioration_synchronisation.md) (lots agents IA pour la synchro)
 - Merge PRs from `integration_pending/`
 - Run builds (`./gradlew clean :app:assembleDebug`)
 
@@ -122,6 +127,10 @@ Basic project definition.
 #### 📂 planning/
 What we are doing.
 - `PLAN_ACTION_IMMEDIATE.md`, `BACKLOG.md`, `MINI_GAMES_BACKLOG.md`
+- `amélioration de la recherche/DESCRIPTION.md`, `amélioration de la recherche/PLAN.md`
+- `amélioration de la recherche/TACHE_FONCTION_RECHERCHE.md`
+- `amélioration de la synchronisation/description_amelioration_synchronisation.md`
+- `amélioration de la synchronisation/tache_amelioration_synchronisation.md`
 
 #### 📂 guides/
 How we do it.
@@ -165,6 +174,15 @@ Old stuff.
 
 ### "What's the sprint plan?"
 → [`FEATURES.md`](FEATURES.md) (sprints section)
+
+### "Where is the next search workstream?"
+→ [`docs/planning/amélioration de la recherche/DESCRIPTION.md`](docs/planning/am%C3%A9lioration%20de%20la%20recherche/DESCRIPTION.md) then [`docs/planning/amélioration de la recherche/PLAN.md`](docs/planning/am%C3%A9lioration%20de%20la%20recherche/PLAN.md)
+
+### "How do I split the search work for agents?"
+→ [`docs/planning/amélioration de la recherche/TACHE_FONCTION_RECHERCHE.md`](docs/planning/am%C3%A9lioration%20de%20la%20recherche/TACHE_FONCTION_RECHERCHE.md)
+
+### "Where is the sync improvement workstream?"
+→ [`docs/planning/amélioration de la synchronisation/description_amelioration_synchronisation.md`](docs/planning/am%C3%A9lioration%20de%20la%20synchronisation/description_amelioration_synchronisation.md) then [`docs/planning/amélioration de la synchronisation/tache_amelioration_synchronisation.md`](docs/planning/am%C3%A9lioration%20de%20la%20synchronisation/tache_amelioration_synchronisation.md)
 
 ### "I need to find a document"
 → [`docs/INDEX_DOCUMENTS.md`](docs/INDEX_DOCUMENTS.md) or this file!
@@ -225,6 +243,6 @@ TODO.md
 
 **File:** MASTER_INDEX.md  
 **Created:** 2026-02-27  
-**Updated:** 2026-03-04  
+**Updated:** 2026-06-07  
 **Status:** 🟢 Complete & Ready  
 **Maintenance:** Update `DAILY_STANDUP.md` daily

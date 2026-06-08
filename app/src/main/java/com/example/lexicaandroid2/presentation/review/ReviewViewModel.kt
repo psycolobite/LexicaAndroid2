@@ -11,6 +11,7 @@ import com.example.lexicaandroid2.domain.logic.Sm2Algorithm
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.MIN_INTERVENING_PRESENTATIONS_FOR_SAME_CARD_FAMILY
 import com.example.lexicaandroid2.domain.model.ReviewAnswer
+import com.example.lexicaandroid2.domain.model.ReviewAnswerSyncEvent
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.ReviewQuestionType
 import com.example.lexicaandroid2.domain.model.ReviewSessionChallengeKind
@@ -41,6 +42,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
 import kotlin.math.max
 import kotlin.random.Random
 
@@ -55,6 +57,7 @@ class ReviewViewModel(
     private val reviewSessionSnapshotRepository: ReviewSessionSnapshotRepository? = null,
     private val isAdminUserProvider: (() -> Boolean)? = null,
     private val onSessionXpAwarded: (Int) -> Unit = {},
+    private val onSessionCompleted: () -> Unit = {},
     private val semanticModelCachedProvider: (() -> Boolean)? = null,
     private val semanticValidatorProvider: (() -> SemanticValidator)? = null,
     private val random: Random = Random.Default
@@ -422,6 +425,18 @@ class ReviewViewModel(
                 answeredAt = answeredAt,
                 recentPresentationKeys = recentPresentedItemKeys
             )
+            repository.appendReviewAnswerSyncEvent(
+                ReviewAnswerSyncEvent(
+                    eventId = UUID.randomUUID().toString(),
+                    sessionId = ReviewSessionSnapshot.ACTIVE_SESSION_ID,
+                    questionId = beforeQuestionState.progress.questionId,
+                    cardId = beforeQuestionState.progress.cardId,
+                    questionType = beforeQuestionState.progress.questionType,
+                    answer = answer,
+                    answeredAt = answeredAt,
+                    challengeKind = activeSessionEvent?.challengeKind
+                )
+            )
             val updatedQuestionState = updatedState.questionStates.getValue(currentQuestionId)
             normalAnswersSinceLastMatching += 1
 
@@ -583,7 +598,22 @@ class ReviewViewModel(
         val selected = selectedChoice ?: return
         val isCorrect = selected == event.correctAnswer
         if (event.appliesSessionCredit && isCorrect && event.questionId != null) {
-            sessionState = sessionState?.let { ReviewSessionEngine.applyEventGotIt(it, event.questionId, System.currentTimeMillis()) }
+            val answeredAt = System.currentTimeMillis()
+            val creditedQuestion = sessionState?.questionStates?.get(event.questionId)?.progress
+            sessionState = sessionState?.let { ReviewSessionEngine.applyEventGotIt(it, event.questionId, answeredAt) }
+            if (creditedQuestion != null) {
+                repository.appendReviewAnswerSyncEvent(
+                    ReviewAnswerSyncEvent(
+                        eventId = UUID.randomUUID().toString(),
+                        sessionId = ReviewSessionSnapshot.ACTIVE_SESSION_ID,
+                        questionId = creditedQuestion.questionId,
+                        cardId = creditedQuestion.cardId,
+                        questionType = creditedQuestion.questionType,
+                        answer = ReviewAnswer.GOT_IT,
+                        answeredAt = answeredAt
+                    )
+                )
+            }
         }
 
         eventResultSuccessful = isCorrect
@@ -613,7 +643,22 @@ class ReviewViewModel(
         if (event.appliesSessionCredit) {
             correctlyMatchedCards.forEach { card ->
                 questionIdsForCard(card.id).forEach { questionId ->
-                    updatedState = updatedState?.let { ReviewSessionEngine.applyEventGotIt(it, questionId, System.currentTimeMillis()) }
+                    val answeredAt = System.currentTimeMillis()
+                    val creditedQuestion = updatedState?.questionStates?.get(questionId)?.progress
+                    updatedState = updatedState?.let { ReviewSessionEngine.applyEventGotIt(it, questionId, answeredAt) }
+                    if (creditedQuestion != null) {
+                        repository.appendReviewAnswerSyncEvent(
+                            ReviewAnswerSyncEvent(
+                                eventId = UUID.randomUUID().toString(),
+                                sessionId = ReviewSessionSnapshot.ACTIVE_SESSION_ID,
+                                questionId = creditedQuestion.questionId,
+                                cardId = creditedQuestion.cardId,
+                                questionType = creditedQuestion.questionType,
+                                answer = ReviewAnswer.GOT_IT,
+                                answeredAt = answeredAt
+                            )
+                        )
+                    }
                 }
             }
         }
@@ -633,13 +678,29 @@ class ReviewViewModel(
         val card = event.cardId?.let(sessionCardsById::get) ?: return
         val result = spellingValidator.validate(eventInput, card.recto)
         if (event.appliesSessionCredit) {
+            val answeredAt = System.currentTimeMillis()
+            val creditedQuestion = event.questionId?.let { sessionState?.questionStates?.get(it)?.progress }
             sessionState = sessionState?.let { state ->
                 val questionId = event.questionId ?: return@let state
                 if (result.isValid) {
-                    ReviewSessionEngine.applyExtraSpellingSuccess(state, questionId, System.currentTimeMillis())
+                    ReviewSessionEngine.applyExtraSpellingSuccess(state, questionId, answeredAt)
                 } else {
-                    ReviewSessionEngine.applyExtraSpellingFailure(state, questionId, System.currentTimeMillis())
+                    ReviewSessionEngine.applyExtraSpellingFailure(state, questionId, answeredAt)
                 }
+            }
+            if (creditedQuestion != null) {
+                repository.appendReviewAnswerSyncEvent(
+                    ReviewAnswerSyncEvent(
+                        eventId = UUID.randomUUID().toString(),
+                        sessionId = ReviewSessionSnapshot.ACTIVE_SESSION_ID,
+                        questionId = creditedQuestion.questionId,
+                        cardId = creditedQuestion.cardId,
+                        questionType = creditedQuestion.questionType,
+                        answer = if (result.isValid) ReviewAnswer.GOT_IT else ReviewAnswer.AGAIN,
+                        answeredAt = answeredAt,
+                        challengeKind = ReviewSessionChallengeKind.SPELLING
+                    )
+                )
             }
         }
         eventResultSuccessful = result.isValid
@@ -672,13 +733,29 @@ class ReviewViewModel(
         val isCorrect = validationResult?.isValid == true
 
         if (event.appliesSessionCredit && event.questionId != null) {
+            val answeredAt = System.currentTimeMillis()
+            val creditedQuestion = sessionState?.questionStates?.get(event.questionId)?.progress
             sessionState = sessionState?.let { ReviewSessionEngine.clearPendingReplacementChallenge(it, event.questionId) }
             sessionState = sessionState?.let {
                 ReviewSessionEngine.answerCurrentQuestion(
                     state = it,
                     answer = if (isCorrect) ReviewAnswer.GOT_IT else ReviewAnswer.AGAIN,
-                    answeredAt = System.currentTimeMillis(),
+                    answeredAt = answeredAt,
                     recentPresentationKeys = recentPresentedItemKeys
+                )
+            }
+            if (creditedQuestion != null) {
+                repository.appendReviewAnswerSyncEvent(
+                    ReviewAnswerSyncEvent(
+                        eventId = UUID.randomUUID().toString(),
+                        sessionId = ReviewSessionSnapshot.ACTIVE_SESSION_ID,
+                        questionId = creditedQuestion.questionId,
+                        cardId = creditedQuestion.cardId,
+                        questionType = creditedQuestion.questionType,
+                        answer = if (isCorrect) ReviewAnswer.GOT_IT else ReviewAnswer.AGAIN,
+                        answeredAt = answeredAt,
+                        challengeKind = event.challengeKind
+                    )
                 )
             }
         }
@@ -1067,6 +1144,7 @@ class ReviewViewModel(
             sessionCompletionToken = finishedAt
         )
         clearPersistedSessionSnapshot()
+        onSessionCompleted()
         _snackbarEvents.trySend("Session terminée")
     }
 
@@ -2102,6 +2180,7 @@ class ReviewViewModelFactory(
     private val reviewSessionSnapshotRepository: ReviewSessionSnapshotRepository? = null,
     private val isAdminUserProvider: (() -> Boolean)? = null,
     private val onSessionXpAwarded: (Int) -> Unit = {},
+    private val onSessionCompleted: () -> Unit = {},
     private val semanticModelCachedProvider: (() -> Boolean)? = null,
     private val semanticValidatorProvider: (() -> SemanticValidator)? = null
 ) : ViewModelProvider.Factory {
@@ -2118,6 +2197,7 @@ class ReviewViewModelFactory(
                 reviewSessionSnapshotRepository = reviewSessionSnapshotRepository,
                 isAdminUserProvider = isAdminUserProvider,
                 onSessionXpAwarded = onSessionXpAwarded,
+                onSessionCompleted = onSessionCompleted,
                 semanticModelCachedProvider = semanticModelCachedProvider,
                 semanticValidatorProvider = semanticValidatorProvider
             ) as T

@@ -1,5 +1,61 @@
 # 📅 DAILY STANDUP - Journal Unique de Suivi
 
+## 📅 2026-06-07 — Intégration recherche + préparation du nouveau chantier
+
+### ✅ Accompli
+- [x] Fusion de `integration/detail-ux-recherche-2026-04-12` dans `main`
+- [x] Archivage des branches intégrées dans `archive/integre-au-main/`
+- [x] Création de la branche `integration/espace-de-travail-2026-06-07`
+- [x] Création du tag `ajout-fonctionnalite-recherche-2026-06-07`
+- [x] Création du dossier de préparation `docs/planning/amélioration de la recherche/`
+- [x] Indexation du nouveau chantier recherche dans les index documentaires
+- [x] Remplacement du `README` local par une structure explicite `DESCRIPTION.md` + `PLAN.md`
+- [x] Rédaction du brief fonctionnel de la future recherche contextuelle dans `DESCRIPTION.md`
+- [x] Rédaction du plan de mise en route avec pistes techniques pour matching d'extraits et ranking de type feed
+- [x] Précision du brief UX cible : page extrait principale, interactions sur les mots, et accès secondaires `ouvrages` / `recherche de mots`
+- [x] Création du découpage initial du chantier recherche en tâches agents IA dans `TACHE_FONCTION_RECHERCHE.md`
+- [x] Ajout du futur profil d'intérêt par domaine dans les documents du chantier recherche
+
+---
+
+## 📅 2026-06-07 — Remise à niveau de la fonction de synchronisation
+
+### ✅ Accompli
+- [x] Création de la branche `integration/remise-a-niveau-fonction-de-synchronisation-2026-06-07`
+- [x] Audit du fonctionnement réel de la synchro à partir du code et des notes historiques
+- [x] Suppression du dialogue de synchro au lancement pour les sessions déjà authentifiées
+- [x] Résolution silencieuse des divergences au démarrage selon la progression la plus avancée
+- [x] Fréquence de push silencieux relevée de 30 minutes à 5 minutes
+- [x] Push silencieux ajouté à la fin de chaque session de révision
+- [x] Push silencieux ajouté lors du passage de l'app en arrière-plan (`onStop`)
+- [x] Validation ciblée : `:app:testDebugUnitTest --tests com.example.lexicaandroid2.features.sync.SyncManagerTest` → **BUILD SUCCESSFUL**
+- [x] Validation ciblée : `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+- [x] Création du chantier planning `amélioration de la synchronisation` avec brief et découpage initial agents IA
+- [x] Réalisation documentaire de `SA1` à `SA6` : audit de l'existant, modèle cible, règles de fusion, migration progressive et plan de validation
+- [x] Première implémentation d'une fusion silencieuse locale/cloud par type de donnée dans `SyncManager` au lieu d'un simple choix d'écrasement
+- [x] Tests unitaires ciblés ajoutés pour la fusion des cartes, de la progression des questions et des stats quotidiennes
+- [x] Ajout d'un état de sync local pour les cartes : `lastModifiedAt`, `favoriteUpdatedAt`, tombstones de suppression
+- [x] Ajout d'un journal local/cloud des événements de réponse review pour amorcer la migration vers une synchro orientée événements
+- [x] Fusion sync améliorée : suppression priorisée par tombstone récent, favori résolu par timestamp, et synchronisation des événements review
+- [x] Validation ciblée après implémentation : `:app:testDebugUnitTest --tests com.example.lexicaandroid2.features.sync.SyncManagerTest` + `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+- [x] Ajout d'un journal local/cloud des événements gamification (`XP`, `level`, `streak`) pour ne plus dépendre d'un merge par `max`
+- [x] Projection de `xp`, `level`, `streak`, `lastLoginDate` depuis les événements gamification dans `SyncManager`, avec repli legacy si l'ancien snapshot ne possède pas encore d'événements
+- [x] Tests ciblés ajoutés pour vérifier la projection des stats depuis les événements et le repli snapshot legacy → **BUILD SUCCESSFUL**
+- [x] Projection de la progression review depuis les événements de réponse quand ils existent, au lieu d'un simple merge d'instantanés de questions
+- [x] Compactage ciblé des journaux sur reset/admin : purge des événements review lors d'une suppression complète des cartes, réécriture compacte des événements stats sur reset / override admin / journal trop long
+- [x] Ajout d'un `resetAt` explicite dans le modèle de synchro cloud pour ignorer automatiquement les cartes et événements antérieurs à une remise à zéro globale lors du retour d'un appareil hors ligne
+- [x] Ajout d'une `resetGeneration` persistée localement et propagée dans la synchro pour départager proprement les resets successifs, même si les timestamps d'appareils divergent
+- [x] Compactage pragmatique du journal review : seuil de déclenchement, conservation des événements les plus récents par question et d'une fenêtre récente globale
+- [x] Correctif du crash au lancement après les évolutions sync : alignement des entités Room avec les migrations réelles (`review_answer_sync_events`, `user_stats_sync_events`, `sync_reset_metadata`)
+- [x] Validation ciblée : `:app:testDebugUnitTest --tests com.example.lexicaandroid2.features.sync.SyncManagerTest --tests com.example.lexicaandroid2.features.gamification.data.UserStatsRepositoryImplTest` + `:app:compileDebugKotlin` → **BUILD SUCCESSFUL**
+
+### 🎯 Suite prévue
+- [ ] Rédiger le détail des fonctionnalités de recherche enrichie
+- [ ] Définir le plan d'exécution pour la suite
+- [ ] Ajouter des tests de synchronisation plus complets (cas multi-appareils, offline prolongé, reset global, conflits et resync)
+
+---
+
 **Responsable:** Chef d'Orchestre  
 **Fréquence:** Quotidienne  
 **Format:** SEUL fichier de suivi du projet (remplace tous les "etat_*.md", "rapport_*.md", etc.)

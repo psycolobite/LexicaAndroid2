@@ -2,9 +2,13 @@ package com.example.lexicaandroid2.data.repository
 
 import com.example.lexicaandroid2.data.local.FlashcardDao
 import com.example.lexicaandroid2.data.local.FlashcardEntity
+import com.example.lexicaandroid2.data.local.ReviewAnswerSyncEventDao
+import com.example.lexicaandroid2.data.local.ReviewAnswerSyncEventEntity
 import com.example.lexicaandroid2.data.local.ReviewQuestionDao
 import com.example.lexicaandroid2.data.local.ReviewQuestionProgressEntity
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewAnswer
+import com.example.lexicaandroid2.domain.model.ReviewAnswerSyncEvent
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.ReviewQuestionType
 import com.example.lexicaandroid2.domain.model.Sm2Stats
@@ -22,7 +26,13 @@ import org.mockito.kotlin.whenever
 class FlashcardRepositoryImplTest {
     private val flashcardDao: FlashcardDao = mock()
     private val reviewQuestionDao: ReviewQuestionDao = mock()
+    private val reviewAnswerSyncEventDao: ReviewAnswerSyncEventDao = mock()
     private val repository = FlashcardRepositoryImpl(flashcardDao, reviewQuestionDao)
+    private val compactingRepository = FlashcardRepositoryImpl(
+        flashcardDao,
+        reviewQuestionDao,
+        reviewAnswerSyncEventDao = reviewAnswerSyncEventDao
+    )
 
     @Test
     fun saveCardPersistsLegacyCardAndTwoQuestionRows() = runTest {
@@ -195,6 +205,61 @@ class FlashcardRepositoryImplTest {
 
         assertEquals(4, dueCount)
         assertEquals(7, newCount)
+    }
+
+    @Test
+    fun appendReviewAnswerSyncEventCompactsOversizedJournal() = runTest {
+        val denseHistory = buildList {
+            repeat(250) { index ->
+                add(
+                    ReviewAnswerSyncEventEntity(
+                        eventId = "q1-$index",
+                        sessionId = "s1",
+                        questionId = "q1",
+                        cardId = "c1",
+                        questionType = ReviewQuestionType.WORD_TO_DEFINITION.name,
+                        answer = ReviewAnswer.GOT_IT.name,
+                        answeredAt = index.toLong()
+                    )
+                )
+            }
+            repeat(151) { index ->
+                add(
+                    ReviewAnswerSyncEventEntity(
+                        eventId = "q2-$index",
+                        sessionId = "s2",
+                        questionId = "q2",
+                        cardId = "c2",
+                        questionType = ReviewQuestionType.DEFINITION_TO_WORD.name,
+                        answer = ReviewAnswer.TOO_EASY.name,
+                        answeredAt = 1_000L + index
+                    )
+                )
+            }
+        }
+        whenever(reviewAnswerSyncEventDao.getAll()).thenReturn(denseHistory)
+
+        compactingRepository.appendReviewAnswerSyncEvent(
+            ReviewAnswerSyncEvent(
+                eventId = "ignored-by-mock",
+                sessionId = "s3",
+                questionId = "q2",
+                cardId = "c2",
+                questionType = ReviewQuestionType.DEFINITION_TO_WORD,
+                answer = ReviewAnswer.GOT_IT,
+                answeredAt = 2_000L
+            )
+        )
+
+        verify(reviewAnswerSyncEventDao).clearAll()
+        verify(reviewAnswerSyncEventDao).insertAll(
+            argThat { 
+                size < denseHistory.size &&
+                    any { it.eventId == "q1-249" } &&
+                    any { it.eventId == "q2-150" } &&
+                    none { it.eventId == "q1-0" }
+            }
+        )
     }
 }
 

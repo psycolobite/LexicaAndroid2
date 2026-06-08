@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.domain.logic
 
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewAnswerSyncEvent
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.ReviewQuestionType
 import com.example.lexicaandroid2.domain.model.Sm2Stats
@@ -205,6 +206,7 @@ class ReviewSessionPlannerTest {
         override suspend fun updateCardContent(card: Flashcard) = Unit
         override suspend fun setFavorite(cardId: String, isFavorite: Boolean) = Unit
         override suspend fun deleteCard(cardId: String) = Unit
+        override suspend fun appendReviewAnswerSyncEvent(event: ReviewAnswerSyncEvent) = Unit
         override suspend fun getStatsByState(): Map<String, Int> = emptyMap()
         override suspend fun getAllCards(): List<Flashcard> = emptyList()
         override suspend fun deleteAllCards() = Unit

@@ -1,0 +1,30 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "sync-focused-tests",
+			"type": "shell",
+			"command": ".\\gradlew",
+			"args": [
+				":app:testDebugUnitTest",
+				"--tests",
+				"com.example.lexicaandroid2.features.sync.SyncManagerTest",
+				"--tests",
+				"com.example.lexicaandroid2.data.repository.FlashcardRepositoryImplTest"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "compile-debug-kotlin",
+			"type": "shell",
+			"command": ".\\gradlew",
+			"args": [
+				":app:compileDebugKotlin"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$tsc"
+			]
+		}
+	]
+}

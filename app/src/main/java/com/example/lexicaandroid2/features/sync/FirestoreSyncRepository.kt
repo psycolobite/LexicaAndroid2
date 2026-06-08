@@ -12,13 +12,18 @@ import kotlinx.coroutines.tasks.await
  */
 data class CloudProgress(
     val updatedAt: Long = 0L,
+    val resetAt: Long = 0L,
+    val resetGeneration: Long = 0L,
     val xp: Long = 0L,
     val level: Int = 1,
     val streak: Int = 0,
     val lastLoginDate: Long = 0L,
+    val userStatsEvents: List<CloudUserStatsEvent> = emptyList(),
     val flashcards: List<CloudFlashcard> = emptyList(),
+    val deletedFlashcards: List<CloudDeletedFlashcard> = emptyList(),
     val reviewQuestionProgress: List<CloudReviewQuestionProgress> = emptyList(),
-    val dailyReviewStats: List<CloudDailyReviewStat> = emptyList()
+    val dailyReviewStats: List<CloudDailyReviewStat> = emptyList(),
+    val reviewAnswerEvents: List<CloudReviewAnswerSyncEvent> = emptyList()
 )
 
 data class CloudFlashcard(
@@ -33,8 +38,15 @@ data class CloudFlashcard(
     val dateAjout: Long = 0L,
     val favori: Boolean = false,
     val notesPersonnelles: String = "",
+    val lastModifiedAt: Long = 0L,
+    val favoriteUpdatedAt: Long = 0L,
     val sm2MotVersDef: CloudSm2Stats = CloudSm2Stats(),
     val sm2DefVersMot: CloudSm2Stats = CloudSm2Stats()
+)
+
+data class CloudDeletedFlashcard(
+    val cardId: String = "",
+    val deletedAt: Long = 0L
 )
 
 data class CloudSm2Stats(
@@ -75,6 +87,27 @@ data class CloudDailyReviewStat(
     val totalTimeSeconds: Int = 0
 )
 
+data class CloudReviewAnswerSyncEvent(
+    val eventId: String = "",
+    val sessionId: String = "",
+    val questionId: String = "",
+    val cardId: String = "",
+    val questionType: String = "WORD_TO_DEFINITION",
+    val answer: String = "GOT_IT",
+    val answeredAt: Long = 0L,
+    val challengeKind: String? = null
+)
+
+data class CloudUserStatsEvent(
+    val eventId: String = "",
+    val eventType: String = "XP_AWARDED",
+    val occurredAt: Long = 0L,
+    val xpDelta: Long? = null,
+    val levelValue: Int? = null,
+    val streakValue: Int? = null,
+    val lastLoginDateValue: Long? = null
+)
+
 /**
  * Dépôt Firestore pour la synchronisation de la progression utilisateur.
  * Toutes les opérations échouent silencieusement en cas d'absence de réseau.
@@ -92,20 +125,37 @@ class FirestoreSyncRepository {
         val data = mapOf(
             "schemaVersion" to CLOUD_SCHEMA_VERSION,
             "updatedAt" to progress.updatedAt,
+            "resetAt" to progress.resetAt,
+            "resetGeneration" to progress.resetGeneration,
             "xp" to progress.xp,
             "level" to progress.level,
             "streak" to progress.streak,
             "lastLoginDate" to progress.lastLoginDate,
+            "userStatsEventCount" to progress.userStatsEvents.size,
             "cardCount" to progress.flashcards.size,
+            "deletedFlashcardCount" to progress.deletedFlashcards.size,
             "reviewQuestionProgressCount" to progress.reviewQuestionProgress.size,
-            "dailyReviewStatCount" to progress.dailyReviewStats.size
+            "dailyReviewStatCount" to progress.dailyReviewStats.size,
+            "reviewAnswerEventCount" to progress.reviewAnswerEvents.size
         )
         userDoc.set(data).await()
+        replaceCollection(
+            collection = userDoc.collection(SUBCOLLECTION_USER_STATS_EVENTS),
+            documents = progress.userStatsEvents,
+            idSelector = { it.eventId },
+            mapper = ::cloudUserStatsEventToMap
+        )
         replaceCollection(
             collection = userDoc.collection(SUBCOLLECTION_FLASHCARDS),
             documents = progress.flashcards,
             idSelector = { it.id },
             mapper = ::cloudFlashcardToMap
+        )
+        replaceCollection(
+            collection = userDoc.collection(SUBCOLLECTION_DELETED_FLASHCARDS),
+            documents = progress.deletedFlashcards,
+            idSelector = { it.cardId },
+            mapper = ::cloudDeletedFlashcardToMap
         )
         replaceCollection(
             collection = userDoc.collection(SUBCOLLECTION_REVIEW_PROGRESS),
@@ -118,6 +168,12 @@ class FirestoreSyncRepository {
             documents = progress.dailyReviewStats,
             idSelector = { it.dateKey },
             mapper = ::cloudDailyReviewStatToMap
+        )
+        replaceCollection(
+            collection = userDoc.collection(SUBCOLLECTION_REVIEW_ANSWER_EVENTS),
+            documents = progress.reviewAnswerEvents,
+            idSelector = { it.eventId },
+            mapper = ::cloudReviewAnswerSyncEventToMap
         )
         Log.d(
             TAG,
@@ -146,6 +202,16 @@ class FirestoreSyncRepository {
                 .await()
                 .documents
                 .map(::documentToCloudFlashcard)
+            val userStatsEvents = userDoc.collection(SUBCOLLECTION_USER_STATS_EVENTS)
+                .get()
+                .await()
+                .documents
+                .map(::documentToCloudUserStatsEvent)
+            val deletedFlashcards = userDoc.collection(SUBCOLLECTION_DELETED_FLASHCARDS)
+                .get()
+                .await()
+                .documents
+                .map(::documentToCloudDeletedFlashcard)
             val reviewProgress = userDoc.collection(SUBCOLLECTION_REVIEW_PROGRESS)
                 .get()
                 .await()
@@ -156,16 +222,26 @@ class FirestoreSyncRepository {
                 .await()
                 .documents
                 .map(::documentToCloudDailyReviewStat)
+            val reviewAnswerEvents = userDoc.collection(SUBCOLLECTION_REVIEW_ANSWER_EVENTS)
+                .get()
+                .await()
+                .documents
+                .map(::documentToCloudReviewAnswerSyncEvent)
 
             CloudProgress(
                 updatedAt = doc.getLong("updatedAt") ?: 0L,
+                resetAt = doc.getLong("resetAt") ?: 0L,
+                resetGeneration = doc.getLong("resetGeneration") ?: 0L,
                 xp = doc.getLong("xp") ?: 0L,
                 level = (doc.getLong("level") ?: 1L).toInt(),
                 streak = (doc.getLong("streak") ?: 0L).toInt(),
                 lastLoginDate = doc.getLong("lastLoginDate") ?: 0L,
+                userStatsEvents = userStatsEvents,
                 flashcards = flashcards,
+                deletedFlashcards = deletedFlashcards,
                 reviewQuestionProgress = reviewProgress,
-                dailyReviewStats = dailyStats
+                dailyReviewStats = dailyStats,
+                reviewAnswerEvents = reviewAnswerEvents
             ).also {
                 Log.d(
                     TAG,
@@ -180,9 +256,12 @@ class FirestoreSyncRepository {
 
     suspend fun deleteProgress(uid: String): Result<Unit> = runCatching {
         val userDoc = db.collection(COLLECTION_USERS).document(uid)
+        deleteCollection(userDoc.collection(SUBCOLLECTION_USER_STATS_EVENTS))
         deleteCollection(userDoc.collection(SUBCOLLECTION_FLASHCARDS))
+        deleteCollection(userDoc.collection(SUBCOLLECTION_DELETED_FLASHCARDS))
         deleteCollection(userDoc.collection(SUBCOLLECTION_REVIEW_PROGRESS))
         deleteCollection(userDoc.collection(SUBCOLLECTION_DAILY_STATS))
+        deleteCollection(userDoc.collection(SUBCOLLECTION_REVIEW_ANSWER_EVENTS))
         userDoc.delete().await()
         Log.d(TAG, "Delete OK for uid=$uid")
         Unit
@@ -217,11 +296,14 @@ class FirestoreSyncRepository {
     companion object {
         private const val COLLECTION_USERS = "users"
         private const val TAG = "FirestoreSyncRepo"
-        private const val CLOUD_SCHEMA_VERSION = 2
+        private const val CLOUD_SCHEMA_VERSION = 6
         private const val MAX_BATCH_SIZE = 400
+        private const val SUBCOLLECTION_USER_STATS_EVENTS = "userStatsEvents"
         private const val SUBCOLLECTION_FLASHCARDS = "flashcards"
+        private const val SUBCOLLECTION_DELETED_FLASHCARDS = "deletedFlashcards"
         private const val SUBCOLLECTION_REVIEW_PROGRESS = "reviewQuestionProgress"
         private const val SUBCOLLECTION_DAILY_STATS = "dailyReviewStats"
+        private const val SUBCOLLECTION_REVIEW_ANSWER_EVENTS = "reviewAnswerEvents"
     }
 }
 
@@ -237,8 +319,15 @@ private fun cloudFlashcardToMap(card: CloudFlashcard): Map<String, Any?> = mapOf
     "dateAjout" to card.dateAjout,
     "favori" to card.favori,
     "notesPersonnelles" to card.notesPersonnelles,
+    "lastModifiedAt" to card.lastModifiedAt,
+    "favoriteUpdatedAt" to card.favoriteUpdatedAt,
     "sm2MotVersDef" to cloudSm2StatsToMap(card.sm2MotVersDef),
     "sm2DefVersMot" to cloudSm2StatsToMap(card.sm2DefVersMot)
+)
+
+private fun cloudDeletedFlashcardToMap(card: CloudDeletedFlashcard): Map<String, Any?> = mapOf(
+    "cardId" to card.cardId,
+    "deletedAt" to card.deletedAt
 )
 
 private fun cloudSm2StatsToMap(stats: CloudSm2Stats): Map<String, Any?> = mapOf(
@@ -279,6 +368,27 @@ private fun cloudDailyReviewStatToMap(stat: CloudDailyReviewStat): Map<String, A
     "totalTimeSeconds" to stat.totalTimeSeconds
 )
 
+private fun cloudReviewAnswerSyncEventToMap(event: CloudReviewAnswerSyncEvent): Map<String, Any?> = mapOf(
+    "eventId" to event.eventId,
+    "sessionId" to event.sessionId,
+    "questionId" to event.questionId,
+    "cardId" to event.cardId,
+    "questionType" to event.questionType,
+    "answer" to event.answer,
+    "answeredAt" to event.answeredAt,
+    "challengeKind" to event.challengeKind
+)
+
+private fun cloudUserStatsEventToMap(event: CloudUserStatsEvent): Map<String, Any?> = mapOf(
+    "eventId" to event.eventId,
+    "eventType" to event.eventType,
+    "occurredAt" to event.occurredAt,
+    "xpDelta" to event.xpDelta,
+    "levelValue" to event.levelValue,
+    "streakValue" to event.streakValue,
+    "lastLoginDateValue" to event.lastLoginDateValue
+)
+
 private fun documentToCloudFlashcard(document: com.google.firebase.firestore.DocumentSnapshot): CloudFlashcard {
     val sm2MotVersDef = document.get("sm2MotVersDef") as? Map<*, *>
     val sm2DefVersMot = document.get("sm2DefVersMot") as? Map<*, *>
@@ -294,10 +404,18 @@ private fun documentToCloudFlashcard(document: com.google.firebase.firestore.Doc
         dateAjout = document.getLong("dateAjout") ?: 0L,
         favori = document.getBoolean("favori") == true,
         notesPersonnelles = document.getString("notesPersonnelles") ?: "",
+        lastModifiedAt = document.getLong("lastModifiedAt") ?: 0L,
+        favoriteUpdatedAt = document.getLong("favoriteUpdatedAt") ?: 0L,
         sm2MotVersDef = mapToCloudSm2Stats(sm2MotVersDef),
         sm2DefVersMot = mapToCloudSm2Stats(sm2DefVersMot)
     )
 }
+
+private fun documentToCloudDeletedFlashcard(document: com.google.firebase.firestore.DocumentSnapshot): CloudDeletedFlashcard =
+    CloudDeletedFlashcard(
+        cardId = document.getString("cardId") ?: document.id,
+        deletedAt = document.getLong("deletedAt") ?: 0L
+    )
 
 private fun documentToCloudReviewQuestionProgress(document: com.google.firebase.firestore.DocumentSnapshot): CloudReviewQuestionProgress =
     CloudReviewQuestionProgress(
@@ -326,6 +444,29 @@ private fun documentToCloudDailyReviewStat(document: com.google.firebase.firesto
         cardsReviewed = (document.getLong("cardsReviewed") ?: 0L).toInt(),
         correctAnswers = (document.getLong("correctAnswers") ?: 0L).toInt(),
         totalTimeSeconds = (document.getLong("totalTimeSeconds") ?: 0L).toInt()
+    )
+
+private fun documentToCloudReviewAnswerSyncEvent(document: com.google.firebase.firestore.DocumentSnapshot): CloudReviewAnswerSyncEvent =
+    CloudReviewAnswerSyncEvent(
+        eventId = document.getString("eventId") ?: document.id,
+        sessionId = document.getString("sessionId") ?: "",
+        questionId = document.getString("questionId") ?: "",
+        cardId = document.getString("cardId") ?: "",
+        questionType = document.getString("questionType") ?: "WORD_TO_DEFINITION",
+        answer = document.getString("answer") ?: "GOT_IT",
+        answeredAt = document.getLong("answeredAt") ?: 0L,
+        challengeKind = document.getString("challengeKind")
+    )
+
+private fun documentToCloudUserStatsEvent(document: com.google.firebase.firestore.DocumentSnapshot): CloudUserStatsEvent =
+    CloudUserStatsEvent(
+        eventId = document.getString("eventId") ?: document.id,
+        eventType = document.getString("eventType") ?: "XP_AWARDED",
+        occurredAt = document.getLong("occurredAt") ?: 0L,
+        xpDelta = document.getLong("xpDelta"),
+        levelValue = document.getLong("levelValue")?.toInt(),
+        streakValue = document.getLong("streakValue")?.toInt(),
+        lastLoginDateValue = document.getLong("lastLoginDateValue")
     )
 
 private fun mapToCloudSm2Stats(data: Map<*, *>?): CloudSm2Stats = CloudSm2Stats(

@@ -93,6 +93,9 @@ import com.example.lexicaandroid2.presentation.navigation.Screen
 import com.example.lexicaandroid2.presentation.navigation.shouldShowBottomBar
 import com.example.lexicaandroid2.presentation.online.OnlineScreen
 import com.example.lexicaandroid2.presentation.utilisation.UtilisationScreen
+import com.example.lexicaandroid2.presentation.search.explore.ExploreScreen
+import com.example.lexicaandroid2.data.corpus.CorpusIndex
+import com.example.lexicaandroid2.presentation.search.preferences.UserPreferencesRepository
 import com.example.lexicaandroid2.domain.usecase.ResetProgressUseCase
 import com.example.lexicaandroid2.features.sync.SyncManager
 import com.example.lexicaandroid2.features.sync.SyncConflictKind
@@ -123,6 +126,8 @@ fun LexicaApp(
     registerViewModel: RegisterViewModel,
     adminViewModel: AdminViewModel,
     settingsViewModel: SettingsViewModel,
+    corpusIndex: CorpusIndex,
+    userPreferencesRepository: UserPreferencesRepository,
     syncViewModel: SyncViewModel? = null,
     appVersion: String = "1.0",
     isInitiallyAuthenticated: Boolean = false,
@@ -131,6 +136,7 @@ fun LexicaApp(
     syncManager: SyncManager? = null,
     navController: NavHostController = rememberNavController()
 ) {
+    val userPreferences by userPreferencesRepository.getPreferences().collectAsState(initial = null)
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
     val reviewUiState by reviewViewModel.uiState.collectAsState()
@@ -169,6 +175,7 @@ fun LexicaApp(
         Screen.Utilisation.route -> "Utilisation"
         Screen.Online.route -> "Mode En Ligne"
         Screen.DrivingMode.route -> "Mode voiture"
+        Screen.Explore.route -> "Explorer"
         Screen.EditWord().route -> "Modifier mon mot"
         else -> if (currentRoute?.startsWith("word/") == true) "Détail du mot" else "Lexica"
     }
@@ -192,8 +199,9 @@ fun LexicaApp(
                          currentRoute == Screen.Admin.route ||
                          currentRoute == Screen.Settings.route ||
                          currentRoute == Screen.Utilisation.route ||
-                         currentRoute == Screen.Online.route ||
-                         currentRoute == Screen.DrivingMode.route ||
+                          currentRoute == Screen.Online.route ||
+                          currentRoute == Screen.DrivingMode.route ||
+                          currentRoute == Screen.Explore.route ||
                           currentRoute?.startsWith("edit_word/") == true ||
                          currentRoute?.startsWith("word/") == true
 
@@ -776,6 +784,15 @@ fun LexicaApp(
             }
             composable(route = Screen.Online.route) {
                 OnlineScreen()
+            }
+            composable(route = Screen.Explore.route) {
+                ExploreScreen(
+                    corpusIndex = corpusIndex,
+                    userPreferences = userPreferences,
+                    onNavigateToCatalogue = { /* TODO: TACHE_R7 */ },
+                    onNavigateToSearch = { navController.navigate(Screen.AddWords.route) },
+                    onBack = { navController.navigateUp() }
+                )
             }
             }
         }

@@ -102,19 +102,8 @@ class SyncViewModel(
         viewModelScope.launch {
             when (val result = syncManager.checkOnLogin(uid)) {
                 is SyncCheckResult.EmptyCloudAccount -> {
-                    if (result.requiresChoice) {
-                        _uiState.update {
-                            SyncUiState.PendingConflict(
-                                uid = uid,
-                                kind = SyncConflictKind.EMPTY_CLOUD_ACCOUNT,
-                                cloud = null,
-                                local = result.local
-                            )
-                        }
-                    } else {
-                        syncManager.uploadLocalToCloud(uid)
-                        _uiState.update { SyncUiState.Idle }
-                    }
+                    syncManager.uploadLocalToCloud(uid)
+                    _uiState.update { SyncUiState.Idle }
                 }
                 is SyncCheckResult.EmptyLocalImport -> {
                     try {
@@ -127,13 +116,10 @@ class SyncViewModel(
                     _uiState.update { SyncUiState.Idle }
                 }
                 is SyncCheckResult.Conflict -> {
-                    _uiState.update {
-                        SyncUiState.PendingConflict(
-                            uid = uid,
-                            kind = SyncConflictKind.CLOUD_VS_LOCAL,
-                            cloud = result.cloud,
-                            local = result.local
-                        )
+                    try {
+                        syncManager.resolveConflictSilently(uid, result.cloud)
+                    } finally {
+                        _uiState.update { SyncUiState.Idle }
                     }
                 }
                 is SyncCheckResult.NetworkError -> {
@@ -244,6 +230,22 @@ class SyncViewModel(
     }
 
     /**
+     * Push silencieux immédiat quand une vraie avancée métier vient d'avoir lieu
+     * ou quand l'app part en arrière-plan.
+     */
+    fun requestImmediateSyncIfAuthenticated(reason: String) {
+        val uid = lastObservedUid ?: return
+        viewModelScope.launch {
+            try {
+                syncManager.uploadLocalToCloud(uid)
+                Log.d(TAG, "Immediate silent sync done for uid=$uid reason=$reason")
+            } catch (e: Exception) {
+                Log.w(TAG, "Immediate silent sync skipped for uid=$uid reason=$reason: ${e.message}")
+            }
+        }
+    }
+
+    /**
      * Ferme le message informatif (toast différé).
      */
     fun dismissMessage() {
@@ -292,7 +294,7 @@ class SyncViewModel(
 
     companion object {
         private const val TAG = "SyncViewModel"
-        private const val PERIODIC_SYNC_INTERVAL_MS = 30 * 60 * 1000L // 30 minutes
+        private const val PERIODIC_SYNC_INTERVAL_MS = 5 * 60 * 1000L // 5 minutes
     }
 }
 

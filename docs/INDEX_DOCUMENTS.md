@@ -70,6 +70,11 @@ Ce qu'on fait.
 - `PLAN_INTEGRATION_GOOGLE_PLAY.md` - Checklist dédiée de préparation publication Google Play
 - `BACKLOG.md` - Taches globales
 - `MINI_GAMES_BACKLOG.md` - Backlog jeux (10 jeux)
+- `amélioration de la recherche/DESCRIPTION.md` - Point d'entrée du prochain chantier recherche pour le Chef d'Orchestre
+- `amélioration de la recherche/PLAN.md` - Plan opérationnel à transmettre aux agents via le Chef d'Orchestre
+- `amélioration de la recherche/TACHE_FONCTION_RECHERCHE.md` - Découpage du chantier en lots agents IA
+- `amélioration de la synchronisation/description_amelioration_synchronisation.md` - Brief du chantier d'amélioration de la synchronisation
+- `amélioration de la synchronisation/tache_amelioration_synchronisation.md` - Découpage initial du chantier synchro en lots agents IA
 
 ### 📁 `/docs/guides/`
 Comment on le fait.
@@ -139,6 +144,9 @@ Refactorisé le 2026-04-05 depuis un monolithe de ~1700 lignes :
 |--------|----------|-------|
 | Debuter le projet | `START_HERE.md` → `BRIEF_EXECUTIF.md` | 10 min |
 | Integrer des PRs | `PLAN_ACTION_IMMEDIATE.md` | 3-4h |
+| Lancer le prochain chantier recherche | `planning/amélioration de la recherche/DESCRIPTION.md` puis `PLAN.md` | 10-20 min |
+| Assigner les lots agents du chantier recherche | `planning/amélioration de la recherche/TACHE_FONCTION_RECHERCHE.md` | 15-30 min |
+| Lancer le chantier amélioration de la synchronisation | `planning/amélioration de la synchronisation/description_amelioration_synchronisation.md` puis `tache_amelioration_synchronisation.md` | 10-25 min |
 | Debugger une erreur | `TROUBLESHOOTING.md` | 5-30 min |
 | Configurer mon editeur | `SETUP_AGENTS_PARALLEL.md` | 30 min |
 | Trouver ma tache | `CONSIGNES_TACHES.md` | 5 min |

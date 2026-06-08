@@ -14,6 +14,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.example.lexicaandroid2.data.corpus.CorpusIndex
 import com.example.lexicaandroid2.data.corpus.CorpusParser
+import com.example.lexicaandroid2.data.corpus.CorpusSources
+import com.example.lexicaandroid2.presentation.search.preferences.UserPreferencesRepository
 import com.example.lexicaandroid2.data.importer.DataImporter
 import com.example.lexicaandroid2.data.local.LexicaDatabase
 import com.example.lexicaandroid2.data.repository.FlashcardRepositoryImpl
@@ -80,6 +82,7 @@ class MainActivity : ComponentActivity() {
     private var hasAttemptedFrenchTtsInstallThisLaunch = false
     private var hasRecheckedFrenchTtsAfterInstall = false
     private var shouldShowFrenchTtsDialog by mutableStateOf(false)
+    private var syncViewModelRef: SyncViewModel? = null
 
     private val checkTtsDataLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -117,29 +120,96 @@ class MainActivity : ComponentActivity() {
             LexicaDatabase::class.java,
             "lexica.db"
         )
-            .addMigrations(LexicaDatabase.MIGRATION_3_4, LexicaDatabase.MIGRATION_4_5, LexicaDatabase.MIGRATION_5_6, LexicaDatabase.MIGRATION_6_7, LexicaDatabase.MIGRATION_7_8)
+            .addMigrations(
+                LexicaDatabase.MIGRATION_3_4,
+                LexicaDatabase.MIGRATION_4_5,
+                LexicaDatabase.MIGRATION_5_6,
+                LexicaDatabase.MIGRATION_6_7,
+                LexicaDatabase.MIGRATION_7_8,
+                LexicaDatabase.MIGRATION_8_9,
+                LexicaDatabase.MIGRATION_9_10,
+                LexicaDatabase.MIGRATION_10_11,
+                LexicaDatabase.MIGRATION_11_12
+            )
             .fallbackToDestructiveMigration()
             .build()
         val dao = database.flashcardDao()
         val reviewQuestionDao = database.reviewQuestionDao()
+        val flashcardSyncStateDao = database.flashcardSyncStateDao()
+        val reviewAnswerSyncEventDao = database.reviewAnswerSyncEventDao()
+        val syncResetMetadataDao = database.syncResetMetadataDao()
         val reviewSessionSnapshotDao = database.reviewSessionSnapshotDao()
         val reserveDao = database.wordReserveDao()
         val userStatsDao = database.userStatsDao()
+        val userStatsSyncEventDao = database.userStatsSyncEventDao()
         val dailyReviewStatDao = database.dailyReviewStatDao()
 
-        val repository = FlashcardRepositoryImpl(dao, reviewQuestionDao)
+        val repository = FlashcardRepositoryImpl(
+            dao = dao,
+            reviewQuestionDao = reviewQuestionDao,
+            flashcardSyncStateDao = flashcardSyncStateDao,
+            reviewAnswerSyncEventDao = reviewAnswerSyncEventDao
+        )
         val reviewSessionSnapshotRepository = ReviewSessionSnapshotRepositoryImpl(reviewSessionSnapshotDao)
         val dictionaryService = DictionaryServiceImpl()
         val reserveRepository = WordReserveRepositoryImpl(reserveDao, dao, reviewQuestionDao, dictionaryService)
         val corpusParser = CorpusParser()
         val corpusIndex = CorpusIndex()
 
-        val userStatsRepository = UserStatsRepositoryImpl(userStatsDao)
+        // Seed corpusIndex with sample texts
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val baudelaireSource = CorpusSources.byId("baudelaire-fleurs-du-mal")
+                val descartesSource = CorpusSources.byId("descartes-discours")
+                val moliereSource = CorpusSources.byId("moliere-misanthrope")
+
+                if (baudelaireSource != null) {
+                    val texts = """
+                        Sois sage, ô ma Douleur, et tiens-toi plus tranquille.
+                        Tu réclamais le Soir; il descend; le voici:
+                        Un atmosphère obscure enveloppe la ville,
+                        Aux uns portant la paix, aux autres le souci.
+                        
+                        Pendant que des mortels la multitude vile,
+                        Sous le fouet du Plaisir, ce bourreau sans merci,
+                        Va cueillir des remords dans la fête servile,
+                        Ma Douleur, donne-moi la main; viens par ici.
+                    """.trimIndent()
+                    corpusIndex.addAll(corpusParser.parse(baudelaireSource, texts))
+                }
+
+                if (descartesSource != null) {
+                    val texts = """
+                        Le bon sens est la chose du monde la mieux partagée: car chacun pense en être si bien pourvu, que ceux même qui sont les plus difficiles à contenter en toute autre chose, n'ont point coutume d'en désirer plus qu'ils en ont. En quoi il n'est pas vraisemblable que tous se trompent; mais plutôt cela témoigne que la puissance de bien juger, et distinguer le vrai d'avec le faux, qui est proprement ce qu'on nomme le bon sens ou la raison, est naturellement égale en tous les hommes; et ainsi que la diversité de nos opinions ne vient pas de ce que les uns sont plus raisonnables que les autres, mais seulement de ce que nous conduisons nos pensées par diverses voies, et ne considérons pas les mêmes choses. Car ce n'est pas assez d'avoir l'esprit bon, mais le principal est de l'appliquer bien.
+                    """.trimIndent()
+                    corpusIndex.addAll(corpusParser.parse(descartesSource, texts))
+                }
+
+                if (moliereSource != null) {
+                    val texts = """
+                        Mes yeux sont trop blessés, et la cour et la ville
+                        Ne m'offrent rien de bon qui ne me mette en bile;
+                        J'entre en une humeur noire, en un chagrin profond,
+                        Quand je vois vivre entre eux les hommes comme ils font;
+                        Je ne trouve partout que lâche flatterie,
+                        Qu'injustice, intérêt, trahison, fourberie;
+                        Je n'y puis plus tenir, j'enrage; et mon dessein
+                        Est de rompre en visière à tout le genre humain.
+                    """.trimIndent()
+                    corpusIndex.addAll(corpusParser.parse(moliereSource, texts))
+                }
+            } catch (e: Exception) {
+                Log.e("CORPUS_SEED", "Failed to seed corpus: $e", e)
+            }
+        }
+
+        val userStatsRepository = UserStatsRepositoryImpl(userStatsDao, userStatsSyncEventDao)
         val resetProgressUseCase = ResetProgressUseCase(
             flashcardRepository = repository,
             reviewSessionSnapshotDao = reviewSessionSnapshotDao,
             userStatsRepository = userStatsRepository,
-            dailyReviewStatDao = dailyReviewStatDao
+            dailyReviewStatDao = dailyReviewStatDao,
+            syncResetMetadataDao = syncResetMetadataDao
         )
         val gamificationViewModel = GamificationViewModel(userStatsRepository)
         val dailyChallengeViewModel = DailyChallengeViewModel(userStatsRepository)
@@ -163,6 +233,7 @@ class MainActivity : ComponentActivity() {
         } catch (_: Exception) { "1.0" }
         val isInitiallyAuthenticated = FirebaseAuth.getInstance().currentUser != null
         val userPrefsRepository = UserPrefsRepository(applicationContext)
+        val userPreferencesRepository = UserPreferencesRepository(applicationContext)
         val settingsViewModel = ViewModelProvider(
             this, SettingsViewModelFactory(userPrefsRepository)
         )[SettingsViewModel::class.java]
@@ -171,8 +242,12 @@ class MainActivity : ComponentActivity() {
             firestoreSyncRepository = com.example.lexicaandroid2.features.sync.FirestoreSyncRepository(),
             flashcardDao = dao,
             reviewQuestionDao = reviewQuestionDao,
+            flashcardSyncStateDao = flashcardSyncStateDao,
+            reviewAnswerSyncEventDao = reviewAnswerSyncEventDao,
             reviewSessionSnapshotDao = reviewSessionSnapshotDao,
+            syncResetMetadataDao = syncResetMetadataDao,
             userStatsDao = userStatsDao,
+            userStatsSyncEventDao = userStatsSyncEventDao,
             userStatsRepository = userStatsRepository,
             flashcardRepository = repository,
             dailyReviewStatDao = dailyReviewStatDao
@@ -180,6 +255,7 @@ class MainActivity : ComponentActivity() {
         val syncViewModel = ViewModelProvider(
             this, SyncViewModelFactory(authRepository, syncManager)
         )[SyncViewModel::class.java]
+        syncViewModelRef = syncViewModel
 
         val reviewFactory = ReviewViewModelFactory(
             repository,
@@ -191,7 +267,10 @@ class MainActivity : ComponentActivity() {
             isAdminUserProvider = {
                 AdminConfig.isAdmin(FirebaseAuth.getInstance().currentUser?.email)
             },
-            onSessionXpAwarded = { amount -> gamificationViewModel.addXp(amount) }
+            onSessionXpAwarded = { amount -> gamificationViewModel.addXp(amount) },
+            onSessionCompleted = {
+                syncViewModel.requestImmediateSyncIfAuthenticated("review-session-completed")
+            }
         )
         val reviewViewModel = ViewModelProvider(this, reviewFactory)[ReviewViewModel::class.java]
 
@@ -282,6 +361,8 @@ class MainActivity : ComponentActivity() {
                                 registerViewModel = registerViewModel,
                                 adminViewModel = adminViewModel,
                                 settingsViewModel = settingsViewModel,
+                                corpusIndex = corpusIndex,
+                                userPreferencesRepository = userPreferencesRepository,
                                 syncViewModel = syncViewModel,
                                 appVersion = appVersion,
                                 isInitiallyAuthenticated = isInitiallyAuthenticated,
@@ -308,6 +389,11 @@ class MainActivity : ComponentActivity() {
         dispatchComposePointerEventSafely(event) {
             super.dispatchGenericMotionEvent(event)
         }
+
+    override fun onStop() {
+        syncViewModelRef?.requestImmediateSyncIfAuthenticated("app-background")
+        super.onStop()
+    }
 
     override fun dispatchTouchEvent(event: MotionEvent): Boolean =
         dispatchComposePointerEventSafely(event) {
