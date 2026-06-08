@@ -12,6 +12,8 @@ import androidx.activity.compose.setContent
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
+import com.example.lexicaandroid2.data.corpus.CorpusIndex
+import com.example.lexicaandroid2.data.corpus.CorpusParser
 import com.example.lexicaandroid2.data.importer.DataImporter
 import com.example.lexicaandroid2.data.local.LexicaDatabase
 import com.example.lexicaandroid2.data.repository.FlashcardRepositoryImpl
@@ -129,6 +131,9 @@ class MainActivity : ComponentActivity() {
         val reviewSessionSnapshotRepository = ReviewSessionSnapshotRepositoryImpl(reviewSessionSnapshotDao)
         val dictionaryService = DictionaryServiceImpl()
         val reserveRepository = WordReserveRepositoryImpl(reserveDao, dao, reviewQuestionDao, dictionaryService)
+        val corpusParser = CorpusParser()
+        val corpusIndex = CorpusIndex()
+
         val userStatsRepository = UserStatsRepositoryImpl(userStatsDao)
         val resetProgressUseCase = ResetProgressUseCase(
             flashcardRepository = repository,
