@@ -24,7 +24,7 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Search
@@ -87,7 +87,7 @@ import com.example.lexicaandroid2.data.corpus.CorpusIndex
 fun ExploreScreen(
     corpusIndex: CorpusIndex,
     userPreferences: UserPreferences? = null,
-    onNavigateToCatalogue: () -> Unit = {},
+    onNavigateToCatalogue: (String?) -> Unit = {},
     onNavigateToSearch: () -> Unit = {},
     onBack: () -> Unit = {},
     viewModel: ExploreViewModel = viewModel(
@@ -103,16 +103,22 @@ fun ExploreScreen(
 
     Scaffold(
         topBar = {
+            val state = uiState as? ExploreUiState.ExtractDisplayed
+            val sourceId = state?.extract?.sourceTitle // Le champ sourceTitle contient le sourceId par défaut
             ExploreTopAppBar(
                 onBack = onBack,
                 onInfoClick = {
-                    // Afficher les infos de la source (stub)
+                    if (sourceId != null) {
+                        onNavigateToCatalogue(sourceId)
+                    } else {
+                        onNavigateToCatalogue(null)
+                    }
                 }
             )
         },
         bottomBar = {
             ExploreBottomBar(
-                onNavigateToCatalogue = onNavigateToCatalogue,
+                onNavigateToCatalogue = { onNavigateToCatalogue(null) },
                 onNavigateToSearch = onNavigateToSearch
             )
         }
@@ -178,7 +184,7 @@ private fun ExploreTopAppBar(
         navigationIcon = {
             IconButton(onClick = onBack) {
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Retour"
                 )
             }

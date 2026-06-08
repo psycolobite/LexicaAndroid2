@@ -1,5 +1,56 @@
 # 📅 DAILY STANDUP - Journal Unique de Suivi
 
+## 📅 2026-06-08 (Soir) — Finalisation de la recherche : Catalogue, Recherche Historique et Profilage Dynamique (Tâches R7 à R9)
+
+### ✅ Accompli
+- [x] **Tâche R7 (Catalogue d'ouvrages)** : Création de `CatalogueRepository`, `CatalogueViewModel` et `CatalogueScreen` avec filtres thématiques et intégration de la navigation depuis l'exploration et vers le lecteur/lien externe.
+- [x] **Tâche R8 (Recherche historique)** : Intégration de l'écran `SearchScreen` et routage dans `LexicaApp` et `MainActivity` pour chercher des cartes locales, et redirection de l'action de recherche de l'exploration vers cette route.
+- [x] **Tâche R9 (Profilage dynamique & Scoring)** : Modélisation des événements d'intérêt (`InterestEvent`, `InterestEventType`), développement de `InterestProfileCalculator` pour pondérer chronologiquement l'affinité thématique, et raccordement au `ScoringEngine` pour un ranking personnalisé basé sur le profil d'affinité.
+- [x] **Tests & Validation** : Écriture de la classe `InterestProfileTest` pour valider l'initialisation, le calcul chronologique, le clamping et l'impact sur le scoring. Validation réussie par Gradle (`BUILD SUCCESSFUL`).
+
+### 📁 Fichiers modifiés / créés
+- `app/src/main/java/com/example/lexicaandroid2/MainActivity.kt` (modifié)
+- `app/src/main/java/com/example/lexicaandroid2/presentation/LexicaApp.kt` (modifié)
+- `app/src/main/java/com/example/lexicaandroid2/domain/recommendation/ScoringEngine.kt` (modifié)
+- `app/src/main/java/com/example/lexicaandroid2/features/recommendation/InterestEvent.kt` *(nouveau)*
+- `app/src/main/java/com/example/lexicaandroid2/features/recommendation/InterestProfileCalculator.kt` *(nouveau)*
+- `app/src/test/java/com/example/lexicaandroid2/features/recommendation/InterestProfileTest.kt` *(nouveau)*
+
+### 🎯 Suite prévue
+- [ ] Phase de validation utilisateur sur l'écran d'exploration pour éprouver le scoring d'intérêt en conditions réelles.
+
+---
+
+## 📅 2026-06-08 — Intégration et stabilisation du module de recherche (Tâches R1 à R6)
+
+### ✅ Accompli
+- [x] Résolution des conflits et instanciation du module de recherche dans `MainActivity.kt`
+- [x] Initialisation et population asynchrone du `CorpusIndex` avec un corpus pilote de 3 sources (Baudelaire, Descartes, Molière)
+- [x] Propagation de `corpusIndex` et `userPreferencesRepository` dans `LexicaApp` et `ExploreScreen`
+- [x] Correction de compilation dans `ContextFilter.kt` (remplacement de `sumOf` sur Float par `fold`)
+- [x] Ajout de la propriété `content: String` à `CorpusSource` et correction de son utilisation dans `OccurrenceSearcher.kt`
+- [x] Correction de bug de retour arithmétique multi-ligne dans `ScoringEngine.kt`
+- [x] Ajout de l'import de `CorpusIndex` manquant dans `ExploreScreen.kt`
+- [x] Création et exécution réussie de 4 classes de tests unitaires : `CorpusParserTest`, `CorpusIndexTest`, `ScoringEngineTest` et `ExploreViewModelTest`
+- [x] Validation générale de la suite de tests : **BUILD SUCCESSFUL** (266 tests réussis, 0 échecs)
+
+### 📁 Fichiers modifiés / créés
+- `app/src/main/java/com/example/lexicaandroid2/MainActivity.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/LexicaApp.kt`
+- `app/src/main/java/com/example/lexicaandroid2/presentation/search/explore/ExploreScreen.kt`
+- `app/src/main/java/com/example/lexicaandroid2/data/corpus/CorpusSource.kt`
+- `app/src/main/java/com/example/lexicaandroid2/data/corpus/ContextFilter.kt`
+- `app/src/main/java/com/example/lexicaandroid2/domain/recommendation/ScoringEngine.kt`
+- `app/src/test/java/com/example/lexicaandroid2/data/corpus/CorpusParserTest.kt` *(nouveau)*
+- `app/src/test/java/com/example/lexicaandroid2/data/corpus/CorpusIndexTest.kt` *(nouveau)*
+- `app/src/test/java/com/example/lexicaandroid2/domain/recommendation/ScoringEngineTest.kt` *(nouveau)*
+- `app/src/test/java/com/example/lexicaandroid2/presentation/search/explore/ExploreViewModelTest.kt` *(nouveau)*
+
+### 🎯 Suite prévue
+- [ ] Tâche R7 : Créer le catalogue d'ouvrages (`CatalogueScreen`, `CatalogueViewModel`, `CatalogueRepository`) pour l'accès aux sources complètes.
+
+---
+
 ## 📅 2026-06-07 — Intégration recherche + préparation du nouveau chantier
 
 ### ✅ Accompli

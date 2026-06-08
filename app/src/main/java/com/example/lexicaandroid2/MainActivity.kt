@@ -68,6 +68,9 @@ import com.example.lexicaandroid2.presentation.wordlist.WordListViewModelFactory
 import com.example.lexicaandroid2.data.repository.WordReserveRepositoryImpl
 import com.example.lexicaandroid2.presentation.addwords.AddWordsViewModel
 import com.example.lexicaandroid2.presentation.addwords.AddWordsViewModelFactory
+import com.example.lexicaandroid2.data.repository.SearchRepositoryImpl
+import com.example.lexicaandroid2.presentation.search.SearchViewModel
+import com.example.lexicaandroid2.presentation.search.SearchViewModelFactory
 import com.example.lexicaandroid2.presentation.dailychallenge.DailyChallengeViewModel
 import com.example.lexicaandroid2.presentation.admin.AdminConfig
 import com.example.lexicaandroid2.presentation.admin.AdminPrefsRepository
@@ -286,6 +289,15 @@ class MainActivity : ComponentActivity() {
         )
         val addWordsViewModel = ViewModelProvider(this, addWordsFactory)[AddWordsViewModel::class.java]
 
+        val searchRepository = SearchRepositoryImpl(
+            dao = dao,
+            dictionaryService = dictionaryService
+        )
+        val searchViewModel = ViewModelProvider(
+            this,
+            SearchViewModelFactory(searchRepository)
+        )[SearchViewModel::class.java]
+
         lifecycleScope.launch(Dispatchers.IO) {
             try {
                 if (dao.count() == 0) {
@@ -351,6 +363,7 @@ class MainActivity : ComponentActivity() {
                                 dashboardViewModel = dashboardViewModel,
                                 wordListViewModel = wordListViewModel,
                                 addWordsViewModel = addWordsViewModel,
+                                searchViewModel = searchViewModel,
                                 gamificationViewModel = gamificationViewModel,
                                 miniGamesViewModel = miniGamesViewModel,
                                 repository = repository,

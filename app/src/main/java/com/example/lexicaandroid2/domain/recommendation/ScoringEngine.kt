@@ -104,21 +104,27 @@ class ScoringEngine(
         // 2. Domaines explicitement préférés
         val allPreferredDomains = (objectiveDomains + prefs.preferredDomains).distinct()
 
-        if (allPreferredDomains.isEmpty()) return 0.5f
-
-        // 3. Chevauchement avec les domaines de l'extrait
+        // 3. Affinité avec les domaines de l'extrait
         val extractDomains = extract.domainTags
         if (extractDomains.isEmpty()) return 0.3f
 
-        val overlap = extractDomains.count { it in allPreferredDomains }
-        val ratio = overlap.toFloat() / extractDomains.size.toFloat()
+        val domainAffinity = extractDomains.map { domain ->
+            val dynamicScore = context.interestProfile?.domainScores?.get(domain)
+            if (dynamicScore != null) {
+                dynamicScore
+            } else if (domain in allPreferredDomains) {
+                0.5f
+            } else {
+                0.0f
+            }
+        }.average().toFloat()
 
         // 4. Bonus si les registres correspondent aussi
         val registerBonus = if (prefs.preferredRegisters.isNotEmpty() &&
             extract.registerTags.any { it in prefs.preferredRegisters }
         ) 0.15f else 0.0f
 
-        return (ratio + registerBonus).coerceIn(0.0f, 1.0f)
+        return (domainAffinity + registerBonus).coerceIn(0.0f, 1.0f)
     }
 
     /**

@@ -28,6 +28,10 @@ sealed class Screen(val route: String) {
     data object Online : Screen("online")
     data object DrivingMode : Screen("driving_mode")
     data object Explore : Screen("explore")
+    data object Search : Screen("search")
+    data object Catalogue : Screen("catalogue?sourceId={sourceId}") {
+        fun createRoute(sourceId: String? = null) = "catalogue?sourceId=${sourceId ?: ""}"
+    }
     data class WordDetail(val cardId: String = "") : Screen("word/{cardId}") {
         fun createRoute(cardId: String) = "word/$cardId"
     }

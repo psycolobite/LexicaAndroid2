@@ -94,6 +94,10 @@ import com.example.lexicaandroid2.presentation.navigation.shouldShowBottomBar
 import com.example.lexicaandroid2.presentation.online.OnlineScreen
 import com.example.lexicaandroid2.presentation.utilisation.UtilisationScreen
 import com.example.lexicaandroid2.presentation.search.explore.ExploreScreen
+import com.example.lexicaandroid2.presentation.search.SearchViewModel
+import com.example.lexicaandroid2.presentation.search.SearchScreen
+import com.example.lexicaandroid2.presentation.search.catalogue.CatalogueScreen
+import com.example.lexicaandroid2.presentation.search.catalogue.CatalogueRepository
 import com.example.lexicaandroid2.data.corpus.CorpusIndex
 import com.example.lexicaandroid2.presentation.search.preferences.UserPreferencesRepository
 import com.example.lexicaandroid2.domain.usecase.ResetProgressUseCase
@@ -116,6 +120,7 @@ fun LexicaApp(
     dashboardViewModel: DashboardViewModel,
     wordListViewModel: WordListViewModel,
     addWordsViewModel: AddWordsViewModel,
+    searchViewModel: SearchViewModel,
     gamificationViewModel: GamificationViewModel,
     miniGamesViewModel: MiniGamesViewModel,
     repository: FlashcardRepository,
@@ -136,6 +141,7 @@ fun LexicaApp(
     syncManager: SyncManager? = null,
     navController: NavHostController = rememberNavController()
 ) {
+    val catalogueRepository = remember(corpusIndex) { CatalogueRepository(corpusIndex) }
     val userPreferences by userPreferencesRepository.getPreferences().collectAsState(initial = null)
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
@@ -176,6 +182,8 @@ fun LexicaApp(
         Screen.Online.route -> "Mode En Ligne"
         Screen.DrivingMode.route -> "Mode voiture"
         Screen.Explore.route -> "Explorer"
+        Screen.Search.route -> "Rechercher des mots"
+        Screen.Catalogue.route -> "Catalogue d'ouvrages"
         Screen.EditWord().route -> "Modifier mon mot"
         else -> if (currentRoute?.startsWith("word/") == true) "Détail du mot" else "Lexica"
     }
@@ -201,9 +209,11 @@ fun LexicaApp(
                          currentRoute == Screen.Utilisation.route ||
                           currentRoute == Screen.Online.route ||
                           currentRoute == Screen.DrivingMode.route ||
-                          currentRoute == Screen.Explore.route ||
-                          currentRoute?.startsWith("edit_word/") == true ||
-                         currentRoute?.startsWith("word/") == true
+                           currentRoute == Screen.Explore.route ||
+                           currentRoute == Screen.Search.route ||
+                           currentRoute == Screen.Catalogue.route ||
+                           currentRoute?.startsWith("edit_word/") == true ||
+                          currentRoute?.startsWith("word/") == true
 
     val shouldShowTopBar = currentRoute !in GAME_ROUTES &&
         currentRoute != Screen.Login.route &&
@@ -789,8 +799,30 @@ fun LexicaApp(
                 ExploreScreen(
                     corpusIndex = corpusIndex,
                     userPreferences = userPreferences,
-                    onNavigateToCatalogue = { /* TODO: TACHE_R7 */ },
-                    onNavigateToSearch = { navController.navigate(Screen.AddWords.route) },
+                    onNavigateToCatalogue = { sourceId ->
+                        navController.navigate(Screen.Catalogue.createRoute(sourceId))
+                    },
+                    onNavigateToSearch = { navController.navigate(Screen.Search.route) },
+                    onBack = { navController.navigateUp() }
+                )
+            }
+            composable(route = Screen.Search.route) {
+                SearchScreen(
+                    viewModel = searchViewModel,
+                    onNavigateBack = { navController.navigateUp() },
+                    onFlashcardClick = { cardId ->
+                        navController.navigate(Screen.WordDetail().createRoute(cardId))
+                    }
+                )
+            }
+            composable(
+                route = Screen.Catalogue.route,
+                arguments = listOf(navArgument("sourceId") { type = NavType.StringType; nullable = true; defaultValue = null })
+            ) { backStackEntry ->
+                val sourceId = backStackEntry.arguments?.getString("sourceId")
+                CatalogueScreen(
+                    repository = catalogueRepository,
+                    initialSourceId = sourceId,
                     onBack = { navController.navigateUp() }
                 )
             }
