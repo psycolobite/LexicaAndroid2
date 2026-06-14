@@ -294,6 +294,65 @@
           ]
         }
       ]
+    },
+    {
+      "id": "pipe-struct",
+      "name": "Structures & Organisation",
+      "subtitle": "Bases de données & Flux",
+      "categories": [
+        {
+          "id": "ps-db",
+          "name": "Base de données",
+          "status": "done",
+          "badges": [
+            "lexica_corpus.db",
+            "SQLite / Room"
+          ],
+          "tabs": [
+            {
+              "title": "1. Organisation & Schéma",
+              "content": "● BASE DE DONNÉES DE R&D (lexica_corpus.db)\nCentralise l'ensemble des données locales de l'équipe R&D pour simplifier l'intégration et éviter le désordre de multiples fichiers CSV/JSON.\n\nSchéma des Tables :\n1. words : Vocabulaire candidat de la Word Reserve (C1-C5)\n   - champs : id, word, category, difficulty, zipf, similarity, source, wiktionary_def\n2. documents : Métadonnées du corpus (œuvres de Gutenberg, transcripts YouTube, articles Wikipédia)\n   - champs : id, title, author, category, difficulty, ttr, avg_sentence_len, zipf_rare_ratio, source_url\n3. excerpts : Extraits textuels scorés et rattachés aux mots\n   - champs : id, document_id, word_id, content, orality_score, argumentative_score, difficulty\n\n● BASE DE DONNÉES EMBARQUÉE CLIENT (Room SQLite)\n- Starter Pack : L'APK Android contient une version allégée pré-remplie servant de socle local.\n- Cache Room : Cache local dynamique sur le téléphone de l'utilisateur qui stocke les documents et extraits au fil de l'eau."
+            },
+            {
+              "title": "2. Consolidation & Centralisation",
+              "content": "● IMPORTATION AUTOMATIQUE\nLe script tools/consolidate_words_to_db.py importe les 1458 mots de référence des CSV des catégories C1 à C5 vers la base SQLite centralisée. Il résout les problèmes d'encodage (BOM utf-8-sig).\n\n● FIN DES FICHIERS DISPERSÉS\nTous les nouveaux candidats générés par les scripts de R&D (discover, test_cX) sont directement insérés dans la base de données SQLite unique tools/lexica_corpus.db.\n\n● CONVERSION KOTLIN / ROOM\nLe schéma SQLite de R&D est conçu pour correspondre directement aux entités Room de l'application Android, facilitant le copier-coller de structure."
+            },
+            {
+              "title": "3. R&D & Prochaines étapes",
+              "content": "● SYNCHRONISATION BIDIRECTIONNELLE\nDévelopper un script pour synchroniser les corrections manuelles effectuées sur l'application Android avec la base de données R&D.\n\n● DÉDOUBLONNEMENT SÉMANTIQUE\nAjouter un algorithme de détection des doublons sémantiques ou des variations orthographiques lors de l'insertion dans la table words."
+            }
+          ]
+        },
+        {
+          "id": "ps-hybrid",
+          "name": "Distribution Hybride",
+          "status": "done",
+          "badges": [
+            "Sans Serveur",
+            "Acquisition Client"
+          ],
+          "tabs": [
+            {
+              "title": "1. Modèle Hybride Sans Serveur",
+              "content": "● PAS D'HÉBERGEMENT COÛTEUX\nPour éviter de payer et maintenir des serveurs d'APIs et de calcul de parsing, l'intelligence est déportée sur le client.\n\n● LOGIQUE HYBRIDE\n1. Starter Pack : L'utilisateur dispose de données initiales dans son APK.\n2. Acquisition dynamique : Si l'utilisateur demande un livre ou une vidéo absente, son téléphone effectue l'appel API public en direct, exécute le classifieur/découpeur de texte en local (Kotlin), et persiste le résultat dans son cache local Room."
+            },
+            {
+              "title": "2. Acquisition Dynamique & APIs",
+              "content": "● APIS INTERROGÉES DEPUIS LE TÉLÉPHONE\n- Gutendex API / Gutenberg CDN : Téléchargement dynamique des livres libres de droits.\n- Wikipedia API : Récupération des articles de vulgarisation.\n- YouTube Transcript API : Extraction des sous-titres horodatés pour les vidéos.\n\n● LOGIQUE DE PARSING KOTLIN LOCAL\n- Découpage en paragraphes autonomes.\n- Filtrage OCR et validation syntaxique.\n- Calcul des scores de lisibilité et de classification par difficulté."
+            },
+            {
+              "title": "3. Avantages & R&D",
+              "content": "● AVANTAGES MAJEURS\n- Résilience : Pas de risque de panne de notre serveur.\n- Vie privée : Les données de lecture de l'utilisateur restent locales.\n- Économies : Coût serveur nul pour le développeur.\n\n● R&D KOTLIN\nTraduire les scripts de classification (classify_book_difficulty.py) et de découpage de document (route_corpus_document.py) en code Kotlin mobile performant."
+            }
+          ]
+        }
+      ]
     }
-  ]
+  ],
+  "sync_documentation": {
+    "purpose": "Permet de synchroniser le fichier JSON avec tableau_interactif_algorithmes.html.",
+    "script": "tools/apply_json_to_html.py",
+    "usage": "Exécuter 'python tools/apply_json_to_html.py' pour propager les modifications du JSON vers le HTML.",
+    "capabilities": "Le script met à jour les textes existants et génère automatiquement les nouveaux éléments HTML (pipelines, catégories, onglets, fiches) s'ils sont déclarés dans le JSON mais absents du HTML."
+  }
 }

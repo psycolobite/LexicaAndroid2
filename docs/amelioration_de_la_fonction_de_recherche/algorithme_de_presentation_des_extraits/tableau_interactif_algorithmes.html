@@ -929,7 +929,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-14 20:32 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-14 20:39 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -1064,7 +1064,7 @@
 <div class="node-title" contenteditable="true" spellcheck="false">Pipeline B</div>
 <div class="node-subtitle" contenteditable="true" spellcheck="false">Corpus d'Extraits</div>
 </div>
-<button class="add-pipeline-btn" onclick="addPipeline()" title="Ajouter une nouvelle Pipeline">＋ Pipeline</button>
+<div class="node node-pipeline pipe-struct" id="node-pipe-struct" onclick="togglePipeline('pipe-struct')" style="border-left: 6px solid #38bdf8; position: relative;"><div class="node-title" contenteditable="true" spellcheck="false">Structures &amp; Organisation</div><div class="node-subtitle" contenteditable="true" spellcheck="false">Bases de données &amp; Flux</div><button class="delete-btn" onclick="deletePipeline('pipe-struct', event)">🗑</button></div><button class="add-pipeline-btn" onclick="addPipeline()" title="Ajouter une nouvelle Pipeline">＋ Pipeline</button>
 </div>
 <!-- Categories Branches -->
 <div class="mindmap-col categories-col">
@@ -1086,7 +1086,7 @@
 <div class="node node-category c5" contenteditable="true" id="node-pb-c5" onclick="selectCategory('pb-c5')" spellcheck="false">C5. Extraits Jargon</div>
 <button class="add-category-btn" onclick="addCategory('pb')" title="Ajouter une catégorie à Pipeline B">＋ Catégorie</button>
 </div>
-</div>
+<div class="category-branch" id="pipe-struct-children"><div class="node node-category c1" contenteditable="true" id="node-ps-db" onclick="selectCategory('ps-db')" spellcheck="false" style="border-left: 4px solid #38bdf8; position: relative;">Base de données<button class="delete-btn" onclick="deleteCategory('ps-db', event)">🗑</button></div><div class="node node-category c2" contenteditable="true" id="node-ps-hybrid" onclick="selectCategory('ps-hybrid')" spellcheck="false" style="border-left: 4px solid #fb923c; position: relative;">Distribution Hybride<button class="delete-btn" onclick="deleteCategory('ps-hybrid', event)">🗑</button></div><button class="add-category-btn" onclick="addCategory('pipe-struct')" title="Ajouter une catégorie à Structures &amp; Organisation">＋ Catégorie</button></div></div>
 <!-- Subcategories Col (Dynamic 4th Column) -->
 <div class="mindmap-col subcategories-col" style="gap: 20px;">
 <!-- Pipeline A sub-branches -->
@@ -1187,7 +1187,7 @@
 <div class="node node-subcategory c5" contenteditable="true" id="node-pb-c5-sub3" onclick="selectSubCategory('pb-c5', 3)" spellcheck="false">4. Essais &amp;
                                 R&amp;D</div>
 </div>
-</div>
+<div class="category-branch" id="ps-db-sub-branch" style="display: none; gap: 10px;"><div class="node node-subcategory c1 active" contenteditable="true" id="node-ps-db-sub0" onclick="selectSubCategory('ps-db', 0)" spellcheck="false">1. Organisation &amp; Schéma<button class="delete-btn" onclick="deleteTab('card-ps-db', 0, event)">🗑</button></div><div class="node node-subcategory c1" contenteditable="true" id="node-ps-db-sub1" onclick="selectSubCategory('ps-db', 1)" spellcheck="false">2. Consolidation &amp; Centralisation<button class="delete-btn" onclick="deleteTab('card-ps-db', 1, event)">🗑</button></div><div class="node node-subcategory c1" contenteditable="true" id="node-ps-db-sub2" onclick="selectSubCategory('ps-db', 2)" spellcheck="false">3. R&amp;D &amp; Prochaines étapes<button class="delete-btn" onclick="deleteTab('card-ps-db', 2, event)">🗑</button></div></div><div class="category-branch" id="ps-hybrid-sub-branch" style="display: none; gap: 10px;"><div class="node node-subcategory c2 active" contenteditable="true" id="node-ps-hybrid-sub0" onclick="selectSubCategory('ps-hybrid', 0)" spellcheck="false">1. Modèle Hybride Sans Serveur<button class="delete-btn" onclick="deleteTab('card-ps-hybrid', 0, event)">🗑</button></div><div class="node node-subcategory c2" contenteditable="true" id="node-ps-hybrid-sub1" onclick="selectSubCategory('ps-hybrid', 1)" spellcheck="false">2. Acquisition Dynamique &amp; APIs<button class="delete-btn" onclick="deleteTab('card-ps-hybrid', 1, event)">🗑</button></div><div class="node node-subcategory c2" contenteditable="true" id="node-ps-hybrid-sub2" onclick="selectSubCategory('ps-hybrid', 2)" spellcheck="false">3. Avantages &amp; R&amp;D<button class="delete-btn" onclick="deleteTab('card-ps-hybrid', 2, event)">🗑</button></div></div></div>
 </div>
 </div>
 <!-- ================= RIGHT: DETAILS PANEL ================= -->
@@ -1296,7 +1296,11 @@
                             (41)</button>
 <button class="tab-btn" onclick="switchSubTab('card-pa-c1', 3, this)">4. Essais &amp;
                             R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pa-c1', 0, this)">1. Description
+                            &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pa-c1', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c1', 1, this)">2. Algorithme &amp;
+                            Filtres</button><button class="delete-btn" onclick="deleteTab('card-pa-c1', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c1', 2, this)">3. Candidats Générés
+                            (41)</button><button class="delete-btn" onclick="deleteTab('card-pa-c1', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c1', 3, this)">4. Essais &amp;
+                            R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pa-c1', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -1644,7 +1648,7 @@ Nouveaux mots
 <button class="tab-btn" onclick="switchSubTab('card-pa-c2', 1, this)">2. Algorithme &amp; Filtres</button>
 <button class="tab-btn active" onclick="switchSubTab('card-pa-c2', 2, this)">3. Candidats Potentiels</button>
 <button class="tab-btn" onclick="switchSubTab('card-pa-c2', 3, this)">4. Essais &amp; R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pa-c2', 0, this)">1. Description &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pa-c2', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c2', 1, this)">2. Algorithme &amp; Filtres</button><button class="delete-btn" onclick="deleteTab('card-pa-c2', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c2', 2, this)">3. Candidats Potentiels</button><button class="delete-btn" onclick="deleteTab('card-pa-c2', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c2', 3, this)">4. Essais &amp; R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pa-c2', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -1982,7 +1986,11 @@ Mots extraits et calibrés par l'algorithme (114
                                 Références</button>
 <button class="tab-btn" onclick="switchSubTab('card-pa-c3', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pa-c3', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pa-c3', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c3', 1, this)">2. Algorithme &amp;
+                                Filtres</button><button class="delete-btn" onclick="deleteTab('card-pa-c3', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c3', 2, this)">3. Candidats &amp;
+                                Références</button><button class="delete-btn" onclick="deleteTab('card-pa-c3', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c3', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pa-c3', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -2280,7 +2288,11 @@ Scripts &amp;
                                 Références</button>
 <button class="tab-btn" onclick="switchSubTab('card-pa-c4', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pa-c4', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pa-c4', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c4', 1, this)">2. Algorithme &amp;
+                                Filtres</button><button class="delete-btn" onclick="deleteTab('card-pa-c4', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c4', 2, this)">3. Candidats &amp;
+                                Références</button><button class="delete-btn" onclick="deleteTab('card-pa-c4', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c4', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pa-c4', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -2486,7 +2498,11 @@ Scripts &amp;
                                 Références</button>
 <button class="tab-btn" onclick="switchSubTab('card-pa-c5', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pa-c5', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pa-c5', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c5', 1, this)">2. Algorithme &amp;
+                                Filtres</button><button class="delete-btn" onclick="deleteTab('card-pa-c5', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c5', 2, this)">3. Candidats &amp;
+                                Références</button><button class="delete-btn" onclick="deleteTab('card-pa-c5', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pa-c5', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pa-c5', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -2697,7 +2713,11 @@ Scripts &amp;
                                 Candidats</button>
 <button class="tab-btn" onclick="switchSubTab('card-pb-c1', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pb-c1', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pb-c1', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c1', 1, this)">2. Algorithme &amp;
+                                Sélection</button><button class="delete-btn" onclick="deleteTab('card-pb-c1', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c1', 2, this)">3. Extraits
+                                Candidats</button><button class="delete-btn" onclick="deleteTab('card-pb-c1', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c1', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pb-c1', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -2844,7 +2864,11 @@ Sourcing &amp;
                                 Candidats</button>
 <button class="tab-btn" onclick="switchSubTab('card-pb-c2', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pb-c2', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pb-c2', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c2', 1, this)">2. Algorithme &amp;
+                                Sélection</button><button class="delete-btn" onclick="deleteTab('card-pb-c2', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c2', 2, this)">3. Extraits
+                                Candidats</button><button class="delete-btn" onclick="deleteTab('card-pb-c2', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c2', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pb-c2', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -2969,7 +2993,11 @@ Sourcing &amp;
                                 Candidats</button>
 <button class="tab-btn" onclick="switchSubTab('card-pb-c3', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pb-c3', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pb-c3', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c3', 1, this)">2. Algorithme &amp;
+                                Sélection</button><button class="delete-btn" onclick="deleteTab('card-pb-c3', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c3', 2, this)">3. Extraits
+                                Candidats</button><button class="delete-btn" onclick="deleteTab('card-pb-c3', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c3', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pb-c3', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -3087,7 +3115,11 @@ Sourcing &amp;
                                 Candidats</button>
 <button class="tab-btn" onclick="switchSubTab('card-pb-c4', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pb-c4', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pb-c4', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c4', 1, this)">2. Algorithme &amp;
+                                Sélection</button><button class="delete-btn" onclick="deleteTab('card-pb-c4', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c4', 2, this)">3. Extraits
+                                Candidats</button><button class="delete-btn" onclick="deleteTab('card-pb-c4', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c4', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pb-c4', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -3205,7 +3237,11 @@ Sourcing &amp;
                                 Candidats</button>
 <button class="tab-btn" onclick="switchSubTab('card-pb-c5', 3, this)">4. Essais &amp;
                                 R&amp;D</button>
-</div>
+<div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-pb-c5', 0, this)">1. Description
+                                &amp; Caractéristiques</button><button class="delete-btn" onclick="deleteTab('card-pb-c5', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c5', 1, this)">2. Algorithme &amp;
+                                Sélection</button><button class="delete-btn" onclick="deleteTab('card-pb-c5', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c5', 2, this)">3. Extraits
+                                Candidats</button><button class="delete-btn" onclick="deleteTab('card-pb-c5', 2, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-pb-c5', 3, this)">4. Essais &amp;
+                                R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-pb-c5', 3, event)">🗑</button></div></div>
 <!-- TAB 1: DESCRIPTION & CARACTÉRISTIQUES -->
 <div class="tab-content active">
 <p contenteditable="true" spellcheck="false" style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px;">
@@ -3326,7 +3362,50 @@ Routage &amp;
                         - Socle local : L'APK contient une base SQLite Room légère pré-remplie (lexica_corpus.db) avec un 'Starter Pack' de documents et d'extraits de référence.
                         - Acquisition dynamique sur le client : Si l'utilisateur recherche un ouvrage ou colle un lien vidéo absent du socle, son appareil effectue la requête HTTP de manière décentralisée, exécute la logique de classification/découpage en local (Kotlin), et persiste le résultat dans son cache local Room.</div>
 </div>
-</div>
+<div class="card-detail c1" id="card-ps-db" style="--cat-color: #38bdf8;"><div class="card-header-row"><div class="card-title" contenteditable="true" spellcheck="false" style="color: #38bdf8">Base de données</div><span class="card-tag" contenteditable="true" spellcheck="false" style="background: #38bdf820; color: #38bdf8">Base de données</span></div><div style="display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap;"><span class="status-todo">⚙ En cours</span><span class="badge badge-blue" contenteditable="true" spellcheck="false">lexica_corpus.db</span><span class="badge badge-blue" contenteditable="true" spellcheck="false">SQLite / Room</span></div><div class="sub-tabs-container"><div class="tab-buttons" id="tabs-ps-db"><div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-ps-db', 0, this)">1. Organisation &amp; Schéma</button><button class="delete-btn" onclick="deleteTab('card-ps-db', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-ps-db', 1, this)">2. Consolidation &amp; Centralisation</button><button class="delete-btn" onclick="deleteTab('card-ps-db', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-ps-db', 2, this)">3. R&amp;D &amp; Prochaines étapes</button><button class="delete-btn" onclick="deleteTab('card-ps-db', 2, event)">🗑</button></div><button class="add-tab-btn" onclick="addTab('card-ps-db')" title="Ajouter un onglet">＋</button></div><div class="tab-content active"><div class="editable-area" contenteditable="true" spellcheck="false">● BASE DE DONNÉES DE R&amp;D (lexica_corpus.db)
+Centralise l'ensemble des données locales de l'équipe R&amp;D pour simplifier l'intégration et éviter le désordre de multiples fichiers CSV/JSON.
+
+Schéma des Tables :
+1. words : Vocabulaire candidat de la Word Reserve (C1-C5)
+   - champs : id, word, category, difficulty, zipf, similarity, source, wiktionary_def
+2. documents : Métadonnées du corpus (œuvres de Gutenberg, transcripts YouTube, articles Wikipédia)
+   - champs : id, title, author, category, difficulty, ttr, avg_sentence_len, zipf_rare_ratio, source_url
+3. excerpts : Extraits textuels scorés et rattachés aux mots
+   - champs : id, document_id, word_id, content, orality_score, argumentative_score, difficulty
+
+● BASE DE DONNÉES EMBARQUÉE CLIENT (Room SQLite)
+- Starter Pack : L'APK Android contient une version allégée pré-remplie servant de socle local.
+- Cache Room : Cache local dynamique sur le téléphone de l'utilisateur qui stocke les documents et extraits au fil de l'eau.</div></div><div class="tab-content"><div class="editable-area" contenteditable="true" spellcheck="false">● IMPORTATION AUTOMATIQUE
+Le script tools/consolidate_words_to_db.py importe les 1458 mots de référence des CSV des catégories C1 à C5 vers la base SQLite centralisée. Il résout les problèmes d'encodage (BOM utf-8-sig).
+
+● FIN DES FICHIERS DISPERSÉS
+Tous les nouveaux candidats générés par les scripts de R&amp;D (discover, test_cX) sont directement insérés dans la base de données SQLite unique tools/lexica_corpus.db.
+
+● CONVERSION KOTLIN / ROOM
+Le schéma SQLite de R&amp;D est conçu pour correspondre directement aux entités Room de l'application Android, facilitant le copier-coller de structure.</div></div><div class="tab-content"><div class="editable-area" contenteditable="true" spellcheck="false">● SYNCHRONISATION BIDIRECTIONNELLE
+Développer un script pour synchroniser les corrections manuelles effectuées sur l'application Android avec la base de données R&amp;D.
+
+● DÉDOUBLONNEMENT SÉMANTIQUE
+Ajouter un algorithme de détection des doublons sémantiques ou des variations orthographiques lors de l'insertion dans la table words.</div></div></div></div><div class="card-detail c2" id="card-ps-hybrid" style="--cat-color: #fb923c;"><div class="card-header-row"><div class="card-title" contenteditable="true" spellcheck="false" style="color: #fb923c">Distribution Hybride</div><span class="card-tag" contenteditable="true" spellcheck="false" style="background: #fb923c20; color: #fb923c">Distribution Hybride</span></div><div style="display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap;"><span class="status-todo">⚙ En cours</span><span class="badge badge-c2" contenteditable="true" spellcheck="false">Sans Serveur</span><span class="badge badge-c2" contenteditable="true" spellcheck="false">Acquisition Client</span></div><div class="sub-tabs-container"><div class="tab-buttons" id="tabs-ps-hybrid"><div class="tab-btn-wrapper"><button class="tab-btn active" onclick="switchSubTab('card-ps-hybrid', 0, this)">1. Modèle Hybride Sans Serveur</button><button class="delete-btn" onclick="deleteTab('card-ps-hybrid', 0, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-ps-hybrid', 1, this)">2. Acquisition Dynamique &amp; APIs</button><button class="delete-btn" onclick="deleteTab('card-ps-hybrid', 1, event)">🗑</button></div><div class="tab-btn-wrapper"><button class="tab-btn" onclick="switchSubTab('card-ps-hybrid', 2, this)">3. Avantages &amp; R&amp;D</button><button class="delete-btn" onclick="deleteTab('card-ps-hybrid', 2, event)">🗑</button></div><button class="add-tab-btn" onclick="addTab('card-ps-hybrid')" title="Ajouter un onglet">＋</button></div><div class="tab-content active"><div class="editable-area" contenteditable="true" spellcheck="false">● PAS D'HÉBERGEMENT COÛTEUX
+Pour éviter de payer et maintenir des serveurs d'APIs et de calcul de parsing, l'intelligence est déportée sur le client.
+
+● LOGIQUE HYBRIDE
+1. Starter Pack : L'utilisateur dispose de données initiales dans son APK.
+2. Acquisition dynamique : Si l'utilisateur demande un livre ou une vidéo absente, son téléphone effectue l'appel API public en direct, exécute le classifieur/découpeur de texte en local (Kotlin), et persiste le résultat dans son cache local Room.</div></div><div class="tab-content"><div class="editable-area" contenteditable="true" spellcheck="false">● APIS INTERROGÉES DEPUIS LE TÉLÉPHONE
+- Gutendex API / Gutenberg CDN : Téléchargement dynamique des livres libres de droits.
+- Wikipedia API : Récupération des articles de vulgarisation.
+- YouTube Transcript API : Extraction des sous-titres horodatés pour les vidéos.
+
+● LOGIQUE DE PARSING KOTLIN LOCAL
+- Découpage en paragraphes autonomes.
+- Filtrage OCR et validation syntaxique.
+- Calcul des scores de lisibilité et de classification par difficulté.</div></div><div class="tab-content"><div class="editable-area" contenteditable="true" spellcheck="false">● AVANTAGES MAJEURS
+- Résilience : Pas de risque de panne de notre serveur.
+- Vie privée : Les données de lecture de l'utilisateur restent locales.
+- Économies : Coût serveur nul pour le développeur.
+
+● R&amp;D KOTLIN
+Traduire les scripts de classification (classify_book_difficulty.py) et de découpage de document (route_corpus_document.py) en code Kotlin mobile performant.</div></div></div></div></div>
 </div>
 <div class="toast" id="toast">HTML exporté avec succès !</div>
 <script>
@@ -3552,26 +3631,33 @@ Routage &amp;
                 }
 
                 // Draw Root to Pipeline lines
-                if (root && pipeA && pipeA.style.display !== 'none') {
-                    drawCurve(getCenter(root, 'right'), getCenter(pipeA, 'left'), 'rgba(56, 189, 248, 0.5)', 3);
-                }
-                if (root && pipeB && pipeB.style.display !== 'none') {
-                    drawCurve(getCenter(root, 'right'), getCenter(pipeB, 'left'), 'rgba(192, 132, 252, 0.5)', 3);
-                }
+                const pipelines = document.querySelectorAll('.node-pipeline');
+                pipelines.forEach(pipe => {
+                    if (root && pipe && pipe.style.display !== 'none') {
+                        const color = window.getComputedStyle(pipe).borderLeftColor || 'rgba(56, 189, 248, 0.5)';
+                        drawCurve(getCenter(root, 'right'), getCenter(pipe, 'left'), color, 3);
+                    }
+                });
 
                 // Draw Pipeline to Categories lines
                 const drawCategoryLines = (pipeEl, childrenId, color) => {
-                    if (collapsedState[pipeEl.id.replace('node-', '')]) return;
+                    const pipeId = pipeEl.id.replace('node-', '');
+                    if (collapsedState[pipeId]) return;
                     const branch = document.getElementById(childrenId);
                     if (!branch) return;
                     const categories = branch.querySelectorAll('.node-category');
                     categories.forEach(cat => {
-                        // Check if category node is visible/active in DOM layout
                         if (cat.offsetHeight > 0) {
                             drawCurve(getCenter(pipeEl, 'right'), getCenter(cat, 'left'), color, 2);
                         }
                     });
                 };
+
+                pipelines.forEach(pipe => {
+                    const pipeId = pipe.id.replace('node-', '');
+                    const color = window.getComputedStyle(pipe).borderLeftColor || 'rgba(56, 189, 248, 0.3)';
+                    drawCategoryLines(pipe, pipeId + '-children', color);
+                });
 
                 // Draw Category to Subcategories lines
                 const drawSubCategoryLines = (catId, subBranchId, color) => {
@@ -3587,42 +3673,17 @@ Routage &amp;
                     });
                 };
 
-                if (pipeA) drawCategoryLines(pipeA, 'pipe-a-children', 'rgba(56, 189, 248, 0.3)');
-                if (pipeB) drawCategoryLines(pipeB, 'pipe-b-children', 'rgba(192, 132, 252, 0.3)');
-
-                const activeCategories = ['pa-c1', 'pa-c2', 'pa-c3', 'pa-c4', 'pa-c5', 'pb-c1', 'pb-c2', 'pb-c3', 'pb-c4', 'pb-c5'];
-                const colors = {
-                    'c1': 'rgba(56, 189, 248, 0.4)',
-                    'c2': 'rgba(251, 146, 60, 0.4)',
-                    'c3': 'rgba(74, 222, 128, 0.4)',
-                    'c4': 'rgba(244, 114, 182, 0.4)',
-                    'c5': 'rgba(192, 132, 252, 0.4)'
-                };
-                activeCategories.forEach(cat => {
-                    const cNum = cat.split('-')[1];
-                    drawSubCategoryLines(cat, cat + '-sub-branch', colors[cNum]);
+                document.querySelectorAll('.node-category').forEach(cat => {
+                    const catId = cat.id.replace('node-', '');
+                    const color = window.getComputedStyle(cat).borderLeftColor || 'rgba(56, 189, 248, 0.4)';
+                    drawSubCategoryLines(catId, catId + '-sub-branch', color);
                 });
             }
 
             function exportHTML() {
-                const ids = [
-                    'pa-c1-filters', 'pa-c1-files', 'pa-c1-refwords', 'pa-c1-candwords', 'pa-c1-rd',
-                    'pa-c2-filters', 'pa-c2-files', 'pa-c2-refwords', 'pa-c2-candwords', 'pa-c2-rd',
-                    'pa-c3-filters', 'pa-c3-files', 'pa-c3-refwords', 'pa-c3-candwords', 'pa-c3-rd',
-                    'pa-c4-filters', 'pa-c4-files', 'pa-c4-refwords', 'pa-c4-candwords', 'pa-c4-rd',
-                    'pa-c5-filters', 'pa-c5-files', 'pa-c5-refwords', 'pa-c5-candwords', 'pa-c5-rd',
-                    'pb-c1-selection', 'pb-c1-sourcing', 'pb-c1-refwords', 'pb-c1-candwords', 'pb-c1-rd',
-                    'pb-c2-selection', 'pb-c2-sourcing', 'pb-c2-refwords', 'pb-c2-candwords', 'pb-c2-rd',
-                    'pb-c3-selection', 'pb-c3-sourcing', 'pb-c3-refwords', 'pb-c3-candwords', 'pb-c3-rd',
-                    'pb-c4-selection', 'pb-c4-sourcing', 'pb-c4-refwords', 'pb-c4-candwords', 'pb-c4-rd',
-                    'pb-c5-selection', 'pb-c5-sourcing', 'pb-c5-refwords', 'pb-c5-candwords', 'pb-c5-rd',
-                    'notes-transversales'
-                ];
-                ids.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.innerHTML = element.innerText;
-                    }
+                const editables = document.querySelectorAll('.editable-area, #notes-transversales');
+                editables.forEach(element => {
+                    element.innerHTML = element.innerText;
                 });
 
                 const htmlContent = document.documentElement.outerHTML;
