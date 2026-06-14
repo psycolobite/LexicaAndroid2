@@ -1,6 +1,6 @@
 # Rapport d'Extraction C3 — Word Reserve « Dernier Cri » (Expressions Populaires Trending)
 
-**Date :** 14/06/2026 19:44
+**Date :** 14/06/2026 19:49
 **Candidats scorés :** 376
 **Méthode :** Wiktionnaire Categories + Pageviews Trending + Lexique383 Oralité
 

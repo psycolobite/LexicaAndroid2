@@ -929,7 +929,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-14 19:34 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-14 20:03 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -2463,7 +2463,7 @@ Scripts &amp;
                                 la compréhension et le décodage d'œuvres littéraires classiques de haut niveau.
                             </p>
 <div class="editable-area" contenteditable="true" id="pb-c1-refwords">Objectifs Utilisateur : Les extraits de cette catégorie ont pour but
-                                d'aider l'utilisateur dans son objectif d'apprendre du vocabulaire pour un usage
+                                d'aider l'utilisateur dans son objectif d'apprentissage de vocabulaire pour un usage
                                 littéraire, tel que l'écriture et la création (romans, poésie, théâtre) ou la lecture,
                                 la compréhension et le décodage d'œuvres littéraires classiques de haut niveau.
                             
@@ -2490,26 +2490,26 @@ Scripts &amp;
                                     - Ratio Zipf moyen de l'extrait (priorité aux indices de fréquence bas).
                                     3. Cohérence sémantique : similarité cosinus de l'embedding de l'extrait avec le
                                     centroïde littéraire global.
-                                    4. Format optimal : 150 à 450 caractères (adapté aux smartphones).
+                                    4. Longueur de l'extrait : n'est plus un critère d'exclusion strict, mais applique un léger bonus gaussien centré sur 300 caractères.
 
                                     ● FILTRES D'EXCLUSION :
                                     - Taux d'erreur OCR supérieur à 2% (mots non reconnus dans le dictionnaire).
                                     - Extraits tronqués ou sans ponctuation finale forte.
                                     - Indépendance sémantique défaillante (commence par un pronom sans référent direct).
-                                
 
 Sourcing &amp;
                                     Calibration
 ● SOURCING API
-                                    (GUTENDEX) :
-                                    Requête automatique filtrée sur les œuvres françaises les plus populaires :
-                                    GET https://gutendex.com/books/?languages=fr&amp;sort=popular
+                                    (GUTENDEX &amp; Project Gutenberg CDN) :
+                                    - Recherche des métadonnées des œuvres via l'API Gutendex (ex: GET https://gutendex.com/books/?languages=fr&amp;sort=popular).
+                                    - Téléchargement dynamique du texte brut depuis le CDN de Project Gutenberg pour traitement local.
 
-                                    ● CALIBRATION DE DIFFICULTÉ :
-                                    - Phrases courtes (max 25 mots) et pas de subordonnées complexes pour le niveau
-                                    Débutant.
-                                    - Phrases longues (jusqu'à 60-80 mots), tournures proustiennes et subjonctif
-                                    imparfait tolérés pour le niveau Expert.</div>
+                                    ● CLASSIFICATION AUTOMATIQUE DE DIFFICULTÉ :
+                                    Un classifieur automatique évalue chaque nouvel ouvrage selon 3 critères :
+                                    - Type-Token Ratio (TTR) sur 1000 mots pour la richesse lexicale.
+                                    - Longueur moyenne des phrases et conjugaisons complexes (subjonctif imparfait, etc.).
+                                    - Distribution de fréquence Zipf (pourcentage de mots rares avec Zipf &lt; 2.0 dans Lexique383).
+                                    - Niveaux : Débutant (phrases courtes &lt;15 mots, Zipf classique), Intermédiaire, Avancé (ex. L'existentialisme est un humanisme), Expert (phrases longues &gt;40 mots, ex. L'être et le néant).</div>
 </div>
 <div class="algo-section">
 <p class="algo-section-title" contenteditable="true" spellcheck="false">Sourcing &amp;
@@ -2620,7 +2620,7 @@ Sourcing &amp;
                                     conséquent").
 
                                     ● FILTRAGE :
-                                    - Longueur : 150 à 450 caractères.
+                                    - Longueur : n'est plus une contrainte stricte de 150-450 caractères, mais fait l'objet d'un bonus de lisibilité mineur.
                                     - Indépendance sémantique : On vérifie que la thèse principale est compréhensible
                                     sans le reste du chapitre.
 
@@ -2628,9 +2628,8 @@ Sourcing &amp;
                                     Extraction
 ● ACQUISITION DES
                                     TEXTES :
-                                    Téléchargement des œuvres libres de droits sur Project Gutenberg et structuration en
-                                    paragraphes. Utilisation d'un lexique de connecteurs pour pondérer positivement les
-                                    passages argumentatifs.</div>
+                                    - Requêtes dynamiques via Gutendex et téléchargement depuis Project Gutenberg CDN.
+                                    - Stockage et découpage local en paragraphes. Utilisation d'un lexique de connecteurs pour pondérer positivement les passages argumentatifs.</div>
 </div>
 <div class="algo-section">
 <p class="algo-section-title" contenteditable="true" spellcheck="false">Sourcing &amp;
@@ -2725,25 +2724,21 @@ Sourcing &amp;
 <div class="editable-area" contenteditable="true" id="pb-c3-selection">Logique de
                                     sélection d'extraits
 ● TRAITEMENT DE
-                                    L'ORAL :
-                                    - Nettoyage rigoureux des tags temporels (timecodes) et des artefacts de
-                                    reconnaissance vocale automatique.
-                                    - Reconstruction de phrases et de paragraphes cohérents.
-                                    - Format plus court toléré : 100 à 350 caractères (reflète la concision du langage
-                                    parlé).
+                                    L'ORAL &amp; SCORING :
+                                    - Nettoyage rigoureux des tags temporels (timecodes) et reconstruction de paragraphes cohérents.
+                                    - Longueur : bonus de lisibilité gaussien modéré, pas de filtre d'exclusion strict.
+                                    - BONUS DE POPULARITÉ/CROISSANCE C3 (Actif uniquement si l'utilisateur cible C3) : Bonification très importante accordée aux extraits contenant des mots à forte croissance de popularité (trend/buzz ratio élevé dans candidates_slang_trending.csv).
 
                                     ● FILTRAGE :
                                     - Écarter les phrases contenant trop de fautes d'orthographe pures ou de termes
                                     incompréhensibles hors contexte.
                                     - Exclusion des propos vulgaires ou haineux via une liste noire de mots interdits.
-                                
 
 Sourcing &amp;
                                     APIs
 ● OUTILS DE
-                                    SCRAPING :
-                                    Utilisation de la librairie Python `youtube-transcript-api` sur une liste de chaînes
-                                    cibles et extraction sélective des posts Twitter et sous-titres OPUS.</div>
+                                    SCRAPING &amp; ACQUISITION :
+                                    Utilisation de la API YouTube Transcript pour extraire les sous-titres des vidéos cibles de créateurs populaires et d'émissions de radio.</div>
 </div>
 <div class="algo-section">
 <p class="algo-section-title" contenteditable="true" spellcheck="false">Sourcing &amp;
@@ -2923,10 +2918,9 @@ Sourcing &amp;
                                 PAR ROUTAGE ADAPTATIF :
 
                                 ● ROUTE ACADÉMIQUE (Droit, Médecine, Sciences) : Résumés d'articles de recherche HAL,
-                                précis universitaires de référence.
-                                ● ROUTE PRATIQUE (Cuisine, Couture, Loisirs) : Guides pratiques issus de Wikibooks
-                                thématiques, transcriptions de tutoriels vidéo spécialisés, articles de blogs
-                                techniques.</div>
+                                précis universitaires de référence, retranscriptions de conférences universitaires.
+                                ● ROUTE PRATIQUE (Cuisine, Couture, Loisirs) : Guides pratiques issus de Wikibooks,
+                                sous-titres et retranscriptions de tutoriels et émissions vidéo spécialisés (ex: recettes de chefs de l'INA, extraits de Top Chef pour la Cuisine).</div>
 </div>
 <!-- TAB 2: ALGORITHME & SÉLECTION -->
 <div class="tab-content">
@@ -2935,25 +2929,18 @@ Sourcing &amp;
                                     sélection d'extraits</p>
 <div class="editable-area" contenteditable="true" id="pb-c5-selection">Logique de
                                     sélection d'extraits
-● SÉLECTION PAR
-                                    DENSITÉ TERMINOLOGIQUE :
-                                    Vérification que l'extrait contient une concentration minimale de termes appartenant
-                                    à la sphère sémantique du domaine K (ex: "cuisine" nécessite des verbes de
-                                    préparation et des noms d'ingrédients).
-
-                                    ● FORMAT &amp; COHÉRENCE :
-                                    - Longueur entre 150 et 450 caractères.
-                                    - Indépendance sémantique validée.
-                                    - Validation OCR stricte pour exclure les corruptions de scans de manuels anciens.
-                                
+● SÉLECTION &amp; DYNAMIC TRANSCRIPT PLAYER :
+                                    - Sélection par densité terminologique : concentration minimale de termes du domaine K.
+                                    - Longueur : n'est plus une contrainte stricte de 150-450 caractères, mais fait l'objet d'un bonus léger.
+                                    - LECTEUR SYNCHRONISÉ : Intégration d'un lecteur YouTube iframe (ou lecteur audio/radio). L'application n'héberge rien mais interroge l'API des retranscriptions/sous-titres de ces plateformes.
+                                    - INTERACTION DYNAMIQUE : L'utilisateur qui recherche un extrait peut visualiser la vidéo et sélectionner les mots qui l'intéressent dans la retranscription dynamique. Cliquer sur un mot met la vidéo en pause, affiche sa définition (Wiktionnaire) et l'ajoute à sa Word Reserve.
 
 Routage &amp;
                                     Sourcing
-● APIS UTILISÉES :
+● APIS &amp; ACCÈS AUX BASES DE DONNÉES :
+                                    - API YouTube Data v3 et YouTube Transcript API pour récupérer les vidéos (INA, Top Chef, conférences, radio) et extraire les fichiers de sous-titres horodatés JSON.
                                     - API HAL (Archives Ouvertes CNRS) pour les domaines académiques.
-                                    - API Wikipédia (Portails et Catégories thématiques) &amp; Recherche Wikibooks.
-                                    - Fallback automatique en recherche plein texte Wikipédia si résultats insuffisants
-                                    (&lt; 50 paragraphes).</div>
+                                    - Base Room Locale (LexicaDatabase) : les documents et extraits analysés/scorés sont stockés dans les tables CorpusDocument et CorpusExcerpt, tandis que les mots sélectionnés sont insérés dans WordReserve.</div>
 </div>
 <div class="algo-section">
 <p class="algo-section-title" contenteditable="true" spellcheck="false">Routage &amp;

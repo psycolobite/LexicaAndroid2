@@ -172,4 +172,15 @@ Ce système permet une synchronisation transparente dans les deux sens :
 > [!TIP]
 > **Flux de travail recommandé pour l'agent** : Effectuer toutes les mises à jour textuelles de R&D ou de candidats dans le JSON compagnon, puis lancer `python tools/apply_json_to_html.py` à la fin de la tâche pour pousser les résultats vers le dashboard interactif de l'utilisateur.
 
+---
+
+## 7. Spécifications R&D Récentes (Pipeline B)
+
+*   **Scoring d'Extraits C3** : Bonus substantiel de popularité appliqué conditionnellement si l'utilisateur s'intéresse à la catégorie C3 (argot/populaire) pour prioriser les mots à forte croissance.
+*   **Longueur des extraits** : Pas d'exclusion stricte, mais bonification gaussienne mineure (autour de 300 caractères).
+*   **Classification C1 Littéraire** : Automatisée via `tools/classify_book_difficulty.py` sur la base de la longueur des phrases, de la richesse lexicale (TTR) et des occurrences de mots rares (Zipf < 2.0).
+*   **Sourcing Vidéo & Transcription** : Intégration de vidéos INA, Top Chef (cuisine), conférences universitaires et radios via l'API YouTube Data et l'extraction de sous-titres (`youtube-transcript-api`). La transcription dynamique permet à l'utilisateur de cliquer sur un mot pour suspendre la lecture, lire sa définition et l'ajouter à sa Word Reserve.
+*   **Persistance locale** : Modélisation dans Room via les tables `CorpusDocument` et `CorpusExcerpt` connectées à la `WordReserve`.
+
+
 
