@@ -1,0 +1,4200 @@
+{
+  "metadata": {
+    "date": "2026-06-10 20:55",
+    "threshold_good": 0.6113,
+    "threshold_excellent": 0.7877,
+    "total_wikt_words": 2753,
+    "total_reference_words": 407
+  },
+  "excellent_candidates": [
+    {
+      "mot": "admonition",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 1.0,
+      "ratio": 14.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "assomption",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "cacochyme",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "commodité",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.276,
+      "zipf_films": 2.415,
+      "ratio": 7.269,
+      "categories_wikt": [
+        "soutenu",
+        "archaïque"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "congru",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "corroder",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "diane",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 1.477,
+      "ratio": 13.667,
+      "categories_wikt": [
+        "littéraire",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "diligemment",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.431,
+      "zipf_films": 1.699,
+      "ratio": 5.4,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "discontinuité",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.833,
+      "zipf_films": 1.699,
+      "ratio": 13.6,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "désobligeance",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "désobligeant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.004,
+      "zipf_films": 1.954,
+      "ratio": 11.222,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "froidure",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.19,
+      "zipf_films": 2.041,
+      "ratio": 14.091,
+      "categories_wikt": [
+        "littéraire",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "graffito",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "helvétique",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.833,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "hic et nunc",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "incivil",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "incomestible",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "interlope",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "loisible",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.869,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu",
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "maritorne",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.431,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "nonobstant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.473,
+      "zipf_films": 2.204,
+      "ratio": 18.562,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "obligeant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.033,
+      "zipf_films": 2.23,
+      "ratio": 6.353,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "périlleusement",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "rédhibitoire",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.531,
+      "zipf_films": 1.778,
+      "ratio": 5.667,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "socque",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "stupre",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.908,
+      "zipf_films": 2.146,
+      "ratio": 5.786,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "superfétatoire",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.431,
+      "zipf_films": 1.477,
+      "ratio": 9.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sylvie",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.32,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "tressautement",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "émacié",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.307,
+      "zipf_films": 1.477,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "captif",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.334,
+      "zipf_films": 2.799,
+      "ratio": 3.429,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "courtisan",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.32,
+      "zipf_films": 2.82,
+      "ratio": 3.167,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "déparer",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 2.041,
+      "ratio": 4.273,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "extatique",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.004,
+      "zipf_films": 2.342,
+      "ratio": 4.591,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "fouler",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.41,
+      "zipf_films": 2.813,
+      "ratio": 3.954,
+      "categories_wikt": [
+        "soutenu",
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "rejeton",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.362,
+      "zipf_films": 2.785,
+      "ratio": 3.77,
+      "categories_wikt": [
+        "soutenu",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ab ovo",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "aboutissant",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.908,
+      "zipf_films": 1.954,
+      "ratio": 9.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "abstrus",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "accort",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.301,
+      "ratio": 13.5,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "acnéique",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "airain",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.228,
+      "zipf_films": 2.23,
+      "ratio": 9.941,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "appert",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "assaisonner",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.785,
+      "zipf_films": 1.954,
+      "ratio": 6.778,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "atlante",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.699,
+      "ratio": 5.4,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "balane",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.0,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "bouvier",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.833,
+      "zipf_films": 2.079,
+      "ratio": 5.667,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "colporter",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.833,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "concréter",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "contempteur",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.0,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "coquebin",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "coutumier",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.41,
+      "zipf_films": 2.301,
+      "ratio": 12.85,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "crépusculaire",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.276,
+      "zipf_films": 1.477,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "douteur",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "déchoir",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.173,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "déconcerter",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.152,
+      "zipf_films": 2.279,
+      "ratio": 7.474,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "déhiscence",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 1.301,
+      "ratio": 7.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "efflorescence",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.0,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "empresser",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.398,
+      "zipf_films": 2.114,
+      "ratio": 19.231,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "exultation",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.833,
+      "zipf_films": 1.699,
+      "ratio": 13.6,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "foucade",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "fourrier",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.228,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "geôle",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.276,
+      "zipf_films": 1.954,
+      "ratio": 21.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "gramen",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "grand-peur",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "incontinent",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.033,
+      "zipf_films": 2.301,
+      "ratio": 5.4,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "incréé",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "indolent",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.086,
+      "zipf_films": 2.114,
+      "ratio": 9.385,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "insomnieux",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ironiser",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.004,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "languide",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.107,
+      "zipf_films": 2.0,
+      "ratio": 12.8,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "lavandière",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.004,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ligneux",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "lointainement",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "luminaire",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 1.699,
+      "ratio": 8.2,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "marri",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 1.477,
+      "ratio": 13.667,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "matutinal",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "moutonner",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "muser",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "myrte",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.908,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "médianoche",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "nonnain",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.785,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "nonpareil",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 1.0,
+      "ratio": 14.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "objurgation",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.276,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "oiseleur",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 1.778,
+      "ratio": 7.833,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ouater",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.833,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "par-devers",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.033,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "phosphorescent",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.307,
+      "zipf_films": 2.362,
+      "ratio": 8.826,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "poncif",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ponctuer",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.334,
+      "zipf_films": 1.301,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "pourfendre",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.732,
+      "zipf_films": 1.602,
+      "ratio": 13.5,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "profus",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.0,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "pulser",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 1.0,
+      "ratio": 20.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "pâmer",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.785,
+      "zipf_films": 1.778,
+      "ratio": 10.167,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "péroraison",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.978,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ratiocination",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.732,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ressaut",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.869,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "résipiscence",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "salacité",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "semblance",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.301,
+      "ratio": 13.5,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sente",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.362,
+      "zipf_films": 1.845,
+      "ratio": 32.857,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "servilité",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.061,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sollicitation",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.228,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "songerie",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.944,
+      "zipf_films": 1.301,
+      "ratio": 44.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "surréel",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 1.301,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "survivance",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.944,
+      "zipf_films": 1.602,
+      "ratio": 22.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "séraphique",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "tancer",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 1.0,
+      "ratio": 47.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "trémuler",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "turquin",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "tétin",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vastitude",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vergogneux",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vibratile",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 1.0,
+      "ratio": 20.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vicinal",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vitupérer",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vénusté",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "échevelé",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.32,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "éployer",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "annales",
+      "score": 0.95,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 1.0,
+      "zipf_books": 3.246,
+      "zipf_films": 2.892,
+      "ratio": 2.256,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "deus ex machina",
+      "score": 0.95,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 2.204,
+      "ratio": 2.937,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "infortuné",
+      "score": 0.95,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 1.0,
+      "zipf_books": 3.246,
+      "zipf_films": 2.863,
+      "ratio": 2.411,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "nourrisson",
+      "score": 0.95,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 1.0,
+      "zipf_books": 3.483,
+      "zipf_films": 3.053,
+      "ratio": 2.69,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sidérer",
+      "score": 0.95,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 1.0,
+      "zipf_books": 3.061,
+      "zipf_films": 2.623,
+      "ratio": 2.738,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vomissure",
+      "score": 0.95,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 1.0,
+      "zipf_books": 2.908,
+      "zipf_films": 2.519,
+      "ratio": 2.455,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "acrimonieux",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 1.0,
+      "ratio": 7.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "adulateur",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "anatidé",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "arrière-neveux",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "bocager",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "circonstanciel",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "inclément",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "laudatif",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "modérateur",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 1.0,
+      "ratio": 7.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "pagure",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "pulvérulence",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu",
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "tigrure",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vulpin",
+      "score": 0.9475,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ahurir",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 3.13,
+      "zipf_films": 2.462,
+      "ratio": 4.655,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "balsamique",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 2.0,
+      "ratio": 4.1,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "bellement",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.732,
+      "zipf_films": 2.146,
+      "ratio": 3.857,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "chaumine",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 2.041,
+      "ratio": 3.727,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "cétacé",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 1.477,
+      "ratio": 4.667,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "enrhumé",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.908,
+      "zipf_films": 2.322,
+      "ratio": 3.857,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "havre",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 3.483,
+      "zipf_films": 2.929,
+      "ratio": 3.576,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "logorrhée",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.778,
+      "ratio": 4.5,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "occire",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 2.0,
+      "ratio": 4.1,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "promoteur",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 3.004,
+      "zipf_films": 2.447,
+      "ratio": 3.607,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "subjuguer",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 3.19,
+      "zipf_films": 2.544,
+      "ratio": 4.429,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sylvestre",
+      "score": 0.935,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.908,
+      "zipf_films": 2.362,
+      "ratio": 3.522,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    }
+  ],
+  "intruders_in_reference": [
+    "soporifique",
+    "scélérat",
+    "sérénité",
+    "brume",
+    "pétale",
+    "exaltation",
+    "vate",
+    "sérendipité",
+    "varicose",
+    "miséricorde",
+    "labyrinthe",
+    "irrévérence",
+    "parjure",
+    "parapathique",
+    "cénacle",
+    "némésis",
+    "mélancolie",
+    "loquacité",
+    "somatisation",
+    "noévie",
+    "enlumineur",
+    "probe",
+    "intègre",
+    "chagrin",
+    "pénombre",
+    "extase",
+    "méticuleux",
+    "nostalgie",
+    "gnomique",
+    "bannissement",
+    "résilience",
+    "aède",
+    "crépuscule",
+    "allégresse",
+    "cors",
+    "rhapsode",
+    "viateur",
+    "constellation",
+    "codex",
+    "heuristique",
+    "tumulte",
+    "stupeur",
+    "obsolète",
+    "mentor",
+    "sillage",
+    "brigand",
+    "aphoristique",
+    "procrastination",
+    "fielueux",
+    "satyrique",
+    "paresthésie",
+    "torpeur",
+    "gredin",
+    "ferveur",
+    "purpurine",
+    "allitération",
+    "volupté",
+    "solitaire",
+    "scholastique",
+    "somnambule",
+    "garrulité",
+    "mignonne",
+    "anémie",
+    "céleste",
+    "poétique",
+    "pétrichor",
+    "chimère",
+    "clémence",
+    "liminaire",
+    "téléologique",
+    "érémitique",
+    "sépale",
+    "cénesthésie"
+  ],
+  "missing_from_wiktionnaire": [
+    "abattement",
+    "aboulie",
+    "acrimonie",
+    "ambiguïté",
+    "amphigourique",
+    "améthyste",
+    "antédiluvien",
+    "aphorisme",
+    "apophtegme",
+    "apostasie",
+    "assonance",
+    "atone",
+    "atrabilaire",
+    "bilieux",
+    "bucolique",
+    "caduc",
+    "casuistique",
+    "circonspect",
+    "clair-obscur",
+    "claustration",
+    "collusion",
+    "condottiere",
+    "contingence",
+    "corolle",
+    "diatribe",
+    "dogme",
+    "dolent",
+    "désabusé",
+    "désuet",
+    "estafette",
+    "esthète",
+    "exsangue",
+    "faconde",
+    "facétieux",
+    "fallacieux",
+    "famélique",
+    "flegmatique",
+    "flibustier",
+    "flâneur",
+    "graveleux",
+    "grimoire",
+    "grivois",
+    "grivoiserie",
+    "grognard",
+    "harangue",
+    "haruspice",
+    "hypocondrie",
+    "hécatombe",
+    "héliotrope",
+    "hémistiche",
+    "héraut",
+    "imbrication",
+    "immémorial",
+    "incandescent",
+    "indolence",
+    "insidieux",
+    "insoumis",
+    "intemporel",
+    "intransigeance",
+    "invective",
+    "irisé",
+    "laconique",
+    "libation",
+    "liturgie",
+    "lustral",
+    "lyrisme",
+    "mansuétude",
+    "marmiton",
+    "mélopée",
+    "nadir",
+    "neurasthénie",
+    "noctambule",
+    "oblation",
+    "obsidional",
+    "obséquieux",
+    "ombrageux",
+    "ondée",
+    "onirique",
+    "ontologie",
+    "ontologique",
+    "opalin",
+    "opiniâtre",
+    "oscillation",
+    "ostensoir",
+    "ostentatoire",
+    "outrageux",
+    "outrecuidance",
+    "palimpseste",
+    "pataquès",
+    "patricien",
+    "pernicieux",
+    "phosphorescence",
+    "pistil",
+    "placidité",
+    "plébéien",
+    "prodigalité",
+    "prolixe",
+    "prolixité",
+    "précepteur",
+    "précurseur",
+    "préséance",
+    "psalmodier",
+    "psautier",
+    "pythonisse",
+    "périssable",
+    "pétulant",
+    "réminiscence",
+    "sardonique",
+    "sibyllin",
+    "soliloque",
+    "sophisme",
+    "spadassin",
+    "spleen",
+    "substantifique",
+    "syllogisme",
+    "sylphide",
+    "syncrétisme",
+    "sénescence",
+    "thaumaturge",
+    "transcendance",
+    "truisme",
+    "trépidation",
+    "turpitude",
+    "urbanité",
+    "velléité",
+    "vicissitude",
+    "vilipender",
+    "villégiature",
+    "volubilité",
+    "vélin",
+    "zéphyr",
+    "élucubration",
+    "éolien",
+    "équinoxe",
+    "étamine",
+    "évanescent",
+    "alcyon",
+    "anachorète",
+    "atermoiement",
+    "caustique",
+    "chrysanthème",
+    "concorde",
+    "conjecture",
+    "célérité",
+    "imbroglio",
+    "impertinence",
+    "indocile",
+    "inextinguible",
+    "intrinsèque",
+    "loquace",
+    "prémices",
+    "psalmodie",
+    "rhapsodie",
+    "scabreux",
+    "scrupuleux",
+    "stigmate",
+    "éclectisme",
+    "ésotérique",
+    "affliction",
+    "ancestral",
+    "calice",
+    "césure",
+    "effronterie",
+    "fripon",
+    "funambule",
+    "hermétique",
+    "idylle",
+    "incantation",
+    "inimitié",
+    "intrépide",
+    "langoureux",
+    "luminescence",
+    "léthargie",
+    "ostracisme",
+    "patène",
+    "quintessence",
+    "solstice",
+    "stoïque",
+    "suzerain",
+    "transitoire",
+    "troubadour",
+    "élégiaque",
+    "élégie",
+    "épicurien",
+    "caducité",
+    "calligramme",
+    "captieux",
+    "causticité",
+    "chthonien",
+    "cénobite",
+    "immanence",
+    "inflorescence",
+    "noumène",
+    "ratiociner",
+    "sycophante",
+    "vitriolique",
+    "ataraxie",
+    "obsolescence",
+    "périgée",
+    "apathie",
+    "apogée",
+    "auguste",
+    "dryade",
+    "fielleux",
+    "félicité",
+    "insatiable",
+    "libidineux",
+    "magnanime",
+    "maraudeur",
+    "maxime",
+    "moujik",
+    "outrecuidant",
+    "paria",
+    "présage",
+    "quiproquo",
+    "renégat",
+    "satirique",
+    "sbire",
+    "talisman",
+    "verbeux",
+    "zodiaque",
+    "accablement",
+    "bonhomie",
+    "connivence",
+    "consternation",
+    "effervescence",
+    "effluve",
+    "frémissement",
+    "goguenard",
+    "immuable",
+    "impérieux",
+    "inexorable",
+    "insouciance",
+    "jubilation",
+    "morose",
+    "métaphysique",
+    "narquois",
+    "opulence",
+    "perplexité",
+    "satyre",
+    "tintamarre",
+    "volubile",
+    "zénith",
+    "énigmatique",
+    "abnégation",
+    "auréole",
+    "fugace",
+    "ignominie",
+    "insolence",
+    "limpide",
+    "millénaire",
+    "nostalgique",
+    "pittoresque",
+    "ténébreux",
+    "éphémère",
+    "dilettante",
+    "déliquescence",
+    "impudence",
+    "lascif",
+    "licencieux",
+    "métrique",
+    "neurasthénique",
+    "palefrenier",
+    "panégyrique",
+    "paradigme",
+    "pointilleux",
+    "séquestration",
+    "venimeux",
+    "élixir",
+    "chimère",
+    "constellation",
+    "méticuleux",
+    "poétique",
+    "pétale",
+    "anémie",
+    "bannissement",
+    "brigand",
+    "clémence",
+    "codex",
+    "cénacle",
+    "enlumineur",
+    "gredin",
+    "intègre",
+    "irrévérence",
+    "mentor",
+    "parjure",
+    "probe",
+    "scélérat",
+    "soporifique",
+    "céleste",
+    "labyrinthe",
+    "somnambule",
+    "allégresse",
+    "exaltation",
+    "ferveur",
+    "mélancolie",
+    "pénombre",
+    "sillage",
+    "stupeur",
+    "torpeur",
+    "tumulte",
+    "crépuscule",
+    "extase",
+    "nostalgie",
+    "volupté",
+    "obsolète",
+    "aède",
+    "sérénité",
+    "miséricorde",
+    "solitaire",
+    "brume",
+    "allitération",
+    "heuristique",
+    "liminaire",
+    "loquacité",
+    "paresthésie",
+    "procrastination",
+    "résilience",
+    "satyrique",
+    "sépale",
+    "téléologique",
+    "aphoristique",
+    "cénesthésie",
+    "fielueux",
+    "garrulité",
+    "gnomique",
+    "mignonne",
+    "noévie",
+    "némésis",
+    "parapathique",
+    "purpurine",
+    "pétrichor",
+    "rhapsode",
+    "scholastique",
+    "somatisation",
+    "sérendipité",
+    "varicose",
+    "viateur",
+    "érémitique",
+    "chagrin",
+    "cors",
+    "vate"
+  ],
+  "top_100_all": [
+    {
+      "mot": "abscons",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 2.732,
+      "zipf_films": 2.079,
+      "ratio": 4.5,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "admonition",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 1.0,
+      "ratio": 14.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "alacrité",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.785,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "anathème",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.35,
+      "cat_score": 1.0,
+      "zipf_books": 2.944,
+      "zipf_films": 3.033,
+      "ratio": 0.815,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "arachnéen",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "assomption",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "aurore",
+      "score": 1.0,
+      "freq_score": 0.7,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.973,
+      "zipf_films": 3.479,
+      "ratio": 3.12,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "bocage",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.398,
+      "zipf_films": 2.146,
+      "ratio": 17.857,
+      "categories_wikt": [
+        "littéraire",
+        "poétique"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "cacochyme",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "cantilène",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 2.041,
+      "ratio": 3.091,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "commisération",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.398,
+      "zipf_films": 2.146,
+      "ratio": 17.857,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "commodité",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.276,
+      "zipf_films": 2.415,
+      "ratio": 7.269,
+      "categories_wikt": [
+        "soutenu",
+        "archaïque"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "congru",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "corroder",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "coruscant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "céruléen",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu",
+        "poétique"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "diane",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 1.477,
+      "ratio": 13.667,
+      "categories_wikt": [
+        "littéraire",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "diaphane",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.307,
+      "zipf_films": 1.477,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "dilection",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.732,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "diligemment",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.431,
+      "zipf_films": 1.699,
+      "ratio": 5.4,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "dirimant",
+      "score": 1.0,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "discontinuité",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.833,
+      "zipf_films": 1.699,
+      "ratio": 13.6,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "désobligeance",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "désobligeant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.004,
+      "zipf_films": 1.954,
+      "ratio": 11.222,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "empyrée",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.869,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "estocade",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 1.477,
+      "ratio": 13.667,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "froidure",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.19,
+      "zipf_films": 2.041,
+      "ratio": 14.091,
+      "categories_wikt": [
+        "littéraire",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "fuligineux",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.033,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "graffito",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "helvétique",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.833,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "hic et nunc",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ilote",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "impéritie",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "incivil",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "incomestible",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "incurie",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.833,
+      "zipf_films": 2.041,
+      "ratio": 6.182,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "infrangible",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.431,
+      "zipf_films": 1.0,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "soutenu",
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "interlope",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "larron",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 0.9,
+      "zipf_books": 2.978,
+      "zipf_films": 2.531,
+      "ratio": 2.794,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "laudateur",
+      "score": 1.0,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "loisible",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.869,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu",
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "longanimité",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "maritorne",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.431,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "mignardise",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.869,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ménestrel",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.35,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 2.146,
+      "ratio": 1.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "nimbe",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.908,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "nonobstant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.473,
+      "zipf_films": 2.204,
+      "ratio": 18.562,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "obligeant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.033,
+      "zipf_films": 2.23,
+      "ratio": 6.353,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "paladin",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 0.9,
+      "zipf_books": 2.732,
+      "zipf_films": 2.204,
+      "ratio": 3.375,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "parangon",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.033,
+      "zipf_films": 2.079,
+      "ratio": 9.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "potentat",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 2.531,
+      "zipf_films": 2.0,
+      "ratio": 3.4,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "pugnace",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.75,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 1.778,
+      "ratio": 2.333,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "pusillanime",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.908,
+      "zipf_films": 1.477,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "périlleusement",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "rédhibitoire",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.531,
+      "zipf_films": 1.778,
+      "ratio": 5.667,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sicaire",
+      "score": 1.0,
+      "freq_score": 0.85,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 1.845,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sidéral",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 1.602,
+      "ratio": 10.25,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "simagrée",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.473,
+      "zipf_films": 2.954,
+      "ratio": 3.3,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "socque",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sourcilleux",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.061,
+      "zipf_films": 1.0,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "stupre",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.908,
+      "zipf_films": 2.146,
+      "ratio": 5.786,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "superfétatoire",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.431,
+      "zipf_films": 1.477,
+      "ratio": 9.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "sylvie",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.32,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "thuriféraire",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "tressautement",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "trépas",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.19,
+      "zipf_films": 2.58,
+      "ratio": 4.079,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "valétudinaire",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 1.0,
+      "ratio": 14.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vaticination",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vespéral",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.785,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "égrotant",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.301,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "émacié",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 3.307,
+      "zipf_films": 1.477,
+      "ratio": 50.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "équanimité",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 1.0,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "éthéré",
+      "score": 1.0,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.8,
+      "zipf_books": 2.613,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "poétique"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "malandrin",
+      "score": 0.9947,
+      "freq_score": 1.0,
+      "ratio_score": 0.55,
+      "cat_score": 0.9,
+      "zipf_books": 2.672,
+      "zipf_films": 2.447,
+      "ratio": 1.679,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "nébuleux",
+      "score": 0.9947,
+      "freq_score": 1.0,
+      "ratio_score": 0.55,
+      "cat_score": 0.9,
+      "zipf_books": 2.833,
+      "zipf_films": 2.58,
+      "ratio": 1.789,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "captif",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.334,
+      "zipf_films": 2.799,
+      "ratio": 3.429,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "courtisan",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.32,
+      "zipf_films": 2.82,
+      "ratio": 3.167,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "déparer",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 2.672,
+      "zipf_films": 2.041,
+      "ratio": 4.273,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "extatique",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.004,
+      "zipf_films": 2.342,
+      "ratio": 4.591,
+      "categories_wikt": [
+        "soutenu"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "fouler",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.41,
+      "zipf_films": 2.813,
+      "ratio": 3.954,
+      "categories_wikt": [
+        "soutenu",
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "rejeton",
+      "score": 0.98,
+      "freq_score": 1.0,
+      "ratio_score": 0.9,
+      "cat_score": 1.0,
+      "zipf_books": 3.362,
+      "zipf_films": 2.785,
+      "ratio": 3.77,
+      "categories_wikt": [
+        "soutenu",
+        "poétique"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "langueur",
+      "score": 0.9775,
+      "freq_score": 0.7,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.577,
+      "zipf_films": 2.556,
+      "ratio": 10.5,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "quiétude",
+      "score": 0.9775,
+      "freq_score": 0.7,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.705,
+      "zipf_films": 2.806,
+      "ratio": 7.922,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "taciturne",
+      "score": 0.9775,
+      "freq_score": 0.7,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.733,
+      "zipf_films": 2.968,
+      "ratio": 5.817,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "vergogne",
+      "score": 0.9775,
+      "freq_score": 0.7,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.607,
+      "zipf_films": 2.708,
+      "ratio": 7.941,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": true,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "ab ovo",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "aboutissant",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.908,
+      "zipf_films": 1.954,
+      "ratio": 9.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "abstrus",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "accort",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.301,
+      "ratio": 13.5,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "acnéique",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "airain",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 3.228,
+      "zipf_films": 2.23,
+      "ratio": 9.941,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "appert",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "assaisonner",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.785,
+      "zipf_films": 1.954,
+      "ratio": 6.778,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "atlante",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.699,
+      "ratio": 5.4,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "balane",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.0,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "bouvier",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.833,
+      "zipf_films": 2.079,
+      "ratio": 5.667,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "colporter",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.833,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "concréter",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.146,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "contempteur",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.431,
+      "zipf_films": 1.0,
+      "ratio": 27.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    },
+    {
+      "mot": "coquebin",
+      "score": 0.955,
+      "freq_score": 1.0,
+      "ratio_score": 1.0,
+      "cat_score": 0.9,
+      "zipf_books": 2.531,
+      "zipf_films": 0.0,
+      "ratio": 10.0,
+      "categories_wikt": [
+        "littéraire"
+      ],
+      "in_reference": false,
+      "has_lexique_data": true
+    }
+  ]
+}

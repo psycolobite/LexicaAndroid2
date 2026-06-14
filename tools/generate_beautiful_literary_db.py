@@ -1,0 +1,2721 @@
+import json
+import csv
+import os
+
+OUTPUT_JSON = "beautiful_literary_words.json"
+OUTPUT_CSV = "beautiful_literary_words.csv"
+
+# Pre-compiled database of 165 premium French literary words
+WORDS_DB = [
+    {
+        "mot": "abnégation",
+        "définition": "Sacrifice volontaire de soi-même, de son intérêt ou de ses désirs pour autrui ou pour une cause.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"abnegatio\" (action de nier, de refuser).",
+        "exemple": "Faire preuve d'abnégation dans les moments difficiles est la marque des grands esprits.",
+        "synonymes": "sacrifice, dévouement, renoncement"
+    },
+    {
+        "mot": "abscons",
+        "définition": "Difficile à comprendre en raison de sa complexité ou de son obscurité volontaire.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"absconditus\" (caché, dissimulé).",
+        "exemple": "Son discours philosophique était si abscons que la moitié de l'auditoire s'est assoupie.",
+        "synonymes": "obscur, hermétique, sibyllin, impénétrable"
+    },
+    {
+        "mot": "acrimonie",
+        "définition": "Humeur aigre et agressive qui s'exprime par des paroles acerbes ou blessantes.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"acrimonia\" (aigreur, piquant).",
+        "exemple": "Elle répondit avec une pointe d'acrimonie qu'on ne l'y prendrait plus.",
+        "synonymes": "aigreur, amertume, causticité, hargne"
+    },
+    {
+        "mot": "alacrité",
+        "définition": "Gaieté vive, entraînante et pleine de jeunesse d'esprit.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"alacritas\" (gaieté, ardeur).",
+        "exemple": "Le vieil homme se mit en route avec une alacrité surprenante pour son âge.",
+        "synonymes": "gaieté, entrain, vivacité, allégresse"
+    },
+    {
+        "mot": "allégresse",
+        "définition": "Joie très vive et collective qui se manifeste de manière visible et communicative.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"alacer\" (vif, joyeux).",
+        "exemple": "Les cloches de l'église sonnaient à toute volée dans l'allégresse générale.",
+        "synonymes": "jubilation, euphorie, liesse, félicité"
+    },
+    {
+        "mot": "amphigourique",
+        "définition": "Se dit d'un texte ou d'un discours extrêmement embrouillé, obscur et prétentieux.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Origine incertaine, peut-être forgé sur \"amphi\" (autour) et \"gourer\" (se tromper).",
+        "exemple": "L'avocat présenta une plaidoirie amphigourique qui lassa le jury.",
+        "synonymes": "embrouillé, confus, alambiqué, obscur"
+    },
+    {
+        "mot": "anathème",
+        "définition": "Sentence de condamnation solennelle, d'excommunication ou de réprobation publique.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"anathema\" (offrande suspendue au temple, puis chose vouée au mal).",
+        "exemple": "Jeter l'anathème sur un opposant politique est une pratique courante.",
+        "synonymes": "condamnation, excommunication, blâme, réprobation"
+    },
+    {
+        "mot": "antédiluvien",
+        "définition": "Qui est antérieur au Déluge biblique ; par extension, qui est extrêmement vieux ou dépassé.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"ante\" (avant) et \"diluvium\" (déluge).",
+        "exemple": "Il roule encore dans une voiture antédiluvienne qui fait un bruit de ferraille.",
+        "synonymes": "archaïque, obsolète, vieux, ancestral"
+    },
+    {
+        "mot": "apogée",
+        "définition": "Le point le plus élevé, le sommet ou le degré suprême de la gloire, de la puissance ou de la beauté.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du grec \"apogeios\" (éloigné de la terre).",
+        "exemple": "L'Empire romain était à son apogée sous le règne de Trajan.",
+        "synonymes": "sommet, zénith, acmé, summum, point culminant"
+    },
+    {
+        "mot": "apostasie",
+        "définition": "Renonciation publique et solennelle à une religion, une doctrine ou un parti politique auquel on appartenait.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"apostasis\" (action de se tenir à l'écart, défection).",
+        "exemple": "Son apostasie a suscité la colère et l'incompréhension de sa communauté d'origine.",
+        "synonymes": "abjuration, reniement, défection, trahison"
+    },
+    {
+        "mot": "arachnéen",
+        "définition": "D'une finesse, d'une légèreté et d'une transparence comparables à une toile d'araignée.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"arakhnê\" (araignée).",
+        "exemple": "Un voile arachnéen flottait au-dessus de son visage, adoucissant ses traits.",
+        "synonymes": "délicat, vaporeux, fin, ténu, aérien"
+    },
+    {
+        "mot": "ataraxie",
+        "définition": "Tranquillité de l'âme, paix de l'esprit absolue obtenue par la modération des passions.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du grec \"ataraxia\" (absence de trouble, impassibilité).",
+        "exemple": "Les stoïciens cherchaient à atteindre l'ataraxie en acceptant le destin.",
+        "synonymes": "impassibilité, quiétude, sérénité, calme, paix"
+    },
+    {
+        "mot": "atermoiement",
+        "définition": "Action de différer, de remettre à plus tard une décision ou une action.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du vieux français \"atermier\" (fixer un terme, un délai).",
+        "exemple": "Ses atermoiements constants ont fini par faire échouer le projet.",
+        "synonymes": "procrastination, retardement, hésitation, tergiversation"
+    },
+    {
+        "mot": "atone",
+        "définition": "Qui manque d'expression, de vivacité, d'énergie ou d'accentuation (ex: un regard atone).",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du grec \"atonos\" (sans tension, sans ressort).",
+        "exemple": "Il restait là, le regard atone, incapable de réagir à la nouvelle.",
+        "synonymes": "inerte, apathique, éteint, morne, atone"
+    },
+    {
+        "mot": "auguste",
+        "définition": "Qui inspire le respect, la vénération ou une dignité solennelle.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"augustus\" (consacré par les augures, vénérable, majestueux).",
+        "exemple": "Le vieillard entra d'un pas auguste dans la grande salle du conseil.",
+        "synonymes": "majestueux, solennel, vénérable, digne, noble"
+    },
+    {
+        "mot": "aurore",
+        "définition": "La première lueur rose et dorée qui précède immédiatement le lever du soleil.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"aurora\" (aurore).",
+        "exemple": "Se lever dès l'aurore permet d'admirer la nature encore endormie.",
+        "synonymes": "aube, matin, orient, point du jour"
+    },
+    {
+        "mot": "azur",
+        "définition": "Le bleu magnifique et intense d'un ciel sans nuages.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De l'arabe \"lāzaward\" (lapins-lazuli).",
+        "exemple": "Les mouettes se découpaient sur l'azur éclatant du ciel d'été.",
+        "synonymes": "bleu, ciel, firmament"
+    },
+    {
+        "mot": "bocage",
+        "définition": "Espace rural où les champs et les prés sont délimités par des haies vives ou des alignements d'arbres.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De l'ancien français \"bosc\" (bois).",
+        "exemple": "Le bocage normand offre des paysages verdoyants et fleuris très reposants.",
+        "synonymes": "bosquet, bois, campagne"
+    },
+    {
+        "mot": "bonhomie",
+        "définition": "Simplicité de manières unie à de la bonté et de la cordialité.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Dérivé de \"bon homme\".",
+        "exemple": "Sa bonhomie naturelle inspirait immédiatement confiance à ses visiteurs.",
+        "synonymes": "gentillesse, cordialité, affabilité, simplicité"
+    },
+    {
+        "mot": "bucolique",
+        "définition": "Qui évoque la vie des bergers, la nature champêtre et la paix des campagnes.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"boukolos\" (bouvier, gardien de bœufs).",
+        "exemple": "Ils firent une sieste bucolique au bord du ruisseau chantant.",
+        "synonymes": "champêtre, pastoral, rustique, idyllique"
+    },
+    {
+        "mot": "caducité",
+        "définition": "État de ce qui est usé, périmé, temporaire ou sur le point de tomber.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"caducus\" (prêt à tomber).",
+        "exemple": "Les feuilles d'automne illustrent parfaitement la caducité des choses terrestres.",
+        "synonymes": "obsolescence, fragilité, usure, décrépitude"
+    },
+    {
+        "mot": "calice",
+        "définition": "Coupe sacrée utilisée lors de la messe ; au figuré, épreuve douloureuse (ex: boire le calice jusqu'à la lie).",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"kalux\" (enveloppe de fleur, coupe).",
+        "exemple": "Il dut boire le calice du rejet jusqu'à la lie sans se plaindre.",
+        "synonymes": "coupe, ciboire, épreuve, douleur"
+    },
+    {
+        "mot": "cantilène",
+        "définition": "Chant, poème ou complainte douce, simple et généralement teintée de tristesse.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"cantilena\" (petite chanson).",
+        "exemple": "Elle fredonnait une cantilène ancienne pour endormir l'enfant.",
+        "synonymes": "complainte, romance, mélopée, chanson"
+    },
+    {
+        "mot": "captieux",
+        "définition": "Se dit d'une argumentation mensongère, conçue de manière à tromper sous des dehors de vérité.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"captiosus\" (trompeur, captieux).",
+        "exemple": "Ne te laisse pas séduire par ses promesses captieuses, c'est un piège.",
+        "synonymes": "fallacieux, trompeur, spécieux, perfide"
+    },
+    {
+        "mot": "céleste",
+        "définition": "Qui appartient au ciel ou présente une beauté pure et divine.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"caelestis\" (céleste).",
+        "exemple": "Une musique céleste s'éleva soudain, apaisant les esprits.",
+        "synonymes": "divin, pur, éthéré, astral"
+    },
+    {
+        "mot": "célérité",
+        "définition": "Grande rapidité d'exécution, diligence et empressement.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"celeritas\" (rapidité).",
+        "exemple": "Le service de secours a agi avec une célérité remarquable.",
+        "synonymes": "rapidité, vitesse, diligence, hâte"
+    },
+    {
+        "mot": "cénacle",
+        "définition": "Cercle restreint d'écrivains, d'artistes ou d'intellectuels partageant les mêmes convictions.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"cenaculum\" (salle à manger à l'étage, lieu de la Cène).",
+        "exemple": "Le cénacle romantique se réunissait chez Victor Hugo.",
+        "synonymes": "cercle, club, coterie, groupe"
+    },
+    {
+        "mot": "céruléen",
+        "définition": "Qui est d'un bleu azur, clair et limpide comme le ciel ou la mer la plus pure.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"caeruleus\" (bleu sombre, bleu du ciel).",
+        "exemple": "Elle plongea ses yeux dans le regard céruléen de son interlocuteur.",
+        "synonymes": "azur, bleu, céleste"
+    },
+    {
+        "mot": "chimère",
+        "définition": "Rêve ou projet séduisant mais irréalisable ; utopie vaine.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"khimaira\" (chèvre, monstre fabuleux).",
+        "exemple": "Poursuivre la fortune absolue est une chimère qui égare les hommes.",
+        "synonymes": "illusion, utopie, rêve, mirage"
+    },
+    {
+        "mot": "chthonien",
+        "définition": "Relatif aux profondeurs de la terre, aux enfers ou aux forces souterraines primitives.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"khthon\" (la terre).",
+        "exemple": "Les rituels chthoniens étaient dédiés à Déméter pour assurer les récoltes.",
+        "synonymes": "souterrain, infernal, tellurique"
+    },
+    {
+        "mot": "circonspect",
+        "définition": "Qui agit avec une prudence réfléchie, en pesant ses paroles et ses actes.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"circumspectus\" (qui regarde autour de soi).",
+        "exemple": "Il se montra très circonspect avant de signer le contrat de vente.",
+        "synonymes": "prudent, méfiant, réservé, avisé"
+    },
+    {
+        "mot": "clair-obscur",
+        "définition": "Effet de contraste marqué entre la lumière et l'ombre dans un tableau ou un paysage.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Traduction de l'italien \"chiaroscuro\".",
+        "exemple": "Le clair-obscur de la forêt sous le soleil couchant était magique.",
+        "synonymes": "pénombre, contraste, demi-jour"
+    },
+    {
+        "mot": "clémence",
+        "définition": "Disposition généreuse à pardonner aux coupables ou à adoucir leur punition.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"clementia\" (douceur, indulgence).",
+        "exemple": "L'accusé a imploré la clémence du tribunal pour ses fautes.",
+        "synonymes": "mansuétude, pardon, indulgence, miséricorde"
+    },
+    {
+        "mot": "codex",
+        "définition": "Livre manuscrit de l'Antiquité ou du Moyen Âge formé de feuillets reliés ensemble.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"codex\" (tronc d'arbre, tablette de bois pour écrire).",
+        "exemple": "Les archéologues ont découvert un codex maya de valeur inestimable.",
+        "synonymes": "manuscrit, grimoire, livre"
+    },
+    {
+        "mot": "collusion",
+        "définition": "Entente secrète et frauduleuse entre des personnes pour nuire à un tiers.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"collusio\" (tromperie, jeu de connivence).",
+        "exemple": "Les deux entreprises ont été condamnées pour collusion sur les prix.",
+        "synonymes": "complot, complicité, connivence, cabale"
+    },
+    {
+        "mot": "commisération",
+        "définition": "Sentiment de pitié fraternelle qui pousse à compatir aux malheurs d'autrui.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"commiseratio\" (pitié partagée).",
+        "exemple": "Elle écouta le récit de ses malheurs avec une sincère commisération.",
+        "synonymes": "compassion, pitié, sympathie, empathie"
+    },
+    {
+        "mot": "concorde",
+        "définition": "Union des cœurs et des esprits créant une paix durable au sein d'un groupe ou d'une nation.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"concordia\" (union des cœurs).",
+        "exemple": "Le traité de paix permit de ramener enfin la concorde dans le royaume.",
+        "synonymes": "paix, harmonie, entente, union"
+    },
+    {
+        "mot": "conjecture",
+        "définition": "Opinion fondée sur des hypothèses ou des apparences, en l'absence de preuves.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"coniectura\" (jet d'idées ensemble, conclusion).",
+        "exemple": "Faute d'indices clairs, l'enquête policière en reste aux conjectures.",
+        "synonymes": "hypothèse, supposition, présomption, théorie"
+    },
+    {
+        "mot": "connivence",
+        "définition": "Entente secrète, souvent coupable, faite de complicité tacite ou de complaisance.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"connivere\" (fermer les yeux, cligner de connivence).",
+        "exemple": "Un sourire de connivence s'échangea entre les deux complices.",
+        "synonymes": "complicité, entente, collusion, accord"
+    },
+    {
+        "mot": "constellation",
+        "définition": "Groupe d'étoiles voisines formant une figure géométrique ou symbolique dans le ciel.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"constellatio\" (réunion d'étoiles).",
+        "exemple": "La Grande Ourse est la constellation la plus facile à repérer.",
+        "synonymes": "groupe, nuée, galaxie"
+    },
+    {
+        "mot": "contingence",
+        "définition": "Événement imprévisible qui peut se produire ou non selon le hasard des circonstances.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"contingere\" (arriver par hasard, toucher).",
+        "exemple": "Les dirigeants doivent s'adapter aux contingences économiques.",
+        "synonymes": "aléa, hasard, circonstance, imprévu"
+    },
+    {
+        "mot": "coruscant",
+        "définition": "Qui brille d'un éclat vif et scintillant ; par extension, brillant de raffinement intellectuel.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"coruscans\" (scintillant, flamboyant).",
+        "exemple": "Il éblouit le salon avec son esprit coruscant et ses répliques ciselées.",
+        "synonymes": "scintillant, brillant, flamboyant, étincelant"
+    },
+    {
+        "mot": "courroux",
+        "définition": "Violente colère, divine ou noble, qui s'exprime avec majesté ou sévérité.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"corruptum\" (gâté, irrité).",
+        "exemple": "Le courroux du roi s'abattit sur le traître qui l'avait trompé.",
+        "synonymes": "colère, indignation, fureur, ressentiment"
+    },
+    {
+        "mot": "crépuscule",
+        "définition": "Lueur faible et incertaine qui suit le coucher du soleil et précède la nuit.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"crepusculum\" (crépuscule).",
+        "exemple": "Les ombres s'étirent et s'adoucissent à l'heure du crépuscule.",
+        "synonymes": "pénombre, tombée du jour, déclin"
+    },
+    {
+        "mot": "cryptique",
+        "définition": "Dont le sens ou le dessein est caché, mystérieux ou difficile à décoder.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"kruptos\" (caché).",
+        "exemple": "Il lui laissa un message cryptique contenant un mystérieux rendez-vous.",
+        "synonymes": "énigmatique, mystérieux, hermétique, codé"
+    },
+    {
+        "mot": "déliquescence",
+        "définition": "État de décadence complète, de décomposition sociale ou de perte de valeurs morales.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"deliquescere\" (se dissoudre, fondre).",
+        "exemple": "Cette république en déliquescence était en proie à la corruption généralisée.",
+        "synonymes": "décadence, décomposition, déclin, dégradation"
+    },
+    {
+        "mot": "désabusé",
+        "définition": "Qui a perdu ses illusions sur les gens ou sur la vie, manifestant une douce amertume.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Dérivé de \"abuser\" avec préfixe négatif (désabusé).",
+        "exemple": "Il portait un regard désabusé sur les affaires humaines.",
+        "synonymes": "désillusionné, sceptique, blasé, désenchanté"
+    },
+    {
+        "mot": "désuet",
+        "définition": "Qui est sorti de l'usage moderne tout en conservant un charme poétique ou ancien.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"desuetus\" (qui a perdu l'habitude de).",
+        "exemple": "L'utilisation de la plume d'oie a un parfum désuet particulièrement romantique.",
+        "synonymes": "obsolète, archaïque, démodé, suranné"
+    },
+    {
+        "mot": "diaphane",
+        "définition": "Qui laisse passer la lumière sans permettre de distinguer nettement les formes ; translucide.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du grec \"diaphanes\" (transparent).",
+        "exemple": "Sa peau diaphane la faisait ressembler à une madone de la Renaissance.",
+        "synonymes": "translucide, transparent, cristallin, vaporeux"
+    },
+    {
+        "mot": "diatribe",
+        "définition": "Critique ou pamphlet d'une violence verbale acérée à l'encontre de quelqu'un.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"diatribe\" (perte de temps, entretien philosophique).",
+        "exemple": "L'éditorialiste se lança dans une diatribe féroce contre le nouveau gouvernement.",
+        "synonymes": "pamphlet, invective, philippique, critique"
+    },
+    {
+        "mot": "dilection",
+        "définition": "Amour tendre, spirituel et tout à fait désintéressé pour quelqu'un.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"dilectio\" (amour d'élection).",
+        "exemple": "Le maître portait à son plus jeune élève une dilection toute paternelle.",
+        "synonymes": "amour, affection, prédilection, tendresse"
+    },
+    {
+        "mot": "dilettante",
+        "définition": "Personne qui s'exerce à un art ou s'adonne à une science en amateur, pour son plaisir.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "De l'italien \"dilettante\" (qui prend plaisir).",
+        "exemple": "Il peint en dilettante durant ses vacances pour se détendre.",
+        "synonymes": "amateur, curieux, touche-à-tout"
+    },
+    {
+        "mot": "dirimant",
+        "définition": "Se dit d'un obstacle ou d'un argument décisif qui annule ou empêche toute discussion.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"dirimere\" (séparer, trancher).",
+        "exemple": "Son absence le jour du concours fut un motif dirimant pour son exclusion.",
+        "synonymes": "décisif, rédhibitoire, éliminatoire, tranchant"
+    },
+    {
+        "mot": "effervescence",
+        "définition": "Agitation vive, enthousiaste et créatrice au sein d'un groupe ou d'un esprit.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"effervescere\" (entrer en ébullition).",
+        "exemple": "La ville était en pleine effervescence à l'approche de la fête nationale.",
+        "synonymes": "agitation, bouillonnement, excitation, entrain"
+    },
+    {
+        "mot": "effluve",
+        "définition": "Émanation douce, volatile et généralement odorante (ex: effluves de lavande).",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"effluvium\" (écoulement).",
+        "exemple": "Les douces effluves du café chaud envahissaient la cuisine au matin.",
+        "synonymes": "parfum, odeur, émanation, senteur"
+    },
+    {
+        "mot": "égrotant",
+        "définition": "De santé chancelante, maladif, languissant et sans force.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"aegrotans\" (malade).",
+        "exemple": "Le poète égrotant passait ses journées allongé près de la cheminée.",
+        "synonymes": "maladif, valétudinaire, souffreteux, languissant"
+    },
+    {
+        "mot": "élégiaque",
+        "définition": "Qui présente un caractère de tristesse mélancolique, de complainte poétique.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"elegeia\" (chant de deuil, élégie).",
+        "exemple": "Ses derniers poèmes ont un ton élégiaque profondément touchant.",
+        "synonymes": "mélancolique, plaintif, nostalgique, triste"
+    },
+    {
+        "mot": "élixir",
+        "définition": "Breuvage magique, spirituel ou liqueur particulièrement concentrée et précieuse.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "De l'arabe \"al-iksīr\" (substance magique pour transmuter les métaux).",
+        "exemple": "Elle buvait les paroles du conférencier comme un élixir de sagesse.",
+        "synonymes": "breuvage, philtre, essence, liqueur"
+    },
+    {
+        "mot": "élucubration",
+        "définition": "Réflexion extravagante, théorie sans fondement logique ou produit d'un esprit égaré.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"elucubrare\" (travailler à la lueur de la chandelle).",
+        "exemple": "Ne m'ennuie pas avec tes élucubrations sur la fin du monde.",
+        "synonymes": "faribole, extravagante, idée folle, délire"
+    },
+    {
+        "mot": "empyrée",
+        "définition": "Dans l'Antiquité, la partie la plus élevée du ciel, séjour de la lumière et des dieux.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"empuros\" (brûlant, embrasé).",
+        "exemple": "Les philosophes grecs plaçaient les Idées parfaites dans l'empyrée.",
+        "synonymes": "ciel, paradis, olympe"
+    },
+    {
+        "mot": "énigmatique",
+        "définition": "Dont la nature ou le comportement est obscur et mystérieux, difficile à élucider.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"ainigma\" (parole obscure, énigme).",
+        "exemple": "Le sourire énigmatique de la Joconde continue de fasciner le monde.",
+        "synonymes": "mystérieux, obscur, impénétrable, mystique"
+    },
+    {
+        "mot": "enlumineur",
+        "définition": "Artiste du Moyen Âge qui décorait les manuscrits avec des dorures et des peintures colorées.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"illuminare\" (éclairer, embellir).",
+        "exemple": "L'enlumineur travaillait des mois sur un seul psaume pour la Bible du roi.",
+        "synonymes": "miniaturiste, calligraphe, peintre"
+    },
+    {
+        "mot": "éolien",
+        "définition": "Qui a rapport au vent, qui est produit ou transporté par l'action du vent.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De Éole, dieu grec des vents.",
+        "exemple": "Le chant éolien de la harpe résonnait doucement sous la brise nocturne.",
+        "synonymes": "aérien, venteux"
+    },
+    {
+        "mot": "éphémère",
+        "définition": "Qui ne dure qu'un jour, un instant ; d'une existence passagère.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du grec \"ephêmeros\" (qui dure un jour).",
+        "exemple": "La beauté des roses est éphémère mais laisse un souvenir impérissable.",
+        "synonymes": "fugace, passager, temporaire, évanescent"
+    },
+    {
+        "mot": "épicurien",
+        "définition": "Personne qui sait goûter les plaisirs simples et sensuels de l'existence avec équilibre.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "D'Épicure, philosophe grec prônant la recherche des plaisirs modérés.",
+        "exemple": "En bon épicurien, il savourait chaque gorgée de ce vin de pays.",
+        "synonymes": "bon vivant, hédoniste, jouisseur"
+    },
+    {
+        "mot": "épigone",
+        "définition": "Successeur tardif ou imitateur d'une doctrine philosophique ou d'une école d'art.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"epigonoi\" (ceux qui sont nés après, successeurs).",
+        "exemple": "Ce jeune peintre n'est qu'un épigone de l'impressionnisme, sans originalité.",
+        "synonymes": "disciple, successeur, imitateur"
+    },
+    {
+        "mot": "équanimité",
+        "définition": "Égalité d'humeur inaltérable, sérénité de l'esprit constante face au bonheur ou au malheur.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"aequanimitas\" (esprit égal).",
+        "exemple": "Elle accueillit la critique injuste avec une parfaite équanimité.",
+        "synonymes": "impassibilité, détachement, sérénité, flegme"
+    },
+    {
+        "mot": "ésotérique",
+        "définition": "Qui est réservé aux initiés, difficile à comprendre pour le grand public.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"esoterikos\" (de l'intérieur, intime).",
+        "exemple": "Cette société secrète conserve des écrits ésotériques depuis des générations.",
+        "synonymes": "hermétique, occulte, mystérieux, secret"
+    },
+    {
+        "mot": "esthète",
+        "définition": "Personne qui accorde une importance exclusive à l'art et à la beauté.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"aisthesis\" (sensation, perception).",
+        "exemple": "En esthète averti, il collectionnait les premières éditions reliées de cuir.",
+        "synonymes": "amateur d'art, dandy, connaisseur"
+    },
+    {
+        "mot": "estocade",
+        "définition": "Coup de grâce ou coup décisif qui met fin à un combat ou une dispute.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "De l'espagnol \"estocada\" (coup d'estoc, avec la pointe de l'épée).",
+        "exemple": "Sa dernière question en cour fut l'estocade qui fit craquer l'accusé.",
+        "synonymes": "coup de grâce, défaite, coup décisif"
+    },
+    {
+        "mot": "éthéré",
+        "définition": "Qui est d'une pureté et d'une légèreté presque céleste, détaché de la matière.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"aither\" (air le plus pur des hauteurs célestes).",
+        "exemple": "Une beauté éthérée se dégageait de ses toiles vaporeuses.",
+        "synonymes": "céleste, pur, aérien, impalpable, angélique"
+    },
+    {
+        "mot": "évanescent",
+        "définition": "Qui s'efface ou disparaît doucement, comme de la fumée dans l'air.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"evanescere\" (s'évanouir).",
+        "exemple": "Les souvenirs d'enfance sont parfois évanescents comme des songes.",
+        "synonymes": "fugace, éphémère, impalpable, vaporeux"
+    },
+    {
+        "mot": "exaltation",
+        "définition": "Enthousiasme ou excitation morale portés à un degré extrême de ferveur.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"exaltatio\" (élévation).",
+        "exemple": "Il lut la lettre avec une exaltation qui faisait briller ses yeux.",
+        "synonymes": "ferveur, enthousiasme, lyrisme, ivresse"
+    },
+    {
+        "mot": "exsangue",
+        "définition": "Qui est vidé de son sang ; au figuré, pâle et privé de toute force ou énergie.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"exsanguis\" (sans sang).",
+        "exemple": "Il revint du front de guerre le visage blême et l'esprit exsangue.",
+        "synonymes": "blême, épuisé, exténué, pâle"
+    },
+    {
+        "mot": "extase",
+        "définition": "État d'admiration, de bonheur parfait et de ravissement qui coupe du monde extérieur.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du grec \"ekstasis\" (action de sortir de soi-même).",
+        "exemple": "Le concert de violoncelle plongea le public dans une extase mystique.",
+        "synonymes": "ravissement, enchantement, béatitude, transport"
+    },
+    {
+        "mot": "facétieux",
+        "définition": "Qui aime faire des farces pleines de malice amicale ; enjoué.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"facetia\" (plaisanterie, mot d'esprit).",
+        "exemple": "Le grand-père facétieux cachait toujours des friandises dans ses poches.",
+        "synonymes": "espiègle, farceur, enjoué, malicieux"
+    },
+    {
+        "mot": "faconde",
+        "définition": "Facilité d'élocution abondante, parfois pompeuse ou excessive.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"facundia\" (éloquence facile).",
+        "exemple": "Sa faconde d'orateur parvenait à captiver le public le plus rebelle.",
+        "synonymes": "verve, volubilité, éloquence, babil"
+    },
+    {
+        "mot": "fallacieux",
+        "définition": "Destiné à induire en erreur avec une apparence trompeuse de vérité.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"fallaciosus\" (trompeur).",
+        "exemple": "Il avança des arguments fallacieux pour justifier son absence injustifiée.",
+        "synonymes": "trompeur, captieux, mensonger, illusoire"
+    },
+    {
+        "mot": "famélique",
+        "définition": "Qui est creusé par la faim, extrêmement maigre et miséreux.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"famellicus\" (affamé).",
+        "exemple": "Un chien famélique rôdait autour de la cuisine dans l'espoir d'un os.",
+        "synonymes": "affamé, décharné, maigre, misérable"
+    },
+    {
+        "mot": "félicité",
+        "définition": "Bonheur suprême, complet et paisible de l'esprit.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"felicitas\" (bonheur, chance).",
+        "exemple": "Les jeunes mariés savouraient des jours d'une douce félicité.",
+        "synonymes": "béatitude, béatitude, joie, contentement"
+    },
+    {
+        "mot": "ferveur",
+        "définition": "Ardeur sentimentale vive poussant à la dévotion religieuse ou intellectuelle.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"fervor\" (chaleur bouillante).",
+        "exemple": "Il défendait ses convictions avec une ferveur admirable.",
+        "synonymes": "ardeur, dévotion, zèle, passion"
+    },
+    {
+        "mot": "flâneur",
+        "définition": "Personne qui se promène sans but précis, au gré de ses inspirations.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du vieux scandinave \"flana\" (errer sans but).",
+        "exemple": "Baudelaire a érigé la figure du flâneur parisien en idéal de poésie moderne.",
+        "synonymes": "promeneur, rêveur, badaud"
+    },
+    {
+        "mot": "flegmatique",
+        "définition": "Qui conserve son calme et sa froideur impassible en toutes circonstances.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du grec \"phlegmatikos\" (chargé de phlegme, l'humeur froide).",
+        "exemple": "Son tempérament flegmatique lui évita de céder à la panique pendant l'incendie.",
+        "synonymes": "impassible, calme, placide, stoïque"
+    },
+    {
+        "mot": "frémissement",
+        "définition": "Léger tremblement ou frissonnement physique ou sonore, souvent lié à une émotion.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"fremere\" (bruire, gronder).",
+        "exemple": "Un frémissement de feuilles annonçait le lever du vent du soir.",
+        "synonymes": "frisson, tremblement, palpitation, murmure"
+    },
+    {
+        "mot": "fugace",
+        "définition": "Qui s'enfuit ou s'évanouit très rapidement, difficile à saisir au vol.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"fugax\" (enclin à fuir).",
+        "exemple": "Il aperçut une ombre fugace glisser discrètement derrière le rideau.",
+        "synonymes": "éphémère, rapide, transitoire, passager"
+    },
+    {
+        "mot": "fuligineux",
+        "définition": "Qui rappelle la suie ou la fumée épaisse ; au figuré, confus et obscur.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"fuligo\" (suie).",
+        "exemple": "Son esprit encombré formulait des idées particulièrement fuligineuses.",
+        "synonymes": "sombre, obscur, confus, brumeux"
+    },
+    {
+        "mot": "funambule",
+        "définition": "Acrobate marchant sur un fil de fer tendu ; au figuré, personne qui avance dans un équilibre précaire.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"funis\" (corde) et \"ambulare\" (marcher).",
+        "exemple": "L'artiste de rue captivait les passants par ses pas de funambule.",
+        "synonymes": "acrobate, équilibriste"
+    },
+    {
+        "mot": "garrulité",
+        "définition": "Bavardage abondant, insipide et indiscret.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"garrulitas\" (bavardage).",
+        "exemple": "La garrulité de la voisine finissait par exaspérer tout le quartier.",
+        "synonymes": "bavardage, loquacité, babil"
+    },
+    {
+        "mot": "goguenard",
+        "définition": "Qui a l'habitude de se moquer d'autrui avec ironie ou persiflage.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du vieux français \"gogue\" (réjouissance).",
+        "exemple": "Le cocher jeta un regard goguenard au voyageur pressé qui avait manqué son train.",
+        "synonymes": "moqueur, railleur, narquois, gouailleur"
+    },
+    {
+        "mot": "grimoire",
+        "définition": "Livre ancien contenant des formules magiques ; écriture particulièrement illisible.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Altération de \"grammaire\" (le latin au Moyen Âge passait pour magique).",
+        "exemple": "L'érudit tentait de déchiffrer ce vieux grimoire poussiéreux.",
+        "synonymes": "livre de magie, manuscrit, codex"
+    },
+    {
+        "mot": "harangue",
+        "définition": "Discours solennel prononcé devant une assemblée pour convaincre ou gronder.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "De l'ancien haut-allemand \"hring\" (cercle de personnes).",
+        "exemple": "Le général adressa une harangue vibrante à ses troupes avant la bataille.",
+        "synonymes": "discours, allocution, sermon, homélie"
+    },
+    {
+        "mot": "haruspice",
+        "définition": "Devin de la Rome antique qui prédisait l'avenir en examinant les entrailles d'animaux sacrifiés.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"haruspex\" (qui examine les entrailles).",
+        "exemple": "L'haruspice déclara que les présages étaient funestes pour l'expédition.",
+        "synonymes": "devin, oracle, augure"
+    },
+    {
+        "mot": "hécatombe",
+        "définition": "Sacrifice antique de cent bœufs ; par extension, grand nombre de morts causés par un drame.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du grec \"hekaton\" (cent) et \"bous\" (bœuf).",
+        "exemple": "La grippe espagnole fut une véritable hécatombe en Europe.",
+        "synonymes": "massacre, carnage, tuerie, désastre"
+    },
+    {
+        "mot": "héliotrope",
+        "définition": "Plante ou fleur dont la corolle s'oriente naturellement vers la direction du soleil.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"helios\" (soleil) et \"tropos\" (tourner).",
+        "exemple": "Le parfum suave de l'héliotrope embaumait la terrasse de son arôme de vanille.",
+        "synonymes": "tournesol, plante"
+    },
+    {
+        "mot": "hermétique",
+        "définition": "Clos de manière étanche ; au figuré, particulièrement difficile à comprendre, ésotérique.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "D'Hermès Trismégiste, père mythique de l'alchimie.",
+        "exemple": "La poésie hermétique de Mallarmé requiert de nombreux efforts de déchiffrement.",
+        "synonymes": "obscur, fermé, impénétrable, mystique"
+    },
+    {
+        "mot": "héraut",
+        "définition": "Officier du Moyen Âge chargé des proclamations solennelles et des messages de paix.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du vieux francique \"heriald\" (chef d'armée).",
+        "exemple": "Le héraut d'armes sonna de la trompette avant de lire le décret royal.",
+        "synonymes": "messager, précurseur, émissaire, annonciateur"
+    },
+    {
+        "mot": "heur",
+        "définition": "Bonne fortune, chance ou succès (principalement utilisé dans \"avoir l'heur de\").",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"augurium\" (présage, augure).",
+        "exemple": "Il eut l'heur de lui plaire dès leur première rencontre.",
+        "synonymes": "chance, bonheur, fortune"
+    },
+    {
+        "mot": "idylle",
+        "définition": "Aventure amoureuse tendre, naïve et poétique dans un cadre champêtre.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du grec \"eidyllion\" (petit poème champêtre).",
+        "exemple": "Leur idylle d'été s'acheva doucement avec la rentrée des classes.",
+        "synonymes": "amour, romance, bergerie, amourette"
+    },
+    {
+        "mot": "ignominie",
+        "définition": "Déshonneur ou honte extrême résultant d'une faute vile ou indigne.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"ignominia\" (perte du nom, infamie).",
+        "exemple": "Ce tyran a commis les pires ignominies contre son peuple.",
+        "synonymes": "infamie, déshonneur, honte, bassesse"
+    },
+    {
+        "mot": "ilote",
+        "définition": "Esclave à Sparte ; par extension, personne réduite au dernier degré d'abaissement ou d'ignorance.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du grec \"Heilotes\" (habitants de la ville conquise d'Hélos).",
+        "exemple": "Il refusait d'être traité comme un ilote taillable et corvéable à merci.",
+        "synonymes": "esclave, paria, asservi"
+    },
+    {
+        "mot": "immanence",
+        "définition": "Fait de résider ou d'être contenu intrinsèquement à l'intérieur des êtres ou des choses.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"immanere\" (demeurer à l'intérieur).",
+        "exemple": "Le panthéisme enseigne l'immanence de Dieu dans la nature.",
+        "synonymes": "présence interne, inhérence"
+    },
+    {
+        "mot": "imminent",
+        "définition": "Qui est sur le point de se produire de façon inévitable à très court terme.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"imminere\" (menacer, être suspendu au-dessus).",
+        "exemple": "Les nuages noirs annonçaient un orage imminent.",
+        "synonymes": "proche, menaçant, immédiat"
+    },
+    {
+        "mot": "immuable",
+        "définition": "Qui ne subit aucun changement, reste éternellement identique.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"immutabilis\" (inchangeable).",
+        "exemple": "Le cycle des saisons est une loi immuable de la Terre.",
+        "synonymes": "éternel, permanent, constant, durable"
+    },
+    {
+        "mot": "impérieux",
+        "définition": "Qui exige obéissance sans discussion ; autoritaire ou pressant.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"imperiosus\" (qui commande).",
+        "exemple": "Il éprouva le besoin impérieux de sortir respirer l'air frais.",
+        "synonymes": "autoritaire, pressant, irrésistible, urgent"
+    },
+    {
+        "mot": "impéritie",
+        "définition": "Incapacité ou manque d'habileté flagrante dans l'exercice d'une profession ou fonction.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"imperitia\" (manque d'expérience, ignorance).",
+        "exemple": "L'effondrement du pont est dû à l'impéritie de l'ingénieur en chef.",
+        "synonymes": "incompétence, maladresse, ignorance"
+    },
+    {
+        "mot": "incandescent",
+        "définition": "Rendu lumineux et brillant par une chaleur extrême ; ardent.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"incandescere\" (devenir blanc de chaleur).",
+        "exemple": "La lave incandescente s'écoulait doucement le long des flancs du volcan.",
+        "synonymes": "ardent, brûlant, lumineux, flamboyant"
+    },
+    {
+        "mot": "incantation",
+        "définition": "Formules rituelles et magiques prononcées pour invoquer des forces surnaturelles.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"incantatio\" (enchantement).",
+        "exemple": "Le chaman murmurait des incantations autour du grand feu de bois.",
+        "synonymes": "enchantement, sortilège, prière, charme"
+    },
+    {
+        "mot": "incurie",
+        "définition": "Négligence extrême, manque total de soins et d'attention dans une gestion.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"incuria\" (absence de souci, de soin).",
+        "exemple": "L'état déplorable de ce musée historique est le fruit de l'incurie municipale.",
+        "synonymes": "négligence, laisser-aller, insouciance, abandon"
+    },
+    {
+        "mot": "indocile",
+        "définition": "Qui refuse d'obéir aux règles ou de se soumettre à une autorité ; rebelle.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"indocilis\" (difficile à enseigner).",
+        "exemple": "Ce cheval indocile refusait de se laisser seller par le palefrenier.",
+        "synonymes": "rebelle, indiscipliné, récalcitrant, insoumis"
+    },
+    {
+        "mot": "indolence",
+        "définition": "Disposition naturelle à éviter l'effort physique ou moral ; paresse douce.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"indolentia\" (absence de douleur).",
+        "exemple": "Elle s'étira avec une indolence de félin au soleil de midi.",
+        "synonymes": "nonchalance, paresse, apathie, oisiveté"
+    },
+    {
+        "mot": "inexorable",
+        "définition": "Que l'on ne peut fléchir par des prières ; fatal et inévitable.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"inexorabilis\" (insensible aux supplications).",
+        "exemple": "Le temps poursuit son cours inexorable sans se soucier des regrets.",
+        "synonymes": "fatal, implacable, inévitable, inflexible"
+    },
+    {
+        "mot": "inextinguible",
+        "définition": "Qu'il est impossible d'éteindre, d'apaiser ou de rassasier (ex: soif inextinguible).",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"inextinguibilis\" (qu'on ne peut éteindre).",
+        "exemple": "Un rire inextinguible s'empara des spectateurs devant cette farce farce.",
+        "synonymes": "insatiable, infatigable, intarissable"
+    },
+    {
+        "mot": "infrangible",
+        "définition": "Qu'on ne peut briser physiquement ou moralement ; indestructible.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"infrangibilis\" (qu'on ne peut rompre).",
+        "exemple": "Un lien infrangible d'amitié unissait les deux compagnons d'armes.",
+        "synonymes": "indestructible, incassable, solide, indissoluble"
+    },
+    {
+        "mot": "insatiable",
+        "définition": "Qui ne peut être rassasié ou satisfait, d'un appétit ou désir sans limites.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"insatiabilis\" (qu'on ne peut rassasier).",
+        "exemple": "Son esprit curieux manifestait une soif insatiable de lecture.",
+        "synonymes": "vorace, avide, inassouvi"
+    },
+    {
+        "mot": "insidieux",
+        "définition": "Qui se propage sournoisement en présentant un danger caché sous des apparences favorables.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"insidiosus\" (plein d'embûches, trompeur).",
+        "exemple": "La maladie s'installa de manière insidieuse, sans symptômes clairs.",
+        "synonymes": "sournois, hypocrite, perfide, captieux"
+    },
+    {
+        "mot": "insouciance",
+        "définition": "Absence totale de préoccupations, d'inquiétude ou de sérieux face aux devoirs.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Dérivé de \"souci\" avec préfixe négatif (in-souciance).",
+        "exemple": "L'enfance est souvent l'âge d'or d'une douce insouciance.",
+        "synonymes": "légèreté, détachement, calme"
+    },
+    {
+        "mot": "insoumis",
+        "définition": "Qui refuse d'obéir aux ordres légitimes ou de se plier à une autorité établie.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Dérivé de \"soumettre\" avec préfixe négatif (in-soumis).",
+        "exemple": "Le poète insoumis fut exilé loin de sa terre natale.",
+        "synonymes": "rebelle, indocile, insurgé, rétif"
+    },
+    {
+        "mot": "intemporel",
+        "définition": "Qui échappe aux lois et aux fluctuations du temps ; éternel.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"tempus\" (temps) avec préfixe négatif (in-temporel).",
+        "exemple": "Les chefs-d'œuvre de la peinture ont un charme intemporel.",
+        "synonymes": "éternel, immortel, atemporel"
+    },
+    {
+        "mot": "intransigeance",
+        "définition": "Refus rigide de tout compromis ou concession sur ses principes.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"intransigens\" (qui ne transige pas).",
+        "exemple": "Son intransigeance dans les négociations a failli mener à une rupture.",
+        "synonymes": "rigidité, inflexibilité, sévérité"
+    },
+    {
+        "mot": "intrépide",
+        "définition": "Qui affronte les plus grands dangers sans éprouver de crainte.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"intrepidus\" (sans peur).",
+        "exemple": "L'explorateur intrépide s'enfonça seul dans la jungle inexplorée.",
+        "synonymes": "hardi, courageux, téméraire, brave"
+    },
+    {
+        "mot": "intrinsèque",
+        "définition": "Qui est inhérent à l'essence même d'une chose, indépendamment des éléments extérieurs.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"intrinsecus\" (en dedans, à l'intérieur).",
+        "exemple": "La valeur intrinsèque de cet écrit réside dans sa beauté poétique.",
+        "synonymes": "inhérent, propre, essentiel, intime"
+    },
+    {
+        "mot": "invective",
+        "définition": "Parole violente, amère et injurieuse proférée contre quelqu'un.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"invectiva\" (parole qui attaque).",
+        "exemple": "Les deux rivaux échangèrent des invectives au milieu de la rue.",
+        "synonymes": "injure, insulte, diatribe, outrage"
+    },
+    {
+        "mot": "irisé",
+        "définition": "Qui brille en présentant les nuances de couleur de l'arc-en-ciel.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "D'Iris, divinité grecque messagère aux ailes d'arc-en-ciel.",
+        "exemple": "Les bulles de savon flottaient dans l'air sous un éclat irisé.",
+        "synonymes": "multicolore, chatoyant, nacré"
+    },
+    {
+        "mot": "jadis",
+        "définition": "Dans un temps ancien, autrefois.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "De la contraction de \"ja\" (déjà) et \"dis\" (jours).",
+        "exemple": "Jadis, de grands navires de bois jetaient l'ancre dans ce havre tranquille.",
+        "synonymes": "autrefois, anciennement, autrefois"
+    },
+    {
+        "mot": "jubilation",
+        "définition": "Joie vive, intense et débordante qui se manifeste bruyamment.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"iubilatio\" (cri de joie sauvage).",
+        "exemple": "Les supporters ont laissé éclater leur jubilation au coup de sifflet final.",
+        "synonymes": "allégresse, joie, liesse, triomphe"
+    },
+    {
+        "mot": "labyrinthe",
+        "définition": "Lieu composé de chemins entremêlés d'où il est presque impossible de sortir.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"laburinthos\" (le palais de la double hache, en Crète).",
+        "exemple": "Les ruelles de la vieille médina forment un véritable labyrinthe.",
+        "synonymes": "dédale, réseau, méandre"
+    },
+    {
+        "mot": "laconique",
+        "définition": "Qui s'exprime en peu de mots ; concis et direct (à la manière des Lacédémoniens).",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"Lakonikos\" (de Laconie, région de Sparte prônant la concision).",
+        "exemple": "Il se contenta d'une réponse laconique : un simple \"oui\".",
+        "synonymes": "bref, concis, sobre, succinct"
+    },
+    {
+        "mot": "langueur",
+        "définition": "État physique ou moral de faiblesse agréable propice à la mélancolie amoureuse.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"languor\" (fatigue douce, maladie).",
+        "exemple": "Les jours d'été s'écoulaient dans une langueur pleine de songes.",
+        "synonymes": "indolence, fatigue douce, alanguissement"
+    },
+    {
+        "mot": "lascif",
+        "définition": "Qui exprime une sensualité langoureuse et provocante.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"lascivus\" (folâtre, enjoué, voluptueux).",
+        "exemple": "Elle exécuta une danse lascive sous les regards fascinés de la foule.",
+        "synonymes": "voluptueux, sensuel, provocant"
+    },
+    {
+        "mot": "laudateur",
+        "définition": "Qui prononce des louanges ou fait l'éloge admiratif de quelqu'un.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"laudator\" (celui qui loue).",
+        "exemple": "L'écrivain fut encensé par un article laudateur dans la presse littéraire.",
+        "synonymes": "flatteur, élogieux, approbateur"
+    },
+    {
+        "mot": "léthargie",
+        "définition": "État de sommeil profond ; au figuré, engourdissement moral et inaction complète.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du grec \"lêthargia\" (sommeil de l'oubli).",
+        "exemple": "La nation sortit enfin de sa longue léthargie politique.",
+        "synonymes": "torpeur, apathie, sommeil, engourdissement"
+    },
+    {
+        "mot": "libation",
+        "définition": "Action de répandre un liquide sacré (vin, lait) en offrande solennelle à une divinité.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"libatio\" (offrande de boisson).",
+        "exemple": "Les prêtres offrirent des libations de miel aux dieux de l'Olympe.",
+        "synonymes": "offrande, sacrifice, beuverie (familier)"
+    },
+    {
+        "mot": "liminaire",
+        "définition": "Placé au seuil d'un ouvrage littéraire ou d'un discours en guise d'introduction.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"limen\" (seuil de porte).",
+        "exemple": "L'auteur écrivit quelques remarques liminaires pour clarifier sa méthode.",
+        "synonymes": "préliminaire, introductif, préface"
+    },
+    {
+        "mot": "limpide",
+        "définition": "Parfaitement clair, transparent et sans impuretés.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"limpidus\" (clair).",
+        "exemple": "L'eau limpide de la source de montagne permettait de voir chaque galet.",
+        "synonymes": "clair, transparent, cristallin, pur"
+    },
+    {
+        "mot": "liturgie",
+        "définition": "Déroulement rituel et codifié des cérémonies religieuses ou des fêtes officielles.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"leitourgia\" (service public accompli pour la cité).",
+        "exemple": "Le couronnement impérial s'est déroulé selon une liturgie somptueuse.",
+        "synonymes": "cérémonial, rituel, culte"
+    },
+    {
+        "mot": "longanimité",
+        "définition": "Patience et indulgence patiente face aux épreuves, aux provocations ou aux offenses.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"longanimitas\" (grandeur d'âme qui endure longtemps).",
+        "exemple": "La longanimité de cet enseignant face aux élèves rebelles forçait le respect.",
+        "synonymes": "patience, clémence, indulgence, grandeur d'âme"
+    },
+    {
+        "mot": "loquace",
+        "définition": "Qui parle avec beaucoup de facilité et d'abondance.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"loquax\" (parleur).",
+        "exemple": "Après un verre de vin, l'homme secret devint soudain très loquace.",
+        "synonymes": "bavard, volubile, prolixe"
+    },
+    {
+        "mot": "luminescence",
+        "définition": "Émission de lumière qui ne provient pas d'une source de chaleur (lumière froide).",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"lumen\" (lumière) avec suffixe scientifique.",
+        "exemple": "La luminescence des lucioles illuminait la clairière de points verts.",
+        "synonymes": "lueur, phosphorescence, éclat"
+    },
+    {
+        "mot": "lustral",
+        "définition": "Qui sert à purifier rituellement (ex: l'eau lustrale).",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"lustrum\" (sacrifice de purification tous les cinq ans).",
+        "exemple": "Le prêtre aspergea l'autel d'eau lustrale pour en chasser les esprits.",
+        "synonymes": "purificateur, sacré"
+    },
+    {
+        "mot": "magnanime",
+        "définition": "Enclin à pardonner généreusement et à faire preuve de grandeur d'âme.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"magnanimus\" (grand d'âme).",
+        "exemple": "Le vainqueur magnanime épargna la vie des prisonniers rebelles.",
+        "synonymes": "généreux, noble, clément, indulgent"
+    },
+    {
+        "mot": "mansuétude",
+        "définition": "Douceur de caractère attentive, bienveillante et encline au pardon.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"mansuetudo\" (douceur, apprivoisement).",
+        "exemple": "Il écouta les excuses de son ami avec une grande mansuétude.",
+        "synonymes": "clémence, bonté, indulgence, douceur"
+    },
+    {
+        "mot": "mélancolie",
+        "définition": "Tristesse douce et rêveuse sans cause bien définie ; propice à la poésie.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du grec \"melankholia\" (bile noire, humeur de la tristesse).",
+        "exemple": "L'automne inspire souvent une douce mélancolie au crépuscule.",
+        "synonymes": "spleen, nostalgie, tristesse, vague à l'âme"
+    },
+    {
+        "mot": "mélopée",
+        "définition": "Chant, poème ou déclamation monotone, triste et cadencée.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"melopoia\" (création de chants).",
+        "exemple": "La mélopée lointaine des vagues berçait les nuits du gardien de phare.",
+        "synonymes": "cantilène, plainte, psalmodie, chant"
+    },
+    {
+        "mot": "ménestrel",
+        "définition": "Musicien, chanteur et poète du Moyen Âge qui voyageait de château en château.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"ministerialis\" (serviteur de cour).",
+        "exemple": "Le ménestrel chanta les exploits du preux chevalier devant le seigneur.",
+        "synonymes": "troubadour, trouvère, poète"
+    },
+    {
+        "mot": "mentor",
+        "définition": "Guide spirituel, conseiller expérimenté et bienveillant qui oriente la vie de quelqu'un.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "De Mentor, personnage de l'Odyssée, guide du jeune Télémaque.",
+        "exemple": "Il considère son ancien professeur comme son mentor de toujours.",
+        "synonymes": "guide, conseiller, tuteur, maître"
+    },
+    {
+        "mot": "mignardise",
+        "définition": "Délicatesse excessive dans les manières ou les formes ; afféterie poétique.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Dérivé du vieux français \"mignard\" (mignon, gracieux).",
+        "exemple": "Il convient d'éviter la mignardise dans les poèmes tragiques.",
+        "synonymes": "délicatesse, afféterie, gentillesse"
+    },
+    {
+        "mot": "miséricorde",
+        "définition": "Pitié compatissante qui pousse à accorder le pardon aux offenses ou à soulager la misère.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"misericordia\" (cœur sensible à la misère).",
+        "exemple": "Il implora la miséricorde divine pour racheter ses fautes passées.",
+        "synonymes": "clémence, pardon, pitié, compassion"
+    },
+    {
+        "mot": "morose",
+        "définition": "Qui est d'une tristesse grogneuse, sombre et maussade.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"morosus\" (capricieux, d'humeur difficile).",
+        "exemple": "Le temps pluvieux rendait l'atmosphère particulièrement morose.",
+        "synonymes": "maussade, sombre, triste, chagrin"
+    },
+    {
+        "mot": "murmure",
+        "définition": "Bruit doux, feutré, continu et indistinct de voix ou d'éléments naturels.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"murmur\" (bruit indistinct).",
+        "exemple": "Le murmure de la brise dans les pins calmait ses pensées agitées.",
+        "synonymes": "chuchotement, bruissement, rumeur"
+    },
+    {
+        "mot": "nadir",
+        "définition": "Le point de la voûte céleste situé verticalement sous les pieds de l'observateur (opposé au zénith).",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De l'arabe \"naẓīr\" (opposé).",
+        "exemple": "Le soleil à minuit se trouve précisément au nadir de notre horizon.",
+        "synonymes": "fond, opposé au zénith"
+    },
+    {
+        "mot": "narquois",
+        "définition": "Se dit d'une attitude ou d'un regard moqueur, malicieux et narquois.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Origine obscure (argot des soldats narquois au XVIIe siècle).",
+        "exemple": "Il lui jeta un sourire narquois, sachant qu'elle mentait.",
+        "synonymes": "moqueur, goguenard, ironique, malicieux"
+    },
+    {
+        "mot": "nébuleux",
+        "définition": "Flou, enveloppé de brume ou de nuages ; au figuré, particulièrement obscur ou confus.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"nebulosus\" (couvert de nuages).",
+        "exemple": "Ses explications nébuleuses n'ont fait qu'ajouter à la confusion.",
+        "synonymes": "confus, obscur, flou, brumeux"
+    },
+    {
+        "mot": "némésis",
+        "définition": "Vengeance inévitable ou colère méritée ; force destructrice et juste.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "De Némésis, divinité grecque de la juste colère et du châtiment céleste.",
+        "exemple": "Sa chute fut la némésis de son arrogance passée.",
+        "synonymes": "vengeance, justice, châtiment, destin"
+    },
+    {
+        "mot": "nimbe",
+        "définition": "Auréole de lumière douce entourant la tête des représentations sacrées ou de personnages divins.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"nimbus\" (nuage de pluie, auréole).",
+        "exemple": "La sainte était peinte avec un nimbe d'or brillant sur son visage.",
+        "synonymes": "auréole, gloire, halo"
+    },
+    {
+        "mot": "noctambule",
+        "définition": "Personne qui aime vivre, flâner ou s'amuser durant la nuit.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"nox\" (nuit) et \"ambulare\" (marcher).",
+        "exemple": "Les noctambules commençaient à envahir les ruelles animées du quartier latin.",
+        "synonymes": "couche-tard, nocturne, flâneur"
+    },
+    {
+        "mot": "nostalgie",
+        "définition": "Regret mélancolique d'une époque heureuse disparue ou du pays natal lointain.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du grec \"nostos\" (retour) et \"algos\" (douleur, tristesse).",
+        "exemple": "La vieille chanson réveilla en lui une nostalgie poignante de son enfance.",
+        "synonymes": "mélancolie, regret, spleen, souvenir"
+    },
+    {
+        "mot": "noumène",
+        "définition": "En philosophie kantienne, l'essence même des choses telle qu'elle est en soi, inaccessible aux sens.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"noumenon\" (objet de pensée pure).",
+        "exemple": "Le phénomène est ce que nous percevons, le noumène est la réalité cachée derrière.",
+        "synonymes": "chose en soi, essence, idée"
+    },
+    {
+        "mot": "nymphe",
+        "définition": "Divinité féminine de la mythologie grecque présidant aux forêts, aux sources et aux fleuves.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"numphê\" (jeune fille, divinité de l'eau).",
+        "exemple": "On croyait entendre le chant des nymphes dans le murmure de la cascade.",
+        "synonymes": "ondine, divinité, dryade"
+    },
+    {
+        "mot": "oblation",
+        "définition": "Offrande solennelle faite à Dieu ou à une divinité dans le culte.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"oblatio\" (action d'offrir).",
+        "exemple": "L'oblation de pain et de fruits fut déposée au pied du sanctuaire.",
+        "synonymes": "offrande, sacrifice, don"
+    },
+    {
+        "mot": "obséquieux",
+        "définition": "Qui manifeste un excès d'égards et de politesse hypocrite par pure flatterie ou soumission.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"obsequiosus\" (soumis, complaisant).",
+        "exemple": "Le majordome obséquieux s'inclinait bien bas devant chaque convive.",
+        "synonymes": "flatteur, servile, rampant, hypocrite"
+    },
+    {
+        "mot": "obsidional",
+        "définition": "Qui concerne le siège d'une ville ; au figuré, sentiment d'inquiétude ou d'encerclement permanent.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"obsidio\" (siège d'une forteresse).",
+        "exemple": "Il souffrait d'un délire obsidional, se croyant traqué par des ennemis invisibles.",
+        "synonymes": "obsédant, assiégeant"
+    },
+    {
+        "mot": "obsolescence",
+        "définition": "Fait de tomber en désuétude ou d'être dépassé technologiquement par le temps.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"obsolescere\" (commencer à s'user, à vieillir).",
+        "exemple": "L'obsolescence programmée pousse à changer d'appareil trop régulièrement.",
+        "synonymes": "désuétude, vieillissement, usure"
+    },
+    {
+        "mot": "ombrageux",
+        "définition": "Se dit d'un tempérament méfiant, susceptible et prompt à s'inquiéter ou s'offusquer.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"umbraticus\" (qui reste dans l'ombre).",
+        "exemple": "Le vieux poète était ombrageux et supportait mal la moindre remarque.",
+        "synonymes": "susceptible, méfiant, farouche, sourcilleux"
+    },
+    {
+        "mot": "ondée",
+        "définition": "Averse soudaine, violente et de courte durée.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du vieux français \"onde\" (vague, eau courante).",
+        "exemple": "Une ondée passagère nous força à nous abriter sous le grand chêne.",
+        "synonymes": "averse, giboulée, pluie"
+    },
+    {
+        "mot": "ondine",
+        "définition": "Nymphe ou génie des eaux dans la mythologie germanique et nordique.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"unda\" (flot, vague).",
+        "exemple": "L'ondine peignait ses longs cheveux blonds assise sur un rocher humide.",
+        "synonymes": "nymphe, sirène, naïade"
+    },
+    {
+        "mot": "onirique",
+        "définition": "Qui a rapport au rêve ou semble sorti tout droit d'un songe fantastique.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"oneiros\" (rêve).",
+        "exemple": "Le réalisateur a créé une atmosphère onirique particulièrement envoûtante.",
+        "synonymes": "rêvé, chimérique, imaginaire, poétique"
+    },
+    {
+        "mot": "ontologique",
+        "définition": "Qui concerne l'étude de l'être en soi, de l'existence et de la nature de la réalité.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"ontos\" (l'être) et \"logos\" (discours).",
+        "exemple": "L'argument ontologique de Descartes vise à prouver l'existence de Dieu.",
+        "synonymes": "existentiel, métaphysique"
+    },
+    {
+        "mot": "opalin",
+        "définition": "Qui présente l'aspect ou les reflets laiteux et irisés de l'opale.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"opalus\" (opale).",
+        "exemple": "Le ciel opalin du petit matin annonçait une journée de brouillard.",
+        "synonymes": "nacré, irisé, laiteux, diaphane"
+    },
+    {
+        "mot": "opiniâtre",
+        "définition": "Qui fait preuve d'une ténacité obstinée et indomptable dans ses entreprises.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"opinari\" (avoir une opinion, s'obstiner).",
+        "exemple": "Il mena des recherches opiniâtres pour retrouver la trace de sa famille.",
+        "synonymes": "obstiné, tenace, persévérant, entêté"
+    },
+    {
+        "mot": "opulence",
+        "définition": "Richesse matérielle immense qui se manifeste par un luxe abondant.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"opulentia\" (richesse).",
+        "exemple": "Le palais ducal étalait une opulence qui offensait la misère du peuple.",
+        "synonymes": "richesse, abondance, luxe, faste"
+    },
+    {
+        "mot": "oscillation",
+        "définition": "Mouvement régulier de va-et-vient autour d'un point d'équilibre (ex: balancier).",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"oscillatio\" (mouvement de balançoire).",
+        "exemple": "L'oscillation du pendule mesurait le passage régulier des secondes.",
+        "synonymes": "fluctuation, vibration, balancement"
+    },
+    {
+        "mot": "ostentatoire",
+        "définition": "Qui s'affiche de manière provocante et excessive pour attirer l'attention ou l'envie.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"ostentare\" (montrer avec vanité).",
+        "exemple": "Elle portait des bijoux ostentatoires lors de cette réception simple.",
+        "synonymes": "voyant, prétentieux, pompeux, tape-à-l'œil"
+    },
+    {
+        "mot": "ostensoir",
+        "définition": "Objet d'orfèvrerie religieuse destiné à exposer l'hostie consacrée à l'adoration des fidèles.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"ostendere\" (présenter, montrer).",
+        "exemple": "L'évêque portait l'ostensoir d'or fin sous un dais de velours pour la procession.",
+        "synonymes": "monstrance, ciboire"
+    },
+    {
+        "mot": "outrecuidance",
+        "définition": "Audace présomptueuse issue d'une confiance excessive en soi-même ; orgueil insolent.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du vieux français \"cuidier\" (penser, croire) avec préfixe excessif \"outre\".",
+        "exemple": "Il eut l'outrecuidance de contredire le maître devant toute la classe.",
+        "synonymes": "orgueil, présomption, arrogance, insolence"
+    },
+    {
+        "mot": "paladin",
+        "définition": "Chevalier errant protecteur de la justice et de l'honneur des opprimés.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"palatinus\" (officier du palais impérial).",
+        "exemple": "Il se dressa en vaillant paladin pour défendre la cause de la veuve.",
+        "synonymes": "chevalier, champion, preux, défenseur"
+    },
+    {
+        "mot": "palimpseste",
+        "définition": "Parchemin ancien dont on a effacé la première écriture pour y peindre un nouveau texte.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"palimpsestos\" (gratté à nouveau).",
+        "exemple": "La mémoire humaine est un palimpseste où s'empilent les souvenirs effacés.",
+        "synonymes": "manuscrit, parchemin, mémoire"
+    },
+    {
+        "mot": "panégyrique",
+        "définition": "Discours solennel de louanges excessives et enthousiastes fait en l'honneur de quelqu'un.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"panegurikos\" (discours prononcé devant l'assemblée du peuple).",
+        "exemple": "Le maire fit le panégyrique de son prédécesseur lors de l'inauguration.",
+        "synonymes": "éloge, apologie, louange, compliment"
+    },
+    {
+        "mot": "paradigme",
+        "définition": "Modèle théorique dominant de pensée ou de représentation du monde au sein d'une époque.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"paradeigma\" (modèle, exemple).",
+        "exemple": "La découverte de la relativité a provoqué un changement de paradigme en physique.",
+        "synonymes": "modèle, référence, cadre de pensée"
+    },
+    {
+        "mot": "parangon",
+        "définition": "Exemple suprême ou modèle de comparaison d'une vertu ou d'une qualité (ex: un parangon de vertu).",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "De l'espagnol \"parangon\" (comparaison, modèle).",
+        "exemple": "Cet homme politique est considéré comme le parangon de l'honnêteté.",
+        "synonymes": "modèle, idéal, archétype, exemple"
+    },
+    {
+        "mot": "paria",
+        "définition": "Individu banni d'une caste en Inde ; au figuré, personne exclue et rejetée par un groupe social.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du tamoul \"paraiyar\" (joueur de tambour de basse caste).",
+        "exemple": "Il se sentait comme un paria au sein de sa propre famille.",
+        "synonymes": "banni, proscrit, exclu, rejeté"
+    },
+    {
+        "mot": "parjure",
+        "définition": "Violation d'un serment solennel ; au figuré, trahison ou personne coupable de parjure.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"periurium\" (action de jurer faussement).",
+        "exemple": "L'accusé fut condamné pour parjure après avoir menti sous serment devant le juge.",
+        "synonymes": "trahison, reniement, mensonge"
+    },
+    {
+        "mot": "parvis",
+        "définition": "Place dégagée située devant la façade principale d'une église ou d'un grand monument.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"paradisus\" (paradis, désignant le jardin devant la basilique).",
+        "exemple": "La foule se pressait sur le parvis de la cathédrale pour apercevoir la mariée.",
+        "synonymes": "place, esplanade, porche"
+    },
+    {
+        "mot": "patène",
+        "définition": "Petite assiette circulaire en métal précieux (or ou argent) servant à recevoir l'hostie durant la messe.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"patena\" (plat creux).",
+        "exemple": "Le prêtre essuya la patène dorée avec soin avant de la ranger.",
+        "synonymes": "assiette, vaisselle sacrée"
+    },
+    {
+        "mot": "patricien",
+        "définition": "Noble appartenant aux familles patriciennes de la Rome antique ; au figuré, aristocrate raffiné.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"patricius\" (descendant des pères fondateurs de Rome).",
+        "exemple": "Ses manières de patricien le distinguaient de la foule vulgaire.",
+        "synonymes": "noble, aristocrate, seigneur, noble"
+    },
+    {
+        "mot": "pénombre",
+        "définition": "Demi-jour ou obscurité partielle propice à l'apaisement ou au secret.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"paene\" (presque) et \"umbra\" (ombre).",
+        "exemple": "La pénombre du confessionnal gardait les secrets des pénitents.",
+        "synonymes": "demi-jour, obscurité, ombre, clair-obscur"
+    },
+    {
+        "mot": "périgée",
+        "définition": "Point de l'orbite d'un astre qui se trouve au plus près de la Terre (opposé à l'apogée).",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"perigeios\" (autour de la terre).",
+        "exemple": "La lune paraissait immense ce soir-là car elle était à son périgée.",
+        "synonymes": "proximité orbitale"
+    },
+    {
+        "mot": "périssable",
+        "définition": "Qui est sujet à la mort, à la dégradation ou à la ruine temporelle.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"perire\" (périr).",
+        "exemple": "Toutes les richesses du monde sont périssables face à l'éternité.",
+        "synonymes": "mortel, éphémère, fragile"
+    },
+    {
+        "mot": "pernicieux",
+        "définition": "Qui cause un préjudice moral ou physique subtil mais extrêmement dangereux.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"perniciosus\" (destructeur, ruineux).",
+        "exemple": "Ces lectures faciles exercent une influence pernicieuse sur les jeunes esprits.",
+        "synonymes": "nocif, toxique, dangereux, néfaste"
+    },
+    {
+        "mot": "perplexité",
+        "définition": "État d'embarras ou d'indécision face à une situation complexe ou confuse.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"perplexitas\" (enchevêtrement, confusion).",
+        "exemple": "Le détective gratta son front avec une évidente perplexité face à cette impasse.",
+        "synonymes": "indécision, doute, hésitation, scepticisme"
+    },
+    {
+        "mot": "pétrichor",
+        "définition": "L'odeur particulièrement fraîche et terreuse que dégage le sol après une ondée de pluie sur la terre sèche.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du grec \"petra\" (pierre) et \"ichor\" (le sang des dieux grecs).",
+        "exemple": "J'adore me promener en forêt pour respirer le pétrichor après l'averse.",
+        "synonymes": "odeur de pluie"
+    },
+    {
+        "mot": "pétulant",
+        "définition": "Qui manifeste une ardeur joyeuse, vive et parfois impatiente de vivre.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"petulans\" (effronté, badin, vif).",
+        "exemple": "L'enfant pétulant sautait dans les flaques d'eau avec joie.",
+        "synonymes": "vif, enjoué, dynamique, pétillant"
+    },
+    {
+        "mot": "phosphorescence",
+        "définition": "Phénomène physique où un corps continue de briller doucement dans l'obscurité après exposition à la lumière.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du grec \"phosphoros\" (qui apporte la lumière).",
+        "exemple": "La phosphorescence de la mer tropicale de nuit était féerique.",
+        "synonymes": "luminescence, lueur, éclat"
+    },
+    {
+        "mot": "pittoresque",
+        "définition": "Qui frappe l'esprit ou les yeux par son aspect original, coloré et digne d'être peint.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De l'italien \"pittoresco\" (propre aux peintres).",
+        "exemple": "Les maisons suspendues de ce village médiéval forment un tableau pittoresque.",
+        "synonymes": "original, coloré, charmant, rustique"
+    },
+    {
+        "mot": "placidité",
+        "définition": "Calme doux et imperturbable du tempérament, exempt de colère ou d'agitation.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"placiditas\" (douceur, paix).",
+        "exemple": "Le vieux sage répondait aux insultes des passants avec une placidité royale.",
+        "synonymes": "calme, sérénité, flegme, tranquillité"
+    },
+    {
+        "mot": "plébéien",
+        "définition": "Qui appartient à la plèbe, au peuple (par opposition aux patriciens ou nobles).",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"plebeius\" (du peuple).",
+        "exemple": "Il préférait la table plébéienne des tavernes aux dîners mondains.",
+        "synonymes": "populaire, roturier, vulgaire, commun"
+    },
+    {
+        "mot": "potentat",
+        "définition": "Souverain absolu disposant d'un grand pouvoir autocratique sans limites réelles.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"potentatus\" (puissance, commandement).",
+        "exemple": "Ce potentat local gouvernait sa province d'une main de fer.",
+        "synonymes": "tyran, despote, dictateur, monarque"
+    },
+    {
+        "mot": "précepteur",
+        "définition": "Enseignant particulier chargé d'éduquer et d'instruire un enfant à domicile.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"praeceptor\" (maître, celui qui conseille).",
+        "exemple": "Le précepteur lui faisait lire les philosophes classiques dès l'âge de dix ans.",
+        "synonymes": "tuteur, éducateur, mentor, maître"
+    },
+    {
+        "mot": "précurseur",
+        "définition": "Qui annonce, prépare ou esquisse un mouvement, une idée ou un art futur.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"praecursor\" (celui qui court devant).",
+        "exemple": "Jules Verne fut un précurseur génial de la science-fiction moderne.",
+        "synonymes": "pionnier, initiateur, annonciateur, héraut"
+    },
+    {
+        "mot": "prémices",
+        "définition": "Les tout premiers fruits de la terre offerts aux dieux ; au figuré, premiers signes d'un événement.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"primitiae\" (premiers fruits, prémices).",
+        "exemple": "Le débourrement des bourgeons est l'une des prémices attendues du printemps.",
+        "synonymes": "débuts, prélude, commencements, prémices"
+    },
+    {
+        "mot": "présage",
+        "définition": "Signe augurant de l'avenir ou pressentiment mystérieux.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"praesagium\" (présentiment).",
+        "exemple": "Le passage d'un corbeau noir au-dessus du convoi fut interprété comme un mauvais présage.",
+        "synonymes": "augure, signe, présage, indice"
+    },
+    {
+        "mot": "préséance",
+        "définition": "Droit d'occuper la place la plus honorable lors de cérémonies ou de réunions protocolaires.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"praecedere\" (marcher devant).",
+        "exemple": "La question de la préséance à la table royale provoqua des disputes entre ambassadeurs.",
+        "synonymes": "priorité, prééminence, préséance"
+    },
+    {
+        "mot": "preux",
+        "définition": "Qui fait preuve d'une vaillance et d'une loyauté chevaleresque exemplaires.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du gallo-roman \"prode\" (utile, preux, vaillant).",
+        "exemple": "Le preux chevalier affronta le dragon pour délivrer les captifs.",
+        "synonymes": "vaillant, courageux, brave, chevaleresque"
+    },
+    {
+        "mot": "procrastination",
+        "définition": "Tendance maladive à différer ou à remettre au lendemain des tâches nécessaires.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"procrastinatio\" (remise au lendemain).",
+        "exemple": "La procrastination est le grand fléau des étudiants en période de révisions.",
+        "synonymes": "atermoiement, paresse, retardement"
+    },
+    {
+        "mot": "prodigalité",
+        "définition": "Tendance à dépenser ou à donner avec excès et sans mesure par pur plaisir.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"prodigalitas\" (dilapidation, prodigalité).",
+        "exemple": "Ses prodigalités excessives ont fini par ruiner sa famille en quelques années.",
+        "synonymes": "dilapidation, prodigalité, gaspillage, libéralité"
+    },
+    {
+        "mot": "psalmodier",
+        "définition": "Chanter ou réciter des psaumes ou des textes sacrés sur un ton monotone et rythmé.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"psalmos\" (psaume) et \"oide\" (chant).",
+        "exemple": "Les moines commençaient à psalmodier les matines dans l'ombre de la chapelle.",
+        "synonymes": "chanter, réciter, chantonner, murmurer"
+    },
+    {
+        "mot": "psautier",
+        "définition": "Recueil religieux contenant les psaumes de la Bible, souvent richement enluminé au Moyen Âge.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"psalterion\" (instrument à cordes, psaltérion).",
+        "exemple": "Ce psautier du XIIe siècle présente des lettrines dorées magnifiques.",
+        "synonymes": "bréviaire, missel, livre"
+    },
+    {
+        "mot": "pugnace",
+        "définition": "Qui manifeste un goût pour le combat, l'affrontement intellectuel ou la lutte tenace.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"pugnax\" (combattif, enclin à se battre).",
+        "exemple": "Le journaliste s'est montré particulièrement pugnace lors de l'entretien télévisé.",
+        "synonymes": "combattif, agressif, querelleur, belliqueux"
+    },
+    {
+        "mot": "pusillanime",
+        "définition": "Qui manque d'audace, de courage moral et recule devant les moindres difficultés.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"pusillus\" (tout petit, mesquin) et \"animus\" (esprit, courage).",
+        "exemple": "Son comportement pusillanime l'empêcha de s'opposer à la décision injuste de son chef.",
+        "synonymes": "timoré, lâche, craintif, irrésolu"
+    },
+    {
+        "mot": "pythonisse",
+        "définition": "Devineresse, prophétesse ou femme prétendant prédire l'avenir.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "De la Pythie, prêtresse de l'oracle de Delphes.",
+        "exemple": "Elle consulta une pythonisse de passage pour connaître son destin amoureux.",
+        "synonymes": "devineresse, voyante, oracle, sibylle"
+    },
+    {
+        "mot": "quiétude",
+        "définition": "État de paix profonde, de sérénité et d'absence totale d'inquiétude.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"quietudo\" (tranquillité, repos).",
+        "exemple": "La quiétude de cette clairière sauvage n'était troublée que par le bourdonnement des abeilles.",
+        "synonymes": "sérénité, calme, tranquillité, paix"
+    },
+    {
+        "mot": "quintessence",
+        "définition": "L'essence la plus pure, concentrée et parfaite d'une substance ou d'une idée.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"quinta essentia\" (la cinquième essence des alchimistes, après les quatre éléments).",
+        "exemple": "Cet opéra est la quintessence du romantisme musical de l'époque.",
+        "synonymes": "essence, moelle, cœur, élixir"
+    },
+    {
+        "mot": "ratiociner",
+        "définition": "Se perdre en raisonnements trop subtils, pointilleux et sans portée concrète.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"ratiocinari\" (calculer, raisonner).",
+        "exemple": "Arrête de ratiociner sur des détails et prends une décision.",
+        "synonymes": "chipoter, pinailler, ergoter, couper les cheveux en quatre"
+    },
+    {
+        "mot": "réminiscence",
+        "définition": "Retour vague d'un souvenir à la conscience, sans effort volontaire.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"reminiscentia\" (action de se souvenir).",
+        "exemple": "L'odeur des lilas provoqua chez elle une réminiscence de ses étés d'enfance.",
+        "synonymes": "souvenir, évocation, trace, mémoire"
+    },
+    {
+        "mot": "renégat",
+        "définition": "Personne qui a renié sa religion, ses croyances ou sa patrie pour rejoindre le camp adverse.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin médiéval \"renegatus\" (celui qui a renié sa foi).",
+        "exemple": "Il fut considéré comme un renégat par ses anciens compagnons d'armes.",
+        "synonymes": "apostat, traître, parjure, transfuge"
+    },
+    {
+        "mot": "résilience",
+        "définition": "Capacité psychologique à surmonter les traumatismes de la vie et à se reconstruire sainement.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"resilire\" (rebondir, reculer).",
+        "exemple": "La résilience des survivants de la catastrophe forçait l'admiration.",
+        "synonymes": "ténacité, force d'âme, résistance"
+    },
+    {
+        "mot": "rhapsodie",
+        "définition": "Composition musicale ou littéraire d'inspiration libre et populaire.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"rhapsodia\" (chant épique cousu ensemble).",
+        "exemple": "La rhapsodie hongroise de Liszt déchaîna les applaudissements du public.",
+        "synonymes": "complainte, mélodie, fantaisie"
+    },
+    {
+        "mot": "sardonique",
+        "définition": "Se dit d'un rire ou d'un regard moqueur, grinçant, amer et teinté de mépris.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du grec \"sardanios\" (rire convulsif causé par l'absorption d'une herbe de Sardaigne).",
+        "exemple": "Un sourire sardonique passa sur ses lèvres lorsqu'il vit son rival échouer.",
+        "synonymes": "sarcastique, cynique, ricanant, acerbe"
+    },
+    {
+        "mot": "sérendipité",
+        "définition": "Fait de faire une découverte scientifique ou intellectuelle par hasard et sagacité.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Forger par Horace Walpole d'après le conte persan \"Les Trois Princes de Serendip\".",
+        "exemple": "La découverte fortuite de la pénicilline est un cas classique de sérendipité.",
+        "synonymes": "hasard heureux, découverte accidentelle"
+    },
+    {
+        "mot": "sérénité",
+        "définition": "État de calme parfait, de paix morale inaltérable et de clarté d'esprit.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"serenitas\" (clarté du ciel).",
+        "exemple": "Elle abordait la vieillesse avec une sérénité rassurante.",
+        "synonymes": "calme, paix, quiétude, placidité"
+    },
+    {
+        "mot": "sibyllin",
+        "définition": "Dont le sens est obscur, mystérieux ou présente un double sens caché.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "De la Sibylle, prêtresse de l'Antiquité rendant des oracles énigmatiques.",
+        "exemple": "Ses propos sibyllins laissèrent la foule dans une profonde perplexité.",
+        "synonymes": "énigmatique, mystérieux, hermétique, obscur"
+    },
+    {
+        "mot": "sidéral",
+        "définition": "Qui concerne les étoiles, les constellations ou l'espace cosmique infini.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"sideralis\" (relatif aux astres).",
+        "exemple": "La nuit noire révélait un spectacle sidéral d'une beauté vertigineuse.",
+        "synonymes": "cosmique, astral, céleste"
+    },
+    {
+        "mot": "simagrée",
+        "définition": "Manière ou geste affecté et théâtral destiné à attirer l'attention ou la pitié.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Origine incertaine, peut-être de \"singe\" et \"grimace\".",
+        "exemple": "Trêve de simagrées, dis-moi ce que tu veux vraiment.",
+        "synonymes": "grimace, affectation, chichi, comédie"
+    },
+    {
+        "mot": "soliloque",
+        "définition": "Monologue intérieur ou discours qu'une personne se tient à haute voix à elle-même.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"solus\" (seul) et \"loqui\" (parler).",
+        "exemple": "Il se perdait souvent dans de longs soliloques en arpentant sa bibliothèque.",
+        "synonymes": "monologue, confidence, aparté"
+    },
+    {
+        "mot": "solipsisme",
+        "définition": "Doctrine philosophique affirmant que le moi individuel est la seule réalité existante certaine.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"solus\" (seul) et \"ipse\" (soi-même).",
+        "exemple": "Pousser le doute méthodique jusqu'au bout peut mener au solipsisme.",
+        "synonymes": "égocentrisme radical"
+    },
+    {
+        "mot": "solstice",
+        "définition": "Époque de l'année où le soleil atteint son éloignement maximal de l'équateur (jours les plus longs/courts).",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"solstitium\" (arrêt du soleil).",
+        "exemple": "Le solstice d'été donne lieu à de joyeux feux de joie dans nos campagnes.",
+        "synonymes": "époque astronomique"
+    },
+    {
+        "mot": "somnambule",
+        "définition": "Personne qui effectue de façon automatique des déplacements durant son sommeil profond.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"somnus\" (sommeil) et \"ambulare\" (marcher).",
+        "exemple": "L'enfant somnambule s'était levé au milieu de la nuit pour ranger ses jouets.",
+        "synonymes": "noctambule, rêveur"
+    },
+    {
+        "mot": "soporifique",
+        "définition": "Qui provoque le sommeil ou se révèle d'un ennui mortel (ex: un cours soporifique).",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"sopor\" (sommeil profond) et \"facere\" (faire).",
+        "exemple": "Sa voix monocorde exerçait un effet soporifique sur tout l'auditoire.",
+        "synonymes": "somnifère, ennuyeux, assommant"
+    },
+    {
+        "mot": "spleen",
+        "définition": "Mélancolie sans cause définie, ennui profond et dégoût de la vie.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "De l'anglais \"spleen\" (rate, siège supposé de la mélancolie).",
+        "exemple": "Le spleen de Baudelaire exprime la blessure de l'âme face au monde réel.",
+        "synonymes": "mélancolie, ennui, cafard, vague à l'âme"
+    },
+    {
+        "mot": "stigmate",
+        "définition": "Marque indélébile laissée par une blessure, un événement tragique ou une flétrissure morale.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"stigma\" (marque au fer rouge, piqûre).",
+        "exemple": "La ville conserve encore les stigmates des bombardements de la guerre.",
+        "synonymes": "marque, cicatrice, trace, flétrissure"
+    },
+    {
+        "mot": "stoïque",
+        "définition": "Qui fait preuve d'une fermeté d'âme inébranlable et d'impassibilité face à la douleur.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"stoa\" (le portique sous lequel enseignait Zénon à Athènes).",
+        "exemple": "Il est resté stoïque malgré les épreuves successives.",
+        "synonymes": "impassible, ferme, courageux, flegmatique"
+    },
+    {
+        "mot": "stupeur",
+        "définition": "Étonnement si soudain et profond qu'il fige et paralyse momentanément les facultés.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"stupor\" (engourdissement).",
+        "exemple": "Une stupeur générale s'empara de l'assemblée lors de cette annonce surprise.",
+        "synonymes": "stupéfaction, saisissement, étonnement, sidération"
+    },
+    {
+        "mot": "substantifique",
+        "définition": "Qui contient l'essence nourricière et substantielle d'une idée ou d'une œuvre (ex: la substantifique moelle).",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Forgé par Rabelais d'après le latin \"substantia\".",
+        "exemple": "Le lecteur attentif saura extraire la substantifique moelle de ce roman philosophique.",
+        "synonymes": "essentiel, substantiel, nourricier"
+    },
+    {
+        "mot": "suzerain",
+        "définition": "Seigneur féodal du Moyen Âge qui accordait un fief à un vassal en échange de sa fidélité.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du vieux français \"sus\" (en haut) influencé par souverain.",
+        "exemple": "Le vassal jura fidélité à son suzerain au cours d'une cérémonie solennelle.",
+        "synonymes": "seigneur, maître, souverain"
+    },
+    {
+        "mot": "sycophante",
+        "définition": "Personne hypocrite qui agit par délation calomnieuse et sournoise.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du grec \"sukophantes\" (celui qui dénonce les voleurs de figues à Athènes).",
+        "exemple": "Méfie-toi de ce sycophante qui murmure des calomnies à l'oreille du patron.",
+        "synonymes": "délateur, dénonciateur, traître, calomniateur"
+    },
+    {
+        "mot": "synesthésie",
+        "définition": "Phénomène neurologique ou poétique associant plusieurs perceptions de sens différents (ex: un son coloré).",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"sun\" (avec) et \"aisthesis\" (sensation).",
+        "exemple": "Baudelaire utilise la synesthésie dans son poème \"Correspondances\" : les parfums ont des couleurs.",
+        "synonymes": "association sensorielle"
+    },
+    {
+        "mot": "taciturne",
+        "définition": "Qui aime par nature garder le silence ; d'un tempérament secret et secret.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"taciturnus\" (silencieux).",
+        "exemple": "Depuis le départ de son ami, le jeune homme était devenu taciturne.",
+        "synonymes": "silencieux, réservé, sombre, renfermé"
+    },
+    {
+        "mot": "talisman",
+        "définition": "Objet portant des signes magiques gravés et doté de vertus protectrices sacrées.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du grec \"telesma\" (rite d'initiation, consécration).",
+        "exemple": "Il portait toujours ce vieux médaillon d'argent comme un talisman.",
+        "synonymes": "amulette, fétiche, porte-bonheur"
+    },
+    {
+        "mot": "téléologique",
+        "définition": "Se dit d'une doctrine ou d'une pensée expliquant les phénomènes par l'existence d'une cause finale ou d'un but.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"telos\" (fin, but) et \"logos\" (discours).",
+        "exemple": "L'évolutionnisme contient parfois une vision téléologique sous-jacente.",
+        "synonymes": "finaliste"
+    },
+    {
+        "mot": "ténébreux",
+        "définition": "Plongé dans l'obscurité ; au figuré, mystérieux, mélancolique et secret.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"tenebrosus\" (sombre, obscur).",
+        "exemple": "Il avait l'allure d'un héros romantique, sombre et ténébreux.",
+        "synonymes": "sombre, obscur, mystérieux, occulte"
+    },
+    {
+        "mot": "thaumaturge",
+        "définition": "Qui accomplit des miracles ou des guérisons merveilleuses.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du grec \"thauma\" (miracle, merveille) et \"ergon\" (travail, action).",
+        "exemple": "Les rois de France étaient réputés thaumaturges le jour de leur sacre.",
+        "synonymes": "miraculeux, magicien, guérisseur"
+    },
+    {
+        "mot": "thuriféraire",
+        "définition": "Clergé chargé de porter l'encensoir ; au figuré, flatteur outrancier et servile.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"thuris\" (encens) et \"ferre\" (porter).",
+        "exemple": "Les thuriféraires du président louaient la moindre de ses décisions.",
+        "synonymes": "flatteur, adulateur, courtisan, encenseur"
+    },
+    {
+        "mot": "tintamarre",
+        "définition": "Grand bruit discordant, désordonné et fatiguant.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "De la onomatopée \"tinter\" (bruit de cloche) et \"marre\" (bruit confus).",
+        "exemple": "Le tintamarre de la fête foraine résonnait jusque dans nos chambres.",
+        "synonymes": "vacarme, fracas, bruit, brouhaha"
+    },
+    {
+        "mot": "torpeur",
+        "définition": "Ralentissement léthargique de l'activité physique ou intellectuelle avec engourdissement.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"torpor\" (engourdissement).",
+        "exemple": "Une lourde torpeur s'empara des convives après ce repas copieux.",
+        "synonymes": "léthargie, engourdissement, apathie, somnolence"
+    },
+    {
+        "mot": "transcendance",
+        "définition": "Qualité de ce qui s'élève au-dessus et au-delà du monde sensible et de l'expérience commune.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Philosophie & Idées",
+        "etymologie": "Du latin \"transcendere\" (franchir, dépasser).",
+        "exemple": "La transcendance de l'esprit par rapport à la matière est le cœur de sa philosophie.",
+        "synonymes": "supériorité, élévation, divinité"
+    },
+    {
+        "mot": "transitoire",
+        "définition": "Qui ne sert que de transition, temporaire et passager.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"transitorius\" (propre au passage).",
+        "exemple": "Il s'agit d'une mesure transitoire avant l'application de la nouvelle loi.",
+        "synonymes": "temporaire, provisoire, passager, éphémère"
+    },
+    {
+        "mot": "trépas",
+        "définition": "Le passage solennel de la vie à la mort ; décès.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Temps & Éphémère",
+        "etymologie": "De \"trépasser\" (passer au-delà).",
+        "exemple": "La nouvelle de son trépas fut accueillie avec une immense tristesse.",
+        "synonymes": "mort, décès, fin, disparition"
+    },
+    {
+        "mot": "trépidation",
+        "définition": "Secousses rapides et continuelles ; agitation fébrile de la vie moderne.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"trepidatio\" (agitation désordonnée).",
+        "exemple": "Les trépidations de la rame de métro l'empêchaient de lire tranquillement.",
+        "synonymes": "agitation, vibration, frémissement"
+    },
+    {
+        "mot": "troubadour",
+        "définition": "Poète et musicien médiéval de langue d'oc chantant l'amour courtois.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "De l'ancien occitan \"trobador\" (celui qui trouve des mélodies, compositeur).",
+        "exemple": "Le troubadour chanta une aubade sous le balcon de sa dame.",
+        "synonymes": "ménestrel, poète, trouvère"
+    },
+    {
+        "mot": "tumulte",
+        "définition": "Agitation bruyante, désordonnée et confuse d'une foule en révolte ou en fête.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "Du latin \"tumultus\" (bruit tumultueux, désordre).",
+        "exemple": "Il préférait la solitude de sa cellule au tumulte du monde extérieur.",
+        "synonymes": "agitation, tintamarre, fracas, tempête"
+    },
+    {
+        "mot": "turpitude",
+        "définition": "Action ou parole particulièrement basse, ignoble et honteuse.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"turpitudo\" (laideur, honte).",
+        "exemple": "Il s'efforçait de cacher ses turpitudes derrière un masque respectueux.",
+        "synonymes": "bassesse, infamie, ignominie, vice"
+    },
+    {
+        "mot": "urbanité",
+        "définition": "Politesse raffinée, courtoise et teintée de respect social.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"urbanitas\" (manières polies des citadins de Rome, opposées à la rusticité).",
+        "exemple": "Il reçut ses invités avec une urbanité exquise qui charma tout le monde.",
+        "synonymes": "courtoisie, politesse, civilité, affabilité"
+    },
+    {
+        "mot": "valétudinaire",
+        "définition": "Se dit d'une personne dont la santé est fragile, chancelante et sujette aux maladies.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"valetudinarius\" (malade, infirme).",
+        "exemple": "Ce vieil homme valétudinaire ne sortait plus guère de sa chambre.",
+        "synonymes": "maladif, égrotant, souffreteux, fragile"
+    },
+    {
+        "mot": "vate",
+        "définition": "Poète inspiré par les dieux, prophète chez les Celtes.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"vates\" (devin, poète sacré).",
+        "exemple": "Le vate chanta le combat des tribus sous la lune d'argent.",
+        "synonymes": "poète, barde, devin"
+    },
+    {
+        "mot": "vélin",
+        "définition": "Peau de veau mort-né, extrêmement fine et lisse, servant à calligraphier des manuscrits précieux.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Art & Langage",
+        "etymologie": "Ancien français \"velin\" (de veau).",
+        "exemple": "Ce missel de luxe était entièrement écrit sur du vélin pur.",
+        "synonymes": "parchemin, peau"
+    },
+    {
+        "mot": "velléité",
+        "définition": "Intention ou désir timide qui ne se traduit par aucune action concrète.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"velle\" (vouloir).",
+        "exemple": "Il n'avait que des velléités d'écriture, sans jamais terminer un chapitre.",
+        "synonymes": "intention, caprice, désir timide"
+    },
+    {
+        "mot": "vergogne",
+        "définition": "Honte ou scrupule moral (principalement employé de nos jours dans \"sans vergogne\").",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"verecundia\" (pudeur, respect).",
+        "exemple": "Ce profiteur réclamait de l'argent sans vergogne à ses proches.",
+        "synonymes": "honte, pudeur, scrupule"
+    },
+    {
+        "mot": "vespéral",
+        "définition": "Qui concerne ou se produit durant le soir ; crépusculaire.",
+        "complexite": "Expert",
+        "pertinence": 5,
+        "theme": "Lumière & Ombres",
+        "etymologie": "Du latin \"vesper\" (le soir).",
+        "exemple": "Les oiseaux chantaient leur prière vespérale sous la fraîcheur naissante.",
+        "synonymes": "crépusculaire, nocturne"
+    },
+    {
+        "mot": "viateur",
+        "définition": "Voyageur sur la terre ; au figuré, symbole spirituel de l'homme en marche vers sa destinée.",
+        "complexite": "Expert",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"viator\" (voyageur).",
+        "exemple": "L'homme n'est qu'un humble viateur dans ce monde passager.",
+        "synonymes": "voyageur, pèlerin, errant"
+    },
+    {
+        "mot": "vicissitude",
+        "définition": "Changements successifs et imprévisibles de la vie, souvent malheureux.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Temps & Éphémère",
+        "etymologie": "Du latin \"vicissitudo\" (alternance, changement).",
+        "exemple": "Malgré les vicissitudes de l'existence, elle conserva son beau sourire.",
+        "synonymes": "aléa, vicissitude, changement, épreuve"
+    },
+    {
+        "mot": "vilipender",
+        "définition": "Dénoncer publiquement quelqu'un avec mépris et le traîner dans la boue.",
+        "complexite": "Intermédiaire",
+        "pertinence": 4,
+        "theme": "Esprit & Caractère",
+        "etymologie": "Du latin \"vilipendere\" (estimer à vil prix).",
+        "exemple": "Il fut vilipendé par ses détracteurs après son échec électoral.",
+        "synonymes": "mépriser, dénigrer, bafouer, accuser"
+    },
+    {
+        "mot": "villégiature",
+        "définition": "Séjour de repos et de détente passé à la campagne, à la mer ou à la montagne.",
+        "complexite": "Intermédiaire",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De l'italien \"villeggiatura\" (séjour à la villa de campagne).",
+        "exemple": "Ils passaient leurs mois de villégiature dans un chalet des Alpes.",
+        "synonymes": "vacances, séjour, repos"
+    },
+    {
+        "mot": "volubile",
+        "définition": "Qui parle avec une rapidité et une abondance de paroles ininterrompue.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Art & Langage",
+        "etymologie": "Du latin \"volubilis\" (qui tourne facilement).",
+        "exemple": "Elle raconta son voyage d'une voix enjouée et volubile.",
+        "synonymes": "loquace, bavard, prolixe"
+    },
+    {
+        "mot": "volupté",
+        "définition": "Plaisir intense et raffiné des sens ou de l'esprit.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Sentiments & Psyché",
+        "etymologie": "Du latin \"voluptas\" (plaisir).",
+        "exemple": "Écouter Chopin sous la pluie procure une volupté singulière.",
+        "synonymes": "plaisir, volupté, délice, sensualité"
+    },
+    {
+        "mot": "zéphyr",
+        "définition": "Brise douce, agréable et printanière.",
+        "complexite": "Débutant",
+        "pertinence": 5,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De Zéphyr, divinité grecque personnifiant le vent d'ouest printanier.",
+        "exemple": "Un zéphyr caressait les fleurs blanches du pommier.",
+        "synonymes": "brise, vent doux, souffle"
+    },
+    {
+        "mot": "zénith",
+        "définition": "Le point de la sphère céleste situé directement au-dessus de l'observateur ; au figuré, apogée de la réussite.",
+        "complexite": "Débutant",
+        "pertinence": 4,
+        "theme": "Nature & Cosmos",
+        "etymologie": "De l'arabe \"samt\" (chemin au-dessus de la tête).",
+        "exemple": "Le soleil brillait à son zénith dans un ciel pur.",
+        "synonymes": "apogée, sommet, faîte"
+    }
+]
+
+def main():
+    print(f"Compiling {len(WORDS_DB)} premium words...")
+    
+    # Write to JSON
+    with open(OUTPUT_JSON, "w", encoding="utf-8") as f:
+        json.dump(WORDS_DB, f, ensure_ascii=False, indent=2)
+    print(f"JSON database generated: {OUTPUT_JSON}")
+    
+    # Sort for CSV:
+    # 1. pertinence descending (best first)
+    # 2. complexite (Débutant -> Intermédiaire -> Expert)
+    # 3. theme alphabetical
+    # 4. mot alphabetical
+    def sort_key(row):
+        # Pertinence descending
+        pert = -row["pertinence"]
+        
+        # Difficulty rank
+        diff = row["complexite"]
+        if diff == "Débutant":
+            diff_rank = 1
+        elif diff == "Intermédiaire":
+            diff_rank = 2
+        else:
+            diff_rank = 3
+            
+        return (pert, diff_rank, row["theme"], row["mot"])
+        
+    sorted_words = sorted(WORDS_DB, key=sort_key)
+    
+    # Write to CSV
+    fieldnames = ["mot", "pertinence", "complexite", "theme", "définition", "etymologie", "exemple", "synonymes"]
+    with open(OUTPUT_CSV, "w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=";")
+        writer.writeheader()
+        writer.writerows(sorted_words)
+    print(f"CSV spreadsheet generated: {OUTPUT_CSV}")
+    
+    # Print stats
+    counts = {"Débutant": 0, "Intermédiaire": 0, "Expert": 0}
+    theme_counts = {}
+    for r in WORDS_DB:
+        counts[r["complexite"]] += 1
+        theme_counts[r["theme"]] = theme_counts.get(r["theme"], 0) + 1
+        
+    print("\n" + "="*40)
+    print("STATISTIQUES DE LA COLLECTION PREMIUM :")
+    print("="*40)
+    print(f"Débutant      : {counts['Débutant']} mots")
+    print(f"Intermédiaire : {counts['Intermédiaire']} mots")
+    print(f"Expert        : {counts['Expert']} mots")
+    print(f"Total         : {len(WORDS_DB)} mots précieusement sélectionnés")
+    print("-"*40)
+    print("Répartition par Thème :")
+    for theme, count in sorted(theme_counts.items()):
+        print(f" - {theme:<22} : {count} mots")
+    print("="*40)
+
+if __name__ == "__main__":
+    main()

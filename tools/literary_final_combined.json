@@ -1,0 +1,1282 @@
+{
+  "metadata": {
+    "date": "2026-06-10 21:30",
+    "model": "OrdalieTech/solon-embeddings-large-0.1",
+    "literary_centroid_sim_mean": 0.6174,
+    "threshold_semantic_reject": 0.5451,
+    "threshold_semantic_good": 0.5922,
+    "threshold_combined_reject": 0.5529,
+    "threshold_combined_good": 0.6248
+  },
+  "semantic_intruders": [
+    {
+      "mot": "spleen",
+      "sim_cosinus": 0.487,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "séquestration",
+      "sim_cosinus": 0.4982,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "opalin",
+      "sim_cosinus": 0.5099,
+      "theme": "Lumière & Ombres"
+    },
+    {
+      "mot": "torpeur",
+      "sim_cosinus": 0.5132,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "abscons",
+      "sim_cosinus": 0.517,
+      "theme": "Philosophie & Idées"
+    },
+    {
+      "mot": "mentor",
+      "sim_cosinus": 0.5222,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "volubilité",
+      "sim_cosinus": 0.524,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "azur",
+      "sim_cosinus": 0.5253,
+      "theme": "Nature & Cosmos"
+    },
+    {
+      "mot": "larron",
+      "sim_cosinus": 0.5277,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "cors",
+      "sim_cosinus": 0.5311,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "collusion",
+      "sim_cosinus": 0.5316,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "précepteur",
+      "sim_cosinus": 0.5337,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "éolien",
+      "sim_cosinus": 0.5349,
+      "theme": "Nature & Cosmos"
+    },
+    {
+      "mot": "phosphorescence",
+      "sim_cosinus": 0.5351,
+      "theme": "Lumière & Ombres"
+    },
+    {
+      "mot": "quiproquo",
+      "sim_cosinus": 0.5356,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "obsolescence",
+      "sim_cosinus": 0.5357,
+      "theme": "Temps & Éphémère"
+    },
+    {
+      "mot": "circonspect",
+      "sim_cosinus": 0.538,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "antédiluvien",
+      "sim_cosinus": 0.5383,
+      "theme": "Temps & Éphémère"
+    },
+    {
+      "mot": "coruscant",
+      "sim_cosinus": 0.5413,
+      "theme": "Lumière & Ombres"
+    },
+    {
+      "mot": "paria",
+      "sim_cosinus": 0.5432,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "élixir",
+      "sim_cosinus": 0.5451,
+      "theme": "Art & Langage"
+    }
+  ],
+  "combined_intruders": [
+    {
+      "mot": "cors",
+      "score_final": 0.4055,
+      "score_semantique": 0.5311,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "jadis",
+      "score_final": 0.4152,
+      "score_semantique": 0.5604,
+      "theme": "Temps & Éphémère"
+    },
+    {
+      "mot": "varicose",
+      "score_final": 0.4194,
+      "score_semantique": 0.5588,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "vate",
+      "score_final": 0.4208,
+      "score_semantique": 0.5615,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "somatisation",
+      "score_final": 0.424,
+      "score_semantique": 0.568,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "pétrichor",
+      "score_final": 0.4311,
+      "score_semantique": 0.5823,
+      "theme": "Nature & Cosmos"
+    },
+    {
+      "mot": "liminaire",
+      "score_final": 0.4339,
+      "score_semantique": 0.5878,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "brume",
+      "score_final": 0.4352,
+      "score_semantique": 0.5903,
+      "theme": "Nature & Cosmos"
+    },
+    {
+      "mot": "solitaire",
+      "score_final": 0.4358,
+      "score_semantique": 0.5916,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "sérendipité",
+      "score_final": 0.4359,
+      "score_semantique": 0.5917,
+      "theme": "Philosophie & Idées"
+    },
+    {
+      "mot": "résilience",
+      "score_final": 0.4383,
+      "score_semantique": 0.5966,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "viateur",
+      "score_final": 0.4392,
+      "score_semantique": 0.5984,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "scholastique",
+      "score_final": 0.441,
+      "score_semantique": 0.6021,
+      "theme": "Philosophie & Idées"
+    },
+    {
+      "mot": "parapathique",
+      "score_final": 0.4413,
+      "score_semantique": 0.6026,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "chagrin",
+      "score_final": 0.4415,
+      "score_semantique": 0.603,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "némésis",
+      "score_final": 0.4424,
+      "score_semantique": 0.6047,
+      "theme": "Philosophie & Idées"
+    },
+    {
+      "mot": "procrastination",
+      "score_final": 0.4425,
+      "score_semantique": 0.6049,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "noévie",
+      "score_final": 0.4449,
+      "score_semantique": 0.6097,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "téléologique",
+      "score_final": 0.446,
+      "score_semantique": 0.612,
+      "theme": "Philosophie & Idées"
+    },
+    {
+      "mot": "purpurine",
+      "score_final": 0.4472,
+      "score_semantique": 0.6144,
+      "theme": "Lumière & Ombres"
+    },
+    {
+      "mot": "crépuscule",
+      "score_final": 0.4479,
+      "score_semantique": 0.6159,
+      "theme": "Lumière & Ombres"
+    },
+    {
+      "mot": "mignonne",
+      "score_final": 0.448,
+      "score_semantique": 0.616,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "allitération",
+      "score_final": 0.4497,
+      "score_semantique": 0.6193,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "rhapsode",
+      "score_final": 0.4511,
+      "score_semantique": 0.6222,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "cénesthésie",
+      "score_final": 0.4581,
+      "score_semantique": 0.6362,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "paresthésie",
+      "score_final": 0.4582,
+      "score_semantique": 0.6364,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "gnomique",
+      "score_final": 0.4589,
+      "score_semantique": 0.6378,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "heuristique",
+      "score_final": 0.4615,
+      "score_semantique": 0.643,
+      "theme": "Philosophie & Idées"
+    },
+    {
+      "mot": "mélancolie",
+      "score_final": 0.4636,
+      "score_semantique": 0.6472,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "loquacité",
+      "score_final": 0.4664,
+      "score_semantique": 0.6527,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "érémitique",
+      "score_final": 0.4674,
+      "score_semantique": 0.6548,
+      "theme": "Esprit & Caractère"
+    },
+    {
+      "mot": "stupeur",
+      "score_final": 0.4687,
+      "score_semantique": 0.6574,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "garrulité",
+      "score_final": 0.47,
+      "score_semantique": 0.6601,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "aphoristique",
+      "score_final": 0.4707,
+      "score_semantique": 0.6615,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "sépale",
+      "score_final": 0.4716,
+      "score_semantique": 0.6633,
+      "theme": "Nature & Cosmos"
+    },
+    {
+      "mot": "pénombre",
+      "score_final": 0.4763,
+      "score_semantique": 0.6727,
+      "theme": "Lumière & Ombres"
+    },
+    {
+      "mot": "satyrique",
+      "score_final": 0.4791,
+      "score_semantique": 0.6781,
+      "theme": "Art & Langage"
+    },
+    {
+      "mot": "fielueux",
+      "score_final": 0.4855,
+      "score_semantique": 0.6909,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "torpeur",
+      "score_final": 0.5016,
+      "score_semantique": 0.5132,
+      "theme": "Sentiments & Psyché"
+    },
+    {
+      "mot": "extase",
+      "score_final": 0.5449,
+      "score_semantique": 0.5999,
+      "theme": "Sentiments & Psyché"
+    }
+  ],
+  "new_excellent_candidates": [
+    {
+      "mot": "acrimonieux",
+      "score_final": 0.8479,
+      "score_semantique": 0.6958,
+      "zipf": 1.845,
+      "ratio": 7.0,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "désobligeance",
+      "score_final": 0.8207,
+      "score_semantique": 0.6413,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "courtisan",
+      "score_final": 0.8196,
+      "score_semantique": 0.6393,
+      "zipf": 3.32,
+      "ratio": 3.167,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "extatique",
+      "score_final": 0.8147,
+      "score_semantique": 0.6295,
+      "zipf": 3.004,
+      "ratio": 4.591,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Philosophie & Idées"
+    },
+    {
+      "mot": "assomption",
+      "score_final": 0.8128,
+      "score_semantique": 0.6255,
+      "zipf": 2.613,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "glèbe",
+      "score_final": 0.8124,
+      "score_semantique": 0.6849,
+      "zipf": 2.944,
+      "ratio": 1.725,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "entéléchie",
+      "score_final": 0.8123,
+      "score_semantique": 0.6846,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Philosophie & Idées"
+    },
+    {
+      "mot": "adulateur",
+      "score_final": 0.8112,
+      "score_semantique": 0.6225,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu",
+        "poétique"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "admonition",
+      "score_final": 0.811,
+      "score_semantique": 0.6219,
+      "zipf": 2.146,
+      "ratio": 14.0,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "froidure",
+      "score_final": 0.8106,
+      "score_semantique": 0.6212,
+      "zipf": 3.19,
+      "ratio": 14.091,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "commodité",
+      "score_final": 0.8092,
+      "score_semantique": 0.6184,
+      "zipf": 3.276,
+      "ratio": 7.269,
+      "cats": [
+        "soutenu",
+        "archaïque"
+      ],
+      "theme_similar": "Temps & Éphémère"
+    },
+    {
+      "mot": "feintise",
+      "score_final": 0.8088,
+      "score_semantique": 0.6775,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "déparer",
+      "score_final": 0.8085,
+      "score_semantique": 0.617,
+      "zipf": 2.672,
+      "ratio": 4.273,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "captif",
+      "score_final": 0.8065,
+      "score_semantique": 0.6131,
+      "zipf": 3.334,
+      "ratio": 3.429,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "cacochyme",
+      "score_final": 0.8053,
+      "score_semantique": 0.6107,
+      "zipf": 2.672,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "désobligeant",
+      "score_final": 0.7993,
+      "score_semantique": 0.5985,
+      "zipf": 3.004,
+      "ratio": 11.222,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "douteur",
+      "score_final": 0.7991,
+      "score_semantique": 0.6582,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "exultation",
+      "score_final": 0.7921,
+      "score_semantique": 0.6441,
+      "zipf": 2.833,
+      "ratio": 13.6,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "enrhumé",
+      "score_final": 0.7895,
+      "score_semantique": 0.6389,
+      "zipf": 2.908,
+      "ratio": 3.857,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "foucade",
+      "score_final": 0.7893,
+      "score_semantique": 0.6386,
+      "zipf": 2.531,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Lumière & Ombres"
+    },
+    {
+      "mot": "déconcerter",
+      "score_final": 0.7889,
+      "score_semantique": 0.6379,
+      "zipf": 3.152,
+      "ratio": 7.474,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "contempteur",
+      "score_final": 0.7879,
+      "score_semantique": 0.6358,
+      "zipf": 2.431,
+      "ratio": 27.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "fantasquement",
+      "score_final": 0.7877,
+      "score_semantique": 0.6354,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "cascadeur",
+      "score_final": 0.7853,
+      "score_semantique": 0.6307,
+      "zipf": 2.146,
+      "ratio": 0.074,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "bellement",
+      "score_final": 0.7848,
+      "score_semantique": 0.6295,
+      "zipf": 2.732,
+      "ratio": 3.857,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "faunesque",
+      "score_final": 0.7841,
+      "score_semantique": 0.6281,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Lumière & Ombres"
+    },
+    {
+      "mot": "dubitation",
+      "score_final": 0.784,
+      "score_semantique": 0.628,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "artificieux",
+      "score_final": 0.7833,
+      "score_semantique": 0.6267,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "accort",
+      "score_final": 0.7832,
+      "score_semantique": 0.6264,
+      "zipf": 2.431,
+      "ratio": 13.5,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "crépusculaire",
+      "score_final": 0.7825,
+      "score_semantique": 0.6249,
+      "zipf": 3.276,
+      "ratio": 50.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Lumière & Ombres"
+    },
+    {
+      "mot": "aimeur",
+      "score_final": 0.7803,
+      "score_semantique": 0.6206,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "chevaucheur",
+      "score_final": 0.78,
+      "score_semantique": 0.62,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "astreinte",
+      "score_final": 0.7799,
+      "score_semantique": 0.6197,
+      "zipf": 1.845,
+      "ratio": 3.5,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "chaumine",
+      "score_final": 0.7798,
+      "score_semantique": 0.6195,
+      "zipf": 2.613,
+      "ratio": 3.727,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "coutumier",
+      "score_final": 0.7788,
+      "score_semantique": 0.6176,
+      "zipf": 3.41,
+      "ratio": 12.85,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "difficultueux",
+      "score_final": 0.7777,
+      "score_semantique": 0.6154,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "bouvier",
+      "score_final": 0.7774,
+      "score_semantique": 0.6149,
+      "zipf": 2.833,
+      "ratio": 5.667,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "barde",
+      "score_final": 0.777,
+      "score_semantique": 0.6139,
+      "zipf": 2.613,
+      "ratio": 2.278,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "coquebin",
+      "score_final": 0.7764,
+      "score_semantique": 0.6129,
+      "zipf": 2.531,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "cétacé",
+      "score_final": 0.776,
+      "score_semantique": 0.6121,
+      "zipf": 2.146,
+      "ratio": 4.667,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "arène",
+      "score_final": 0.7751,
+      "score_semantique": 0.6552,
+      "zipf": 3.615,
+      "ratio": 1.831,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "boiteux",
+      "score_final": 0.7751,
+      "score_semantique": 0.6502,
+      "zipf": 3.348,
+      "ratio": 1.104,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "balsamique",
+      "score_final": 0.7746,
+      "score_semantique": 0.6091,
+      "zipf": 2.613,
+      "ratio": 4.1,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "esseuler",
+      "score_final": 0.774,
+      "score_semantique": 0.608,
+      "zipf": 2.146,
+      "ratio": 0.824,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "fourrier",
+      "score_final": 0.772,
+      "score_semantique": 0.6041,
+      "zipf": 3.228,
+      "ratio": 50.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "bergerie",
+      "score_final": 0.7714,
+      "score_semantique": 0.6028,
+      "zipf": 3.453,
+      "ratio": 2.869,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "fleuronner",
+      "score_final": 0.7678,
+      "score_semantique": 0.5956,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "atlante",
+      "score_final": 0.7673,
+      "score_semantique": 0.5946,
+      "zipf": 2.431,
+      "ratio": 5.4,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "artifice",
+      "score_final": 0.7666,
+      "score_semantique": 0.6383,
+      "zipf": 3.93,
+      "ratio": 1.582,
+      "cats": [
+        "soutenu"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "frileux",
+      "score_final": 0.7625,
+      "score_semantique": 0.69,
+      "zipf": 3.562,
+      "ratio": 4.932,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "courtil",
+      "score_final": 0.761,
+      "score_semantique": 0.622,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "faucille",
+      "score_final": 0.7598,
+      "score_semantique": 0.6195,
+      "zipf": 3.348,
+      "ratio": 4.373,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "fondement",
+      "score_final": 0.759,
+      "score_semantique": 0.618,
+      "zipf": 3.386,
+      "ratio": 1.381,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "blâme",
+      "score_final": 0.7586,
+      "score_semantique": 0.6821,
+      "zipf": 3.607,
+      "ratio": 2.189,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "chalumeau",
+      "score_final": 0.7574,
+      "score_semantique": 0.6148,
+      "zipf": 3.373,
+      "ratio": 1.484,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Lumière & Ombres"
+    },
+    {
+      "mot": "cavale",
+      "score_final": 0.757,
+      "score_semantique": 0.619,
+      "zipf": 3.629,
+      "ratio": 1.101,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "faunesse",
+      "score_final": 0.7563,
+      "score_semantique": 0.6126,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "encor",
+      "score_final": 0.7527,
+      "score_semantique": 0.6054,
+      "zipf": 2.431,
+      "ratio": 0.643,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "colombe",
+      "score_final": 0.7526,
+      "score_semantique": 0.6101,
+      "zipf": 3.545,
+      "ratio": 0.691,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "aquilon",
+      "score_final": 0.7518,
+      "score_semantique": 0.6035,
+      "zipf": 2.672,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "brisure",
+      "score_final": 0.7508,
+      "score_semantique": 0.6016,
+      "zipf": 2.869,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "fronde",
+      "score_final": 0.7497,
+      "score_semantique": 0.5993,
+      "zipf": 3.228,
+      "ratio": 1.965,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "commère",
+      "score_final": 0.7491,
+      "score_semantique": 0.6582,
+      "zipf": 3.386,
+      "ratio": 7.147,
+      "cats": [
+        "archaïque"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "hymen",
+      "score_final": 0.7487,
+      "score_semantique": 0.5974,
+      "zipf": 2.531,
+      "ratio": 0.166,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "fructueux",
+      "score_final": 0.7479,
+      "score_semantique": 0.5958,
+      "zipf": 3.13,
+      "ratio": 4.219,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "albâtre",
+      "score_final": 0.7478,
+      "score_semantique": 0.5955,
+      "zipf": 3.473,
+      "ratio": 5.211,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "décombre",
+      "score_final": 0.7381,
+      "score_semantique": 0.6411,
+      "zipf": 3.816,
+      "ratio": 6.009,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "humilié",
+      "score_final": 0.734,
+      "score_semantique": 0.6281,
+      "zipf": 3.334,
+      "ratio": 1.982,
+      "cats": [
+        "archaïque"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "disant",
+      "score_final": 0.7275,
+      "score_semantique": 0.62,
+      "zipf": 3.847,
+      "ratio": 5.535,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "civilement",
+      "score_final": 0.726,
+      "score_semantique": 0.6121,
+      "zipf": 2.869,
+      "ratio": 18.5,
+      "cats": [
+        "archaïque"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "gerbe",
+      "score_final": 0.723,
+      "score_semantique": 0.6109,
+      "zipf": 3.886,
+      "ratio": 20.263,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "appariteur",
+      "score_final": 0.7222,
+      "score_semantique": 0.6044,
+      "zipf": 2.531,
+      "ratio": 1.214,
+      "cats": [
+        "archaïque"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "gémissement",
+      "score_final": 0.7211,
+      "score_semantique": 0.6472,
+      "zipf": 3.969,
+      "ratio": 9.608,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "chaume",
+      "score_final": 0.72,
+      "score_semantique": 0.6449,
+      "zipf": 3.687,
+      "ratio": 13.5,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "crapule",
+      "score_final": 0.719,
+      "score_semantique": 0.598,
+      "zipf": 3.398,
+      "ratio": 0.564,
+      "cats": [
+        "archaïque"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "dériveur",
+      "score_final": 0.7178,
+      "score_semantique": 0.5957,
+      "zipf": 2.146,
+      "ratio": 1.0,
+      "cats": [
+        "archaïque"
+      ],
+      "theme_similar": "Esprit & Caractère"
+    },
+    {
+      "mot": "dépouille",
+      "score_final": 0.7177,
+      "score_semantique": 0.6004,
+      "zipf": 3.699,
+      "ratio": 2.959,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "clameur",
+      "score_final": 0.7159,
+      "score_semantique": 0.5968,
+      "zipf": 3.749,
+      "ratio": 7.685,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Art & Langage"
+    },
+    {
+      "mot": "cygne",
+      "score_final": 0.7144,
+      "score_semantique": 0.6338,
+      "zipf": 3.668,
+      "ratio": 0.883,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "furie",
+      "score_final": 0.7093,
+      "score_semantique": 0.6236,
+      "zipf": 3.744,
+      "ratio": 2.702,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    },
+    {
+      "mot": "foudroyant",
+      "score_final": 0.7012,
+      "score_semantique": 0.6075,
+      "zipf": 3.511,
+      "ratio": 32.4,
+      "cats": [
+        "poétique"
+      ],
+      "theme_similar": "Lumière & Ombres"
+    },
+    {
+      "mot": "brise",
+      "score_final": 0.6931,
+      "score_semantique": 0.5963,
+      "zipf": 4.037,
+      "ratio": 1.943,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ],
+      "theme_similar": "Nature & Cosmos"
+    },
+    {
+      "mot": "correspondance",
+      "score_final": 0.6665,
+      "score_semantique": 0.6031,
+      "zipf": 4.075,
+      "ratio": 2.231,
+      "cats": [
+        "littéraire"
+      ],
+      "theme_similar": "Sentiments & Psyché"
+    }
+  ]
+}

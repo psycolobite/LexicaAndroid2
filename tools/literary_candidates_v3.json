@@ -1,0 +1,2328 @@
+{
+  "metadata": {
+    "date": "2026-06-10 21:11",
+    "algorithm": "V3",
+    "threshold_reject": 0.93,
+    "threshold_good": 1.0,
+    "threshold_excellent": 1.0,
+    "coverage": "309/407"
+  },
+  "true_intruders": [
+    {
+      "mot": "céleste",
+      "score": 0.92,
+      "theme": "Nature & Cosmos",
+      "zipf": 3.764,
+      "ratio": 1.312,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "labyrinthe",
+      "score": 0.92,
+      "theme": "Nature & Cosmos",
+      "zipf": 3.847,
+      "ratio": 1.435,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "somnambule",
+      "score": 0.92,
+      "theme": "Art & Langage",
+      "zipf": 3.607,
+      "ratio": 1.738,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "allégresse",
+      "score": 0.88,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.073,
+      "ratio": 5.008,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "ferveur",
+      "score": 0.88,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.026,
+      "ratio": 6.278,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "sillage",
+      "score": 0.88,
+      "theme": "Nature & Cosmos",
+      "zipf": 4.003,
+      "ratio": 7.929,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "miséricorde",
+      "score": 0.87,
+      "theme": "Sentiments & Psyché",
+      "zipf": 3.705,
+      "ratio": 0.578,
+      "reasons": [
+        "ratio oral=0.58",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "murmure",
+      "score": 0.85,
+      "theme": "Art & Langage",
+      "zipf": 4.4,
+      "ratio": 15.519,
+      "reasons": [
+        "trop commun (Zipf=4.40)"
+      ]
+    },
+    {
+      "mot": "extase",
+      "score": 0.83,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.023,
+      "ratio": 3.073,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "nostalgie",
+      "score": 0.83,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.256,
+      "ratio": 4.063,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "sérénité",
+      "score": 0.83,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.111,
+      "ratio": 2.741,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "volupté",
+      "score": 0.83,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.009,
+      "ratio": 3.119,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "pénombre",
+      "score": 0.65,
+      "theme": "Lumière & Ombres",
+      "zipf": 4.448,
+      "ratio": 22.984,
+      "reasons": [
+        "trop commun (Zipf=4.45)",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "stupeur",
+      "score": 0.65,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.381,
+      "ratio": 15.318,
+      "reasons": [
+        "trop commun (Zipf=4.38)",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "brume",
+      "score": 0.6,
+      "theme": "Nature & Cosmos",
+      "zipf": 4.555,
+      "ratio": 8.604,
+      "reasons": [
+        "trop commun (Zipf=4.55)",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "mélancolie",
+      "score": 0.6,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.316,
+      "ratio": 7.954,
+      "reasons": [
+        "trop commun (Zipf=4.32)",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "cryptique",
+      "score": 0.55,
+      "theme": "Philosophie & Idées",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": []
+    },
+    {
+      "mot": "crépuscule",
+      "score": 0.55,
+      "theme": "Lumière & Ombres",
+      "zipf": 4.396,
+      "ratio": 3.492,
+      "reasons": [
+        "trop commun (Zipf=4.40)",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "solipsisme",
+      "score": 0.53,
+      "theme": "Philosophie & Idées",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": []
+    },
+    {
+      "mot": "synesthésie",
+      "score": 0.53,
+      "theme": "Philosophie & Idées",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": []
+    },
+    {
+      "mot": "chagrin",
+      "score": 0.5,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.588,
+      "ratio": 1.899,
+      "reasons": [
+        "trop commun (Zipf=4.59)",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "solitaire",
+      "score": 0.5,
+      "theme": "Sentiments & Psyché",
+      "zipf": 4.32,
+      "ratio": 1.891,
+      "reasons": [
+        "trop commun (Zipf=4.32)",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "allitération",
+      "score": 0.35,
+      "theme": "Art & Langage",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "heuristique",
+      "score": 0.35,
+      "theme": "Philosophie & Idées",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "liminaire",
+      "score": 0.35,
+      "theme": "Art & Langage",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "loquacité",
+      "score": 0.35,
+      "theme": "Art & Langage",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "paresthésie",
+      "score": 0.35,
+      "theme": "Sentiments & Psyché",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "procrastination",
+      "score": 0.35,
+      "theme": "Esprit & Caractère",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "résilience",
+      "score": 0.35,
+      "theme": "Sentiments & Psyché",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "satyrique",
+      "score": 0.35,
+      "theme": "Art & Langage",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "sépale",
+      "score": 0.35,
+      "theme": "Nature & Cosmos",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "téléologique",
+      "score": 0.35,
+      "theme": "Philosophie & Idées",
+      "zipf": 0.0,
+      "ratio": 0.0,
+      "reasons": [
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "jadis",
+      "score": 0.34,
+      "theme": "Temps & Éphémère",
+      "zipf": 4.719,
+      "ratio": 4.528,
+      "reasons": [
+        "trop commun (Zipf=4.72)"
+      ]
+    }
+  ],
+  "data_gaps": [
+    {
+      "mot": "spleenétique",
+      "score": 0.73,
+      "theme": "Sentiments & Psyché",
+      "reasons": [
+        "absent Lexique383"
+      ]
+    },
+    {
+      "mot": "aphoristique",
+      "score": 0.25,
+      "theme": "Art & Langage",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "cénesthésie",
+      "score": 0.25,
+      "theme": "Sentiments & Psyché",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "fielueux",
+      "score": 0.25,
+      "theme": "Sentiments & Psyché",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "garrulité",
+      "score": 0.25,
+      "theme": "Art & Langage",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "gnomique",
+      "score": 0.25,
+      "theme": "Art & Langage",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "mignonne",
+      "score": 0.25,
+      "theme": "Art & Langage",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "noévie",
+      "score": 0.25,
+      "theme": "Sentiments & Psyché",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "némésis",
+      "score": 0.25,
+      "theme": "Philosophie & Idées",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "parapathique",
+      "score": 0.25,
+      "theme": "Sentiments & Psyché",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "purpurine",
+      "score": 0.25,
+      "theme": "Lumière & Ombres",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "pétrichor",
+      "score": 0.25,
+      "theme": "Nature & Cosmos",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "rhapsode",
+      "score": 0.25,
+      "theme": "Art & Langage",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "scholastique",
+      "score": 0.25,
+      "theme": "Philosophie & Idées",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "somatisation",
+      "score": 0.25,
+      "theme": "Sentiments & Psyché",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "sérendipité",
+      "score": 0.25,
+      "theme": "Philosophie & Idées",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "varicose",
+      "score": 0.25,
+      "theme": "Sentiments & Psyché",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "viateur",
+      "score": 0.25,
+      "theme": "Esprit & Caractère",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    },
+    {
+      "mot": "érémitique",
+      "score": 0.25,
+      "theme": "Esprit & Caractère",
+      "reasons": [
+        "absent Lexique383",
+        "absent Wiktionnaire"
+      ]
+    }
+  ],
+  "new_excellent": [
+    {
+      "mot": "aboutissant",
+      "score": 1.0,
+      "zipf": 2.908,
+      "ratio": 9.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "absinthe",
+      "score": 1.0,
+      "zipf": 3.464,
+      "ratio": 2.273,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "abstrus",
+      "score": 1.0,
+      "zipf": 2.531,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "accidenter",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 1.167,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "accort",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 13.5,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "acrimonieux",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 7.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "admonition",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 14.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "adonc",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "adoncques",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "adulateur",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu",
+        "poétique"
+      ]
+    },
+    {
+      "mot": "aimeur",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "airain",
+      "score": 1.0,
+      "zipf": 3.228,
+      "ratio": 9.941,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "albâtre",
+      "score": 1.0,
+      "zipf": 3.473,
+      "ratio": 5.211,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "alentour",
+      "score": 1.0,
+      "zipf": 3.96,
+      "ratio": 1.912,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "aliénation",
+      "score": 1.0,
+      "zipf": 3.173,
+      "ratio": 1.252,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "altitude",
+      "score": 1.0,
+      "zipf": 3.803,
+      "ratio": 0.997,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "amante",
+      "score": 1.0,
+      "zipf": 3.744,
+      "ratio": 5.327,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "amphitryon",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 0.538,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "anatidé",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "annales",
+      "score": 1.0,
+      "zipf": 3.246,
+      "ratio": 2.256,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "anter",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "aposter",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "apparat",
+      "score": 1.0,
+      "zipf": 3.681,
+      "ratio": 9.412,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "appariteur",
+      "score": 1.0,
+      "zipf": 2.531,
+      "ratio": 1.214,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "appert",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "aquilon",
+      "score": 1.0,
+      "zipf": 2.672,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "archipel",
+      "score": 1.0,
+      "zipf": 3.473,
+      "ratio": 6.188,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "arder",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "ardre",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "arpion",
+      "score": 1.0,
+      "zipf": 3.004,
+      "ratio": 33.667,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "arrière-neveux",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "artifice",
+      "score": 1.0,
+      "zipf": 3.93,
+      "ratio": 1.582,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "artificieux",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "arène",
+      "score": 1.0,
+      "zipf": 3.615,
+      "ratio": 1.831,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ]
+    },
+    {
+      "mot": "aspre",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "assomption",
+      "score": 1.0,
+      "zipf": 2.613,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "astreinte",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 3.5,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "atlante",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 5.4,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "augmentation",
+      "score": 1.0,
+      "zipf": 3.511,
+      "ratio": 0.49,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "autan",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "avide",
+      "score": 1.0,
+      "zipf": 4.015,
+      "ratio": 5.33,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "azurer",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "balsamique",
+      "score": 1.0,
+      "zipf": 2.613,
+      "ratio": 4.1,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "barde",
+      "score": 1.0,
+      "zipf": 2.613,
+      "ratio": 2.278,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "bayer",
+      "score": 1.0,
+      "zipf": 2.301,
+      "ratio": 20.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "bellement",
+      "score": 1.0,
+      "zipf": 2.732,
+      "ratio": 3.857,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "bergerie",
+      "score": 1.0,
+      "zipf": 3.453,
+      "ratio": 2.869,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "blâme",
+      "score": 1.0,
+      "zipf": 3.607,
+      "ratio": 2.189,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "bobine",
+      "score": 1.0,
+      "zipf": 3.473,
+      "ratio": 1.531,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "bocager",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ]
+    },
+    {
+      "mot": "boiteux",
+      "score": 1.0,
+      "zipf": 3.348,
+      "ratio": 1.104,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "bout-rimé",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "bouvier",
+      "score": 1.0,
+      "zipf": 2.833,
+      "ratio": 5.667,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "brand",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "brise",
+      "score": 1.0,
+      "zipf": 4.037,
+      "ratio": 1.943,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ]
+    },
+    {
+      "mot": "brisure",
+      "score": 1.0,
+      "zipf": 2.869,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "brochet",
+      "score": 1.0,
+      "zipf": 3.502,
+      "ratio": 7.227,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "brune",
+      "score": 1.0,
+      "zipf": 3.808,
+      "ratio": 1.446,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "butin",
+      "score": 1.0,
+      "zipf": 3.716,
+      "ratio": 0.829,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "cacochyme",
+      "score": 1.0,
+      "zipf": 2.672,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "captif",
+      "score": 1.0,
+      "zipf": 3.334,
+      "ratio": 3.429,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "carmagnole",
+      "score": 1.0,
+      "zipf": 2.672,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "cascadeur",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 0.074,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "cavale",
+      "score": 1.0,
+      "zipf": 3.629,
+      "ratio": 1.101,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ]
+    },
+    {
+      "mot": "celer",
+      "score": 1.0,
+      "zipf": 2.301,
+      "ratio": 0.5,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "chalumeau",
+      "score": 1.0,
+      "zipf": 3.373,
+      "ratio": 1.484,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "chanteur",
+      "score": 1.0,
+      "zipf": 3.963,
+      "ratio": 0.938,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "chaume",
+      "score": 1.0,
+      "zipf": 3.687,
+      "ratio": 13.5,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "chaumine",
+      "score": 1.0,
+      "zipf": 2.613,
+      "ratio": 3.727,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "chaux",
+      "score": 1.0,
+      "zipf": 3.867,
+      "ratio": 5.576,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "chenu",
+      "score": 1.0,
+      "zipf": 2.732,
+      "ratio": 3.857,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "chevaucheur",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "choir",
+      "score": 1.0,
+      "zipf": 3.838,
+      "ratio": 20.879,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "châtel",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "circonstanciel",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "civilement",
+      "score": 1.0,
+      "zipf": 2.869,
+      "ratio": 18.5,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "clameur",
+      "score": 1.0,
+      "zipf": 3.749,
+      "ratio": 7.685,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "cohorte",
+      "score": 1.0,
+      "zipf": 3.52,
+      "ratio": 6.755,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "colombe",
+      "score": 1.0,
+      "zipf": 3.545,
+      "ratio": 0.691,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ]
+    },
+    {
+      "mot": "commodité",
+      "score": 1.0,
+      "zipf": 3.276,
+      "ratio": 7.269,
+      "cats": [
+        "soutenu",
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "commune",
+      "score": 1.0,
+      "zipf": 3.886,
+      "ratio": 2.711,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "commère",
+      "score": 1.0,
+      "zipf": 3.386,
+      "ratio": 7.147,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "compas",
+      "score": 1.0,
+      "zipf": 3.453,
+      "ratio": 1.893,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "compositeur",
+      "score": 1.0,
+      "zipf": 3.464,
+      "ratio": 0.804,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "confins",
+      "score": 1.0,
+      "zipf": 3.863,
+      "ratio": 4.398,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "confondre",
+      "score": 1.0,
+      "zipf": 4.12,
+      "ratio": 2.729,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "congru",
+      "score": 1.0,
+      "zipf": 2.531,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "conseilleur",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "conserver",
+      "score": 1.0,
+      "zipf": 4.245,
+      "ratio": 3.26,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "consommer",
+      "score": 1.0,
+      "zipf": 3.615,
+      "ratio": 1.373,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "contaminer",
+      "score": 1.0,
+      "zipf": 3.033,
+      "ratio": 0.403,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "contempteur",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 27.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "coquebin",
+      "score": 1.0,
+      "zipf": 2.531,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "corail",
+      "score": 1.0,
+      "zipf": 3.473,
+      "ratio": 2.856,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "correspondance",
+      "score": 1.0,
+      "zipf": 4.075,
+      "ratio": 2.231,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "coupon",
+      "score": 1.0,
+      "zipf": 3.086,
+      "ratio": 1.034,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "courber",
+      "score": 1.0,
+      "zipf": 3.681,
+      "ratio": 9.796,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "couronner",
+      "score": 1.0,
+      "zipf": 3.562,
+      "ratio": 2.517,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "courre",
+      "score": 1.0,
+      "zipf": 3.464,
+      "ratio": 3.88,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "coursier",
+      "score": 1.0,
+      "zipf": 3.292,
+      "ratio": 0.483,
+      "cats": [
+        "soutenu",
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "courtaud",
+      "score": 1.0,
+      "zipf": 2.785,
+      "ratio": 2.905,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "courtil",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "courtisan",
+      "score": 1.0,
+      "zipf": 3.32,
+      "ratio": 3.167,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "coutumier",
+      "score": 1.0,
+      "zipf": 3.41,
+      "ratio": 12.85,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "coîffe",
+      "score": 1.0,
+      "zipf": 3.656,
+      "ratio": 7.306,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "crapule",
+      "score": 1.0,
+      "zipf": 3.398,
+      "ratio": 0.564,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "cristallin",
+      "score": 1.0,
+      "zipf": 3.26,
+      "ratio": 7.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "cristallisation",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 1.35,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "crépusculaire",
+      "score": 1.0,
+      "zipf": 3.276,
+      "ratio": 50.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "cygne",
+      "score": 1.0,
+      "zipf": 3.668,
+      "ratio": 0.883,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "cétacé",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 4.667,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "dahoméen",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "darder",
+      "score": 1.0,
+      "zipf": 2.869,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "dentelle",
+      "score": 1.0,
+      "zipf": 4.243,
+      "ratio": 5.757,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "dentition",
+      "score": 1.0,
+      "zipf": 2.613,
+      "ratio": 0.383,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "derechef",
+      "score": 1.0,
+      "zipf": 3.511,
+      "ratio": 50.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "destinée",
+      "score": 1.0,
+      "zipf": 3.92,
+      "ratio": 0.962,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "difficultueux",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "diligence",
+      "score": 1.0,
+      "zipf": 3.373,
+      "ratio": 0.726,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "dindon",
+      "score": 1.0,
+      "zipf": 2.869,
+      "ratio": 0.602,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "disant",
+      "score": 1.0,
+      "zipf": 3.847,
+      "ratio": 5.535,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "dissension",
+      "score": 1.0,
+      "zipf": 2.978,
+      "ratio": 2.639,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "diurnal",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "dorer",
+      "score": 1.0,
+      "zipf": 3.749,
+      "ratio": 6.233,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "douteur",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "dubitation",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "déchirer",
+      "score": 1.0,
+      "zipf": 3.954,
+      "ratio": 1.207,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "déchoir",
+      "score": 1.0,
+      "zipf": 3.173,
+      "ratio": 50.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "décombre",
+      "score": 1.0,
+      "zipf": 3.816,
+      "ratio": 6.009,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "déconcerter",
+      "score": 1.0,
+      "zipf": 3.152,
+      "ratio": 7.474,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "décret",
+      "score": 1.0,
+      "zipf": 3.808,
+      "ratio": 1.814,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "décéder",
+      "score": 1.0,
+      "zipf": 3.21,
+      "ratio": 0.39,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "décédé",
+      "score": 1.0,
+      "zipf": 2.672,
+      "ratio": 0.297,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "déduit",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 1.286,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "déparer",
+      "score": 1.0,
+      "zipf": 2.672,
+      "ratio": 4.273,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "dépouille",
+      "score": 1.0,
+      "zipf": 3.699,
+      "ratio": 2.959,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "dériveur",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 1.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "désobligeance",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "désobligeant",
+      "score": 1.0,
+      "zipf": 3.004,
+      "ratio": 11.222,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "désolé",
+      "score": 1.0,
+      "zipf": 3.812,
+      "ratio": 0.034,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "eau-forte",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 0.9,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "efflorescence",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 27.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "empresser",
+      "score": 1.0,
+      "zipf": 3.398,
+      "ratio": 19.231,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "encor",
+      "score": 1.0,
+      "zipf": 2.431,
+      "ratio": 0.643,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "enrhumé",
+      "score": 1.0,
+      "zipf": 2.908,
+      "ratio": 3.857,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "ensanglanter",
+      "score": 1.0,
+      "zipf": 2.944,
+      "ratio": 1.956,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "entéléchie",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "esseuler",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 0.824,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "estoc",
+      "score": 1.0,
+      "zipf": 2.301,
+      "ratio": 1.25,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "extatique",
+      "score": 1.0,
+      "zipf": 3.004,
+      "ratio": 4.591,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "exultation",
+      "score": 1.0,
+      "zipf": 2.833,
+      "ratio": 13.6,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "faction",
+      "score": 1.0,
+      "zipf": 3.571,
+      "ratio": 5.391,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "faluche",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 10.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "fantasquement",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "faquin",
+      "score": 1.0,
+      "zipf": 2.301,
+      "ratio": 0.444,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "faucille",
+      "score": 1.0,
+      "zipf": 3.348,
+      "ratio": 4.373,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "faunesque",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "faunesse",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "favori",
+      "score": 1.0,
+      "zipf": 3.764,
+      "ratio": 1.119,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "feintise",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "ferraille",
+      "score": 1.0,
+      "zipf": 4.037,
+      "ratio": 2.578,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "fleuronner",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "flexuosité",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "flouer",
+      "score": 1.0,
+      "zipf": 2.732,
+      "ratio": 1.385,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "fluer",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "fondement",
+      "score": 1.0,
+      "zipf": 3.386,
+      "ratio": 1.381,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "fonduë",
+      "score": 1.0,
+      "zipf": 2.869,
+      "ratio": 0.712,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "forgerie",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "foucade",
+      "score": 1.0,
+      "zipf": 2.531,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "foudroyant",
+      "score": 1.0,
+      "zipf": 3.511,
+      "ratio": 32.4,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "fourrier",
+      "score": 1.0,
+      "zipf": 3.228,
+      "ratio": 50.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "fourrière",
+      "score": 1.0,
+      "zipf": 2.908,
+      "ratio": 0.286,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "frayer",
+      "score": 1.0,
+      "zipf": 3.687,
+      "ratio": 4.718,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "frileux",
+      "score": 1.0,
+      "zipf": 3.562,
+      "ratio": 4.932,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "froidure",
+      "score": 1.0,
+      "zipf": 3.19,
+      "ratio": 14.091,
+      "cats": [
+        "littéraire",
+        "poétique"
+      ]
+    },
+    {
+      "mot": "fronde",
+      "score": 1.0,
+      "zipf": 3.228,
+      "ratio": 1.965,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "fructueux",
+      "score": 1.0,
+      "zipf": 3.13,
+      "ratio": 4.219,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "furie",
+      "score": 1.0,
+      "zipf": 3.744,
+      "ratio": 2.702,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "futurisme",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "gaster",
+      "score": 1.0,
+      "zipf": 2.146,
+      "ratio": 14.0,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "gerbe",
+      "score": 1.0,
+      "zipf": 3.886,
+      "ratio": 20.263,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "geôle",
+      "score": 1.0,
+      "zipf": 3.276,
+      "ratio": 21.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "gifle",
+      "score": 1.0,
+      "zipf": 3.994,
+      "ratio": 2.739,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "glacer",
+      "score": 1.0,
+      "zipf": 3.886,
+      "ratio": 4.231,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "glèbe",
+      "score": 1.0,
+      "zipf": 2.944,
+      "ratio": 1.725,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "gouffre",
+      "score": 1.0,
+      "zipf": 4.055,
+      "ratio": 3.309,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "gramen",
+      "score": 1.0,
+      "zipf": 2.301,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "grand-peur",
+      "score": 1.0,
+      "zipf": 2.301,
+      "ratio": 10.0,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "gravûre",
+      "score": 1.0,
+      "zipf": 3.789,
+      "ratio": 10.789,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "guerrier",
+      "score": 1.0,
+      "zipf": 3.789,
+      "ratio": 0.801,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "guéret",
+      "score": 1.0,
+      "zipf": 2.301,
+      "ratio": 20.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "gémissement",
+      "score": 1.0,
+      "zipf": 3.969,
+      "ratio": 9.608,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "habitat",
+      "score": 1.0,
+      "zipf": 2.944,
+      "ratio": 0.672,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "havre",
+      "score": 1.0,
+      "zipf": 3.483,
+      "ratio": 3.576,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "helvétien",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "herbette",
+      "score": 1.0,
+      "zipf": 1.845,
+      "ratio": 10.0,
+      "cats": [
+        "poétique"
+      ]
+    },
+    {
+      "mot": "homicide",
+      "score": 1.0,
+      "zipf": 2.869,
+      "ratio": 0.418,
+      "cats": [
+        "soutenu"
+      ]
+    },
+    {
+      "mot": "hourvari",
+      "score": 1.0,
+      "zipf": 2.613,
+      "ratio": 1.519,
+      "cats": [
+        "littéraire"
+      ]
+    },
+    {
+      "mot": "humilié",
+      "score": 1.0,
+      "zipf": 3.334,
+      "ratio": 1.982,
+      "cats": [
+        "archaïque"
+      ]
+    },
+    {
+      "mot": "hymen",
+      "score": 1.0,
+      "zipf": 2.531,
+      "ratio": 0.166,
+      "cats": [
+        "poétique"
+      ]
+    }
+  ],
+  "new_good": []
+}

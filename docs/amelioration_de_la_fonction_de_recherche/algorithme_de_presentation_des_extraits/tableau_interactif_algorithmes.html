@@ -929,7 +929,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-14 19:19 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-14 19:34 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -2004,52 +2004,42 @@ Scripts &amp;
 <p class="algo-section-title" contenteditable="true" spellcheck="false">Critères de
                                     filtrage</p>
 <div class="editable-area" contenteditable="true" id="pa-c3-filters">Pipeline de scoring
-                                informel (3 signaux)
+                                informel hybride (4 signaux)
 
 Wiktionnaire (argot)
 +
-Lexique383
-                                        (oralité)
+Lexique383 (oralité)
 +
-Pageviews API
+Wikimedia Pageviews API
++
+Genius Rap Lyrics Sourcing
 →
 Score C3
 →
-Filtrage
-                                        C3
-→
-Word
-                                        Reserve C3
+Word Reserve C3
 
-Formule de score
-Score_C3 = (0.40 × Buzz) + (0.35 × Recency) + (0.25 × Orality_Ratio)
-
-                                    — Buzz (40%) : Trend Ratio des pageviews Wiktionnaire (récent vs historique)
-                                    — Recency (35%) : Position temporelle dans les catégories Wiktionnaire
-                                    — Orality_Ratio (25%) : FreqFilms / FreqLivres dans Lexique383. Ratio &gt; 4.0
+Formule de score hybride
+1. Score_Pageviews = (0.40 × Buzz) + (0.35 × Recency) + (0.25 × Orality_Ratio)
+2. Score_Rap = (0.40 × Dispersion_Artistes) + (0.40 × Popularité_Genius) + (0.20 × Récence_Année)
 
 Critères de filtrage
 INCLURE si :
-                                    • Tagué comme argot, populaire, familier, néologisme ou verlan sur le Wiktionnaire
-                                    • ET Score C3 significatif avec un réel pic de pageviews
+                                    • Présent dans l'extraction sémantique du corpus de Rap (Top 30 validés sur Wiktionnaire)
+                                    • OU tagué comme argot, populaire, familier ou verlan sur le Wiktionnaire avec un pic de pageviews actif
 
                                     EXCLURE si :
                                     • Zipf_books &gt; 5.5 (mots trop ultra-courants)
                                     • OU longueur &lt; 3 caractères
-
-Calibration de difficulté
-                                    (Retirée pour C3)
-
-                                    Conformément aux directives R&amp;D, l'évaluation classique de la difficulté par Zipf
-                                    est inadaptée pour l'argot : les termes ne présentent pas de complexité structurelle
-                                    ou conceptuelle et sont tous considérés comme de niveau égal pour l'utilisateur.
+                                    • OU mot purely étranger/anglais sans naturalisation française
 
 Scripts &amp;
-                                    Fichiers
+                                    Fichiers (tools/)
 
-                                    test_c3_extraction.py → Scraping Wiktionnaire, requêtes Pageviews API et scoring
-                                    candidates_slang_trending.csv → Table des candidats de la Word Reserve C3
-                                    resultat_mots_test_c3_trending.md → Rapport complet trié par score</div>
+                                    fetch_rap_lyrics.py → Scraping de paroles du Top 40 des artistes de rap français depuis Genius
+                                    analyse_rap_argot.py → Analyse de fréquences, filtrage Lexique383 et scoring d'émergence des néologismes
+                                    test_c3_extraction.py → Script principal qui fusionne les deux approches (Pageviews + Rap)
+                                    candidates_slang_trending.csv → Table unifiée des candidats de la Word Reserve C3
+                                    resultat_mots_test_c3_rap.md → Rapport détaillé d'extraction de l'argot du rap français</div>
 </div>
 <div class="algo-section">
 <p class="algo-section-title" contenteditable="true" spellcheck="false">Scripts &amp;
@@ -2061,26 +2051,26 @@ Scripts &amp;
 </div>
 <!-- TAB 3: CANDIDATS & RÉFÉRENCES -->
 <div class="tab-content">
-<div class="editable-area" contenteditable="true" id="pa-c3-candwords">● NOUVEAUX CANDIDATS DÉTECTÉS ET CLASSÉS (Top 15 du 14 Juin 2026) :
+<div class="editable-area" contenteditable="true" id="pa-c3-candwords">● NOUVEAUX CANDIDATS ISSUS DU RAP ET DU WEB (Top 15 du 14 Juin 2026) :
 
-                                1. doro (Score: 0.975 - faire l'amour, argot)
-                                2. cooked (Score: 0.975 - situation difficile, argot internet)
-                                3. paillassonnage (Score: 0.975 - action de paillassonner)
-                                4. merdification (Score: 0.905 - dégradation des plateformes internet)
-                                5. primultimité (Score: 0.895 - première fois, philosophie)
-                                6. puffeur (Score: 0.895 - fumeur de cigarette jetable puff)
-                                7. rogommiste (Score: 0.895 - vendeur d'alcool, argot vieilli)
-                                8. rogommeux (Score: 0.895 - voix enrouée, argot vieilli)
-                                9. fraise framboise myrtille (Score: 0.895 - incroyable, argot internet)
-                                10. incompréhensibiliser (Score: 0.895 - rendre incompréhensible, rare)
-                                11. Perlin (Score: 0.895 - commune allemande, possible homonymie)
-                                12. OK Tier (Score: 0.895 - passable, argot internet)
-                                13. citoyan (Score: 0.825 - citoyen non-binaire, néologisme)
-                                14. buchenwalderies (Score: 0.825 - univers concentrationnaire, rare)
-                                15. mélanco (Score: 0.825 - mélancolique, pop/familier)
+                                1. binks (Score: 0.820) : (Argot) Quartier, cité (ex: "Ah c'est le binks").
+                                2. moula (Score: 0.786) : (Argot) Argent, weed ou flow/style.
+                                3. kich (Score: 0.778) : (Argot) Liasse de billets de banque (kichta).
+                                4. ken (Score: 0.776) : (Verlan / Vulgaire) Niquer, faire l'amour.
+                                5. jsuis (Score: 0.773) : (Contraction orale) J'suis.
+                                6. dems (Score: 0.770) : (Argot / Signature) Terme associé au rappeur Damso.
+                                7. poto (Score: 0.755) : (Argot) Ami, compagnon.
+                                8. nwaar (Score: 0.747) : (Argot / Signature) Sombre, brut (signature de Damso).
+                                9. tieks (Score: 0.744) : (Argot / Verlan) Cité, quartier (verlan de cité -&gt; tieks).
+                                10. paname (Score: 0.710) : (Familier) Paris.
+                                11. gamos (Score: 0.705) : (Argot) Belle et grosse voiture de sport.
+                                12. belek (Score: 0.690) : (Argot / Emprunt) Faire attention, prendre garde.
+                                13. plata (Score: 0.680) : (Argot) Argent (de l'espagnol 'plata').
+                                14. opj (Score: 0.670) : (Argot) Officier de Police Judiciaire (la police).
+                                15. uzi (Score: 0.660) : (Argot) Arme à feu, pistolet-mitrailleur.
 
                                 ● STATUT INTÉGRATION :
-                                Résultats validés par test_c3_extraction.py et exportés dans candidates_slang_trending.csv.</div>
+                                Algorithme hybride opérationnel. Les candidats du rap et du web sont unifiés dans candidates_slang_trending.csv.</div>
 </div>
 <!-- TAB 4: ESSAIS & R&D -->
 <div class="tab-content">
@@ -2094,11 +2084,10 @@ Scripts &amp;
                                 - Méthode : Utilisation des pageviews de fr.wiktionary.org comme proxy du buzz linguistique d'un néologisme ou argot contemporain.
                                 - Résultat : Clics et recherches organiques détectent les mots populaires émergents et le "Dernier Cri" avec précision.
 
-                                4. RETRAIT DE LA CLASSIFICATION DE DIFFICULTÉ :
-                                La notion de difficulté (Débutant/Intermédiaire/Expert) basée sur le Zipf est trompeuse pour l'argot. Ces mots sont courts et sémantiquement simples (ex: boloss, seum). Ils sont donc tous catégorisés de niveau équivalent dans le parcours utilisateur, sans barrière de difficulté.
-
-                                5. PERSPECTIVE DE R&amp;D — ENRICHISSEMENT PAR LES LYRICS DE RAP :
-                                Afin d'aller encore plus loin dans l'extraction du vocabulaire "Dernier Cri" et de la cité, il est prévu d'alimenter la pipeline par une ingestion et un traitement automatique de corpus de textes/lyrics de rap français récents. L'algorithme pourra analyser les fréquences de co-occurrence de mots inconnus des dictionnaires classiques pour repérer l'émergence des nouvelles expressions populaires avant même leur inscription sur le Wiktionnaire.</div>
+                                4. ENRICHISSEMENT PAR LES LYRICS DE RAP (VALIDÉ ET INTÉGRÉ) :
+                                - Le problème : Les pageviews détectent le buzz sur le web, mais manquent le vocabulaire de la cité en temps réel.
+                                - Solution : Ingestion automatique de paroles de rap français (Genius). Le script fetch_rap_lyrics.py constitue un corpus structuré (métadonnées de date + pageviews Genius de popularité). Le script analyse_rap_argot.py filtre les termes courants et calcule un score combinant dispersion (multi-artistes), popularité et récence.
+                                - Résultat : Extraction de termes d'argot urbain ultra-pertinents et naturalisés (ex: binks, moula, tieks, belek) validés ensuite par parsing sélectif de la section française du Wiktionnaire.</div>
 </div>
 </div>
 </div>

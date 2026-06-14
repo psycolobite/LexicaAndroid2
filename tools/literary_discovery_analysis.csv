@@ -1,0 +1,3096 @@
+﻿mot;score;freq_score;ratio_score;cat_score;zipf_books;zipf_films;ratio;categories_wikt;in_reference;has_lexique_data
+abscons;1.0;1.0;0.9;1.0;2.732;2.079;4.5;soutenu;oui;oui
+admonition;1.0;1.0;1.0;1.0;2.146;1.0;14.0;soutenu;non;oui
+alacrité;1.0;1.0;1.0;1.0;2.785;1.0;50.0;soutenu;oui;oui
+anathème;1.0;1.0;0.35;1.0;2.944;3.033;0.815;soutenu;oui;oui
+arachnéen;1.0;1.0;1.0;0.9;2.431;0.0;10.0;littéraire;oui;oui
+assomption;1.0;1.0;1.0;1.0;2.613;0.0;10.0;soutenu;non;oui
+aurore;1.0;0.7;0.9;1.0;3.973;3.479;3.12;soutenu;oui;oui
+bocage;1.0;1.0;1.0;1.0;3.398;2.146;17.857;littéraire+poétique;oui;oui
+cacochyme;1.0;1.0;1.0;1.0;2.672;0.0;10.0;soutenu;non;oui
+cantilène;1.0;1.0;0.9;0.9;2.531;2.041;3.091;littéraire;oui;oui
+commisération;1.0;1.0;1.0;1.0;3.398;2.146;17.857;soutenu;oui;oui
+commodité;1.0;1.0;1.0;1.0;3.276;2.415;7.269;soutenu+archaïque;non;oui
+congru;1.0;1.0;1.0;1.0;2.531;0.0;10.0;soutenu;non;oui
+corroder;1.0;1.0;1.0;1.0;2.613;0.0;10.0;soutenu;non;oui
+coruscant;1.0;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;oui;oui
+céruléen;1.0;1.0;1.0;1.0;2.672;0.0;10.0;soutenu+poétique;oui;oui
+diane;1.0;1.0;1.0;1.0;2.613;1.477;13.667;littéraire+poétique;non;oui
+diaphane;1.0;1.0;1.0;1.0;3.307;1.477;50.0;soutenu;oui;oui
+dilection;1.0;1.0;1.0;0.9;2.732;0.0;10.0;littéraire;oui;oui
+diligemment;1.0;1.0;1.0;1.0;2.431;1.699;5.4;soutenu;non;oui
+dirimant;1.0;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;oui;oui
+discontinuité;1.0;1.0;1.0;1.0;2.833;1.699;13.6;soutenu;non;oui
+désobligeance;1.0;1.0;1.0;1.0;2.146;0.0;10.0;soutenu;non;oui
+désobligeant;1.0;1.0;1.0;1.0;3.004;1.954;11.222;soutenu;non;oui
+empyrée;1.0;1.0;1.0;0.9;2.869;0.0;10.0;littéraire;oui;oui
+estocade;1.0;1.0;1.0;0.9;2.613;1.477;13.667;littéraire;oui;oui
+froidure;1.0;1.0;1.0;1.0;3.19;2.041;14.091;littéraire+poétique;non;oui
+fuligineux;1.0;1.0;1.0;0.9;3.033;1.0;50.0;littéraire;oui;oui
+graffito;1.0;1.0;1.0;1.0;2.301;0.0;10.0;soutenu;non;oui
+helvétique;1.0;1.0;1.0;1.0;2.833;0.0;10.0;soutenu;non;oui
+hic et nunc;1.0;1.0;1.0;1.0;2.613;0.0;10.0;soutenu;non;oui
+ilote;1.0;1.0;1.0;0.9;2.531;0.0;10.0;littéraire;oui;oui
+impéritie;1.0;1.0;1.0;1.0;2.301;0.0;10.0;soutenu;oui;oui
+incivil;1.0;1.0;1.0;1.0;2.146;0.0;10.0;soutenu;non;oui
+incomestible;1.0;1.0;1.0;1.0;2.146;0.0;10.0;soutenu;non;oui
+incurie;1.0;1.0;1.0;1.0;2.833;2.041;6.182;soutenu;oui;oui
+infrangible;1.0;1.0;1.0;1.0;2.431;1.0;27.0;soutenu+littéraire;oui;oui
+interlope;1.0;1.0;1.0;1.0;2.531;0.0;10.0;soutenu;non;oui
+larron;1.0;1.0;0.75;0.9;2.978;2.531;2.794;littéraire;oui;oui
+laudateur;1.0;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;oui;oui
+loisible;1.0;1.0;1.0;1.0;2.869;0.0;10.0;soutenu+littéraire;non;oui
+longanimité;1.0;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;oui;oui
+maritorne;1.0;1.0;1.0;1.0;2.431;0.0;10.0;soutenu;non;oui
+mignardise;1.0;1.0;1.0;0.9;2.869;1.0;50.0;littéraire;oui;oui
+ménestrel;1.0;1.0;0.35;1.0;2.146;2.146;1.0;soutenu;oui;oui
+nimbe;1.0;1.0;1.0;0.9;2.908;1.0;50.0;littéraire;oui;oui
+nonobstant;1.0;1.0;1.0;1.0;3.473;2.204;18.562;soutenu;non;oui
+obligeant;1.0;1.0;1.0;1.0;3.033;2.23;6.353;soutenu;non;oui
+paladin;1.0;1.0;0.9;0.9;2.732;2.204;3.375;littéraire;oui;oui
+parangon;1.0;1.0;1.0;0.9;3.033;2.079;9.0;littéraire;oui;oui
+potentat;1.0;1.0;0.9;1.0;2.531;2.0;3.4;soutenu;oui;oui
+pugnace;1.0;1.0;0.75;0.9;2.146;1.778;2.333;littéraire;oui;oui
+pusillanime;1.0;1.0;1.0;0.9;2.908;1.477;27.0;littéraire;oui;oui
+périlleusement;1.0;1.0;1.0;1.0;2.301;0.0;10.0;soutenu;non;oui
+rédhibitoire;1.0;1.0;1.0;1.0;2.531;1.778;5.667;soutenu;non;oui
+sicaire;1.0;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;oui;oui
+sidéral;1.0;1.0;1.0;0.9;2.613;1.602;10.25;littéraire;oui;oui
+simagrée;1.0;1.0;0.9;1.0;3.473;2.954;3.3;soutenu;oui;oui
+socque;1.0;1.0;1.0;1.0;2.613;0.0;10.0;soutenu;non;oui
+sourcilleux;1.0;1.0;1.0;0.9;3.061;1.0;50.0;littéraire;oui;oui
+stupre;1.0;1.0;1.0;1.0;2.908;2.146;5.786;soutenu;non;oui
+superfétatoire;1.0;1.0;1.0;1.0;2.431;1.477;9.0;soutenu;non;oui
+sylvie;1.0;1.0;1.0;1.0;3.32;0.0;10.0;soutenu;non;oui
+thuriféraire;1.0;1.0;1.0;1.0;2.301;0.0;10.0;soutenu;oui;oui
+tressautement;1.0;1.0;1.0;1.0;2.672;0.0;10.0;soutenu;non;oui
+trépas;1.0;1.0;0.9;1.0;3.19;2.58;4.079;soutenu;oui;oui
+valétudinaire;1.0;1.0;1.0;1.0;2.146;1.0;14.0;soutenu;oui;oui
+vaticination;1.0;1.0;1.0;0.9;2.613;0.0;10.0;littéraire;oui;oui
+vespéral;1.0;1.0;1.0;1.0;2.785;0.0;10.0;soutenu;oui;oui
+égrotant;1.0;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;oui;oui
+émacié;1.0;1.0;1.0;1.0;3.307;1.477;50.0;soutenu;non;oui
+équanimité;1.0;1.0;1.0;1.0;2.146;0.0;10.0;soutenu;oui;oui
+éthéré;1.0;1.0;1.0;0.8;2.613;0.0;10.0;poétique;oui;oui
+malandrin;0.9947;1.0;0.55;0.9;2.672;2.447;1.679;littéraire;oui;oui
+nébuleux;0.9947;1.0;0.55;0.9;2.833;2.58;1.789;littéraire;oui;oui
+captif;0.98;1.0;0.9;1.0;3.334;2.799;3.429;soutenu;non;oui
+courtisan;0.98;1.0;0.9;1.0;3.32;2.82;3.167;soutenu;non;oui
+déparer;0.98;1.0;0.9;1.0;2.672;2.041;4.273;soutenu;non;oui
+extatique;0.98;1.0;0.9;1.0;3.004;2.342;4.591;soutenu;non;oui
+fouler;0.98;1.0;0.9;1.0;3.41;2.813;3.954;soutenu+littéraire;non;oui
+rejeton;0.98;1.0;0.9;1.0;3.362;2.785;3.77;soutenu+poétique;non;oui
+langueur;0.9775;0.7;1.0;0.9;3.577;2.556;10.5;littéraire;oui;oui
+quiétude;0.9775;0.7;1.0;0.9;3.705;2.806;7.922;littéraire;oui;oui
+taciturne;0.9775;0.7;1.0;0.9;3.733;2.968;5.817;littéraire;oui;oui
+vergogne;0.9775;0.7;1.0;0.9;3.607;2.708;7.941;littéraire;oui;oui
+ab ovo;0.955;1.0;1.0;0.9;2.431;0.0;10.0;littéraire;non;oui
+aboutissant;0.955;1.0;1.0;0.9;2.908;1.954;9.0;littéraire;non;oui
+abstrus;0.955;1.0;1.0;0.9;2.531;0.0;10.0;littéraire;non;oui
+accort;0.955;1.0;1.0;0.9;2.431;1.301;13.5;littéraire;non;oui
+acnéique;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+airain;0.955;1.0;1.0;0.9;3.228;2.23;9.941;littéraire;non;oui
+appert;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+assaisonner;0.955;1.0;1.0;0.9;2.785;1.954;6.778;littéraire;non;oui
+atlante;0.955;1.0;1.0;0.9;2.431;1.699;5.4;littéraire;non;oui
+balane;0.955;1.0;1.0;0.9;2.431;1.0;27.0;littéraire;non;oui
+bouvier;0.955;1.0;1.0;0.9;2.833;2.079;5.667;littéraire;non;oui
+colporter;0.955;1.0;1.0;0.9;2.833;0.0;10.0;littéraire;non;oui
+concréter;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+contempteur;0.955;1.0;1.0;0.9;2.431;1.0;27.0;littéraire;non;oui
+coquebin;0.955;1.0;1.0;0.9;2.531;0.0;10.0;littéraire;non;oui
+coutumier;0.955;1.0;1.0;0.9;3.41;2.301;12.85;littéraire;non;oui
+crépusculaire;0.955;1.0;1.0;0.9;3.276;1.477;50.0;littéraire;non;oui
+douteur;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+déchoir;0.955;1.0;1.0;0.9;3.173;1.0;50.0;littéraire;non;oui
+déconcerter;0.955;1.0;1.0;0.9;3.152;2.279;7.474;littéraire;non;oui
+déhiscence;0.955;1.0;1.0;0.9;2.146;1.301;7.0;littéraire;non;oui
+efflorescence;0.955;1.0;1.0;0.9;2.431;1.0;27.0;littéraire;non;oui
+empresser;0.955;1.0;1.0;0.9;3.398;2.114;19.231;littéraire;non;oui
+exultation;0.955;1.0;1.0;0.9;2.833;1.699;13.6;littéraire;non;oui
+foucade;0.955;1.0;1.0;0.9;2.531;0.0;10.0;littéraire;non;oui
+fourrier;0.955;1.0;1.0;0.9;3.228;1.0;50.0;littéraire;non;oui
+geôle;0.955;1.0;1.0;0.9;3.276;1.954;21.0;littéraire;non;oui
+gramen;0.955;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;non;oui
+grand-peur;0.955;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;non;oui
+incontinent;0.955;1.0;1.0;0.9;3.033;2.301;5.4;littéraire;non;oui
+incréé;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+indolent;0.955;1.0;1.0;0.9;3.086;2.114;9.385;littéraire;non;oui
+insomnieux;0.955;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;non;oui
+ironiser;0.955;1.0;1.0;0.9;3.004;0.0;10.0;littéraire;non;oui
+languide;0.955;1.0;1.0;0.9;3.107;2.0;12.8;littéraire;non;oui
+lavandière;0.955;1.0;1.0;0.9;3.004;1.0;50.0;littéraire;non;oui
+ligneux;0.955;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;non;oui
+lointainement;0.955;1.0;1.0;0.9;2.672;0.0;10.0;littéraire;non;oui
+luminaire;0.955;1.0;1.0;0.9;2.613;1.699;8.2;littéraire;non;oui
+marri;0.955;1.0;1.0;0.9;2.613;1.477;13.667;littéraire;non;oui
+matutinal;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+moutonner;0.955;1.0;1.0;0.9;2.431;0.0;10.0;littéraire;non;oui
+muser;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+myrte;0.955;1.0;1.0;0.9;2.908;0.0;10.0;littéraire;non;oui
+médianoche;0.955;1.0;1.0;0.9;2.672;0.0;10.0;littéraire;non;oui
+nonnain;0.955;1.0;1.0;0.9;2.785;0.0;10.0;littéraire;non;oui
+nonpareil;0.955;1.0;1.0;0.9;2.146;1.0;14.0;littéraire;non;oui
+objurgation;0.955;1.0;1.0;0.9;3.276;0.0;10.0;littéraire;non;oui
+oiseleur;0.955;1.0;1.0;0.9;2.672;1.778;7.833;littéraire;non;oui
+ouater;0.955;1.0;1.0;0.9;2.833;0.0;10.0;littéraire;non;oui
+par-devers;0.955;1.0;1.0;0.9;3.033;1.0;50.0;littéraire;non;oui
+phosphorescent;0.955;1.0;1.0;0.9;3.307;2.362;8.826;littéraire;non;oui
+poncif;0.955;1.0;1.0;0.9;2.672;0.0;10.0;littéraire;non;oui
+ponctuer;0.955;1.0;1.0;0.9;3.334;1.301;50.0;littéraire;non;oui
+pourfendre;0.955;1.0;1.0;0.9;2.732;1.602;13.5;littéraire;non;oui
+profus;0.955;1.0;1.0;0.9;2.431;1.0;27.0;littéraire;non;oui
+pulser;0.955;1.0;1.0;0.9;2.301;1.0;20.0;littéraire;non;oui
+pâmer;0.955;1.0;1.0;0.9;2.785;1.778;10.167;littéraire;non;oui
+péroraison;0.955;1.0;1.0;0.9;2.978;0.0;10.0;littéraire;non;oui
+ratiocination;0.955;1.0;1.0;0.9;2.732;0.0;10.0;littéraire;non;oui
+ressaut;0.955;1.0;1.0;0.9;2.869;1.0;50.0;littéraire;non;oui
+résipiscence;0.955;1.0;1.0;0.9;2.672;0.0;10.0;littéraire;non;oui
+salacité;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+semblance;0.955;1.0;1.0;0.9;2.431;1.301;13.5;littéraire;non;oui
+sente;0.955;1.0;1.0;0.9;3.362;1.845;32.857;littéraire;non;oui
+servilité;0.955;1.0;1.0;0.9;3.061;1.0;50.0;littéraire;non;oui
+sollicitation;0.955;1.0;1.0;0.9;3.228;1.0;50.0;littéraire;non;oui
+songerie;0.955;1.0;1.0;0.9;2.944;1.301;44.0;littéraire;non;oui
+surréel;0.955;1.0;1.0;0.9;2.301;1.301;10.0;littéraire;non;oui
+survivance;0.955;1.0;1.0;0.9;2.944;1.602;22.0;littéraire;non;oui
+séraphique;0.955;1.0;1.0;0.9;2.531;0.0;10.0;littéraire;non;oui
+tancer;0.955;1.0;1.0;0.9;2.672;1.0;47.0;littéraire;non;oui
+trémuler;0.955;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;non;oui
+turquin;0.955;1.0;1.0;0.9;2.146;0.0;10.0;littéraire;non;oui
+tétin;0.955;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;non;oui
+vastitude;0.955;1.0;1.0;0.9;2.301;0.0;10.0;littéraire;non;oui
+vergogneux;0.955;1.0;1.0;0.9;2.431;0.0;10.0;littéraire;non;oui
+vibratile;0.955;1.0;1.0;0.9;2.301;1.0;20.0;littéraire;non;oui
+vicinal;0.955;1.0;1.0;0.9;2.672;0.0;10.0;littéraire;non;oui
+vitupérer;0.955;1.0;1.0;0.9;2.613;0.0;10.0;littéraire;non;oui
+vénusté;0.955;1.0;1.0;0.9;2.531;0.0;10.0;littéraire;non;oui
+échevelé;0.955;1.0;1.0;0.9;3.32;1.0;50.0;littéraire;non;oui
+éployer;0.955;1.0;1.0;0.9;2.613;0.0;10.0;littéraire;non;oui
+annales;0.95;1.0;0.75;1.0;3.246;2.892;2.256;soutenu;non;oui
+deus ex machina;0.95;1.0;0.75;1.0;2.672;2.204;2.937;soutenu;non;oui
+infortuné;0.95;1.0;0.75;1.0;3.246;2.863;2.411;soutenu;non;oui
+nourrisson;0.95;1.0;0.75;1.0;3.483;3.053;2.69;soutenu;non;oui
+sidérer;0.95;1.0;0.75;1.0;3.061;2.623;2.738;soutenu;non;oui
+vomissure;0.95;1.0;0.75;1.0;2.908;2.519;2.455;soutenu;non;oui
+preux;0.9487;1.0;0.35;0.9;2.869;2.806;1.156;littéraire;oui;oui
+épigone;0.9487;1.0;0.35;0.9;2.301;2.301;1.0;littéraire;oui;oui
+acrimonieux;0.9475;0.85;1.0;1.0;1.845;1.0;7.0;soutenu;non;oui
+adulateur;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu+poétique;non;oui
+anatidé;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+arrière-neveux;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+bocager;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;littéraire+poétique;non;oui
+circonstanciel;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+inclément;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+laudatif;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+modérateur;0.9475;0.85;1.0;1.0;1.845;1.0;7.0;soutenu;non;oui
+pagure;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+pulvérulence;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu+littéraire;non;oui
+tigrure;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+vulpin;0.9475;0.85;1.0;1.0;1.845;0.0;10.0;soutenu;non;oui
+courroux;0.943;1.0;0.1;1.0;3.32;3.55;0.589;soutenu+poétique;oui;oui
+firmament;0.943;1.0;0.55;0.8;3.307;3.196;1.293;poétique;oui;oui
+ondine;0.943;1.0;0.55;0.8;2.531;2.301;1.7;poétique;oui;oui
+ahurir;0.935;1.0;0.9;0.9;3.13;2.462;4.655;littéraire;non;oui
+balsamique;0.935;1.0;0.9;0.9;2.613;2.0;4.1;littéraire;non;oui
+bellement;0.935;1.0;0.9;0.9;2.732;2.146;3.857;littéraire;non;oui
+chaumine;0.935;1.0;0.9;0.9;2.613;2.041;3.727;littéraire;non;oui
+cétacé;0.935;1.0;0.9;0.9;2.146;1.477;4.667;littéraire;non;oui
+enrhumé;0.935;1.0;0.9;0.9;2.908;2.322;3.857;littéraire;non;oui
+havre;0.935;1.0;0.9;0.9;3.483;2.929;3.576;littéraire;non;oui
+logorrhée;0.935;1.0;0.9;0.9;2.431;1.778;4.5;littéraire;non;oui
+occire;0.935;1.0;0.9;0.9;2.613;2.0;4.1;littéraire;non;oui
+promoteur;0.935;1.0;0.9;0.9;3.004;2.447;3.607;littéraire;non;oui
+subjuguer;0.935;1.0;0.9;0.9;3.19;2.544;4.429;littéraire;non;oui
+sylvestre;0.935;1.0;0.9;0.9;2.908;2.362;3.522;littéraire;non;oui
+tourbe;0.935;1.0;0.9;0.9;3.292;2.643;4.455;littéraire;non;oui
+tréfonds;0.935;1.0;0.9;0.9;3.464;2.792;4.694;littéraire;non;oui
+éclore;0.935;1.0;0.9;0.9;3.453;2.914;3.463;littéraire;non;oui
+émasculer;0.935;1.0;0.9;0.9;2.146;1.477;4.667;littéraire;non;oui
+imminent;0.9257;0.7;0.55;1.0;3.675;3.412;1.833;soutenu;oui;oui
+parvis;0.9257;0.7;1.0;0.8;3.798;2.279;33.053;poétique;oui;oui
+advenir;0.91;1.0;0.55;1.0;3.21;2.996;1.636;littéraire+poétique;non;oui
+albâtre;0.91;1.0;1.0;0.8;3.473;2.756;5.211;poétique;non;oui
+aquilon;0.91;1.0;1.0;0.8;2.672;0.0;10.0;poétique;non;oui
+brisure;0.91;1.0;1.0;0.8;2.869;0.0;10.0;poétique;non;oui
+cristallin;0.91;1.0;1.0;0.8;3.26;2.415;7.0;poétique;non;oui
+darder;0.91;1.0;1.0;0.8;2.869;0.0;10.0;poétique;non;oui
+guéret;0.91;1.0;1.0;0.8;2.301;1.0;20.0;poétique;non;oui
+lambris;0.91;1.0;1.0;0.8;3.19;1.602;38.75;poétique;non;oui
+licol;0.91;1.0;1.0;0.8;2.672;0.0;10.0;poétique;non;oui
+lilial;0.91;1.0;1.0;0.8;2.613;0.0;10.0;poétique;non;oui
+mânes;0.91;1.0;1.0;0.8;2.613;1.0;41.0;poétique;non;oui
+nautonier;0.91;1.0;1.0;0.8;2.301;0.0;10.0;poétique;non;oui
+nippon;0.91;1.0;0.55;1.0;2.613;2.519;1.242;soutenu;non;oui
+nocher;0.91;1.0;1.0;0.8;2.146;1.301;7.0;poétique;non;oui
+obligeance;0.91;1.0;0.55;1.0;3.19;2.924;1.845;soutenu;non;oui
+paître;0.91;1.0;0.55;1.0;3.246;2.987;1.814;soutenu+poétique;non;oui
+physionomiste;0.91;1.0;0.55;1.0;2.146;1.954;1.556;soutenu;non;oui
+ramure;0.91;1.0;1.0;0.8;3.41;2.041;23.364;poétique;non;oui
+recru;0.91;1.0;0.55;1.0;2.301;2.146;1.429;soutenu+littéraire;non;oui
+remembrance;0.91;1.0;1.0;0.8;2.146;1.0;14.0;poétique;non;oui
+résille;0.91;1.0;1.0;0.8;3.276;2.431;7.0;poétique;non;oui
+seoir;0.91;1.0;0.55;1.0;3.453;3.223;1.701;soutenu+littéraire;non;oui
+simarre;0.91;1.0;1.0;0.8;2.146;0.0;10.0;poétique;non;oui
+sommeiller;0.91;1.0;1.0;0.8;3.276;1.699;37.8;poétique;non;oui
+sylve;0.91;1.0;1.0;0.8;2.146;0.0;10.0;poétique;non;oui
+émailler;0.91;1.0;1.0;0.8;2.869;1.477;24.667;poétique;non;oui
+éminent;0.91;1.0;0.55;1.0;3.307;3.22;1.223;soutenu;non;oui
+murmure;0.9085;0.4;1.0;1.0;4.4;3.21;15.519;soutenu;oui;oui
+barde;0.905;1.0;0.75;0.9;2.613;2.255;2.278;littéraire;non;oui
+bergerie;0.905;1.0;0.75;0.9;3.453;2.996;2.869;littéraire;non;oui
+courtaud;0.905;1.0;0.75;0.9;2.785;2.322;2.905;littéraire;non;oui
+dissension;0.905;1.0;0.75;0.9;2.978;2.556;2.639;littéraire;non;oui
+hyperbole;0.905;1.0;0.75;0.9;2.301;1.954;2.222;littéraire;non;oui
+incendier;0.905;1.0;0.75;0.9;3.276;2.968;2.032;littéraire;non;oui
+nacelle;0.905;1.0;0.75;0.9;3.373;3.017;2.269;littéraire;non;oui
+panser;0.905;1.0;0.75;0.9;3.152;2.699;2.84;littéraire;non;oui
+passereau;0.905;1.0;0.75;0.9;2.785;2.477;2.033;littéraire;non;oui
+similitude;0.905;1.0;0.75;0.9;2.978;2.531;2.794;littéraire;non;oui
+nymphe;0.9027;0.7;0.9;0.8;3.607;2.954;4.5;poétique;oui;oui
+aimeur;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+aposter;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+artificieux;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+chevaucheur;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+conseilleur;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+difficultueux;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+diurnal;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+dubitation;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+entéléchie;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+fantasquement;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+faunesque;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+feintise;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+fleuronner;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+flexuosité;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+fluer;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+forgerie;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+futurisme;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+immarcescible;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+impatroniser;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+impécuniosité;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+incurieux;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+jaculatoire;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+léopardé;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+mallarméen;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+melliflue;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+mercuriale;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+monder;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+oaristys;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+proéminer;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+quantième;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+saphisme;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+sardanapalesque;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+smaragdin;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+spondée;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+sylvain;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+tintinnabulement;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+unanimisme;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+uranisme;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+éonisme;0.9025;0.85;1.0;0.9;1.845;0.0;10.0;littéraire;non;oui
+faction;0.895;0.7;1.0;1.0;3.571;2.839;5.391;soutenu;non;oui
+sillon;0.895;0.7;1.0;1.0;3.863;2.663;15.87;littéraire+poétique;non;oui
+verbe;0.895;0.7;1.0;1.0;3.923;3.22;5.048;soutenu+littéraire;non;oui
+vestige;0.895;0.7;1.0;1.0;3.789;2.973;6.543;soutenu;non;oui
+chenu;0.89;1.0;0.9;0.8;2.732;2.146;3.857;poétique;non;oui
+faucille;0.89;1.0;0.9;0.8;3.348;2.708;4.373;poétique;non;oui
+fructueux;0.89;1.0;0.9;0.8;3.13;2.505;4.219;poétique;non;oui
+mander;0.89;1.0;0.9;0.8;3.061;2.531;3.382;poétique;non;oui
+safran;0.89;1.0;0.9;0.8;3.276;2.58;4.974;poétique;non;oui
+tribut;0.89;1.0;0.9;0.8;3.334;2.839;3.13;poétique;non;oui
+astreinte;0.8825;0.85;0.9;0.9;1.845;1.301;3.5;littéraire;non;oui
+moindrement;0.8825;0.85;0.9;0.9;1.845;1.301;3.5;littéraire;non;oui
+varia;0.8825;0.85;0.9;0.9;1.845;1.301;3.5;littéraire;non;oui
+infortune;0.875;0.7;0.9;1.0;3.571;3.083;3.074;soutenu;non;oui
+périlleux;0.875;0.7;0.9;1.0;3.554;2.94;4.115;soutenu;non;oui
+tracer;0.875;0.7;0.9;1.0;3.863;3.346;3.288;soutenu;non;oui
+vulgarité;0.875;0.7;0.9;1.0;3.728;3.201;3.358;soutenu;non;oui
+sceptre;0.87;1.0;0.35;1.0;3.152;3.207;0.882;soutenu;non;oui
+aliénation;0.865;1.0;0.55;0.9;3.173;3.076;1.252;littéraire;non;oui
+bobine;0.865;1.0;0.55;0.9;3.473;3.288;1.531;littéraire;non;oui
+compas;0.865;1.0;0.55;0.9;3.453;3.176;1.893;littéraire;non;oui
+cristallisation;0.865;1.0;0.55;0.9;2.431;2.301;1.35;littéraire;non;oui
+déduit;0.865;1.0;0.55;0.9;2.431;2.322;1.286;littéraire;non;oui
+estoc;0.865;1.0;0.55;0.9;2.301;2.204;1.25;littéraire;non;oui
+flouer;0.865;1.0;0.55;0.9;2.732;2.591;1.385;littéraire;non;oui
+glèbe;0.865;1.0;0.55;0.9;2.944;2.708;1.725;littéraire;non;oui
+hourvari;0.865;1.0;0.55;0.9;2.613;2.431;1.519;littéraire;non;oui
+peu ou prou;0.865;1.0;0.55;0.9;2.833;2.602;1.7;littéraire;non;oui
+pourceau;0.865;1.0;0.55;0.9;2.785;2.643;1.386;littéraire;non;oui
+périphrase;0.865;1.0;0.55;0.9;2.146;2.041;1.273;littéraire;non;oui
+satire;0.865;1.0;0.55;0.9;2.613;2.431;1.519;littéraire;non;oui
+sublimer;0.865;1.0;0.55;0.9;2.732;2.653;1.2;littéraire;non;oui
+absinthe;0.86;1.0;0.75;0.8;3.464;3.107;2.273;poétique;non;oui
+corail;0.86;1.0;0.75;0.8;3.473;3.017;2.856;poétique;non;oui
+lange;0.86;1.0;0.75;0.8;3.19;2.875;2.067;poétique;non;oui
+autan;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+azurer;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+bout-rimé;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+courtil;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+faunesse;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+helvétien;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+herbette;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+hyménée;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+poussinière;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+sagette;0.8575;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+accouder;0.85;0.7;1.0;0.9;3.699;2.398;20.0;littéraire;non;oui
+accroupir;0.85;0.7;1.0;0.9;3.916;2.857;11.444;littéraire;non;oui
+amante;0.85;0.7;1.0;0.9;3.744;3.017;5.327;littéraire;non;oui
+apparat;0.85;0.7;1.0;0.9;3.681;2.708;9.412;littéraire;non;oui
+brochet;0.85;0.7;1.0;0.9;3.502;2.643;7.227;littéraire;non;oui
+choir;0.85;0.7;1.0;0.9;3.838;2.519;20.879;littéraire;non;oui
+clameur;0.85;0.7;1.0;0.9;3.749;2.863;7.685;littéraire;non;oui
+derechef;0.85;0.7;1.0;0.9;3.511;1.0;50.0;littéraire;non;oui
+disant;0.85;0.7;1.0;0.9;3.847;3.104;5.535;littéraire;non;oui
+décombre;0.85;0.7;1.0;0.9;3.816;3.037;6.009;littéraire;non;oui
+gerbe;0.85;0.7;1.0;0.9;3.886;2.58;20.263;littéraire;non;oui
+mouvoir;0.85;0.7;1.0;0.9;3.629;2.763;7.345;littéraire;non;oui
+nonchalance;0.85;0.7;1.0;0.9;3.699;2.672;10.638;littéraire;non;oui
+phalange;0.85;0.7;1.0;0.9;3.545;2.623;8.357;littéraire;non;oui
+rebondir;0.85;0.7;1.0;0.9;3.52;2.813;5.092;littéraire;non;oui
+rosier;0.85;0.7;1.0;0.9;3.622;2.785;6.869;littéraire;non;oui
+sourdre;0.85;0.7;1.0;0.9;3.538;0.0;10.0;littéraire;non;oui
+commune;0.845;0.7;0.75;1.0;3.886;3.453;2.711;soutenu;non;oui
+couronner;0.845;0.7;0.75;1.0;3.562;3.161;2.517;soutenu;non;oui
+agathe;0.8425;1.0;1.0;0.65;2.146;0.0;10.0;archaïque;non;oui
+archipel;0.8425;1.0;1.0;0.65;3.473;2.681;6.188;archaïque;non;oui
+arder;0.8425;1.0;1.0;0.65;2.146;0.0;10.0;archaïque;non;oui
+arpion;0.8425;1.0;1.0;0.65;3.004;1.477;33.667;archaïque;non;oui
+bayer;0.8425;1.0;1.0;0.65;2.301;1.0;20.0;archaïque;non;oui
+brand;0.8425;1.0;1.0;0.65;2.146;0.0;10.0;archaïque;non;oui
+carmagnole;0.8425;1.0;1.0;0.65;2.672;0.0;10.0;archaïque;non;oui
+civilement;0.8425;1.0;1.0;0.65;2.869;1.602;18.5;archaïque;non;oui
+commère;0.8425;1.0;1.0;0.65;3.386;2.531;7.147;archaïque;non;oui
+faluche;0.8425;1.0;1.0;0.65;2.146;0.0;10.0;archaïque;non;oui
+gaster;0.8425;1.0;1.0;0.65;2.146;1.0;14.0;archaïque;non;oui
+matrône;0.8425;1.0;1.0;0.65;3.334;2.362;9.391;archaïque;non;oui
+militer;0.8425;1.0;1.0;0.65;2.978;2.204;5.938;archaïque;non;oui
+palsambleu;0.8425;1.0;1.0;0.65;2.301;1.477;6.667;archaïque;non;oui
+panner;0.8425;1.0;1.0;0.65;2.146;0.0;10.0;archaïque;non;oui
+parégorique;0.8425;1.0;1.0;0.65;2.531;1.602;8.5;archaïque;non;oui
+sangler;0.8425;1.0;1.0;0.65;3.386;1.602;50.0;archaïque;non;oui
+souventefois;0.8425;1.0;1.0;0.65;2.146;0.0;10.0;archaïque;non;oui
+confins;0.83;0.7;0.9;0.9;3.863;3.22;4.398;littéraire;non;oui
+frayer;0.83;0.7;0.9;0.9;3.687;3.013;4.718;littéraire;non;oui
+frileux;0.83;0.7;0.9;0.9;3.562;2.869;4.932;littéraire;non;oui
+tympan;0.83;0.7;0.9;0.9;3.545;2.949;3.944;littéraire;non;oui
+accidenter;0.825;1.0;0.35;0.9;2.146;2.079;1.167;littéraire;non;oui
+esseuler;0.825;1.0;0.35;0.9;2.146;2.23;0.824;littéraire;non;oui
+onéreux;0.825;1.0;0.35;0.9;2.833;2.778;1.133;littéraire;non;oui
+outrage;0.825;1.0;0.35;0.9;3.473;3.531;0.874;littéraire;non;oui
+prévention;0.825;1.0;0.35;0.9;3.13;3.124;1.015;littéraire;non;oui
+suspicieux;0.825;1.0;0.35;0.9;2.732;2.813;0.831;littéraire;non;oui
+vergeture;0.825;1.0;0.35;0.9;2.613;2.613;1.0;littéraire;non;oui
+énervé;0.825;1.0;0.35;0.9;3.334;3.36;0.943;littéraire;non;oui
+courre;0.8225;1.0;0.9;0.65;3.464;2.875;3.88;archaïque;non;oui
+onzième;0.8225;1.0;0.9;0.65;3.173;2.531;4.382;archaïque;non;oui
+quintal;0.8225;1.0;0.9;0.65;2.833;2.279;3.579;archaïque;non;oui
+sangle;0.8225;1.0;0.9;0.65;3.348;2.771;3.78;archaïque;non;oui
+chalumeau;0.82;1.0;0.55;0.8;3.373;3.201;1.484;poétique;non;oui
+coursier;0.82;1.0;0.1;1.0;3.292;3.609;0.483;soutenu+littéraire;non;oui
+dindon;0.82;1.0;0.1;1.0;2.869;3.09;0.602;soutenu;non;oui
+décéder;0.82;1.0;0.1;1.0;3.21;3.618;0.39;soutenu;non;oui
+décédé;0.82;1.0;0.1;1.0;2.672;3.199;0.297;soutenu;non;oui
+ensanglanter;0.82;1.0;0.55;0.8;2.944;2.653;1.956;poétique;non;oui
+fondement;0.82;1.0;0.55;0.8;3.386;3.246;1.381;poétique;non;oui
+fronde;0.82;1.0;0.55;0.8;3.228;2.934;1.965;poétique;non;oui
+homicide;0.82;1.0;0.1;1.0;2.869;3.248;0.418;soutenu;non;oui
+milice;0.82;1.0;0.1;1.0;3.386;3.512;0.748;soutenu;non;oui
+pourpoint;0.82;1.0;0.55;0.8;3.061;2.771;1.949;poétique;non;oui
+prospère;0.82;1.0;0.1;1.0;3.348;3.504;0.699;soutenu;non;oui
+redorer;0.82;1.0;0.55;0.8;2.431;2.255;1.5;poétique;non;oui
+ressouvenir;0.82;1.0;0.1;1.0;2.672;2.833;0.691;littéraire+archaïque;non;oui
+artifice;0.805;0.7;0.55;1.0;3.93;3.731;1.582;soutenu;non;oui
+arène;0.805;0.7;0.55;1.0;3.615;3.352;1.831;littéraire+poétique;non;oui
+chaume;0.805;0.7;1.0;0.8;3.687;2.556;13.5;poétique;non;oui
+cohorte;0.805;0.7;1.0;0.8;3.52;2.69;6.755;poétique;non;oui
+courber;0.805;0.7;1.0;0.8;3.681;2.69;9.796;poétique;non;oui
+dorer;0.805;0.7;1.0;0.8;3.749;2.954;6.233;poétique;non;oui
+foudroyant;0.805;0.7;1.0;0.8;3.511;2.0;32.4;poétique;non;oui
+gémissement;0.805;0.7;1.0;0.8;3.969;2.987;9.608;poétique;non;oui
+préau;0.805;0.7;1.0;0.8;3.545;2.0;35.1;poétique;non;oui
+péril;0.805;0.7;0.55;1.0;4.0;3.801;1.582;soutenu;non;oui
+redire;0.805;0.7;0.55;1.0;3.705;3.483;1.668;soutenu;non;oui
+trame;0.805;0.7;1.0;0.8;3.722;2.633;12.256;poétique;non;oui
+écrin;0.805;0.7;1.0;0.8;3.529;2.556;9.389;poétique;non;oui
+émail;0.805;0.7;1.0;0.8;3.759;2.748;10.25;poétique;non;oui
+blâme;0.8;0.7;0.75;0.9;3.607;3.267;2.189;littéraire;non;oui
+dépouille;0.8;0.7;0.75;0.9;3.699;3.228;2.959;littéraire;non;oui
+tacher;0.8;0.7;0.75;0.9;3.635;3.23;2.541;littéraire;non;oui
+virilité;0.8;0.7;0.75;0.9;3.803;3.391;2.581;littéraire;non;oui
+oublieux;0.7925;1.0;0.75;0.65;3.107;2.653;2.844;archaïque;non;oui
+adonc;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+adoncques;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+anter;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+ardre;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+aspre;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+avide;0.79;0.4;1.0;1.0;4.015;3.288;5.33;soutenu;non;oui
+châtel;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+dahoméen;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+muraille;0.79;0.4;1.0;1.0;4.042;3.107;8.602;soutenu;non;oui
+paronomasie;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+plûpart;0.79;0.85;1.0;0.65;1.845;1.0;7.0;archaïque;non;oui
+seing;0.79;0.85;1.0;0.65;1.845;1.0;7.0;archaïque;non;oui
+tablature;0.79;0.85;1.0;0.65;1.845;0.0;10.0;archaïque;non;oui
+étreinte;0.79;0.4;1.0;1.0;4.092;3.314;6.0;soutenu;non;oui
+abattement;0.7877;1.0;1.0;0.3;3.373;2.23;13.882;;oui;oui
+aboulie;0.7877;1.0;1.0;0.3;2.146;0.0;10.0;;oui;oui
+acrimonie;0.7877;1.0;1.0;0.3;2.908;1.778;13.5;;oui;oui
+ambiguïté;0.7877;1.0;1.0;0.3;3.453;2.591;7.282;;oui;oui
+amphigourique;0.7877;1.0;1.0;0.3;2.146;0.0;10.0;;oui;oui
+améthyste;0.7877;1.0;1.0;0.3;2.732;1.301;27.0;;oui;oui
+antédiluvien;0.7877;1.0;1.0;0.3;2.613;1.0;41.0;;oui;oui
+aphorisme;0.7877;1.0;1.0;0.3;2.869;1.301;37.0;;oui;oui
+apophtegme;0.7877;1.0;1.0;0.3;2.301;0.0;10.0;;oui;oui
+apostasie;0.7877;1.0;1.0;0.3;2.613;1.0;41.0;;oui;oui
+assonance;0.7877;1.0;1.0;0.3;2.301;1.0;20.0;;oui;oui
+atone;0.7877;1.0;1.0;0.3;2.869;1.301;37.0;;oui;oui
+atrabilaire;0.7877;1.0;1.0;0.3;2.146;0.0;10.0;;oui;oui
+bilieux;0.7877;1.0;1.0;0.3;2.613;0.0;10.0;;oui;oui
+bucolique;0.7877;1.0;1.0;0.3;2.978;2.146;6.786;;oui;oui
+caduc;0.7877;1.0;1.0;0.3;2.869;2.146;5.286;;oui;oui
+casuistique;0.7877;1.0;1.0;0.3;2.613;1.0;41.0;;oui;oui
+circonspect;0.7877;1.0;1.0;0.3;3.292;1.602;49.0;;oui;oui
+clair-obscur;0.7877;1.0;1.0;0.3;3.21;1.301;50.0;;oui;oui
+claustration;0.7877;1.0;1.0;0.3;3.004;1.301;50.0;;oui;oui
+collusion;0.7877;1.0;1.0;0.3;2.732;2.0;5.4;;oui;oui
+condottiere;0.7877;1.0;1.0;0.3;2.732;0.0;10.0;;oui;oui
+contingence;0.7877;1.0;1.0;0.3;3.173;1.602;37.25;;oui;oui
+corolle;0.7877;1.0;1.0;0.3;3.307;2.415;7.808;;oui;oui
+diatribe;0.7877;1.0;1.0;0.3;3.173;2.079;12.417;;oui;oui
+dogme;0.7877;1.0;1.0;0.3;3.152;2.146;10.143;;oui;oui
+dolent;0.7877;1.0;1.0;0.3;3.13;2.431;5.0;;oui;oui
+désabusé;0.7877;1.0;1.0;0.3;3.483;1.903;38.0;;oui;oui
+désuet;0.7877;1.0;1.0;0.3;3.21;2.204;10.125;;oui;oui
+estafette;0.7877;1.0;1.0;0.3;3.386;2.519;7.364;;oui;oui
+esthète;0.7877;1.0;1.0;0.3;3.173;2.431;5.519;;oui;oui
+exsangue;0.7877;1.0;1.0;0.3;3.453;2.643;6.455;;oui;oui
+faconde;0.7877;1.0;1.0;0.3;3.21;0.0;10.0;;oui;oui
+facétieux;0.7877;1.0;1.0;0.3;2.944;1.845;12.571;;oui;oui
+fallacieux;0.7877;1.0;1.0;0.3;3.13;2.0;13.5;;oui;oui
+famélique;0.7877;1.0;1.0;0.3;3.152;2.176;9.467;;oui;oui
+flegmatique;0.7877;1.0;1.0;0.3;2.869;1.301;37.0;;oui;oui
+flibustier;0.7877;1.0;1.0;0.3;2.833;1.602;17.0;;oui;oui
+flâneur;0.7877;1.0;1.0;0.3;2.944;1.0;50.0;;oui;oui
+graveleux;0.7877;1.0;1.0;0.3;2.833;1.602;17.0;;oui;oui
+grimoire;0.7877;1.0;1.0;0.3;2.869;1.301;37.0;;oui;oui
+grivois;0.7877;1.0;1.0;0.3;2.732;1.0;50.0;;oui;oui
+grivoiserie;0.7877;1.0;1.0;0.3;2.146;0.0;10.0;;oui;oui
+grognard;0.7877;1.0;1.0;0.3;2.672;0.0;10.0;;oui;oui
+harangue;0.7877;1.0;1.0;0.3;2.908;1.0;50.0;;oui;oui
+haruspice;0.7877;1.0;1.0;0.3;2.146;1.0;14.0;;oui;oui
+hypocondrie;0.7877;1.0;1.0;0.3;2.431;1.602;6.75;;oui;oui
+hécatombe;0.7877;1.0;1.0;0.3;3.107;2.301;6.4;;oui;oui
+héliotrope;0.7877;1.0;1.0;0.3;2.431;1.602;6.75;;oui;oui
+hémistiche;0.7877;1.0;1.0;0.3;2.146;1.0;14.0;;oui;oui
+héraut;0.7877;1.0;1.0;0.3;2.785;1.0;50.0;;oui;oui
+imbrication;0.7877;1.0;1.0;0.3;2.672;0.0;10.0;;oui;oui
+immémorial;0.7877;1.0;1.0;0.3;3.276;0.0;10.0;;oui;oui
+incandescent;0.7877;1.0;1.0;0.3;3.292;2.176;13.067;;oui;oui
+indolence;0.7877;1.0;1.0;0.3;3.398;2.431;9.259;;oui;oui
+insidieux;0.7877;1.0;1.0;0.3;3.386;2.176;16.2;;oui;oui
+insoumis;0.7877;1.0;1.0;0.3;2.978;2.23;5.588;;oui;oui
+intemporel;0.7877;1.0;1.0;0.3;2.869;1.845;10.571;;oui;oui
+intransigeance;0.7877;1.0;1.0;0.3;3.464;1.602;50.0;;oui;oui
+invective;0.7877;1.0;1.0;0.3;3.307;2.38;8.458;;oui;oui
+irisé;0.7877;1.0;1.0;0.3;2.785;0.0;10.0;;oui;oui
+laconique;0.7877;1.0;1.0;0.3;3.19;1.778;25.833;;oui;oui
+libation;0.7877;1.0;1.0;0.3;3.107;1.301;50.0;;oui;oui
+liturgie;0.7877;1.0;1.0;0.3;3.32;1.477;50.0;;oui;oui
+lustral;0.7877;1.0;1.0;0.3;2.869;0.0;10.0;;oui;oui
+lyrisme;0.7877;1.0;1.0;0.3;3.493;2.415;11.962;;oui;oui
+mansuétude;0.7877;1.0;1.0;0.3;3.307;2.23;11.941;;oui;oui
+marmiton;0.7877;1.0;1.0;0.3;2.869;1.0;50.0;;oui;oui
+mélopée;0.7877;1.0;1.0;0.3;3.453;1.0;50.0;;oui;oui
+nadir;0.7877;1.0;1.0;0.3;2.301;1.0;20.0;;oui;oui
+neurasthénie;0.7877;1.0;1.0;0.3;3.107;2.146;9.143;;oui;oui
+noctambule;0.7877;1.0;1.0;0.3;2.944;1.0;50.0;;oui;oui
+oblation;0.7877;1.0;1.0;0.3;2.301;0.0;10.0;;oui;oui
+obsidional;0.7877;1.0;1.0;0.3;2.531;0.0;10.0;;oui;oui
+obséquieux;0.7877;1.0;1.0;0.3;2.833;2.114;5.231;;oui;oui
+ombrageux;0.7877;1.0;1.0;0.3;3.276;2.491;6.097;;oui;oui
+ondée;0.7877;1.0;1.0;0.3;3.26;0.0;10.0;;oui;oui
+onirique;0.7877;1.0;1.0;0.3;2.531;1.602;8.5;;oui;oui
+ontologie;0.7877;1.0;1.0;0.3;2.146;1.301;7.0;;oui;oui
+ontologique;0.7877;1.0;1.0;0.3;2.531;1.602;8.5;;oui;oui
+opalin;0.7877;1.0;1.0;0.3;3.107;1.301;50.0;;oui;oui
+opiniâtre;0.7877;1.0;1.0;0.3;3.348;1.778;37.167;;oui;oui
+oscillation;0.7877;1.0;1.0;0.3;3.033;2.079;9.0;;oui;oui
+ostensoir;0.7877;1.0;1.0;0.3;3.107;2.146;9.143;;oui;oui
+ostentatoire;0.7877;1.0;1.0;0.3;3.152;1.903;17.75;;oui;oui
+outrageux;0.7877;1.0;1.0;0.3;2.301;1.477;6.667;;oui;oui
+outrecuidance;0.7877;1.0;1.0;0.3;2.869;1.0;50.0;;oui;oui
+palimpseste;0.7877;1.0;1.0;0.3;2.301;0.0;10.0;;oui;oui
+pataquès;0.7877;1.0;1.0;0.3;2.531;1.301;17.0;;oui;oui
+patricien;0.7877;1.0;1.0;0.3;2.531;1.0;34.0;;oui;oui
+pernicieux;0.7877;1.0;1.0;0.3;3.033;2.255;6.0;;oui;oui
+phosphorescence;0.7877;1.0;1.0;0.3;2.833;1.301;34.0;;oui;oui
+pistil;0.7877;1.0;1.0;0.3;2.672;1.301;23.5;;oui;oui
+placidité;0.7877;1.0;1.0;0.3;3.307;0.0;10.0;;oui;oui
+plébéien;0.7877;1.0;1.0;0.3;2.531;1.602;8.5;;oui;oui
+prodigalité;0.7877;1.0;1.0;0.3;2.978;1.477;31.667;;oui;oui
+prolixe;0.7877;1.0;1.0;0.3;3.107;2.255;7.111;;oui;oui
+prolixité;0.7877;1.0;1.0;0.3;2.301;0.0;10.0;;oui;oui
+précepteur;0.7877;1.0;1.0;0.3;3.334;2.505;6.75;;oui;oui
+précurseur;0.7877;1.0;1.0;0.3;3.004;2.146;7.214;;oui;oui
+préséance;0.7877;1.0;1.0;0.3;2.672;1.699;9.4;;oui;oui
+psalmodier;0.7877;1.0;1.0;0.3;2.908;1.0;50.0;;oui;oui
+psautier;0.7877;1.0;1.0;0.3;2.146;0.0;10.0;;oui;oui
+pythonisse;0.7877;1.0;1.0;0.3;2.301;0.0;10.0;;oui;oui
+périssable;0.7877;1.0;1.0;0.3;3.13;2.079;11.25;;oui;oui
+pétulant;0.7877;1.0;1.0;0.3;2.301;1.0;20.0;;oui;oui
+réminiscence;0.7877;1.0;1.0;0.3;3.386;1.845;34.714;;oui;oui
+sardonique;0.7877;1.0;1.0;0.3;2.978;2.0;9.5;;oui;oui
+sibyllin;0.7877;1.0;1.0;0.3;2.978;1.301;47.5;;oui;oui
+soliloque;0.7877;1.0;1.0;0.3;2.908;1.0;50.0;;oui;oui
+sophisme;0.7877;1.0;1.0;0.3;2.531;0.0;10.0;;oui;oui
+spadassin;0.7877;1.0;1.0;0.3;2.833;1.301;34.0;;oui;oui
+spleen;0.7877;1.0;1.0;0.3;3.13;2.041;12.273;;oui;oui
+substantifique;0.7877;1.0;1.0;0.3;2.301;0.0;10.0;;oui;oui
+syllogisme;0.7877;1.0;1.0;0.3;2.613;0.0;10.0;;oui;oui
+sylphide;0.7877;1.0;1.0;0.3;2.301;1.0;20.0;;oui;oui
+syncrétisme;0.7877;1.0;1.0;0.3;2.146;0.0;10.0;;oui;oui
+sénescence;0.7877;1.0;1.0;0.3;2.146;1.0;14.0;;oui;oui
+thaumaturge;0.7877;1.0;1.0;0.3;2.531;0.0;10.0;;oui;oui
+transcendance;0.7877;1.0;1.0;0.3;2.785;1.602;15.25;;oui;oui
+truisme;0.7877;1.0;1.0;0.3;2.146;1.301;7.0;;oui;oui
+trépidation;0.7877;1.0;1.0;0.3;3.086;2.0;12.2;;oui;oui
+turpitude;0.7877;1.0;1.0;0.3;3.292;2.544;5.6;;oui;oui
+urbanité;0.7877;1.0;1.0;0.3;2.613;0.0;10.0;;oui;oui
+velléité;0.7877;1.0;1.0;0.3;3.373;2.0;23.6;;oui;oui
+vicissitude;0.7877;1.0;1.0;0.3;3.307;1.602;50.0;;oui;oui
+vilipender;0.7877;1.0;1.0;0.3;2.431;1.477;9.0;;oui;oui
+villégiature;0.7877;1.0;1.0;0.3;3.334;2.0;21.6;;oui;oui
+volubilité;0.7877;1.0;1.0;0.3;3.19;0.0;10.0;;oui;oui
+vélin;0.7877;1.0;1.0;0.3;2.785;0.0;10.0;;oui;oui
+zéphyr;0.7877;1.0;1.0;0.3;2.672;1.602;11.75;;oui;oui
+élucubration;0.7877;1.0;1.0;0.3;3.033;2.255;6.0;;oui;oui
+éolien;0.7877;1.0;1.0;0.3;3.061;0.0;10.0;;oui;oui
+équinoxe;0.7877;1.0;1.0;0.3;3.398;2.643;5.682;;oui;oui
+étamine;0.7877;1.0;1.0;0.3;2.785;1.699;12.2;;oui;oui
+évanescent;0.7877;1.0;1.0;0.3;2.833;1.0;50.0;;oui;oui
+glacer;0.785;0.7;0.9;0.8;3.886;3.26;4.231;poétique;non;oui
+ivoire;0.785;0.7;0.9;0.8;3.894;3.292;4.0;poétique;non;oui
+plaintif;0.785;0.7;0.9;0.8;3.52;2.908;4.086;poétique;non;oui
+violette;0.785;0.7;0.9;0.8;3.642;3.068;3.752;poétique;non;oui
+boiteux;0.78;1.0;0.35;0.8;3.348;3.305;1.104;poétique;non;oui
+cascadeur;0.775;1.0;0.1;0.9;2.146;3.274;0.074;littéraire;non;oui
+celer;0.775;1.0;0.1;0.9;2.301;2.602;0.5;littéraire;non;oui
+contaminer;0.775;1.0;0.1;0.9;3.033;3.428;0.403;littéraire;non;oui
+dentition;0.775;1.0;0.1;0.9;2.613;3.029;0.383;littéraire;non;oui
+diligence;0.775;1.0;0.1;0.9;3.373;3.512;0.726;littéraire;non;oui
+faquin;0.775;1.0;0.1;0.9;2.301;2.653;0.444;littéraire;non;oui
+fourrière;0.775;1.0;0.1;0.9;2.908;3.452;0.286;littéraire;non;oui
+habitat;0.775;1.0;0.1;0.9;2.944;3.117;0.672;littéraire;non;oui
+immoler;0.775;1.0;0.1;0.9;2.613;2.886;0.532;littéraire;non;oui
+lopin;0.775;1.0;0.1;0.9;2.531;2.716;0.654;littéraire;non;oui
+maint;0.775;1.0;0.1;0.9;2.613;3.104;0.323;littéraire;non;oui
+noise;0.775;1.0;0.1;0.9;2.613;2.898;0.519;littéraire;non;oui
+poindre;0.775;1.0;0.1;0.9;3.453;3.708;0.556;littéraire;non;oui
+pomper;0.775;1.0;0.1;0.9;3.061;3.236;0.669;littéraire;non;oui
+promouvoir;0.775;1.0;0.1;0.9;3.21;3.551;0.455;littéraire;non;oui
+robot;0.775;1.0;0.1;0.9;3.228;4.175;0.113;littéraire;non;oui
+toxique;0.775;1.0;0.1;0.9;2.613;3.342;0.186;littéraire;non;oui
+barque;0.77;0.4;0.9;1.0;4.476;3.979;3.144;littéraire+poétique;non;oui
+conserver;0.77;0.4;0.9;1.0;4.245;3.732;3.26;soutenu;non;oui
+crayon;0.77;0.4;0.9;1.0;4.406;3.907;3.152;soutenu;non;oui
+gouffre;0.77;0.4;0.9;1.0;4.055;3.535;3.309;soutenu;non;oui
+heur;0.7688;1.0;1.0;0.9;2.672;0.0;10.0;littéraire;oui;oui
+amphitryon;0.7675;0.85;0.1;1.0;1.845;2.114;0.538;soutenu;non;oui
+septentrion;0.7675;0.85;0.1;1.0;1.845;2.204;0.438;soutenu;non;oui
+cavale;0.765;0.7;0.35;1.0;3.629;3.588;1.101;littéraire+poétique;non;oui
+favori;0.765;0.7;0.35;1.0;3.764;3.715;1.119;soutenu;non;oui
+guerrier;0.765;0.7;0.35;1.0;3.789;3.885;0.801;soutenu;non;oui
+alcyon;0.7647;1.0;0.9;0.3;2.785;2.114;4.692;;oui;oui
+anachorète;0.7647;1.0;0.9;0.3;2.613;2.0;4.1;;oui;oui
+atermoiement;0.7647;1.0;0.9;0.3;2.978;2.447;3.393;;oui;oui
+caustique;0.7647;1.0;0.9;0.3;3.061;2.531;3.382;;oui;oui
+chrysanthème;0.7647;1.0;0.9;0.3;3.276;2.653;4.2;;oui;oui
+concorde;0.7647;1.0;0.9;0.3;3.086;2.447;4.357;;oui;oui
+conjecture;0.7647;1.0;0.9;0.3;3.107;2.568;3.459;;oui;oui
+célérité;0.7647;1.0;0.9;0.3;2.944;2.415;3.385;;oui;oui
+imbroglio;0.7647;1.0;0.9;0.3;3.19;2.519;4.697;;oui;oui
+impertinence;0.7647;1.0;0.9;0.3;3.13;2.531;3.971;;oui;oui
+indocile;0.7647;1.0;0.9;0.3;2.869;2.362;3.217;;oui;oui
+inextinguible;0.7647;1.0;0.9;0.3;2.869;2.255;4.111;;oui;oui
+intrinsèque;0.7647;1.0;0.9;0.3;2.613;2.114;3.154;;oui;oui
+loquace;0.7647;1.0;0.9;0.3;3.307;2.763;3.5;;oui;oui
+prémices;0.7647;1.0;0.9;0.3;3.13;2.531;3.971;;oui;oui
+psalmodie;0.7647;1.0;0.9;0.3;2.613;2.079;3.417;;oui;oui
+rhapsodie;0.7647;1.0;0.9;0.3;2.531;1.845;4.857;;oui;oui
+scabreux;0.7647;1.0;0.9;0.3;3.033;2.447;3.857;;oui;oui
+scrupuleux;0.7647;1.0;0.9;0.3;3.386;2.806;3.797;;oui;oui
+stigmate;0.7647;1.0;0.9;0.3;3.453;2.919;3.422;;oui;oui
+éclectisme;0.7647;1.0;0.9;0.3;2.301;1.699;4.0;;oui;oui
+ésotérique;0.7647;1.0;0.9;0.3;2.833;2.255;3.778;;oui;oui
+alentour;0.76;0.7;0.55;0.9;3.96;3.679;1.912;littéraire;non;oui
+consommer;0.76;0.7;0.55;0.9;3.615;3.477;1.373;littéraire;non;oui
+déchirer;0.76;0.7;0.55;0.9;3.954;3.872;1.207;littéraire;non;oui
+décret;0.76;0.7;0.55;0.9;3.808;3.549;1.814;littéraire;non;oui
+interdit;0.76;0.7;0.55;0.9;3.789;3.702;1.223;littéraire;non;oui
+procédé;0.76;0.7;0.55;0.9;3.649;3.516;1.36;littéraire;non;oui
+ressortir;0.76;0.7;0.55;0.9;3.898;3.667;1.705;littéraire;non;oui
+érotique;0.76;0.7;0.55;0.9;3.775;3.483;1.957;littéraire;non;oui
+furie;0.755;0.7;0.75;0.8;3.744;3.312;2.702;poétique;non;oui
+appariteur;0.7525;1.0;0.55;0.65;2.531;2.447;1.214;archaïque;non;oui
+humilié;0.7525;1.0;0.55;0.65;3.334;3.037;1.982;archaïque;non;oui
+physicien;0.7525;1.0;0.55;0.65;2.978;2.875;1.267;archaïque;non;oui
+spiritueux;0.7525;1.0;0.55;0.65;2.785;2.613;1.488;archaïque;non;oui
+dentelle;0.745;0.4;1.0;0.9;4.243;3.483;5.757;littéraire;non;oui
+confondre;0.74;0.4;0.75;1.0;4.12;3.684;2.729;soutenu;non;oui
+chaux;0.7375;0.7;1.0;0.65;3.867;3.121;5.576;archaïque;non;oui
+coîffe;0.7375;0.7;1.0;0.65;3.656;2.792;7.306;archaïque;non;oui
+gravûre;0.7375;0.7;1.0;0.65;3.789;2.756;10.789;archaïque;non;oui
+affliction;0.7302;1.0;0.75;0.3;3.398;3.037;2.294;;oui;oui
+ancestral;0.7302;1.0;0.75;0.3;3.307;2.987;2.093;;oui;oui
+calice;0.7302;1.0;0.75;0.3;3.422;3.079;2.2;;oui;oui
+césure;0.7302;1.0;0.75;0.3;2.613;2.146;2.929;;oui;oui
+effronterie;0.7302;1.0;0.75;0.3;3.061;2.663;2.5;;oui;oui
+fripon;0.7302;1.0;0.75;0.3;2.613;2.176;2.733;;oui;oui
+funambule;0.7302;1.0;0.75;0.3;3.13;2.716;2.596;;oui;oui
+hermétique;0.7302;1.0;0.75;0.3;3.292;2.914;2.39;;oui;oui
+idylle;0.7302;1.0;0.75;0.3;3.431;3.029;2.523;;oui;oui
+incantation;0.7302;1.0;0.75;0.3;3.152;2.771;2.407;;oui;oui
+inimitié;0.7302;1.0;0.75;0.3;2.869;2.491;2.387;;oui;oui
+intrépide;0.7302;1.0;0.75;0.3;3.442;3.137;2.022;;oui;oui
+langoureux;0.7302;1.0;0.75;0.3;3.228;2.826;2.522;;oui;oui
+luminescence;0.7302;1.0;0.75;0.3;2.146;1.699;2.8;;oui;oui
+léthargie;0.7302;1.0;0.75;0.3;3.32;2.875;2.787;;oui;oui
+ostracisme;0.7302;1.0;0.75;0.3;3.033;2.672;2.298;;oui;oui
+patène;0.7302;1.0;0.75;0.3;2.431;2.0;2.7;;oui;oui
+quintessence;0.7302;1.0;0.75;0.3;3.086;2.633;2.837;;oui;oui
+solstice;0.7302;1.0;0.75;0.3;3.107;2.732;2.37;;oui;oui
+stoïque;0.7302;1.0;0.75;0.3;2.944;2.544;2.514;;oui;oui
+suzerain;0.7302;1.0;0.75;0.3;2.672;2.301;2.35;;oui;oui
+transitoire;0.7302;1.0;0.75;0.3;3.004;2.591;2.59;;oui;oui
+troubadour;0.7302;1.0;0.75;0.3;2.978;2.531;2.794;;oui;oui
+élégiaque;0.7302;1.0;0.75;0.3;2.301;2.0;2.0;;oui;oui
+élégie;0.7302;1.0;0.75;0.3;2.431;2.041;2.455;;oui;oui
+épicurien;0.7302;1.0;0.75;0.3;2.531;2.146;2.429;;oui;oui
+encor;0.73;1.0;0.1;0.8;2.431;2.623;0.643;poétique;non;oui
+hymen;0.73;1.0;0.1;0.8;2.531;3.312;0.166;poétique;non;oui
+languir;0.73;1.0;0.1;0.8;3.033;3.161;0.745;poétique;non;oui
+messer;0.73;1.0;0.1;0.8;2.978;3.176;0.633;poétique;non;oui
+mutiner;0.73;1.0;0.1;0.8;2.146;2.255;0.778;poétique;non;oui
+purger;0.73;1.0;0.1;0.8;3.033;3.201;0.679;poétique;non;oui
+tourte;0.73;1.0;0.1;0.8;2.732;3.013;0.524;poétique;non;oui
+caducité;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+calligramme;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+captieux;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+causticité;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+chthonien;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+cénobite;0.7274;0.85;1.0;0.3;1.845;1.0;7.0;;oui;oui
+immanence;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+inflorescence;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+noumène;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+ratiociner;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+sycophante;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+vitriolique;0.7274;0.85;1.0;0.3;1.845;0.0;10.0;;oui;oui
+ardeur;0.725;0.4;0.9;0.9;4.366;3.748;4.15;littéraire;non;oui
+paisible;0.725;0.4;0.9;0.9;4.445;3.801;4.405;littéraire;non;oui
+signifiance;0.7225;0.85;0.1;0.9;1.845;2.146;0.5;littéraire;non;oui
+vermisseau;0.7225;0.85;0.1;0.9;1.845;2.462;0.241;littéraire;non;oui
+altitude;0.72;0.7;0.35;0.9;3.803;3.804;0.997;littéraire;non;oui
+insulter;0.72;0.7;0.35;0.9;3.808;3.83;0.95;littéraire;non;oui
+solaire;0.72;0.7;0.35;0.9;3.812;3.848;0.922;littéraire;non;oui
+tombeau;0.72;0.7;0.35;0.9;3.95;3.978;0.938;littéraire;non;oui
+vexer;0.72;0.7;0.35;0.9;3.622;3.717;0.804;littéraire;non;oui
+vipère;0.72;0.7;0.35;0.9;3.52;3.534;0.968;littéraire;non;oui
+virginité;0.72;0.7;0.35;0.9;3.545;3.628;0.826;littéraire;non;oui
+nouër;0.7175;0.7;0.9;0.65;3.779;3.223;3.599;archaïque;non;oui
+brune;0.715;0.7;0.55;0.8;3.808;3.647;1.446;poétique;non;oui
+colombe;0.715;0.7;0.1;1.0;3.545;3.706;0.691;littéraire+poétique;non;oui
+désolé;0.715;0.7;0.1;1.0;3.812;5.287;0.034;soutenu;non;oui
+impatient;0.715;0.7;0.55;0.8;3.963;3.869;1.242;poétique;non;oui
+martyre;0.715;0.7;0.55;0.8;3.784;3.521;1.831;poétique;non;oui
+olive;0.715;0.7;0.55;0.8;3.675;3.459;1.642;poétique;non;oui
+compositeur;0.7125;1.0;0.35;0.65;3.464;3.559;0.804;archaïque;non;oui
+coupon;0.7125;1.0;0.35;0.65;3.086;3.072;1.034;archaïque;non;oui
+dériveur;0.7125;1.0;0.35;0.65;2.146;2.146;1.0;archaïque;non;oui
+eau-forte;0.7125;1.0;0.35;0.65;2.431;2.477;0.9;archaïque;non;oui
+meûnier;0.7125;1.0;0.35;0.65;2.869;2.881;0.974;archaïque;non;oui
+mixte;0.7125;1.0;0.35;0.65;3.362;3.348;1.031;archaïque;non;oui
+nonante;0.7125;1.0;0.35;0.65;2.431;2.431;1.0;archaïque;non;oui
+quint;0.7125;1.0;0.35;0.65;2.301;2.301;1.0;archaïque;non;oui
+rebours;0.7125;1.0;0.35;0.65;3.464;3.547;0.827;archaïque;non;oui
+secoûrir;0.7125;1.0;0.35;0.65;3.422;3.473;0.889;archaïque;non;oui
+ataraxie;0.7044;0.85;0.9;0.3;1.845;1.301;3.5;;oui;oui
+azur;0.7044;0.7;0.9;1.0;3.973;3.474;3.151;littéraire+poétique;oui;oui
+obsolescence;0.7044;0.85;0.9;0.3;1.845;1.301;3.5;;oui;oui
+périgée;0.7044;0.85;0.9;0.3;1.845;1.301;3.5;;oui;oui
+cryptique;0.7015;0.4;0.1;1.0;0.0;1.0;0.0;soutenu;oui;oui
+brise;0.7;0.4;0.55;1.0;4.037;3.748;1.943;littéraire+poétique;non;oui
+cendre;0.7;0.4;0.55;1.0;4.25;4.145;1.274;soutenu;non;oui
+chevelure;0.7;0.4;1.0;0.8;4.399;3.398;10.028;poétique;non;oui
+demeure;0.7;0.4;0.55;1.0;4.303;4.088;1.64;soutenu;non;oui
+selle;0.7;0.4;0.55;1.0;4.206;3.949;1.807;soutenu;non;oui
+venue;0.7;0.4;0.55;1.0;4.06;3.921;1.378;soutenu;non;oui
+correspondance;0.695;0.4;0.75;0.9;4.075;3.727;2.231;littéraire;non;oui
+ferraille;0.695;0.4;0.75;0.9;4.037;3.625;2.578;littéraire;non;oui
+voire;0.695;0.4;0.75;0.9;4.228;3.87;2.276;littéraire;non;oui
+gifle;0.6875;0.7;0.75;0.65;3.994;3.556;2.739;archaïque;non;oui
+situër;0.6875;0.7;0.75;0.65;3.894;3.431;2.904;archaïque;non;oui
+apathie;0.6842;1.0;0.55;0.3;3.173;2.959;1.637;;oui;oui
+apogée;0.6842;1.0;0.55;0.3;3.246;3.146;1.257;;oui;oui
+auguste;0.6842;1.0;0.55;0.3;3.276;3.0;1.89;;oui;oui
+dryade;0.6842;1.0;0.55;0.3;2.301;2.204;1.25;;oui;oui
+fielleux;0.6842;1.0;0.55;0.3;2.672;2.491;1.516;;oui;oui
+félicité;0.6842;1.0;0.55;0.3;3.473;3.322;1.414;;oui;oui
+insatiable;0.6842;1.0;0.55;0.3;3.453;3.238;1.642;;oui;oui
+libidineux;0.6842;1.0;0.55;0.3;2.785;2.505;1.906;;oui;oui
+magnanime;0.6842;1.0;0.55;0.3;3.19;3.013;1.505;;oui;oui
+maraudeur;0.6842;1.0;0.55;0.3;2.944;2.681;1.833;;oui;oui
+maxime;0.6842;1.0;0.55;0.3;3.086;2.806;1.906;;oui;oui
+moujik;0.6842;1.0;0.55;0.3;2.785;2.699;1.22;;oui;oui
+outrecuidant;0.6842;1.0;0.55;0.3;2.301;2.041;1.818;;oui;oui
+paria;0.6842;1.0;0.55;0.3;3.13;2.914;1.646;;oui;oui
+présage;0.6842;1.0;0.55;0.3;3.442;3.29;1.421;;oui;oui
+quiproquo;0.6842;1.0;0.55;0.3;2.785;2.568;1.649;;oui;oui
+renégat;0.6842;1.0;0.55;0.3;3.061;2.949;1.292;;oui;oui
+satirique;0.6842;1.0;0.55;0.3;2.613;2.342;1.864;;oui;oui
+sbire;0.6842;1.0;0.55;0.3;3.19;2.964;1.685;;oui;oui
+talisman;0.6842;1.0;0.55;0.3;3.422;3.14;1.913;;oui;oui
+verbeux;0.6842;1.0;0.55;0.3;2.431;2.23;1.588;;oui;oui
+zodiaque;0.6842;1.0;0.55;0.3;2.833;2.724;1.283;;oui;oui
+caresser;0.68;0.4;0.9;0.8;4.261;3.753;3.223;poétique;non;oui
+gémir;0.68;0.4;0.9;0.8;4.09;3.589;3.17;poétique;non;oui
+menacer;0.68;0.4;0.9;0.8;4.003;3.47;3.414;poétique;non;oui
+oubli;0.68;0.4;0.9;0.8;4.457;3.84;4.14;poétique;non;oui
+triomphe;0.68;0.4;0.9;0.8;4.436;3.946;3.092;poétique;non;oui
+butin;0.675;0.7;0.35;0.8;3.716;3.797;0.829;poétique;non;oui
+chanteur;0.675;0.7;0.35;0.8;3.963;3.991;0.938;poétique;non;oui
+cygne;0.675;0.7;0.35;0.8;3.668;3.723;0.883;poétique;non;oui
+destinée;0.675;0.7;0.35;0.8;3.92;3.937;0.962;poétique;non;oui
+perruque;0.675;0.7;0.35;0.8;3.847;3.905;0.875;poétique;non;oui
+augmentation;0.67;0.7;0.1;0.9;3.511;3.82;0.49;littéraire;non;oui
+splendide;0.67;0.7;0.1;0.9;3.863;4.189;0.472;littéraire;non;oui
+béer;0.6685;1.0;1.0;0.9;3.004;2.0;10.1;littéraire;non;oui
+accablement;0.667;0.7;1.0;0.3;3.554;2.322;17.048;;oui;oui
+bonhomie;0.667;0.7;1.0;0.3;3.615;1.301;50.0;;oui;oui
+connivence;0.667;0.7;1.0;0.3;3.784;2.778;10.133;;oui;oui
+consternation;0.667;0.7;1.0;0.3;3.656;2.839;6.565;;oui;oui
+effervescence;0.667;0.7;1.0;0.3;3.577;2.602;9.45;;oui;oui
+effluve;0.667;0.7;1.0;0.3;3.769;1.778;50.0;;oui;oui
+frémissement;0.667;0.7;1.0;0.3;3.933;2.74;15.6;;oui;oui
+goguenard;0.667;0.7;1.0;0.3;3.585;1.0;50.0;;oui;oui
+immuable;0.667;0.7;1.0;0.3;3.894;3.093;6.323;;oui;oui
+impérieux;0.667;0.7;1.0;0.3;3.816;2.58;17.237;;oui;oui
+inexorable;0.667;0.7;1.0;0.3;3.577;2.519;11.455;;oui;oui
+insouciance;0.667;0.7;1.0;0.3;3.898;3.061;6.878;;oui;oui
+jubilation;0.667;0.7;1.0;0.3;3.808;2.505;20.062;;oui;oui
+morose;0.667;0.7;1.0;0.3;3.859;3.0;7.23;;oui;oui
+métaphysique;0.667;0.7;1.0;0.3;3.615;2.806;6.438;;oui;oui
+narquois;0.667;0.7;1.0;0.3;3.675;2.079;39.417;;oui;oui
+opulence;0.667;0.7;1.0;0.3;3.511;2.732;6.0;;oui;oui
+perplexité;0.667;0.7;1.0;0.3;3.668;2.322;22.19;;oui;oui
+satyre;0.667;0.7;1.0;0.3;3.585;2.623;9.167;;oui;oui
+tintamarre;0.667;0.7;1.0;0.3;3.52;1.602;50.0;;oui;oui
+volubile;0.667;0.7;1.0;0.3;3.571;1.699;50.0;;oui;oui
+zénith;0.667;0.7;1.0;0.3;3.529;2.799;5.365;;oui;oui
+énigmatique;0.667;0.7;1.0;0.3;3.769;2.903;7.35;;oui;oui
+front;0.665;0.1;0.9;1.0;5.183;4.589;3.931;soutenu;non;oui
+malgré;0.665;0.1;0.9;1.0;5.282;4.667;4.119;soutenu+archaïque;non;oui
+souvenir;0.665;0.1;0.9;1.0;5.028;4.484;3.504;soutenu;non;oui
+crapule;0.6625;1.0;0.1;0.65;3.398;3.646;0.564;archaïque;non;oui
+fonduë;0.6625;1.0;0.1;0.65;2.869;3.017;0.712;archaïque;non;oui
+lèche;0.6625;1.0;0.1;0.65;2.833;3.14;0.493;archaïque;non;oui
+missile;0.6625;1.0;0.1;0.65;2.613;3.873;0.055;archaïque;non;oui
+méger;0.6625;1.0;0.1;0.65;2.732;2.919;0.651;archaïque;non;oui
+radin;0.6625;1.0;0.1;0.65;3.107;3.43;0.476;archaïque;non;oui
+jadis;0.6613;0.1;0.9;0.8;4.719;4.063;4.528;poétique;oui;oui
+aimable;0.66;0.4;0.35;1.0;4.391;4.342;1.119;soutenu;non;oui
+envier;0.66;0.4;0.35;1.0;4.058;4.097;0.914;soutenu;non;oui
+scandale;0.66;0.4;0.35;1.0;4.332;4.281;1.126;soutenu;non;oui
+entreprise;0.655;0.4;0.55;0.9;4.463;4.358;1.275;littéraire;non;oui
+liaison;0.655;0.4;0.55;0.9;4.426;4.265;1.45;littéraire;non;oui
+panique;0.655;0.4;0.55;0.9;4.396;4.209;1.537;littéraire;non;oui
+procéder;0.655;0.4;0.55;0.9;4.006;3.829;1.502;littéraire;non;oui
+serviteur;0.655;0.4;0.55;0.9;4.026;3.763;1.829;littéraire;non;oui
+huis;0.6545;1.0;0.9;0.9;3.26;2.681;3.792;littéraire;non;oui
+cristal;0.65;0.4;0.75;0.8;4.137;3.802;2.164;poétique;non;oui
+rivage;0.65;0.4;0.75;0.8;4.092;3.641;2.822;poétique;non;oui
+solipsisme;0.6498;0.4;0.1;0.9;0.0;1.0;0.0;littéraire;oui;oui
+synesthésie;0.6498;0.4;0.1;0.9;0.0;1.0;0.0;littéraire;oui;oui
+librairie;0.6475;0.7;0.55;0.65;3.916;3.701;1.641;archaïque;non;oui
+passerelle;0.6475;0.7;0.55;0.65;3.927;3.644;1.916;archaïque;non;oui
+saoul;0.6475;0.7;0.55;0.65;3.976;3.893;1.211;archaïque;non;oui
+évanouir;0.6475;0.7;0.55;0.65;3.916;3.643;1.873;archaïque;non;oui
+spleenétique;0.6469;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;oui;non
+abnégation;0.644;0.7;0.9;0.3;3.554;2.959;3.934;;oui;oui
+auréole;0.644;0.7;0.9;0.3;3.662;3.017;4.413;;oui;oui
+fugace;0.644;0.7;0.9;0.3;3.502;2.833;4.676;;oui;oui
+ignominie;0.644;0.7;0.9;0.3;3.502;2.881;4.184;;oui;oui
+insolence;0.644;0.7;0.9;0.3;3.943;3.43;3.264;;oui;oui
+limpide;0.644;0.7;0.9;0.3;3.994;3.365;4.25;;oui;oui
+millénaire;0.644;0.7;0.9;0.3;3.668;3.134;3.426;;oui;oui
+nostalgique;0.644;0.7;0.9;0.3;3.577;3.045;3.405;;oui;oui
+pittoresque;0.644;0.7;0.9;0.3;3.656;3.167;3.082;;oui;oui
+ténébreux;0.644;0.7;0.9;0.3;3.668;3.045;4.198;;oui;oui
+éphémère;0.644;0.7;0.9;0.3;3.759;3.124;4.316;;oui;oui
+geste;0.64;0.1;1.0;0.9;5.236;4.497;5.477;littéraire;non;oui
+trait;0.64;0.1;1.0;0.9;4.774;3.905;7.396;littéraire;non;oui
+épais;0.64;0.1;1.0;0.9;4.613;3.784;6.745;littéraire;non;oui
+dilettante;0.6382;1.0;0.35;0.3;2.833;2.929;0.8;;oui;oui
+déliquescence;0.6382;1.0;0.35;0.3;2.146;2.204;0.875;;oui;oui
+impudence;0.6382;1.0;0.35;0.3;3.107;3.104;1.008;;oui;oui
+lascif;0.6382;1.0;0.35;0.3;2.978;2.903;1.187;;oui;oui
+licencieux;0.6382;1.0;0.35;0.3;2.531;2.613;0.829;;oui;oui
+métrique;0.6382;1.0;0.35;0.3;2.431;2.38;1.125;;oui;oui
+neurasthénique;0.6382;1.0;0.35;0.3;2.908;2.845;1.157;;oui;oui
+palefrenier;0.6382;1.0;0.35;0.3;2.833;2.806;1.062;;oui;oui
+panégyrique;0.6382;1.0;0.35;0.3;2.301;2.342;0.909;;oui;oui
+paradigme;0.6382;1.0;0.35;0.3;2.146;2.114;1.077;;oui;oui
+pointilleux;0.6382;1.0;0.35;0.3;2.944;2.964;0.957;;oui;oui
+séquestration;0.6382;1.0;0.35;0.3;2.531;2.477;1.133;;oui;oui
+venimeux;0.6382;1.0;0.35;0.3;3.228;3.199;1.07;;oui;oui
+élixir;0.6382;1.0;0.35;0.3;3.107;3.182;0.842;;oui;oui
+force;0.635;0.1;0.75;1.0;5.339;5.035;2.017;littéraire+archaïque;non;oui
+printemps;0.635;0.1;0.75;1.0;4.784;4.445;2.186;soutenu+poétique;non;oui
+lyre;0.6335;1.0;0.75;0.9;3.061;2.74;2.091;littéraire;non;oui
+morné;0.6325;0.4;1.0;0.65;4.16;2.908;17.852;archaïque;non;oui
+vitré;0.6325;0.4;1.0;0.65;4.05;2.477;37.4;archaïque;non;oui
+mouvement;0.62;0.1;0.9;0.9;5.13;4.466;4.607;littéraire;non;oui
+paysage;0.62;0.1;0.9;0.9;4.703;4.024;4.775;littéraire;non;oui
+pensée;0.62;0.1;0.9;0.9;4.995;4.419;3.768;littéraire;non;oui
+courrier;0.615;0.4;0.35;0.9;4.362;4.369;0.985;littéraire;non;oui
+habiller;0.615;0.4;0.35;0.9;4.184;4.233;0.893;littéraire;non;oui
+repartir;0.615;0.4;0.35;0.9;4.36;4.291;1.171;littéraire;non;oui
+seize;0.6125;0.4;0.9;0.65;4.497;3.887;4.075;archaïque;non;oui
+aramidé;0.61;0.4;0.1;1.0;0.0;1.0;0.0;soutenu;non;oui
+berger;0.61;0.4;0.55;0.8;4.047;3.921;1.339;poétique;non;oui
+bienveillamment;0.61;0.4;0.1;1.0;0.0;2.0;0.0;soutenu;non;oui
+crime;0.61;0.4;0.1;1.0;4.467;4.913;0.359;soutenu;non;oui
+deuil;0.61;0.4;0.55;0.8;4.371;4.087;1.925;poétique;non;oui
+mensonge;0.61;0.4;0.1;1.0;4.34;4.527;0.651;littéraire+poétique;non;oui
+moquer;0.61;0.4;0.1;1.0;4.073;4.411;0.458;soutenu;non;oui
+nitre;0.61;0.4;0.1;1.0;0.0;1.845;0.0;littéraire+poétique;non;oui
+pleur;0.61;0.4;0.55;0.8;4.068;3.969;1.254;poétique;non;oui
+prévalence;0.61;0.4;0.1;1.0;0.0;2.041;0.0;soutenu;non;oui
+septante;0.61;0.85;0.1;0.65;1.845;2.041;0.636;archaïque;non;oui
+chimère;0.6095;0.7;0.75;0.3;3.52;3.083;2.736;;oui;oui
+constellation;0.6095;0.7;0.75;0.3;3.554;3.207;2.224;;oui;oui
+méticuleux;0.6095;0.7;0.75;0.3;3.615;3.253;2.302;;oui;oui
+poétique;0.6095;0.7;0.75;0.3;3.789;3.369;2.628;;oui;oui
+pétale;0.6095;0.7;0.75;0.3;3.834;3.364;2.952;;oui;oui
+a silentio;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+accipitridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+accipitriforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ad usum;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ad usum delphini;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+adelphal;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+advenance;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aegothélidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aimer à;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ajouter foi;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+alcidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+alcédinidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+algolagnie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aller à canossa;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aller à la selle;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+alque;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+amertumer;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+amour physique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+amphitryonne;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+anhimidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+anhingidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aniterge;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+annonacée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+anséranatidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+apeurant;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+apodidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+apodiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aporie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aptérygidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+aptérygiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+araucariacée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ardéidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+au diable vert;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+au grand jamais;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+au point du jour;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+au péril de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+au spectacle de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+autochtonyme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+avant toute chose;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+avant toutes choses;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+avoir l’heur de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+avoir tôt fait de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+avoir vécu;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+balaénicipitidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+belles-lettres;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+betterave sucrière;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+bien vouloir;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+bourdonneur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+boïdé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+brachyptéraciidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+bucconidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+bucorvidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+bucérotidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+bucérotiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+burhinidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+bédéique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cacatuidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+caligaresque;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+calyptophilidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+calyptre;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cancer du sein triple négatif;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+capitonidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+caprimulgidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+caprimulgiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cardinalidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cariamidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cariamiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+casuariidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+casuariiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cathartidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+caudataire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ce faisant;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ce jour;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+chanson bachique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+charadriidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+charadriiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+chionidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+choix de sophie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+chrysocale;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+churchillien;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ciconiidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ciconiiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+code génétique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+coliidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+coliiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+colombiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+columbidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+columbiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+commerce charnel;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+contemption;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+coraciadidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+coraciadiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+coraciidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+coraciiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cornegidouille;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+corythaeoliné;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+courage moral;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+courage physique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+couronne de myrte;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu+littéraire;non;non
+courtisane;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cracidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+crinifériné;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+crépusculin;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu+poétique;non;non
+cuculidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cuculiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cupressacée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+cynégète;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+de fondation;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+de longtemps;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu+littéraire;non;non
+de niveau avec;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+de son chef;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+de son propre chef;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+de toute éternité;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+demanderesse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+diomédéidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+diptérocarpacée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+discrimination algorithmique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+drole;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+drolesse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+dromadidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+dromaïidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+du vivant de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+durant que;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+dzêta;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+déchargement émotionnel;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+dépeauter;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+dépouille mortelle;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+dérade;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+désembrayer;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+d’heureuse mémoire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+embrassons-nous, folleville;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+en lieu et place de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+entrée en vigueur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+eu égard à;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+eurypygidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+eurypygiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+exécuteur de la haute justice;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+exécuteur des hautes œuvres;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+faire amende honorable;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+faire crédit;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+faire diligence;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+faire montre de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+faire présent;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+faire ses adieux;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+falconidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+falconiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+fasse le ciel que;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+feuil;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+fille de sion;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+flatteresse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+frumental;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+frégatidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+féminaire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+gadiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+galbulidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+gandouse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+gausserie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+gaviidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+gaviiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+glaréolidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+grand bien lui fasse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+gruidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+gruiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+grâces à;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+heureux comme dieu en france;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+hiémal;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+hydrobatidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+hâter le pas;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+héliornithidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+hématopodidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+hémichordé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+hémiprocnidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ibidorhynchidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+il suffit;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+illuner;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+in fieri;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+in fine;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+in illo tempore;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+inamissible;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu+littéraire;non;non
+inattingible;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+incontenté;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+indicatoridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+inexaucé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+inexercé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+inexhaustible;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+infortunée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+infrahumanisation;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+invengé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+invigorant;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+invigorer;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+invita minerva;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+inébriant;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+inébrier;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+irretrouvable;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+jacanidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+jamais au grand jamais;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+je vous en prie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+jeter l’anathème;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+jocrisserie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+jouer de la prunelle;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+juger à propos;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+juvénaliser;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lait du milieu;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+laridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+laudativement;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+leptosomatidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+leptosomatiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+leptosomidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+leptosomiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+linguicide;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lit de procuste;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lophophorate;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lophophoridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lophophorien;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lophophoronidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lophophoré;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+luxe ostentatoire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+luxe tapageur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lybiidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lépidier;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lépidier latifolié;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lésineur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+lésineuse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+machine ronde;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+magnoliale;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+maintes et maintes fois;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+maintes fois;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+martyriseur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+maître des hautes œuvres;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+meshui;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+mettre en honneur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+mettre à contribution;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+microbiote racinaire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+mitrospingidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+modératrice;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+momotidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+morphonyme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+musophagidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+musophagiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+musophaginé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+méfaire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+mégalaimidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+mégapodiidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ménestrelle;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+méropidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+mésitornithidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+mésitornithiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ne pas laisser de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ne trop savoir;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ne vivre que pour soi;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+nestoridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ni jour ni nuit;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ni nuit ni jour;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+nipponophile;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+nombreuse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+numididé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+nyctibiidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+néoclassicisme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+n’être plus de ce monde;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+océanitidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+odontophoridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+onérer;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+opisthocomidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+opisthocomiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+otididé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+otidiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+outre cela;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ouïr dire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pandionidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+par voie de conséquence;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+paradonnée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+paralipomènes;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+parleresse;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+partager en deux;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+partie fine;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+parulidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pas le moins du monde;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+passer l’expression;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+passerellidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+passériforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+perdiciné;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phaenicophilidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phaethornithiné;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phalacrocoracidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phalle;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phasianidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phasianiné;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phaéthontidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phaéthontiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phoronide;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phoronidien;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phycophyte;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+phytopharmaceutique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+piano roll;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+picidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+piciforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pilistromate;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pinacée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pinale;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pluvianellidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pluvianidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+podargidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+podocarpacée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+point du jour;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pointe du jour;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ponte blanche;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pour jamais;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+prendre de force;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+prendre par force;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+primus inter pares;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pro parte;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+procellariidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+procellariiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+procrastiner;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+proh pudor;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+prostibulaire;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+protoconque;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+prédatif;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+psittacidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+psittaciforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+psittacisme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+psittaculidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+psittrichasiidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+psophiidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ptéroclididé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ptéroclidiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ptéroclidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ptérocliforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pédionomidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pélécanidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+pélécaniforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+périculeux;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+quête numérique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rallidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ramphastidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+recherche de provenance;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+relation sexuelle;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+remettre en honneur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+reproduction clonale;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+retenir l’attention;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rhodinocichlidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rhynochétidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rhéidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rhéiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rire aux dépens d’autrui;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rompre le fer;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ronge-maille;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+rostratulidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rosée de vénus;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rouleau de piano mécanique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rouleau de piano pneumatique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+récurvirostridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+résurrectionniste;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+rétinofuge;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sagittariidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sainte travestie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sans coup férir;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu+littéraire;non;non
+sans déconner;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sans repos ni trêve;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sans trêve ni merci;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sans trêve ni repos;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sarothruridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sauf votre respect;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sauvegarder les apparences;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+scolopacidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+scopidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+se souvenir;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+se tenir coi;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+secundum artem;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+selles;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+semnornithidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+solution de continuité;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sphéniscidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sphénisciforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+stercorariidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+strigidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+strigopidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+struthioniforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+stéatornithidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sulidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+suliforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+supposalité;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sur ce;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sylvie fitis;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+sylvie rubécule;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+s’en être;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+s’illuner;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+s’inébrier;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tableau optométrique;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tant que le cœur me battra;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+taxacée;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+taxonyme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tenir pour;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tenir pour responsable;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+terran;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+thinocoridé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+thraupidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+threskiornithidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+théopneustie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tinamiforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+todidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tolle;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+toucher mot de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+translucider;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+poétique;non;non
+traîner aux gémonies;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+trochilidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+trochiliné;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+trogonidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+trogoniforme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tubinare;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tunique de nessus;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+turnicidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+tytonidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+upupidé;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+valédiction;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+venir à canossa;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vergogner;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+vespertin;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+veuilliez;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+veuillions;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vis inertiae;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vitulin;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vosgéso-;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vouer aux furies;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vouer aux gémonies;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vouloir bien;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vox inanis;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+vulturin;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+y avoir lieu de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+à jamais;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+à la cantonade;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+à l’endroit de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+à l’intention de;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+à l’étourdie;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+à telle enseigne que;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+à telles enseignes que;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+âge le plus tendre;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+éduscepticisme;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+érubescent;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+œniculteur;0.6075;0.25;0.35;1.0;0.0;0.0;1.0;soutenu;non;non
+ailé;0.602;1.0;0.75;0.8;3.152;2.851;2.0;poétique;non;oui
+orbe;0.602;1.0;0.75;0.8;3.004;2.663;2.196;poétique;non;oui
+lare;0.6002;0.85;1.0;0.8;1.845;0.0;10.0;poétique;non;oui
+atteindre;0.595;0.1;0.55;1.0;4.607;4.388;1.657;soutenu;non;oui
+course;0.595;0.1;0.55;1.0;4.709;4.607;1.266;soutenu+poétique;non;oui
+fruit;0.595;0.1;0.55;1.0;4.624;4.37;1.795;soutenu;non;oui
+instant;0.595;0.1;0.55;1.0;5.456;5.26;1.57;soutenu;non;oui
+jais;0.595;0.7;1.0;0.9;3.834;2.633;15.86;littéraire;non;oui
+mesure;0.595;0.1;1.0;0.8;5.05;4.323;5.336;poétique;non;oui
+nombreux;0.595;0.1;0.55;1.0;4.569;4.476;1.239;soutenu;non;oui
+ombre;0.595;0.1;1.0;0.8;5.28;4.556;5.298;poétique;non;oui
+paupière;0.595;0.1;1.0;0.8;4.751;3.576;14.966;poétique;non;oui
+prince;0.595;0.1;0.55;1.0;4.817;4.652;1.464;soutenu;non;oui
+profond;0.595;0.1;0.55;1.0;4.679;4.393;1.932;soutenu;non;oui
+quartier;0.595;0.1;0.55;1.0;4.954;4.742;1.627;littéraire+archaïque;non;oui
+rêne;0.5915;0.7;0.75;1.0;3.749;3.344;2.538;soutenu;non;oui
+amant;0.59;0.1;0.75;0.9;4.67;4.367;2.009;littéraire;non;oui
+aventure;0.59;0.1;0.75;0.9;4.739;4.353;2.434;littéraire;non;oui
+hiver;0.59;0.1;0.75;0.9;4.984;4.573;2.572;littéraire;non;oui
+parmi;0.59;0.1;0.75;0.9;5.235;4.84;2.486;littéraire;non;oui
+présent;0.59;0.1;0.75;0.9;5.137;4.814;2.107;littéraire;non;oui
+saur;0.5897;1.0;1.0;0.65;2.732;1.0;50.0;archaïque;non;oui
+coûtume;0.5825;0.4;0.75;0.65;4.231;3.862;2.343;archaïque;non;oui
+anémie;0.5807;1.0;0.1;0.3;2.613;3.117;0.313;;oui;oui
+bannissement;0.5807;1.0;0.1;0.3;2.531;2.771;0.576;;oui;oui
+brigand;0.5807;1.0;0.1;0.3;3.373;3.483;0.776;;oui;oui
+clémence;0.5807;1.0;0.1;0.3;3.386;3.537;0.706;;oui;oui
+codex;0.5807;1.0;0.1;0.3;2.146;2.792;0.226;;oui;oui
+cénacle;0.5807;1.0;0.1;0.3;2.146;2.613;0.341;;oui;oui
+enlumineur;0.5807;1.0;0.1;0.3;2.301;2.431;0.741;;oui;oui
+gredin;0.5807;1.0;0.1;0.3;2.531;3.097;0.272;;oui;oui
+intègre;0.5807;1.0;0.1;0.3;2.908;3.176;0.54;;oui;oui
+irrévérence;0.5807;1.0;0.1;0.3;2.301;2.477;0.667;;oui;oui
+mentor;0.5807;1.0;0.1;0.3;2.785;3.21;0.377;;oui;oui
+parjure;0.5807;1.0;0.1;0.3;2.833;3.064;0.586;;oui;oui
+probe;0.5807;1.0;0.1;0.3;2.146;2.556;0.389;;oui;oui
+scélérat;0.5807;1.0;0.1;0.3;2.672;2.82;0.712;;oui;oui
+soporifique;0.5807;1.0;0.1;0.3;2.301;2.771;0.339;;oui;oui
+flamme;0.575;0.1;0.9;0.8;4.584;4.101;3.044;poétique;non;oui
+milieu;0.575;0.1;0.9;0.8;5.392;4.836;3.596;poétique;non;oui
+cruel;0.57;0.4;0.35;0.8;4.164;4.194;0.933;poétique;non;oui
+foudre;0.57;0.4;0.35;0.8;4.102;4.097;1.011;poétique;non;oui
+aphrodité;0.565;0.4;0.1;0.9;0.0;1.0;0.0;littéraire;non;oui
+environ;0.565;0.4;0.1;0.9;4.438;4.745;0.494;littéraire;non;oui
+fashion;0.565;0.4;0.1;0.9;0.0;2.447;0.0;littéraire;non;oui
+formidable;0.565;0.4;0.1;0.9;4.478;4.714;0.581;littéraire;non;oui
+félinité;0.565;0.4;0.1;0.9;0.0;1.0;0.0;littéraire;non;oui
+magnifique;0.565;0.4;0.1;0.9;4.36;4.896;0.291;littéraire;non;oui
+malin;0.565;0.4;0.1;0.9;4.126;4.52;0.404;littéraire;non;oui
+merveilleux;0.565;0.4;0.1;0.9;4.328;4.736;0.391;littéraire;non;oui
+neveu;0.565;0.4;0.1;0.9;4.144;4.36;0.608;littéraire;non;oui
+partager;0.565;0.4;0.1;0.9;4.397;4.532;0.732;littéraire;non;oui
+placentaire;0.565;0.4;0.1;0.9;0.0;1.602;0.0;littéraire;non;oui
+signer;0.565;0.4;0.1;0.9;4.166;4.384;0.606;littéraire;non;oui
+sélénite;0.565;0.4;0.1;0.9;0.0;1.301;0.0;littéraire;non;oui
+uraniste;0.565;0.4;0.1;0.9;0.0;1.301;0.0;littéraire;non;oui
+céleste;0.5635;0.7;0.55;0.3;3.764;3.646;1.312;;oui;oui
+labyrinthe;0.5635;0.7;0.55;0.3;3.847;3.69;1.435;;oui;oui
+somnambule;0.5635;0.7;0.55;0.3;3.607;3.367;1.738;;oui;oui
+absalonien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+accordance;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+acquiescence;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+acribie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+agaréen;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+aheurter;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+aimeuse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+alburostre;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+alinéaire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+alliciant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+allicier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+amour crétois;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+amuïr;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+anacribie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+anacyclique;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+analecte;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+animadversion;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+anonchali;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+anonchalir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+antapodose;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+anti-textualisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+anti-textualiste;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+anuité;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+apagogie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+apert;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+apertement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+apodose;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+aprilin;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+argentement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+argutieusement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+astre de la nuit;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+astre des nuits;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+astre du jour;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+astre radieux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+astéïsme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+attiédi;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+au lieu que de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+au rez de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+augmentateur;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+auteur de ses jours;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+autrice de mes jours;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+auxcrinier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+avant que de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+azuréen;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+baise-moi-ma-mignonne;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+baisez-moi-mignonne;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+bardesse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+bardolâtre;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+bardolâtrie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+bellique;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+besacier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+besacière;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+blondoyer;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+bon nombre de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+branchure;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+bénévolent;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+böcklinien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+caligineux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+caméral;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+caninerie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+carminophile;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+cataglottisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+ce me semble;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+cela s’entend;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+chaloir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+chevalier errant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+chevalière errante;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+chevaucheuse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+cheveu de jais;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+chibriape;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+chrysogomphe;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+cinédologique;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+ciseaux d’anastasie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+clair et apert;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+clair et manifeste;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+colométrie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+confin;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+connaitre bibliquement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+connaître au sens biblique du terme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+conseilleuse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+coquebine;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+coquecigrue;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+cordouanier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+crime de lèse-esthétique;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+crime de lèse-million;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+crocos;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+cynède;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+cythéréen;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+célère;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+célèrement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+de mal en pis;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+dimidier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+dioscurique;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+dioscurisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+disciple de corydon;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+dive bouteille;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+dolence;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+donner loisir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+douteuse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+duire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+durassien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+dès l’abord;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+décevance;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+déconcert;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+défendre la veuve et l’orphelin;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+déhiscent;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+délices;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+désoccupation;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+dévotieux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+d’abord;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+d’aucuns;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+e. g.;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+effusif;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+en cas que;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+en cette occurrence;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+ergastulaire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+euphuisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+extumescence;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+facticité;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+faire sens;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+falaiseux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+fanfrelucheux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+faquine;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+feu sauvage;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+fortrait;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+franchir le noir passage;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+frank;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+fumée liquide;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+félinerie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+fût-ce;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+fût-il;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+gent trotte-menu;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+girovague;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+gitanelle;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+gomphe;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+gorgonien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+grand’peur;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+grantécrivain;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+gromphe;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+gyrovague;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+heimweh;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+hispide;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+hyrcanien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+hölderlinien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+imbelle;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+imbiffable;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+immémoré;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+impavidement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+inadvenu;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+inconsutile;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+incunnabule;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+inobédient;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+inouïr;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+irrécapitulable;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+itinérance;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+je veux parler de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+jobelin;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+juché;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+jusqu’aujourd’hui;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+la veuve et l’orphelin;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+laideronne;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+landsknechtement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+langue bien pendue;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+larronne;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+lusitain;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+légomane;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+macaronée;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+machiavéliquement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+malheur à celui par qui le scandale arrive;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+malivole;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+malévole;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+malévolent;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+manuducteur;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+matutin;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+matutineux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+menteresse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+messeoir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+miellerie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+mithridatisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+mon siège est fait;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+monogomphe;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+monts pyrénées;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+mouche à miel;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+muflisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+multitudineux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+multitudinous;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+myrteux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+médiéval-fantastique;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+méshui;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+narratologie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+narratologue;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+nombre de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+nombril du pape;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+nonchaloir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+nonobstant que;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+noëlien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+n’avoir ni d’yeux ni d’oreilles;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+n’était;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+oariste;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+oaristes;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+oarystis;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+obduration;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+obombrer;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+obédient;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+oiseleuse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+opulemment;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+osculaire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+oublieusement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+panerée;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+papelardise;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+paradis artificiel;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pas autrement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pas de clerc;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pastoure;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pastourelle;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+patrigot;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+periscelis;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+perpétuement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+peu ou point;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+piperesse;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+ponctuaire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pornographie lourde;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+porphyrogénète;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+postcrépusculaire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pour ce faire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+poëme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+priapée;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+protée;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+prévarication;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+psithurisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+puffisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+punctum;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+purée de septembre;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+purée septembrale;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pâtiment;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pérennel;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+pétrarquisant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+quantité de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+quart d’heure de rabelais;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+que dis-je;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+quos ego;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+qu’est-ce;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+qu’était-ce;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+rendre les armes;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+rhétoriqueur;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+romphe;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+rousseaulâtre;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+récalcitrer;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+réfulgent;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+répondre au nom de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+répudiatoire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sacquetier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sacrant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sans bourse délier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sans mot dire;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sardanapalisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+satisfacteur;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+se flatter;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+se mettre en demeure;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+se perdre dans les nues;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+secourant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+si même;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sibilement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+silencer;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+silencier;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sodalité;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sombreur;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sous les ombres;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sous l’égide de;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sporade;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sportule;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+stagnance;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sur la réserve;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+surgie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+surréalisant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+séductible;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sélène;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+sélénien;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+s’accourcir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+s’endormir du sommeil de la tombe;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+s’entend;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+s’entre-devoir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+s’ébaubir;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+tandis;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;poétique+archaïque;non;non
+tel est pris qui croyait prendre;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+textualisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+thurifère;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+thyrsifère;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+tintinabulement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+tous deux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+tout d’abord;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+toutes deux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+tranche de vie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+travail de malédictin;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+varicolore;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vermiceau;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vers blancs;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vicariant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vie commune;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vilipendable;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vitole;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+volucre;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vénuste;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vérissime;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vérécondie;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+vérécondieux;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+yeux d’argus;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+zigzagure;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+zutique;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+zutisme;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+zutiste;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+à l’abord;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+à l’étouffée;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+écureuille;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+égrotante;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+énamourement;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+épousant;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+éviré;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+œillader;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+œuvrer;0.5625;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+virus;0.5575;0.7;0.1;0.65;3.808;4.38;0.268;archaïque;non;oui
+combat;0.555;0.1;0.35;1.0;4.719;4.758;0.914;soutenu+poétique;non;oui
+compter;0.555;0.1;0.35;1.0;4.722;4.654;1.171;soutenu;non;oui
+conseil;0.555;0.1;0.35;1.0;4.765;4.838;0.845;soutenu;non;oui
+vivre;0.555;0.1;0.35;1.0;5.271;5.339;0.855;soutenu;non;oui
+chaîne;0.55;0.1;0.55;0.9;4.636;4.453;1.523;littéraire;non;oui
+chute;0.55;0.1;0.55;0.9;4.547;4.322;1.679;littéraire;non;oui
+effet;0.55;0.1;0.55;0.9;5.238;4.996;1.746;littéraire;non;oui
+point;0.55;0.1;0.55;0.9;5.435;5.271;1.46;littéraire;non;oui
+premier;0.55;0.1;0.55;0.9;5.472;5.295;1.504;littéraire;non;oui
+période;0.55;0.1;0.55;0.9;4.506;4.375;1.353;littéraire;non;oui
+bise;0.5495;0.7;0.9;0.8;3.909;3.43;3.015;poétique;non;oui
+allégresse;0.5463;0.4;1.0;0.3;4.073;3.373;5.008;;oui;oui
+exaltation;0.5463;0.4;1.0;0.3;4.176;2.991;15.306;;oui;oui
+ferveur;0.5463;0.4;1.0;0.3;4.026;3.228;6.278;;oui;oui
+mélancolie;0.5463;0.4;1.0;0.3;4.316;3.415;7.954;;oui;oui
+pénombre;0.5463;0.4;1.0;0.3;4.448;3.086;22.984;;oui;oui
+sillage;0.5463;0.4;1.0;0.3;4.003;3.104;7.929;;oui;oui
+stupeur;0.5463;0.4;1.0;0.3;4.381;3.196;15.318;;oui;oui
+torpeur;0.5463;0.4;1.0;0.3;4.122;2.892;16.974;;oui;oui
+tumulte;0.5463;0.4;1.0;0.3;4.082;3.029;11.299;;oui;oui
+dard;0.546;1.0;0.35;0.8;3.19;3.114;1.192;poétique;non;oui
+pôle;0.546;1.0;0.35;0.8;3.442;3.494;0.888;poétique;non;oui
+beûrre;0.5425;0.4;0.55;0.65;4.439;4.18;1.819;archaïque;non;oui
+humiliation;0.5425;0.4;0.55;0.65;4.029;3.827;1.589;archaïque;non;oui
+économie;0.5425;0.4;0.55;0.65;4.197;3.964;1.711;archaïque;non;oui
+établir;0.5425;0.4;0.55;0.65;4.316;4.022;1.966;archaïque;non;oui
+iris;0.532;0.7;0.55;0.9;3.808;3.594;1.634;littéraire;non;oui
+ajoûter;0.5275;0.1;1.0;0.65;4.929;2.591;50.0;archaïque;non;oui
+feüille;0.5275;0.1;1.0;0.65;4.962;4.227;5.438;archaïque;non;oui
+minuscule;0.5275;0.1;1.0;0.65;4.58;3.705;7.503;archaïque;non;oui
+crépuscule;0.5232;0.4;0.9;0.3;4.396;3.852;3.492;;oui;oui
+extase;0.5232;0.4;0.9;0.3;4.023;3.535;3.073;;oui;oui
+nostalgie;0.5232;0.4;0.9;0.3;4.256;3.647;4.063;;oui;oui
+volupté;0.5232;0.4;0.9;0.3;4.009;3.515;3.119;;oui;oui
+obsolète;0.5204;0.85;0.1;0.3;1.845;2.924;0.083;;oui;oui
+assassin;0.52;0.4;0.1;0.8;4.158;4.635;0.333;poétique;non;oui
+borée;0.52;0.4;0.1;0.8;0.0;2.146;0.0;poétique;non;oui
+aigail;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+ambage;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+amoureaux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+amphibraque;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+antidactyle;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+antipaste;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+apotropée;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+aranéen;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+archerot;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+arsis;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+assembleur de nuages;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+asseoiement;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+au temps de ma jeunesse folle;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+autels de cypris;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+aux doigts de rose;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+avette;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+bain de jouvence;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+bergère;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+bestion;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+blanc comme un cygne;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+blondissant;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+bouton de rose;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+brachychorée;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+bras du sommeil;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+calycanthe;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+capripède;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+castalien;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+chantepleure;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+chanteresse;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+charrière;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+chasseresse;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+cité des amoureux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+cortiqué;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+crise de la nature;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+cupidique;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+céleste pourpris;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+célicole;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+derniers outrages;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+diamant vert;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+dieu des jardins;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+driller;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+déesse aux cent bouches;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+désâmé;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+effleur;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+encloser;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+faire honte;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+faire un voyage à lesbos;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+feuille blanche;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+feuille d’argent;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+feuille tournante;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+filandière;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+flagrer;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+flavescent;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+fleuve royal;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+floconnade;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+floflotter;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+floraître;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+formose;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+girofla;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+glottisme;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+gélide;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+il est;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+inadmettable;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+inadversion;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+jardin de la france;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+jardin de l’europe;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+jeune saison;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+jeunes années;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+jeunes ans;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+jouvente;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+lampadaires éternels;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+ligne bleue des vosges;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+locus amoenus;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+menacer le ciel;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+mitta;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+mortillon;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+murmureux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+nautonière;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+neigeur;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+neuf sœurs;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+néo-classicisme;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+oblivieux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+odor di femina;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+ophélisation;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+outreciel;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+pays des deux fleuves;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+pays du matin calme;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+phantaisie;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+planète vagabonde;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+procillon;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+pulchre;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+pêcheresse;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+reine des animaux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+repassable;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+roi des animaux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+roi des oiseaux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+ruissel;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+sacré vallon;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+serpent de l’envie;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+silve;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+soleil des loups;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+sombres bords;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+sonipède;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+sous la lame;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+stygieux;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+suffisante;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+s’embarquer pour cythère;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+s’ensanglanter;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+tris-mal;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+tromperesse;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+à l’heure où blanchit la campagne;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+âge de fer;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+ébénin;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+échansonne;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+éperler;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+île d’aphrodite;0.5175;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+aède;0.5112;1.0;0.75;0.3;2.301;2.0;2.0;;oui;oui
+aucun;0.51;0.1;0.35;0.9;5.258;5.245;1.029;littéraire;non;oui
+jamais;0.51;0.1;0.35;0.9;6.05;6.134;0.826;littéraire;non;oui
+marcher;0.51;0.1;0.35;0.9;4.908;4.931;0.948;littéraire;non;oui
+situation;0.51;0.1;0.35;0.9;4.985;5.006;0.953;littéraire;non;oui
+boule;0.505;0.1;0.55;0.8;4.583;4.285;1.986;poétique;non;oui
+espérer;0.505;0.1;0.1;1.0;4.642;5.321;0.21;soutenu;non;oui
+fille;0.505;0.1;0.1;1.0;5.62;5.798;0.664;soutenu+littéraire+poétique;non;oui
+grand-mère;0.505;0.1;0.55;0.8;4.963;4.86;1.268;poétique;non;oui
+matin;0.505;0.1;0.55;0.8;5.576;5.423;1.422;poétique;non;oui
+souris;0.5025;0.4;0.35;0.65;4.354;4.341;1.029;archaïque;non;oui
+doré;0.49;0.4;1.0;0.8;4.215;3.364;7.108;poétique;non;oui
+sérénité;0.4888;0.4;0.75;0.3;4.111;3.673;2.741;;oui;oui
+lacs;0.4812;0.7;0.75;0.65;3.933;3.556;2.383;archaïque;non;oui
+moindre;0.4775;0.1;0.75;0.65;5.068;4.67;2.502;archaïque;non;oui
+mars;0.476;0.4;0.9;0.8;4.497;3.989;3.223;poétique;non;oui
+puis;0.4655;0.1;0.9;1.0;5.922;5.409;3.265;soutenu;non;oui
+carrière;0.465;0.1;0.35;0.8;4.519;4.547;0.938;poétique;non;oui
+descendre;0.465;0.1;0.35;0.8;4.848;4.815;1.079;poétique;non;oui
+mary;0.4638;1.0;0.1;0.65;2.301;2.748;0.357;archaïque;non;oui
+chanter;0.46;0.1;0.1;0.9;4.535;4.682;0.712;littéraire;non;oui
+connaître;0.46;0.1;0.1;0.9;5.047;5.619;0.268;littéraire;non;oui
+merci;0.46;0.1;0.1;0.9;4.726;5.578;0.141;littéraire;non;oui
+miséricorde;0.46;0.7;0.1;0.3;3.705;3.943;0.578;;oui;oui
+parent;0.46;0.1;0.1;0.9;5.142;5.248;0.784;littéraire;non;oui
+personne;0.46;0.1;0.1;0.9;5.494;5.762;0.54;littéraire;non;oui
+quelque;0.46;0.1;0.1;0.9;5.746;5.947;0.631;littéraire;non;oui
+semaine;0.46;0.1;0.1;0.9;5.049;5.27;0.602;littéraire;non;oui
+voituré;0.46;0.1;0.1;0.9;5.345;5.59;0.569;littéraire;non;oui
+lame;0.455;0.4;0.75;0.8;4.412;4.043;2.336;poétique;non;oui
+comma;0.4525;0.4;0.1;0.65;0.0;1.477;0.0;archaïque;non;oui
+planète;0.4525;0.4;0.1;0.65;4.298;4.743;0.359;archaïque;non;oui
+porque;0.4525;0.4;0.1;0.65;0.0;2.505;0.0;archaïque;non;oui
+ridiculité;0.4525;0.4;0.1;0.65;0.0;2.146;0.0;archaïque;non;oui
+résoluble;0.4525;0.4;0.1;0.65;0.0;1.477;0.0;archaïque;non;oui
+toxicomanie;0.4525;0.4;0.1;0.65;0.0;2.322;0.0;archaïque;non;oui
+vigil;0.4525;0.4;0.1;0.65;0.0;1.602;0.0;archaïque;non;oui
+abaisseur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abander;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abbreivateur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abbreuver;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abcisse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abjet;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aboutißẽt;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+absconder;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+absconser;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+absynthe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abuseresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abysme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+abysmer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+acarin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+accoquiner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+accravanter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+acide antimonique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+acide prussique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+acommoder;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+acrimonial;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+actifve;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+acuïté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+adhærer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+adhæsion;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+adhération;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+adjouster;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+admonétation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aedicule;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+affaneur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aggrandir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aggrégat;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aggrégation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aggréger;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aglutination;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+agrapher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+agravation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+agréement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+alkalin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+alkaline;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+alkalines;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+alkalins;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aller par haut et par bas;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aller par le haut et par le bas;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+alligner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+allœopathie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amade;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ambedeux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amphiblesthroïde;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amphisbæne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amœbe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amœbien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amœbiforme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amœbocyte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amœboïde;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amœne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+amœnité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+anapæste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+andiner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+anhydride silicique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+annoblir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+annoblissement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+antenaire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+antiquitez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+antécien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+anæmie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+anæsthésie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apartement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apauvrir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aphærese;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aporter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+appaiser;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apparoistre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apparoître;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+appeller;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apprentif;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apprentis;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apprentisse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+apprentive;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aprés;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+arabesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aragne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+araignez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+arbalestrille;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+arcbutant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+archiacolythe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+archæographe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+archæographie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+archæologie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+archæologique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+archæologue;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+argille;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+armoniac;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+arriérages;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aræometre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asnerie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asnesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asnon;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asnonner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aspreté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asseurance;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asseurement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asseurer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+assujétir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+athenæe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+atmosphære;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+auctrice;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aumant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aureillon;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aussi-tost;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aussitost;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+autarchique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+autheur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+authrice;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+avalange;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+avanture;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+avecques;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+avoir le louis facile;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+avoiẽt;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+azotate;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+azoteux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+azotite;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+babiner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bachi-bouzouck;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bajocco;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+baladoire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+balconier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+balencer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+balier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+baliure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bandier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bandière;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bangard;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bannade;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bannar;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+banneret;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+banward;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+baptesme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+barbute;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+beauce;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+beausse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+belle-grand’mère;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bestail;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+beste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bestise;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bibliotheque;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bibliotheques;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bicêtre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+binet;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+biophobie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bisaille;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bisquière;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+blancheastre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+blasmeront;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+blasphématresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+blesme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+blesmir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bleüastre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bleüe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bobelineur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+boucaille;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bouin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bouscassier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+brusler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bœotien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+caffé;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+calcarifère;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+canardier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+caniard;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+caniart;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+canjard;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+caprimulge;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+caractere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+caramboller;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+carosse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+carriere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+carriére;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cautere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cent sous;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cephalæe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+champestre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chamæleon;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chamæléon;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+charactère;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chastaigne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chastaigner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chastaignier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chastain;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chasteau;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chastet;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chastier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chastiment;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chattemitesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chevaleresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chevre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chevres;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chite;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chymie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+chymies;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ci-devant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cilindre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cilindrique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cinq sous;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cinq vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cisellement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+citharœde;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cliséomètre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cloistre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+clouaison;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cloux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+clouz;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cognoistre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cognoißant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cohæsion;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coies;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coife;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coindication;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+colonelle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+compain;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+compaing;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+comœdie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+confœderation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+connoist;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+connoistre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+conseiller général;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+consoloit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+contractation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+conviendroit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cophin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coquotte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+corlieu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coronel;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+costé;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coude-pied;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coude-pieds;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coupille;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+courir sus;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+couroyer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+courtisanne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coëfe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coëfer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coëffe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coëffer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coëffure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coûtance;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cramailler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+crapau;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+crespeler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+crespelure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+crespé;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cristaux de vénus;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+croque-moutons;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+croyent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+croyois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+croïent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+crîra;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+crîrons;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+crîront;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cuillère à soupe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cullerier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cy devant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cy-gist;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cæcité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cæleste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cœmetiere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cœmetière;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dalai-lama;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+danqueulle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+danseresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dardanaire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+degast;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+demoiselle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+demonstrer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+demy habile;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+des-agreable;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+desgoust;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+desgouster;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+deshonneste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+deshonnestement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+deshonnesteté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+desorte que;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+destinez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+deutoxide;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+deutoxyde;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+deux vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+devestir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+devine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diarrhœe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diatomique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dictionaire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diroit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+disabilité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+discordial;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+disner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+disoit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+disparoitre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+disparoître;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dix vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diærese;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diæte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diætetique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diætétique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+diœcese;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+documens;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+doigt médical;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dolmin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domta;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtai;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtaient;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtais;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtait;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtas;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtasse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtassent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtasses;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtassiez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtassions;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtera;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domterai;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domteraient;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domterais;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domterait;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domteras;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domterez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domteriez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domterions;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domterons;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domteront;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtes;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtiez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtions;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtâmes;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtât;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtâtes;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domtèrent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+domté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+donillage;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+donilleux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+donner de la tablature;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dormoit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dossage;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+doubte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+douze vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+drolle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+drosle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+duement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dvornik;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dyspnœe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dysæsthésie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dæmon;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dès longtemps;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dès-méshui;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+défioient;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dégouziller;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+déjeusner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+délot;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dépost;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+déthroner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+détrenché;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dîmeur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+d’abord que;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+eau des deux champions;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+eau philosophique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ectique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ectiques;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+eka-silicium;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+embroquement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+embucquer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+empescher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+encensière;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+encyclopædie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+enfoirer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+engendration;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+entestement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+entester;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+entretènement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+envoierai;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+envoye;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+errable;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+erronné;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+escharre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+eschauffer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+escheoir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+eschoir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esclop;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+escorce;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+escorcher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+escriture;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esgallement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esjouir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esprit de nitre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esprit-de-soufre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esprit-de-vinaigre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+essayer à;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+establir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+estang;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+estendre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esternument;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esternuëment;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+esternûment;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+estiez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+estoffe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+estomach;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+estonner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+estre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+eternument;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+exactinio;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+excluse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+excusation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+exhortoit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+exradio;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+exthorio;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+faict;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+failloit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+faire injure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+faire table;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+falloit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+far niente;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+far-niente;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fascher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fascheux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+faulx;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fenestre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+feuillans;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fidellement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fierton;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+filatier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+filatière;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fimbrié;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+finyr;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+flesche;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fluent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fluir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fléche;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+forest;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fornage;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fouette cocher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fraische;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+franche-maçonne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+freindre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fripperie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+frippier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+friser le radin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fustaie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fæcal;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fæces;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fœderal;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fœderale;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fœderales;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fœderation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fœderaux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fœdité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gabelant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+galete;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gangræne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gayes;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+geodæsie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gerberie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gerrai;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gerras;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gerray;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ghiaber;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+glaineur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+glaineuse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gonorrhœe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+goust;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gouster;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+goute;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+goutelette;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+grand’tante;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+grans;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+granule de dioscoride;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+grapignan;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gras de jambe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gras de la jambe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+graveure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gresler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+grisard;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+grollerie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+guespe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+guillée;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+guérillère;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gynæcocratie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gynæcologie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gynæcologique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gynæconome;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+génitoires;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+haillette;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+harpailler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+harpion;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+haster;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hastif;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hastivement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+havoir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+haytien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hazard;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hemisphære;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hermitesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+herpaille;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hespagnol;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+homme de neanderthal;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+honneste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+honnestement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+honnesteté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hospital;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+houzée;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+huitante;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hydromèle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hypæthre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hyver;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hyæne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hyéroglyphe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hæmatose;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hæmaturie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hæmorrhagie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hæresie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hæretique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hæsiter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+hémétique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+idolâtresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ignoroit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+illèse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+infundibuliforme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ingéniaire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+inhæsion;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+instrumens;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+interressant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+intêret;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+invocateresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+inægalité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+irrésoluble;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jaquerie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jardu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jaunastre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jetter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jouer au vert;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+joûra;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jubis;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jusqu’à tant de;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jusqu’à tant que;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+jusqu’à temps de;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+kabaïl;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+kanguroo;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+kermès;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+la grâce à dieu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lacquais;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lasche;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lascher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lascheté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+libertez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+libertés;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+liberum-veto;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lieutenande;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+limphe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+liqueur labarraque;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+littérature de colportage;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+logiste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+longævité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lonine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lumiere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lycantropie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lycopode;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+læsion;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lævogyre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lævorotatoire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lônine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+lœmmer-geyer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+macellier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+macroglosse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+madagasse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+madécasse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+madégasse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+magazin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+maishui;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+maistre d’hostel;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+malay;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+malhonneste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+malhonnestement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+malhonnesteté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+maniment;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+manîment;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+maraine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+maraut;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+marauts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+marengote;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+marengotte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+marer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+melancholie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+melancolie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+memoire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mer d’azof;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+meslange;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+meslanger;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mesler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+meslée;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mesme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+metre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+meure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+meusnier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+millourt;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ministral;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mirailler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mise en abysme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+monnoye;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+montain;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mophète;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mourrir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+muleter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mundick;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+musaragne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mynheer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mæandre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+méchanicien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+méchanique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mélancholie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mélange national;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ménestrier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+méprisance;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+méridien de l’observatoire de paris;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+méthode raspail;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+mûreté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+naißance;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+naphthe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+naphtène;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+natroïde;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+nerf de bœuf;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+nettoyement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+niagara;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+noblesse commencée;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+noirastre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+noircisseure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+noircisseures;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+nopces;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+nostre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+nouveautez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+obæré;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+occurence;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+offençant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+oloir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ondain;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+onze vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ophthalmographie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+opératrice;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ordoncque;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ordoncques;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+orloge;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ormoie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+orthopnœe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+oster;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+outre plus;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ouïr-dire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+owerture;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+où ce que;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+palæographie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+palæographique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+palæologie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pancher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+paroistre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+particulierement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+parænese;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+parænetique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pasle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pasleur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+paslir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pasmer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pasmoison;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+passe-lit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+paste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pasté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+payen;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+payenne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+payens;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+païennie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pensois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pentoufle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+perinæe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+perne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pertuisanier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pesche;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pescher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pescheur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+peste blanche;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+phanal;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+phantastique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pharmacopœe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+philavtie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+phthisie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+phænomene;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+phœnicien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+picquer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+picqueure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pierrette;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pioler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pipolé;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+piquans;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+piquure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plaisable;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plancheur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+planetique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+planète secondaire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+platin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+platisme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+playe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plus part;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plus-part;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pluspart;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plustost;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pluye;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plû-part;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plûssent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+plûtost;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pomme d’adam;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ponneresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+portugaisisme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+portugallois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+poudre des chartreux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pour ce que;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pource que;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pourceque;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pourque;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pourveu que;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+poètride;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+poësie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+poëtes;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+poëtesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+poëtiquement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+poëtrice;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+premierement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prendroit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prest;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+preveu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prevoir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+problême;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+proctodæum;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+promenois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+proprieté;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+propræteur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prosopopœe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+protoxide;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+protoxides;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+proye;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prud’hommesque;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præbende;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præcedent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præceder;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præcepte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præcepteur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præcipitation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prædecesseur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prædestination;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prædiction;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prædire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præface;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præfect;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præfecture;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præferer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præjudice;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præmunir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prænom;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præposition;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsence;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsentement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsenter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsident;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsider;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsomption;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsomptueux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præster;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præstige;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præsumer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prætendre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+præteur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prætexte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+prégnante;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+préveu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pseaume;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pseautier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+purent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pyrate;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pædagogique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pædagogue;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pæderastie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pædiatrie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pædiatrique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pûtes;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pœnal;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pœnale;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pœnales;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pœnaux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+quacre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+quadrans;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+qualifîrai;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+quatorze vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+querir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+queste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+questresse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+quotepart;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+quæsteur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+quæstion;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+raffraîchir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rafinage;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rappatriement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rasiette;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rassener;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ratrapper;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+receu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rechet;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+reconnoissance;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+reconnoistre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+reconnoître;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+recoëffer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+refluïr;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+releu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+relicte;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+remerciment;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+renseignemens;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+repræsenter;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+requeste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+restaur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+restraindre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+resve;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+resverie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+resveur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+revuider;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+reyne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+reçeu;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rhætien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+risave;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rogir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rogum;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rondel;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rondelier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+roue allemande;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+rougeastre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+roy des rois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+royne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ruminans;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+réenquérir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+résoud;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+saloppe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sapin foncine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+saqué;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sarrasinois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+saïnète;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+schirre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+schirreux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+scholaire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+scholarité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+se mesler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+seche;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+secher;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+seché;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+seize vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sel de barèges;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sept mers;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+septante-et-un;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+serois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+siecle;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sincere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sinonime;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+soldatesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+solemniser;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+solemnité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+solemnités;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+solœcisme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+somnanbule;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+soubs;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+soulais;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+soulait;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+souloir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sourissiere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+soutillesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+soyent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+soüilleure;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sphære;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sphærique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sphæriste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sphæroïde;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+stolide;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+stomodæum;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+stribord;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+stygmate;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+substraction;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sueur de vieil;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sur-tout;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+susser;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+symptome;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+synonime;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+syrops;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+syrupeux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sæculier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sçaurois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sçavoir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+s’abander;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+s’esjouir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tabaganne;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tapirage;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tapirer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tasche;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+taster;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tenve;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tesmoin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tibicine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tiran;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tirannie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tireuse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+toupiade;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+touyou;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+toxæmie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+traditive;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+traict;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+traisner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+treize vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+treuver;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+trochæe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+trois vingt dix;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+trois vingts;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+trophæe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+trétout;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+turcique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+turquesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tystre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+térébentine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ulcere;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vantance;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+verdastre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+verreux;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+verseller;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vesselier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vingt sous;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+violiniste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vitriol romain;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vitrique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vol au pégriot;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vol au radin;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vostre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+voudrois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+voïent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+voïez;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+voïons;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vuide;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vuider;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vîtes;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+waire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+wairette;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+wancha;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+xylobalsame;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+yandou;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ziczac;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+zooglœe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+à la condé;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+à la gaumine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+à la turquesse;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ædicule;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ædifiant;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ædification;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ædifice;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ædifier;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ædile;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ægale;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ægalement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ægide;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ægophonie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ægophonique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ægyptien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æmulateur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æmulation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ænigmatiquement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ænigme;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquanime;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquanimité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquateur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquilateral;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquilibre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquinoxe;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquitable;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æquivalent;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æsculine;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æsthésie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æsthétique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æsthétiquement;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æstimation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æstimer;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æstival;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æstivation;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æternel;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æternité;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æther;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æthiologie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æthiopien;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æthéré;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ætiologique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+çamon;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ébouziner;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+écheler;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+écheleur;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+échole;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+échéoir;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+éclorre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+éka-aluminium;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+éka-bore;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+éka-borium;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+éka-silicium;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ékasilicium;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+élaïomètre;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+élaïométrie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+élaïométrique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+élucidaire;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+épleuré;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+éternument;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+éternûment;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+étiquet;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+étois;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+étoit;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+étrain;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+évidament;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+îles de la révolution;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+œconomat;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+œconome;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+œconomie;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+œconomique;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+œconomiser;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+œconomiste;0.45;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+agir;0.448;0.1;1.0;0.9;4.906;4.09;6.542;littéraire;non;oui
+près;0.4445;0.1;0.75;1.0;5.455;5.128;2.128;soutenu;non;oui
+solitaire;0.4427;0.4;0.55;0.3;4.32;4.043;1.891;;oui;oui
+théâtre;0.4375;0.1;0.55;0.65;4.808;4.608;1.588;archaïque;non;oui
+tître;0.4375;0.1;0.55;0.65;4.725;4.511;1.637;archaïque;non;oui
+vieil;0.4375;0.1;0.55;0.65;4.709;4.54;1.477;archaïque;non;oui
+vîtesse;0.4375;0.1;0.55;0.65;4.737;4.579;1.441;archaïque;non;oui
+fond;0.434;0.1;0.9;0.9;5.575;5.042;3.417;littéraire;non;oui
+hôte;0.4305;0.4;0.35;0.9;4.034;4.128;0.805;littéraire;non;oui
+onde;0.427;0.4;0.55;0.8;4.068;3.876;1.555;poétique;non;oui
+brume;0.4255;0.1;1.0;0.3;4.555;3.62;8.604;;oui;oui
+l’on;0.4252;0.25;0.35;1.0;0.0;0.0;1.0;soutenu+littéraire;non;non
+vaux;0.4252;0.25;0.35;1.0;0.0;0.0;1.0;littéraire+archaïque;non;non
+fort;0.4165;0.1;0.55;1.0;5.328;5.235;1.238;soutenu;non;oui
+rive;0.4165;0.1;1.0;0.8;4.546;3.78;5.828;poétique;non;oui
+noir;0.413;0.1;0.75;0.9;5.267;4.859;2.56;littéraire;non;oui
+toûjours;0.3975;0.1;0.35;0.65;6.039;6.03;1.02;archaïque;non;oui
+albe;0.3955;0.4;0.1;0.9;0.0;1.0;0.0;littéraire;non;oui
+i.e.;0.3955;0.4;0.1;0.9;0.0;1.301;0.0;littéraire;non;oui
+égal;0.3955;0.4;0.1;0.9;4.307;4.438;0.74;littéraire;non;oui
+bœuf;0.3937;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+mort;0.3885;0.1;0.35;1.0;5.573;5.571;1.005;soutenu;non;oui
+cela;0.385;0.1;0.55;0.9;5.87;5.692;1.506;littéraire;non;oui
+sein;0.385;0.1;0.55;0.9;4.714;4.447;1.853;littéraire;non;oui
+tout;0.385;0.1;0.55;0.9;6.215;6.025;1.548;littéraire;non;oui
+bord;0.3815;0.1;0.75;0.8;5.295;4.887;2.561;poétique;non;oui
+font;0.3622;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+jeux;0.3622;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+sade;0.3622;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+chef;0.357;0.1;0.35;0.9;5.237;5.278;0.909;littéraire;non;oui
+dire;0.3535;0.1;0.55;0.8;6.415;6.332;1.212;poétique;non;oui
+midi;0.3535;0.1;0.55;0.8;4.833;4.546;1.938;poétique;non;oui
+poil;0.3535;0.1;0.55;0.8;4.633;4.433;1.584;poétique;non;oui
+rien;0.3535;0.1;0.1;1.0;6.183;6.376;0.641;soutenu;non;oui
+vous;0.3535;0.1;0.1;1.0;6.545;7.133;0.258;soutenu;non;oui
+être;0.3535;0.1;0.1;1.0;6.802;7.288;0.326;soutenu;non;oui
+colonel;0.3475;0.1;0.1;0.65;4.633;5.012;0.417;archaïque;non;oui
+médecin;0.3475;0.1;0.1;0.65;4.783;5.051;0.54;archaïque;non;oui
+savoir;0.3475;0.1;0.1;0.65;5.789;6.397;0.247;archaïque;non;oui
+allitération;0.3392;0.4;0.1;0.3;0.0;1.699;0.0;;oui;oui
+heuristique;0.3392;0.4;0.1;0.3;0.0;1.477;0.0;;oui;oui
+liminaire;0.3392;0.4;0.1;0.3;0.0;1.845;0.0;;oui;oui
+loquacité;0.3392;0.4;0.1;0.3;0.0;1.0;0.0;;oui;oui
+paresthésie;0.3392;0.4;0.1;0.3;0.0;1.699;0.0;;oui;oui
+procrastination;0.3392;0.4;0.1;0.3;0.0;1.0;0.0;;oui;oui
+résilience;0.3392;0.4;0.1;0.3;0.0;1.301;0.0;;oui;oui
+satyrique;0.3392;0.4;0.1;0.3;0.0;1.0;0.0;;oui;oui
+sépale;0.3392;0.4;0.1;0.3;0.0;1.0;0.0;;oui;oui
+téléologique;0.3392;0.4;0.1;0.3;0.0;1.0;0.0;;oui;oui
+aphoristique;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+cénesthésie;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+fielueux;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+garrulité;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+gnomique;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+mignonne;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+noévie;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+némésis;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+parapathique;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+purpurine;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+pétrichor;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+rhapsode;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+scholastique;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+somatisation;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+sérendipité;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+varicose;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+viateur;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+érémitique;0.3364;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+ciel;0.3342;0.1;0.75;0.65;5.48;5.153;2.122;archaïque;non;oui
+plat;0.3342;0.1;0.75;0.65;4.646;4.34;2.024;archaïque;non;oui
+pays;0.3255;0.1;0.35;0.8;5.383;5.307;1.192;poétique;non;oui
+tard;0.3255;0.1;0.35;0.8;5.537;5.545;0.983;poétique;non;oui
+chagrin;0.322;0.1;0.55;0.3;4.588;4.309;1.899;;oui;oui
+faux;0.322;0.1;0.1;0.9;4.823;4.959;0.731;littéraire;non;oui
+idée;0.322;0.1;0.1;0.9;5.382;5.519;0.73;littéraire;non;oui
+tous;0.322;0.1;0.1;0.9;5.378;5.576;0.634;littéraire;non;oui
+kali;0.3167;0.4;0.1;0.65;0.0;2.279;0.0;archaïque;non;oui
+anil;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+asne;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aure;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ayde;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+bril;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cecy;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coie;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+cois;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+faiz;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fluë;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fust;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gaye;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+gays;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+grãd;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+græc;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+héez;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+isle;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+joye;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+loix;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+loys;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+oter;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ouÿr;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pact;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+puit;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pœne;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+raiz;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+roix;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+royx;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+tist;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+veuë;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+voye;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+voyt;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vûes;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ægal;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ïour;0.315;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+coin;0.3062;0.1;0.55;0.65;5.223;4.97;1.788;archaïque;non;oui
+jour;0.3062;0.1;0.55;0.65;5.917;5.803;1.301;archaïque;non;oui
+lie;0.267;1.0;0.9;0.8;3.362;2.881;3.026;poétique;non;oui
+val;0.2595;1.0;0.55;0.9;3.483;3.326;1.434;littéraire;non;oui
+coi;0.2527;1.0;1.0;0.65;3.334;2.623;5.143;archaïque;non;oui
+rez;0.2475;1.0;0.35;0.9;2.531;2.556;0.944;littéraire;non;oui
+oye;0.2468;1.0;0.9;0.65;2.978;2.322;4.524;archaïque;non;oui
+vîte;0.2432;0.1;0.1;0.65;5.546;5.692;0.716;archaïque;non;oui
+nef;0.2415;0.7;1.0;0.8;3.812;2.613;15.829;poétique;non;oui
+cors;0.2355;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+vate;0.2355;0.25;0.35;0.3;0.0;0.0;1.0;;oui;non
+lû;0.2258;1.0;0.55;0.65;3.19;2.991;1.582;archaïque;non;oui
+roy;0.2258;1.0;0.55;0.65;2.431;2.23;1.588;archaïque;non;oui
+ris;0.219;1.0;0.1;0.8;2.531;3.176;0.227;poétique;non;oui
+pié;0.2152;0.7;0.9;0.65;3.502;3.025;3.0;archaïque;non;oui
+pus;0.2062;0.7;0.75;0.65;3.699;3.279;2.632;archaïque;non;oui
+gay;0.1988;1.0;0.1;0.65;2.531;4.262;0.019;archaïque;non;oui
+jà;0.1988;1.0;0.1;0.65;2.613;3.009;0.402;archaïque;non;oui
+lez;0.1988;1.0;0.1;0.65;2.146;2.556;0.389;archaïque;non;oui
+duc;0.1965;0.4;0.55;0.9;4.17;3.884;1.932;littéraire;non;oui
+sõt;0.1942;0.7;0.55;0.65;3.577;3.436;1.385;archaïque;non;oui
+pré;0.1837;0.4;0.9;0.65;4.297;3.702;3.936;archaïque;non;oui
+hai;0.183;0.85;0.1;0.65;1.845;3.107;0.055;archaïque;non;oui
+fî;0.1822;0.7;0.35;0.65;3.668;3.692;0.947;archaïque;non;oui
+tel;0.1785;0.1;0.55;1.0;5.063;4.825;1.73;soutenu;non;oui
+ô;0.177;0.1;0.75;0.9;4.52;4.206;2.059;littéraire;non;oui
+ost;0.1695;0.4;0.1;0.9;0.0;2.255;0.0;littéraire;non;oui
+éon;0.1695;0.4;0.1;0.9;0.0;1.845;0.0;littéraire;non;oui
+nue;0.1687;0.25;0.35;0.9;0.0;0.0;1.0;poétique+archaïque;non;non
+ors;0.1687;0.25;0.35;0.9;0.0;0.0;1.0;littéraire;non;non
+ci;0.1672;0.7;0.1;0.65;3.562;4.01;0.357;archaïque;non;oui
+ha;0.1672;0.7;0.1;0.65;3.886;4.333;0.357;archaïque;non;oui
+feu;0.1665;0.1;0.35;1.0;5.3;5.334;0.924;littéraire+poétique;non;oui
+nul;0.165;0.1;0.55;0.9;4.503;4.385;1.311;littéraire;non;oui
+qui;0.165;0.1;0.55;0.9;6.898;6.728;1.478;littéraire;non;oui
+sou;0.1627;0.4;0.55;0.65;4.457;4.333;1.329;archaïque;non;oui
+ord;0.156;0.4;0.1;0.8;0.0;2.591;0.0;poétique;non;oui
+mew;0.1552;0.25;0.35;0.8;0.0;0.0;1.0;poétique;non;non
+que;0.153;0.1;0.35;0.9;6.474;6.523;0.893;littéraire;non;oui
+ne;0.1515;0.1;0.1;1.0;6.889;7.126;0.58;soutenu;non;oui
+clé;0.138;0.1;0.1;0.9;4.544;4.837;0.509;littéraire;non;oui
+&c;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+&c.;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+-ez;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ay;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+aye;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fus;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+fõt;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+goï;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+loy;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+moy;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+put;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pû;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+pût;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+sçu;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+toy;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ty;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+veu;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+võt;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+vûs;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ß;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+æon;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+ære;0.135;0.25;0.35;0.65;0.0;0.0;1.0;archaïque;non;non
+dés;0.1313;0.1;0.55;0.65;7.026;6.782;1.755;archaïque;non;oui
+mai;0.1313;0.1;0.55;0.65;4.662;4.386;1.885;archaïque;non;oui
+vûe;0.1313;0.1;0.55;0.65;5.134;4.926;1.611;archaïque;non;oui
+à;0.1313;0.1;0.55;0.65;7.284;7.086;1.576;archaïque;non;oui
+içi;0.1043;0.1;0.1;0.65;5.684;6.382;0.201;archaïque;non;oui
+mon;0.1043;0.1;0.1;0.65;6.363;6.585;0.6;archaïque;non;oui
+non;0.1043;0.1;0.1;0.65;6.055;6.606;0.281;archaïque;non;oui
+roi;0.1043;0.1;0.1;0.65;4.934;5.221;0.517;archaïque;non;oui

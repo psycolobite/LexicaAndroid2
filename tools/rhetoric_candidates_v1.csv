@@ -1,0 +1,101 @@
+Mot;Zipf Livres;Zipf Films;Freq Livres (ppm);Freq Films (ppm);Définition
+convaincre;4.38;4.45;23.72;28.43;Amener quelqu'un à reconnaître la vérité d'une proposition par des preuves logiques.
+partant;4.18;4.00;15.07;10.09;Par conséquent, donc.
+justifier;4.17;3.87;14.93;7.37;Définition non renseignée
+persuader;4.09;3.65;12.23;4.50;Amener quelqu'un à croire ou à faire quelque chose en faisant appel à ses sentiments.
+objectif;4.04;4.25;10.88;17.65;Définition non renseignée
+lucide;4.02;3.44;10.54;2.76;Définition non renseignée
+argument;3.92;3.71;8.24;5.07;Définition non renseignée
+équivoque;3.86;3.07;7.30;1.18;Définition non renseignée
+sceptique;3.71;3.42;5.13;2.65;Définition non renseignée
+arbitraire;3.65;2.87;4.46;0.74;Définition non renseignée
+dialectique;3.60;2.93;3.98;0.85;Méthode de raisonnement consistant à analyser la réalité en mettant en évidence ses contradictions et à tenter de les dépasser.
+péremptoire;3.59;0.00;3.85;0.00;"Qui détruit d’avance toute objection ; contre quoi on ne peut rien répliquer."
+objection;3.58;4.08;3.78;12.07;Ce que l’on oppose à une affirmation, à une proposition, à une demande. Il n'y eut plus ni objections ni réplique, et le comte, s’apercevant qu’il prêchait dans le désert, s’arrêta lui-même et cessa de parler. — (Julie de Quérangal, Philippe de Morvelle, Revue des Deux Mondes, T.2,4, 1833)
+nonobstant;3.55;2.30;3.51;0.20;(Droit) ou (Soutenu) Malgré, sans être empêché par quelque chose, sans s’y arrêter. Suppose que ne sachant pas quoi faire, et nonobstant les recommandations expresses d’Augusta, je te rejoigne dans ta cabine ou que tu me rejoignes dans la mienne, tout le bateau le saura dans les cinq minutes et o...
+plausible;3.51;3.39;3.24;2.48;"Qui a une apparence de vérité ; qui est accepté ou admis jusqu’à preuve du contraire. Cette étape est plausible , car NO est une espèce à nombre impair d'électrons, et deux molécules peuvent former une liaison covalente quand elle se rencontrent. Le fait que le dimère N2O2 existe aussi dans le so..."
+allocution;3.49;2.49;3.11;0.31;Discours court prononcé par une personnalité officielle.
+contester;3.43;3.17;2.70;1.48;Mettre en doute ou refuser de reconnaître la validité d'une opinion ou d'une décision.
+cohérent;3.39;3.09;2.43;1.23;Définition non renseignée
+insinuer;3.31;3.21;2.03;1.63;Faire entendre habilement et indirectement quelque chose.
+contingent;3.31;2.94;2.03;0.87;Définition non renseignée
+réquisitoire;3.31;2.59;2.03;0.39;Discours ou écrit dans lequel on accumule les accusations contre quelqu'un ou quelque chose.
+parabole;3.29;3.25;1.96;1.78;Récit allégorique contenant un enseignement moral ou religieux.
+métaphore;3.28;3.61;1.89;4.04;Figure de style qui consiste à désigner une chose par une autre en vertu d'une analogie sémantique.
+incohérent;3.25;2.43;1.76;0.27;Définition non renseignée
+véridique;3.23;2.82;1.69;0.66;Définition non renseignée
+diatribe;3.17;2.08;1.49;0.12;Critique violente, pamphlet, écrit satirique ou argumentaire à charge.
+polémique;3.17;2.79;1.49;0.61;Débat agressif et contradictoire par écrit ou par parole.
+controverse;3.15;3.05;1.42;1.13;Discussion argumentée et prolongée sur une question délicate.
+fallacieux;3.13;2.00;1.35;0.10;Qui est trompeur, mensonger, illusoire.
+apologie;3.09;2.23;1.22;0.17;Discours ou écrit prenant la défense de quelqu'un ou de quelque chose.
+plaidoirie;3.09;3.06;1.22;1.14;Exposé oral fait par un avocat pour défendre une cause devant un tribunal.
+allégorie;3.06;2.58;1.15;0.38;Représentation d’une idée abstraite sous la forme d’une image, d’un tableau ou d’un récit.
+étayer;3.06;2.67;1.15;0.47;Soutenir, appuyer une thèse ou un argument par des faits ou des preuves.
+déduction;3.03;3.19;1.08;1.55;Définition non renseignée
+euphémisme;3.00;3.05;1.01;1.11;Définition non renseignée
+réhabiliter;3.00;2.45;1.01;0.28;Rétablir quelqu'un dans ses droits, sa réputation ou son honneur.
+ellipse;2.98;2.62;0.95;0.42;Omission volontaire d'un mot qui peut être facilement rétabli par le contexte.
+péroraison;2.98;0.00;0.95;0.00;Conclusion d'un discours qui résume les arguments et en appelle aux émotions.
+plaidoyer;2.94;2.78;0.88;0.60;Discours verbal ou écrit en faveur de quelqu’un ou de quelque chose.
+harangue;2.94;1.00;0.88;0.01;Discours solennel, pompeux ou moralisateur adressé à une assemblée ou à une personne.
+antithèse;2.91;2.04;0.81;0.11;Mise en opposition de deux expressions ou idées contraires.
+réfuter;2.91;2.95;0.81;0.89;Combattre et rejeter une affirmation, un argument ou une thèse en prouvant sa fausseté.
+concéder;2.91;2.59;0.81;0.39;Admettre ou accorder un point à l'adversaire dans une discussion ou un débat.
+indubitable;2.91;2.46;0.81;0.29;"Dont on ne peut douter ; certain, évident."
+tempérer;2.83;2.08;0.68;0.12;Modérer ou adoucir des propos ou des émotions.
+pamphlet;2.83;3.05;0.68;1.11;Court écrit satirique et polémique attaquant une personnalité ou une institution.
+postulat;2.79;2.15;0.61;0.14;Principe non démontré que l'on admet comme base d'un raisonnement.
+apologue;2.79;0.00;0.61;0.00;Court récit écrit en prose ou en vers, dont on tire une instruction morale.
+discréditer;2.79;3.08;0.61;1.20;Faire perdre la confiance, le crédit ou l'autorité de quelqu'un.
+dogmatique;2.79;1.48;0.61;0.03;Définition non renseignée
+casuistique;2.74;1.00;0.55;0.01;Partie de la théologie morale qui applique les principes généraux à des cas particuliers de conscience.
+assertion;2.73;1.85;0.54;0.07;Proposition ou affirmation soutenue comme vraie.
+objecter;2.73;2.45;0.54;0.28;Opposer un argument ou une objection à une proposition.
+postuler;2.73;2.94;0.54;0.88;Définition non renseignée
+argumenter;2.73;2.79;0.54;0.61;Définition non renseignée
+probant;2.73;2.49;0.54;0.31;Définition non renseignée
+subjectif;2.73;2.81;0.54;0.65;Définition non renseignée
+induction;2.67;2.62;0.47;0.42;Définition non renseignée
+légitimer;2.67;2.28;0.47;0.19;Reconnaître comme conforme aux lois, aux règles ou à la raison.
+pérorer;2.67;1.85;0.47;0.07;Parler avec emphase et de manière prétentieuse devant un public.
+exorde;2.67;1.00;0.47;0.01;Première partie d'un discours classique destiné à capter l'attention de l'auditoire.
+axiome;2.61;2.00;0.41;0.10;Vérité évidente par elle-même qui ne nécessite aucune démonstration.
+corroborer;2.61;2.84;0.41;0.69;Confirmer ou fortifier une théorie ou une déclaration par de nouvelles preuves.
+fustiger;2.61;1.70;0.41;0.05;Critiquer avec une extrême violence ou condamner sévèrement.
+arguer;2.61;1.70;0.41;0.05;Tirer argument de quelque chose, ou prétendre.
+pertinent;2.61;3.04;0.41;1.10;Définition non renseignée
+corrélativement;2.53;0.00;0.34;0.00;Définition non renseignée
+digression;2.53;1.78;0.34;0.06;Action de s'écarter du sujet principal dans un discours ou un écrit.
+réfutation;2.53;2.34;0.34;0.22;Définition non renseignée
+pragmatique;2.53;2.63;0.34;0.43;Définition non renseignée
+antinomie;2.43;0.00;0.27;0.00;Contradiction réelle ou apparente entre deux lois, deux principes ou deux idées.
+pléonasme;2.43;2.23;0.27;0.17;Répétition de termes ayant le même sens (ex: monter en haut).
+ergoter;2.43;2.20;0.27;0.16;Chicaner sur des détails insignifiants dans une discussion.
+tendancieux;2.43;2.45;0.27;0.28;Définition non renseignée
+erroné;2.43;2.73;0.27;0.54;Définition non renseignée
+subséquemment;2.30;2.36;0.20;0.23;Définition non renseignée
+causalité;2.30;2.36;0.20;0.23;Définition non renseignée
+corrélation;2.30;2.23;0.20;0.17;Définition non renseignée
+sophisme;2.30;2.46;0.20;0.29;Raisonnement qui présente une apparence de logique mais qui est volontairement trompeur ou fallacieux.
+litote;2.30;1.48;0.20;0.03;Figure de rhétorique qui consiste à dire moins pour faire entendre plus (ex: ce n'est pas mauvais).
+hyperbole;2.30;1.95;0.20;0.09;Exagération extrême visant à frapper les esprits.
+alléguer;2.30;0.00;0.20;0.00;Définition non renseignée
+conjecturer;2.30;2.15;0.20;0.14;Supposer ou faire des hypothèses sur la base de probabilités.
+irréfragable;2.30;1.85;0.20;0.07;Définition non renseignée
+univoque;2.30;2.40;0.20;0.25;Définition non renseignée
+panégyrique;2.30;2.34;0.20;0.22;Définition non renseignée
+syllogisme;2.15;2.11;0.14;0.13;Raisonnement logique composé de trois propositions (deux prémisses et une conclusion) tel que la conclusion découle nécessairement des prémisses.
+tautologie;2.15;1.00;0.14;0.01;Proposition qui répète la même chose sous des formes différentes, raisonnement circulaire.
+synecdoque;2.15;0.00;0.14;0.00;Type de métonymie consistant à prendre la partie pour le tout, ou le tout pour la partie.
+subodorer;2.15;2.04;0.14;0.11;Pressentir ou deviner quelque chose par intuition.
+élucubrer;2.15;1.00;0.14;0.01;Créer des théories ou des écrits extravagants à force de réflexions laborieuses.
+spécieux;2.15;1.78;0.14;0.06;Définition non renseignée
+prémisse;1.85;1.70;0.07;0.05;Définition non renseignée
+allégation;1.85;2.45;0.07;0.28;Affirmation que l'on produit pour soutenir une cause ou un fait, souvent sans preuve immédiate.
+métonymie;1.85;0.00;0.07;0.00;Figure par laquelle on remplace un mot par un autre lié par un rapport de contiguïté (ex: boire un verre).
+inférer;1.85;0.00;0.07;0.00;Tirer une conséquence d'un principe ou d'un fait.
+vilipender;1.85;2.18;0.07;0.15;Dénigrer ou rabaisser quelqu'un avec mépris.
+infirmer;1.85;1.85;0.07;0.07;Affaiblir ou contredire une hypothèse ou une décision antérieure.
+captieux;1.85;0.00;0.07;0.00;Définition non renseignée
+dichotomie;0.00;2.30;0.00;0.20;Division de quelque chose en deux parties souvent opposées.
