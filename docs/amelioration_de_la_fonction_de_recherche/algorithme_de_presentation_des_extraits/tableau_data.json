@@ -353,6 +353,43 @@
     "purpose": "Permet de synchroniser le fichier JSON avec tableau_interactif_algorithmes.html.",
     "script": "tools/apply_json_to_html.py",
     "usage": "Exécuter 'python tools/apply_json_to_html.py' pour propager les modifications du JSON vers le HTML.",
-    "capabilities": "Le script met à jour les textes existants et génère automatiquement les nouveaux éléments HTML (pipelines, catégories, onglets, fiches) s'ils sont déclarés dans le JSON mais absents du HTML."
-  }
+    "capabilities": "Le script met à jour les textes existants, génère automatiquement la structure HTML manquante (pipelines, catégories, onglets, fiches) et met à jour les Informations Complémentaires dynamiquement."
+  },
+  "informations_complementaires": [
+    {
+      "id": 1,
+      "title": "1. Alignement avec les Objectifs de l'Utilisateur (Onboarding) :",
+      "content": "Les 5 catégories structurant l'application correspondent directement aux choix d'apprentissage formulés par l'utilisateur lors de sa première utilisation. Il coche ses objectifs personnels pour orienter la découverte du vocabulaire :\n\n- Vocabulaire Littéraire (C1) : Apprendre du vocabulaire pour un usage créatif (écriture de romans, poésie, théâtre) ou pour décoder des œuvres classiques.\n- Rhétorique & Débats (C2) : Acquérir des mots pour avoir des discussions soutenues, parler brillamment et structurer ses arguments oratoires.\n- Langage Familier (C3) — « Le Dernier Cri » : Maîtriser les expressions populaires en vogue — celles qui se propagent viralement depuis la cité et les réseaux sociaux pour devenir mainstream. Capter le « dernier cri » linguistique pendant sa phase d'adoption massive.\n- Culture Générale (C4) : Découvrir des mots insolites et des curiosités lexicales pour stimuler son éclectisme et sa culture.\n- Domaine Spécifique (C5) : Rentrer et travailler le jargon d'une profession ou passion spécifique (ex: cuisine, médecine, droit)."
+    },
+    {
+      "id": 2,
+      "title": "2. [TODO] Délimitation de la Base de Données du Corpus :",
+      "content": "Il reste indispensable de définir plus rigoureusement le périmètre et la constitution de notre base de données locale et distante. Il faudra délimiter précisément quelles sources de textes (œuvres littéraires libres de droits, retranscriptions de conférences formelles, de débats) y seront intégrées pour alimenter de manière fiable la Pipeline B."
+    },
+    {
+      "id": 3,
+      "title": "3. [TODO] Affinement du Scoring :",
+      "content": "Les algorithmes de scoring et le calcul des scores (visant à identifier les éléments pertinents pouvant intéresser l'utilisateur) devront être ajustés et affinés au fur et à mesure de l'avancement de l'intégration et des retours d'usage."
+    },
+    {
+      "id": 4,
+      "title": "4. [TODO] Progression & Niveau de Difficulté Utilisateur :",
+      "content": "Chaque mot dans la Word Reserve (Pipeline A) possède désormais un niveau de difficulté (Débutant, Intermédiaire, Expert). L'application liera ces niveaux à l'avancement XP, au niveau initial défini lors de l'onboarding et à l'historique de l'utilisateur pour adapter dynamiquement la proposition des mots. La gestion de l'XP et du scoring adaptatif reste un développement majeur à concevoir."
+    },
+    {
+      "id": 5,
+      "title": "5. [TODO] Périmètre de recherche & Filtrage de sens (12 juin 2026) :",
+      "content": "Pour le moment, l'implémentation s'est focalisée exclusivement sur la génération de la Word Reserve (listes de mots et classification de difficulté). La recherche effective de ces mots dans le corpus d'extraits textuels (Pipeline B et phase de matching) n'a pas encore été abordée. À terme, pour les mots homonymes ou polysémiques (ex: « partant »), un filtre sémantique par embeddings calculera la proximité entre l'extrait entier et le pôle sémantique thématique (ex: Rhétorique) afin de rejeter les extraits utilisant le mot dans un sens inadéquat (ex: rejeter « Il est partant pour... » au profit de « ... et partant, la conclusion... »)."
+    },
+    {
+      "id": 6,
+      "title": "6. [TODO] Programme d'apprentissage systémique de l'univers politique (12 juin 2026) :",
+      "content": "Dans la sous-catégorie des qualifications d'orientation idéologique ou sociétale (C2), l'objectif à long terme dépasse l'apprentissage lexical brut. Il s'agit de construire un programme pédagogique permettant à l'utilisateur de développer une compréhension globale de l'horizon politique contemporain. Plutôt que d'accumuler des définitions encyclopédiques froides, le système cherchera à faire appréhender l'univers mental et le système de valeurs de chaque sensibilité (ex: gaulliste, jacobin, souverainiste, réactionnaire).\n\nNe disposant pas du temps matériel pour effectuer des entretiens de psychologie qualitative avec un panel de militants, cette compréhension s'appuiera sur la modélisation des comportements et des attitudes typiques envers des objets sociaux ou des représentations collectives clés (la souveraineté nationale, le rôle de l'État, le marché, l'autorité, la laïcité, etc.). Pour chaque affiliation politique, l'algorithme ou le contenu pédagogique devra modéliser comment ses partisans investissent ces représentations (adhésion, rejet, méfiance) afin de donner à l'utilisateur une vision relationnelle et vivante des forces en présence."
+    },
+    {
+      "id": 7,
+      "title": "7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :",
+      "content": "Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter."
+    }
+  ]
 }

@@ -929,7 +929,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-14 20:44 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-14 20:47 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -953,81 +953,22 @@
 <span>ℹ️ Informations complémentaires</span>
 <span class="collapsible-arrow" id="info-arrow">▼</span>
 </div>
-<div class="collapsible-content" id="info-content">
-<p contenteditable="true" spellcheck="false" style="margin-top: 0; font-size: 0.92rem; line-height: 1.6;">
-<strong>1. Alignement avec les Objectifs de l'Utilisateur (Onboarding) :</strong><br/>
-                Les 5 catégories structurant l'application correspondent directement aux choix d'apprentissage formulés
-                par l'utilisateur lors de sa première utilisation. Il coche ses objectifs personnels pour orienter la
-                découverte du vocabulaire :
-            </p>
-<ul>
-<li contenteditable="true" spellcheck="false"><strong>Vocabulaire Littéraire (C1)</strong> : Apprendre
-                    du vocabulaire pour un usage créatif (écriture de romans, poésie, théâtre) ou pour décoder des
-                    œuvres classiques.</li>
-<li contenteditable="true" spellcheck="false"><strong>Rhétorique &amp; Débats (C2)</strong> : Acquérir
-                    des mots pour avoir des discussions soutenues, parler brillamment et structurer ses arguments
-                    oratoires.</li>
-<li contenteditable="true" spellcheck="false"><strong>Langage Familier (C3) — « Le Dernier Cri
-                        »</strong> : Maîtriser les expressions populaires en vogue — celles qui se propagent viralement
-                    depuis la cité et les réseaux sociaux pour devenir mainstream. Capter le « dernier cri »
-                    linguistique pendant sa phase d'adoption massive.</li>
-<li contenteditable="true" spellcheck="false"><strong>Culture Générale (C4)</strong> : Découvrir des
-                    mots insolites et des curiosités lexicales pour stimuler son éclectisme et sa culture.</li>
-<li contenteditable="true" spellcheck="false"><strong>Domaine Spécifique (C5)</strong> : Rentrer et
-                    travailler le jargon d'une profession ou passion spécifique (ex: cuisine, médecine, droit).</li>
-</ul>
-<p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px;">
-<strong>2. [TODO] Délimitation de la Base de Données du Corpus :</strong><br/>
-                Il reste indispensable de définir plus rigoureusement le périmètre et la constitution de notre base de
-                données locale et distante. Il faudra délimiter précisément quelles sources de textes (œuvres
-                littéraires libres de droits, retranscriptions de conférences formelles, de débats) y seront intégrées
-                pour alimenter de manière fiable la Pipeline B.
-            </p>
-<p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px;">
-<strong>3. [TODO] Affinement du Scoring :</strong><br/>
-                Les algorithmes de scoring et le calcul des scores (visant à identifier les éléments pertinents pouvant
-                intéresser l'utilisateur) devront être ajustés et affinés au fur et à mesure de l'avancement de
-                l'intégration et des retours d'usage.
-            </p>
-<p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px;">
-<strong>4. [TODO] Progression &amp; Niveau de Difficulté Utilisateur :</strong><br/>
-                Chaque mot dans la Word Reserve (Pipeline A) possède désormais un niveau de difficulté (Débutant,
-                Intermédiaire, Expert). L'application liera ces niveaux à l'avancement XP, au niveau initial défini lors
-                de l'onboarding et à l'historique de l'utilisateur pour adapter dynamiquement la proposition des mots.
-                La gestion de l'XP et du scoring adaptatif reste un développement majeur à concevoir.
-            </p>
-<p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px;">
-<strong>5. [TODO] Périmètre de recherche &amp; Filtrage de sens (12 juin 2026) :</strong><br/>
-                Pour le moment, l'implémentation s'est focalisée exclusivement sur la génération de la Word Reserve
-                (listes de mots et classification de difficulté). La recherche effective de ces mots dans le corpus
-                d'extraits textuels (Pipeline B et phase de matching) n'a pas encore été abordée. À terme, pour les mots
-                homonymes ou polysémiques (ex: <em>« partant »</em>), un filtre sémantique par embeddings calculera la
-                proximité entre l'extrait entier et le pôle sémantique thématique (ex: Rhétorique) afin de rejeter les
-                extraits utilisant le mot dans un sens inadéquat (ex: rejeter <em>« Il est partant pour... »</em> au
-                profit de <em>« ... et partant, la conclusion... »</em>).
-            </p>
-<p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px;">
-<strong>6. [TODO] Programme d'apprentissage systémique de l'univers politique (12 juin 2026)
-                    :</strong><br/>
-                Dans la sous-catégorie des <em>qualifications d'orientation idéologique ou sociétale</em> (C2),
-                l'objectif à long terme dépasse l'apprentissage lexical brut. Il s'agit de construire un programme
-                pédagogique permettant à l'utilisateur de développer une compréhension globale de l'horizon politique
-                contemporain. Plutôt que d'accumuler des définitions encyclopédiques froides, le système cherchera à
-                faire appréhender l'univers mental et le système de valeurs de chaque sensibilité (ex: <em>gaulliste,
-                    jacobin, souverainiste, réactionnaire</em>).
-                <br/>Ne disposant pas du temps matériel pour effectuer des entretiens de psychologie qualitative avec un
-                panel de militants, cette compréhension s'appuiera sur la modélisation des comportements et des
-                attitudes typiques envers des objets sociaux ou des représentations collectives clés (la souveraineté
-                nationale, le rôle de l'État, le marché, l'autorité, la laïcité, etc.). Pour chaque affiliation
-                politique, l'algorithme ou le contenu pédagogique devra modéliser comment ses partisans investissent ces
-                représentations (adhésion, rejet, méfiance) afin de donner à l'utilisateur une vision relationnelle et
-                vivante des forces en présence.
-            </p>
-<p contenteditable="true" spellcheck="false" style="margin-bottom: 0; font-size: 0.92rem; line-height: 1.6; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px;">
-<strong>7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :</strong><br/>
-                Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter.
-            </p>
-</div>
+<div class="collapsible-content" id="info-content"><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; margin-top: 0"><strong>1. Alignement avec les Objectifs de l'Utilisateur (Onboarding) :</strong><br/>
+Les 5 catégories structurant l'application correspondent directement aux choix d'apprentissage formulés par l'utilisateur lors de sa première utilisation. Il coche ses objectifs personnels pour orienter la découverte du vocabulaire :
+
+- Vocabulaire Littéraire (C1) : Apprendre du vocabulaire pour un usage créatif (écriture de romans, poésie, théâtre) ou pour décoder des œuvres classiques.
+- Rhétorique &amp; Débats (C2) : Acquérir des mots pour avoir des discussions soutenues, parler brillamment et structurer ses arguments oratoires.
+- Langage Familier (C3) — « Le Dernier Cri » : Maîtriser les expressions populaires en vogue — celles qui se propagent viralement depuis la cité et les réseaux sociaux pour devenir mainstream. Capter le « dernier cri » linguistique pendant sa phase d'adoption massive.
+- Culture Générale (C4) : Découvrir des mots insolites et des curiosités lexicales pour stimuler son éclectisme et sa culture.
+- Domaine Spécifique (C5) : Rentrer et travailler le jargon d'une profession ou passion spécifique (ex: cuisine, médecine, droit).</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>2. [TODO] Délimitation de la Base de Données du Corpus :</strong><br/>
+Il reste indispensable de définir plus rigoureusement le périmètre et la constitution de notre base de données locale et distante. Il faudra délimiter précisément quelles sources de textes (œuvres littéraires libres de droits, retranscriptions de conférences formelles, de débats) y seront intégrées pour alimenter de manière fiable la Pipeline B.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>3. [TODO] Affinement du Scoring :</strong><br/>
+Les algorithmes de scoring et le calcul des scores (visant à identifier les éléments pertinents pouvant intéresser l'utilisateur) devront être ajustés et affinés au fur et à mesure de l'avancement de l'intégration et des retours d'usage.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>4. [TODO] Progression &amp; Niveau de Difficulté Utilisateur :</strong><br/>
+Chaque mot dans la Word Reserve (Pipeline A) possède désormais un niveau de difficulté (Débutant, Intermédiaire, Expert). L'application liera ces niveaux à l'avancement XP, au niveau initial défini lors de l'onboarding et à l'historique de l'utilisateur pour adapter dynamiquement la proposition des mots. La gestion de l'XP et du scoring adaptatif reste un développement majeur à concevoir.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>5. [TODO] Périmètre de recherche &amp; Filtrage de sens (12 juin 2026) :</strong><br/>
+Pour le moment, l'implémentation s'est focalisée exclusivement sur la génération de la Word Reserve (listes de mots et classification de difficulté). La recherche effective de ces mots dans le corpus d'extraits textuels (Pipeline B et phase de matching) n'a pas encore été abordée. À terme, pour les mots homonymes ou polysémiques (ex: « partant »), un filtre sémantique par embeddings calculera la proximité entre l'extrait entier et le pôle sémantique thématique (ex: Rhétorique) afin de rejeter les extraits utilisant le mot dans un sens inadéquat (ex: rejeter « Il est partant pour... » au profit de « ... et partant, la conclusion... »).</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>6. [TODO] Programme d'apprentissage systémique de l'univers politique (12 juin 2026) :</strong><br/>
+Dans la sous-catégorie des qualifications d'orientation idéologique ou sociétale (C2), l'objectif à long terme dépasse l'apprentissage lexical brut. Il s'agit de construire un programme pédagogique permettant à l'utilisateur de développer une compréhension globale de l'horizon politique contemporain. Plutôt que d'accumuler des définitions encyclopédiques froides, le système cherchera à faire appréhender l'univers mental et le système de valeurs de chaque sensibilité (ex: gaulliste, jacobin, souverainiste, réactionnaire).
+
+Ne disposant pas du temps matériel pour effectuer des entretiens de psychologie qualitative avec un panel de militants, cette compréhension s'appuiera sur la modélisation des comportements et des attitudes typiques envers des objets sociaux ou des représentations collectives clés (la souveraineté nationale, le rôle de l'État, le marché, l'autorité, la laïcité, etc.). Pour chaque affiliation politique, l'algorithme ou le contenu pédagogique devra modéliser comment ses partisans investissent ces représentations (adhésion, rejet, méfiance) afin de donner à l'utilisateur une vision relationnelle et vivante des forces en présence.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :</strong><br/>
+Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter.</p></div>
 </div>
 <div class="main-layout">
 <!-- ================= LEFT: MIND MAP VISUAL ================= -->
@@ -4234,13 +4175,36 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
         // ── Extract JSON from DOM
 
         function extractDataToJson() {
+            let syncDoc = {};
+            try {
+                const docEl = document.getElementById('sync-documentation-data');
+                if (docEl) syncDoc = JSON.parse(docEl.textContent);
+            } catch(e) { console.warn('Could not parse sync_documentation:', e); }
+
+            const infoComp = [];
+            document.querySelectorAll('#info-content p').forEach((p, idx) => {
+                const titleEl = p.querySelector('strong');
+                const title = titleEl ? titleEl.innerText : '';
+                let content = p.innerText || '';
+                if (title && content.startsWith(title)) {
+                    content = content.substring(title.length).trim();
+                }
+                infoComp.push({
+                    id: idx + 1,
+                    title: title,
+                    content: content
+                });
+            });
+
             const data = {
                 meta: {
                     version: '2.0',
                     last_export: new Date().toISOString(),
                     description: 'Lexica Dashboard — données structurées (généré automatiquement)'
                 },
+                sync_documentation: syncDoc,
                 global_notes: document.getElementById('notes-transversales')?.innerText?.trim() || '',
+                informations_complementaires: infoComp,
                 pipelines: []
             };
 
@@ -4350,6 +4314,47 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
         }
         </script>
 <div id="grammalecte_menu_main_button_shadow_host" style="width: 0px; height: 0px;"></div>
-</body>
+<script id="sync-documentation-data" type="application/json">{
+  "purpose": "Permet de synchroniser le fichier JSON avec tableau_interactif_algorithmes.html.",
+  "script": "tools/apply_json_to_html.py",
+  "usage": "Exécuter 'python tools/apply_json_to_html.py' pour propager les modifications du JSON vers le HTML.",
+  "capabilities": "Le script met à jour les textes existants, génère automatiquement la structure HTML manquante (pipelines, catégories, onglets, fiches) et met à jour les Informations Complémentaires dynamiquement."
+}</script><script id="informations-complementaires-data" type="application/json">[
+  {
+    "id": 1,
+    "title": "1. Alignement avec les Objectifs de l'Utilisateur (Onboarding) :",
+    "content": "Les 5 catégories structurant l'application correspondent directement aux choix d'apprentissage formulés par l'utilisateur lors de sa première utilisation. Il coche ses objectifs personnels pour orienter la découverte du vocabulaire :\n\n- Vocabulaire Littéraire (C1) : Apprendre du vocabulaire pour un usage créatif (écriture de romans, poésie, théâtre) ou pour décoder des œuvres classiques.\n- Rhétorique & Débats (C2) : Acquérir des mots pour avoir des discussions soutenues, parler brillamment et structurer ses arguments oratoires.\n- Langage Familier (C3) — « Le Dernier Cri » : Maîtriser les expressions populaires en vogue — celles qui se propagent viralement depuis la cité et les réseaux sociaux pour devenir mainstream. Capter le « dernier cri » linguistique pendant sa phase d'adoption massive.\n- Culture Générale (C4) : Découvrir des mots insolites et des curiosités lexicales pour stimuler son éclectisme et sa culture.\n- Domaine Spécifique (C5) : Rentrer et travailler le jargon d'une profession ou passion spécifique (ex: cuisine, médecine, droit)."
+  },
+  {
+    "id": 2,
+    "title": "2. [TODO] Délimitation de la Base de Données du Corpus :",
+    "content": "Il reste indispensable de définir plus rigoureusement le périmètre et la constitution de notre base de données locale et distante. Il faudra délimiter précisément quelles sources de textes (œuvres littéraires libres de droits, retranscriptions de conférences formelles, de débats) y seront intégrées pour alimenter de manière fiable la Pipeline B."
+  },
+  {
+    "id": 3,
+    "title": "3. [TODO] Affinement du Scoring :",
+    "content": "Les algorithmes de scoring et le calcul des scores (visant à identifier les éléments pertinents pouvant intéresser l'utilisateur) devront être ajustés et affinés au fur et à mesure de l'avancement de l'intégration et des retours d'usage."
+  },
+  {
+    "id": 4,
+    "title": "4. [TODO] Progression & Niveau de Difficulté Utilisateur :",
+    "content": "Chaque mot dans la Word Reserve (Pipeline A) possède désormais un niveau de difficulté (Débutant, Intermédiaire, Expert). L'application liera ces niveaux à l'avancement XP, au niveau initial défini lors de l'onboarding et à l'historique de l'utilisateur pour adapter dynamiquement la proposition des mots. La gestion de l'XP et du scoring adaptatif reste un développement majeur à concevoir."
+  },
+  {
+    "id": 5,
+    "title": "5. [TODO] Périmètre de recherche & Filtrage de sens (12 juin 2026) :",
+    "content": "Pour le moment, l'implémentation s'est focalisée exclusivement sur la génération de la Word Reserve (listes de mots et classification de difficulté). La recherche effective de ces mots dans le corpus d'extraits textuels (Pipeline B et phase de matching) n'a pas encore été abordée. À terme, pour les mots homonymes ou polysémiques (ex: « partant »), un filtre sémantique par embeddings calculera la proximité entre l'extrait entier et le pôle sémantique thématique (ex: Rhétorique) afin de rejeter les extraits utilisant le mot dans un sens inadéquat (ex: rejeter « Il est partant pour... » au profit de « ... et partant, la conclusion... »)."
+  },
+  {
+    "id": 6,
+    "title": "6. [TODO] Programme d'apprentissage systémique de l'univers politique (12 juin 2026) :",
+    "content": "Dans la sous-catégorie des qualifications d'orientation idéologique ou sociétale (C2), l'objectif à long terme dépasse l'apprentissage lexical brut. Il s'agit de construire un programme pédagogique permettant à l'utilisateur de développer une compréhension globale de l'horizon politique contemporain. Plutôt que d'accumuler des définitions encyclopédiques froides, le système cherchera à faire appréhender l'univers mental et le système de valeurs de chaque sensibilité (ex: gaulliste, jacobin, souverainiste, réactionnaire).\n\nNe disposant pas du temps matériel pour effectuer des entretiens de psychologie qualitative avec un panel de militants, cette compréhension s'appuiera sur la modélisation des comportements et des attitudes typiques envers des objets sociaux ou des représentations collectives clés (la souveraineté nationale, le rôle de l'État, le marché, l'autorité, la laïcité, etc.). Pour chaque affiliation politique, l'algorithme ou le contenu pédagogique devra modéliser comment ses partisans investissent ces représentations (adhésion, rejet, méfiance) afin de donner à l'utilisateur une vision relationnelle et vivante des forces en présence."
+  },
+  {
+    "id": 7,
+    "title": "7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :",
+    "content": "Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter."
+  }
+]</script></body>
 <script src="moz-extension://5695a441-4282-4bc7-b5b5-bdca6b530bb6/content_scripts/api.js"></script>
 </html>

@@ -323,6 +323,63 @@ def apply_global_notes(soup, data: dict) -> int:
     return 0
 
 
+def apply_info_panel(soup, data: dict) -> int:
+    info_content = soup.find(id="info-content")
+    if not info_content:
+        return 0
+
+    # Clear existing paragraphs and list elements
+    for child in list(info_content.children):
+        child.extract()
+
+    points = data.get("informations_complementaires", [])
+    for idx, p in enumerate(points):
+        p_tag = soup.new_tag("p", attrs={
+            "contenteditable": "true",
+            "spellcheck": "false"
+        })
+
+        styles = ["font-size: 0.92rem", "line-height: 1.6", "white-space: pre-wrap"]
+        if idx == 0:
+            styles.append("margin-top: 0")
+        else:
+            styles.append("border-top: 1px solid rgba(255,255,255,0.06)")
+            styles.append("padding-top: 16px")
+            styles.append("margin-top: 16px")
+
+        if idx == len(points) - 1:
+            styles.append("margin-bottom: 0")
+
+        p_tag["style"] = "; ".join(styles)
+
+        strong = soup.new_tag("strong")
+        strong.string = p.get("title", "")
+        p_tag.append(strong)
+
+        br = soup.new_tag("br")
+        p_tag.append(br)
+
+        p_tag.append(NavigableString("\n" + p.get("content", "")))
+        info_content.append(p_tag)
+
+    # Inject/update hidden script tags for JSON export preservation
+    body = soup.find("body")
+    if body:
+        doc_script = soup.find(id="sync-documentation-data")
+        if not doc_script:
+            doc_script = soup.new_tag("script", id="sync-documentation-data", type="application/json")
+            body.append(doc_script)
+        doc_script.string = json.dumps(data.get("sync_documentation", {}), ensure_ascii=False, indent=2)
+
+        info_script = soup.find(id="informations-complementaires-data")
+        if not info_script:
+            info_script = soup.new_tag("script", id="informations-complementaires-data", type="application/json")
+            body.append(info_script)
+        info_script.string = json.dumps(points, ensure_ascii=False, indent=2)
+
+    return len(points)
+
+
 def apply_pipeline_names(soup, pipeline: dict) -> int:
     updated = 0
     pipe_id = pipeline.get("id", "")
@@ -445,6 +502,7 @@ def apply_json_to_html(json_path: Path, html_path: Path) -> None:
     # 2. Injecter les données textuelles à jour
     print("\n--- Ingestion des Textes & Mises à Jour ---")
     total_updates = apply_global_notes(soup, data)
+    total_updates += apply_info_panel(soup, data)
 
     for pipeline in data.get("pipelines", []):
         pipe_id = pipeline.get("id", "?")
