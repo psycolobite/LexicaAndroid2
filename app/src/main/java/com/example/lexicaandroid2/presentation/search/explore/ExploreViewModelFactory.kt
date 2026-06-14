@@ -9,6 +9,7 @@ import com.example.lexicaandroid2.data.corpus.CorpusIndex
  */
 class ExploreViewModelFactory(
     private val corpusIndex: CorpusIndex,
+    private val flashcardRepository: com.example.lexicaandroid2.domain.repository.FlashcardRepository? = null,
     private val scoringEngine: Any? = null,
     private val rankingStrategy: Any? = null
 ) : ViewModelProvider.Factory {
@@ -18,6 +19,7 @@ class ExploreViewModelFactory(
             @Suppress("UNCHECKED_CAST")
             return ExploreViewModel(
                 corpusIndex = corpusIndex,
+                flashcardRepository = flashcardRepository,
                 scoringEngine = scoringEngine,
                 rankingStrategy = rankingStrategy
             ) as T

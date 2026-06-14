@@ -444,7 +444,7 @@ fun LexicaApp(
                         navController.navigate(Screen.WordList.createRoute(filter))
                     },
                     onNavigateToAddWords = {
-                        navController.navigate(Screen.AddWords.route)
+                        navController.navigate(Screen.Explore.route)
                     },
                     onNavigateToMiniGames = {
                         navController.navigate(Screen.MiniGames.route)
@@ -802,8 +802,11 @@ fun LexicaApp(
                     onNavigateToCatalogue = { sourceId ->
                         navController.navigate(Screen.Catalogue.createRoute(sourceId))
                     },
-                    onNavigateToSearch = { navController.navigate(Screen.Search.route) },
-                    onBack = { navController.navigateUp() }
+                    onNavigateToSearch = { navController.navigate(Screen.AddWords.route) },
+                    onNavigateToAddWords = { navController.navigate(Screen.AddWords.route) },
+                    onBack = { navController.navigateUp() },
+                    addWordsViewModel = addWordsViewModel,
+                    onEditCard = { card -> navController.navigate(Screen.EditWord().createRoute(card.id)) }
                 )
             }
             composable(route = Screen.Search.route) {
