@@ -1,0 +1,14 @@
+Profil Dominant;Objectif Secondaire;Niveau (Zipf);Domaine Spécifique (K);Sourcing Pipeline A (Sélection Mots);Sourcing Pipeline B (Livres & Textes Recommandés);Critères syntaxiques / Remarques
+C1. Littéraire;Aucun;Débutant / Intermédiaire (Zipf >= 3.0);Aucun;Mots littéraires courants (Lexique.org ratio);Jules Verne, Maupassant, A. Dumas, St-Exupéry;Phrases courtes (< 25 mots), style narratif direct, peu de relatives.
+C1. Littéraire;Aucun;Avancé (Zipf [1.5, 3.0]);Aucun;Mots littéraires rares / figures de style;Victor Hugo, Émile Zola, Gustave Flaubert, Baudelaire;Phrases moyennes (15 à 40 mots), figures de style (comparaisons, métaphores).
+C1. Littéraire;Aucun;Expert (Zipf < 1.5);Aucun;Archaïsmes élégants, mots rares complexes;Marcel Proust, Chateaubriand, Mallarmé, Rimbaud, Montaigne;Phrases longues et complexes, subordonnées proustiennes, inversions sujet-verbe.
+C1. Littéraire;C2. Rhétorique;Tous;Aucun;Mots à forte abstraction conceptuelle;Descartes, Rousseau, Diderot, Montesquieu, Essais d'Hugo;Littérature d'idées, essais argumentatifs, théâtre classique (Corneille, Racine).
+C1. Littéraire;C3. Informel;Tous;Aucun;Néologismes d'auteur, registres mêlés;L.F. Céline, Raymond Queneau, Albert Camus (L'Étranger);Ruptures de tons, argot d'époque, écriture blanche.
+C1. Littéraire;C4. Culture Générale;Tous;Aucun;Curiosités littéraires, mots historiques;Romans historiques (A. Dumas, M. Yourcenar), Récits de voyage;Contextes géographiques ou historiques riches.
+C1. Littéraire;C5. Domaine Spécifique;Tous;Cuisine / Art Culinaire;Vocabulaire culinaire soutenu;Brillat-Savarin (Physiologie du goût), A. Dumas (Grand Dictionnaire de cuisine);Vocabulaire lié à l'alimentation et aux sens.
+C1. Littéraire;C5. Domaine Spécifique;Tous;Droit / Justice;Vocabulaire juridique littéraire;Balzac (La Comédie Humaine), Hugo (Les Misérables);Vocabulaire légal, descriptions d'audiences ou d'affaires notariales.
+C2. Rhétorique;Aucun;Tous;Aucun;Connecteurs logiques, verbes d'opinion précis;Plaidoyers (Badinter, Jaurès), discours historiques, essais;Phrases articulées, connecteurs logiques, structures persuasives.
+C3. Informel;Aucun;Tous;Aucun;Argot moderne, verlan, néologismes;Transcriptions YouTube, Tweets récents, dialogues OPUS;Langage parlé, abréviations, syntaxe décontractée.
+C4. Culture Générale;Aucun;Tous;Aucun;Mots insolites, curiosités lexicales;Articles Wikipédia transversaux, revues scientifiques;Variété sémantique maximale, explications claires.
+C5. Domaine Spécifique;Aucun;Tous;Académique (ex: Droit, Médecine);Jargon technique ciblé;Résumés d'articles HAL, manuels universitaires, Wikipédia;Phrases denses, formalisme, précision terminologique.
+C5. Domaine Spécifique;Aucun;Tous;Pratique (ex: Cuisine, Couture);Termes techniques d'atelier/recettes;Wikibooks pratiques, blogs spécialisés, transcriptions tutos;Vocabulaire procédural, verbes d'action.

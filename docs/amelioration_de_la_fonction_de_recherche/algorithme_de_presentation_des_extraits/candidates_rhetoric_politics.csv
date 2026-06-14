@@ -1,0 +1,115 @@
+Mot;Difficulté;Zipf Livres;Zipf Films;Freq Livres (ppm);Freq Films (ppm);Définition
+convaincre;Débutant;4.38;4.45;23.72;28.43;Amener quelqu'un à reconnaître la vérité d'une proposition par des preuves logiques.
+partant;Débutant;4.18;4.00;15.07;10.09;Par conséquent, donc.
+justifier;Débutant;4.17;3.87;14.93;7.37;Montrer la vérité de ce qu’on avance, de ce qu’on allègue. Justifier un fait. — Ce que j’avance, je puis le justifier par des faits.
+persuader;Débutant;4.09;3.65;12.23;4.50;Amener quelqu'un à croire ou à faire quelque chose en faisant appel à ses sentiments.
+objectif;Débutant;4.04;4.25;10.88;17.65;Qui concerne l’objet.
+lucide;Débutant;4.02;3.44;10.54;2.76;Qui conçoit les choses clairement. On n’est jamais trop lucide, et mieux vaut, dans le doute, noircir le tableau, au moins intellectuellement, que l’enjoliver : cela évitera imprudences et désillusions. — (André Comte-Sponville, Le goût de vivre et cent autres propos, Albin Michel, 2010)
+argument;Débutant;3.92;3.71;8.24;5.07;"(Logique) Raisonnement construit selon certaines règles, par lequel on tire méthodiquement une conséquence d’une ou de plusieurs propositions. Les mystères, étant supra-rationnels, ne sauraient être démontrés ; mais, comme ils ne sont pas pour cela anti-rationnels, les arguments qui tendent à éta..."
+équivoque;Débutant;3.86;3.07;7.30;1.18;Qui a un double sens, qui peut recevoir plusieurs interprétations et qui convient à différentes choses. Ce discours est équivoque.
+conservateur;Débutant;3.76;3.37;5.74;2.37;Qui tend à maintenir l'ordre social, politique et les traditions existantes.
+sceptique;Débutant;3.71;3.42;5.13;2.65;(Philosophie) Qualifie les philosophes qui disent qu’il n’y a rien de certain. Pyrrhon est considéré comme l’initiateur de la philosophie sceptique.
+arbitraire;Débutant;3.65;2.87;4.46;0.74;"Qui est produit par la seule volonté de l’homme, sans avoir de règle ni de fondement naturel. Or, ce qui manque à l’éclectisme, c’est justement une base scientifique et positive; et ses prétendus dogmes ne sont pas moins arbitraires et cérébrins que les dogmes des églises. — (J.-B.-François Bourb..."
+anarchiste;Débutant;3.64;3.34;4.32;2.17;Partisan de l'anarchie, rejetant toute autorité étatique et hiérarchique.
+dialectique;Débutant;3.60;2.93;3.98;0.85;Méthode de raisonnement consistant à analyser la réalité en mettant en évidence ses contradictions et à tenter de les dépasser.
+péremptoire;Débutant;3.59;0.00;3.85;0.00;"Qui détruit d’avance toute objection ; contre quoi on ne peut rien répliquer."
+objection;Débutant;3.58;4.08;3.78;12.07;Ce que l’on oppose à une affirmation, à une proposition, à une demande. Il n'y eut plus ni objections ni réplique, et le comte, s’apercevant qu’il prêchait dans le désert, s’arrêta lui-même et cessa de parler. — (Julie de Quérangal, Philippe de Morvelle, Revue des Deux Mondes, T.2,4, 1833)
+nonobstant;Débutant;3.55;2.30;3.51;0.20;Malgré, en dépit de.
+plausible;Débutant;3.51;3.39;3.24;2.48;"Qui semble devoir être admis ; admissible, croyable."
+allocution;Débutant;3.49;2.49;3.11;0.31;Discours court prononcé par une personnalité officielle.
+contester;Débutant;3.43;3.17;2.70;1.48;Mettre en doute ou refuser de reconnaître la validité d'une opinion ou d'une décision.
+cohérent;Débutant;3.39;3.09;2.43;1.23;Qui présente de la cohérence. (Sens figuré) Les informations recueillies ne sont cohérentes que s'il existe, sous la croûte lunaire composée de silicate de magnésium et de pyroxène, une masse gigantesque, une couche plus profonde en «fusion partielle». — (Clément Poursain, Quelque chose d'énorme ...
+gaulliste;Débutant;3.32;1.00;2.09;0.01;Partisan des doctrines politiques fondées sur les idées et l'action du général de Gaulle.
+insinuer;Débutant;3.31;3.21;2.03;1.63;Faire entendre habilement et indirectement quelque chose.
+contingent;Débutant;3.31;2.94;2.03;0.87;"Qui est éventuel ; qui peut arriver ou ne pas arriver. Résolu, Qu’une somme n’excédant pas soixante et dix mille dollars, soit accordée à Sa Majesté, pour défrayer les dépenses contingentes du Conseil législatif pour l’année 1861. — (Journaux de l’Assemblée législative du Canada, vol. 19, du 16 m..."
+réquisitoire;Débutant;3.31;2.59;2.03;0.39;Discours ou écrit dans lequel on accumule les accusations contre quelqu'un ou quelque chose.
+réactionnaire;Débutant;3.31;2.77;2.03;0.59;Qui s’oppose au progrès social, politique ou économique et cherche à rétablir un état de choses antérieur.
+parabole;Débutant;3.29;3.25;1.96;1.78;Récit allégorique contenant un enseignement moral ou religieux.
+métaphore;Débutant;3.28;3.61;1.89;4.04;Figure de style qui consiste à désigner une chose par une autre en vertu d'une analogie sémantique.
+incohérent;Débutant;3.25;2.43;1.76;0.27;Définition non renseignée
+véridique;Débutant;3.23;2.82;1.69;0.66;Définition non renseignée
+monarchiste;Débutant;3.19;2.62;1.55;0.42;Partisan de la royauté ou du rétablissement de la monarchie.
+diatribe;Débutant;3.17;2.08;1.49;0.12;Critique violente, pamphlet, écrit satirique ou argumentaire à charge.
+polémique;Débutant;3.17;2.79;1.49;0.61;Débat agressif et contradictoire par écrit ou par parole.
+controverse;Débutant;3.15;3.05;1.42;1.13;Discussion argumentée et prolongée sur une question délicate.
+fallacieux;Débutant;3.13;2.00;1.35;0.10;Qui est trompeur, mensonger, illusoire.
+apologie;Débutant;3.09;2.23;1.22;0.17;Discours ou écrit prenant la défense de quelqu'un ou de quelque chose.
+plaidoirie;Débutant;3.09;3.06;1.22;1.14;Exposé oral fait par un avocat pour défendre une cause devant un tribunal.
+allégorie;Débutant;3.06;2.58;1.15;0.38;Représentation d’une idée abstraite sous la forme d’une image, d’un tableau ou d’un récit.
+étayer;Débutant;3.06;2.67;1.15;0.47;Soutenir, appuyer une thèse ou un argument par des faits ou des preuves.
+déduction;Débutant;3.03;3.19;1.08;1.55;Action de soustraire une somme d'une autre. Il fait une déduction de la somme principal.
+euphémisme;Débutant;3.00;3.05;1.01;1.11;(Rhétorique) Formulation plus douce d'une réalité désagréable ou choquante dans le but de l'atténuer. ‘S veschtami po gorodou !… »J’avais appris au cours de mon dîner avec l’hôtelier, le sens de cette phrase fatidique : « Vos affaires pour aller en ville ! » C’est l’horrible euphémisme qu’on adre...
+réhabiliter;Débutant;3.00;2.45;1.01;0.28;Rétablir quelqu'un dans ses droits, sa réputation ou son honneur.
+ellipse;Intermédiaire;2.98;2.62;0.95;0.42;Omission volontaire d'un mot qui peut être facilement rétabli par le contexte.
+péroraison;Intermédiaire;2.98;0.00;0.95;0.00;Conclusion d'un discours qui résume les arguments et en appelle aux émotions.
+progressiste;Intermédiaire;2.98;2.91;0.95;0.82;Partisan du progrès social, politique ou économique, et des réformes favorisant ce progrès.
+plaidoyer;Intermédiaire;2.94;2.78;0.88;0.60;Discours verbal ou écrit en faveur de quelqu’un ou de quelque chose.
+harangue;Intermédiaire;2.94;1.00;0.88;0.01;Discours solennel, pompeux ou moralisateur adressé à une assemblée ou à une personne.
+antithèse;Intermédiaire;2.91;2.04;0.81;0.11;Mise en opposition de deux expressions ou idées contraires.
+réfuter;Intermédiaire;2.91;2.95;0.81;0.89;Combattre et rejeter une affirmation, un argument ou une thèse en prouvant sa fausseté.
+concéder;Intermédiaire;2.91;2.59;0.81;0.39;Admettre ou accorder un point à l'adversaire dans une discussion ou un débat.
+indubitable;Intermédiaire;2.91;2.46;0.81;0.29;"Dont on ne peut douter ; certain, évident."
+tempérer;Intermédiaire;2.83;2.08;0.68;0.12;Modérer ou adoucir des propos ou des émotions.
+pamphlet;Intermédiaire;2.83;3.05;0.68;1.11;Court écrit satirique et polémique attaquant une personnalité ou une institution.
+postulat;Intermédiaire;2.79;2.15;0.61;0.14;Principe non démontré que l'on admet comme base d'un raisonnement.
+apologue;Intermédiaire;2.79;0.00;0.61;0.00;Court récit écrit en prose ou en vers, dont on tire une instruction morale.
+discréditer;Intermédiaire;2.79;3.08;0.61;1.20;Faire perdre la confiance, le crédit ou l'autorité de quelqu'un.
+dogmatique;Intermédiaire;2.79;1.48;0.61;0.03;"(Religion) Qui appartient au dogme ; qui concerne le dogme. Une autre source qui a fait couler tant de sang a été la fureur dogmatique ; elle a bouleversé plus d'un État, depuis les massacres des Albigeois au XIIIe siècle, jusqu'à la petite guerre des Cévennes au commencement du XVIIIe. — (Voltai..."
+casuistique;Intermédiaire;2.74;1.00;0.55;0.01;Partie de la théologie morale qui applique les principes généraux à des cas particuliers de conscience.
+assertion;Intermédiaire;2.73;1.85;0.54;0.07;Proposition ou affirmation soutenue comme vraie.
+objecter;Intermédiaire;2.73;2.45;0.54;0.28;Opposer un argument ou une objection à une proposition.
+postuler;Intermédiaire;2.73;2.94;0.54;0.88;Solliciter, faire des démarches pour obtenir quelque chose, présenter sa candidature. Postuler un emploi, une place.
+argumenter;Intermédiaire;2.73;2.79;0.54;0.61;"Faire des arguments ; prouver par arguments. Il paraît qu'il y avait en présence des frères ennemis, des Individualistes, des Étatistes -[…]- qui étaient dans la nécessité de rompre des lances et de se mesurer en champ clos. Ils ont argumenté fortement. Puis, tout a fini par un « Embrassons-nous,..."
+probant;Intermédiaire;2.73;2.49;0.54;0.31;(Génétique) Dans une enquête familiale sur une maladie génétique, nom donné au sujet initial de l'enquête. Le probant est indemne, mais deux proches parents sont atteints (père ou mère, un ou plusieurs frères ou sœurs) ou un proche parent et un autre membre de la famille. — (Journal de génétique ...
+subjectif;Intermédiaire;2.73;2.81;0.54;0.65;(Philosophie) Qui a rapport au sujet, en parlant de ce qui se passe dans notre esprit, de ce qui est en nous et s’oppose à objectif. Réalité subjective. — Conceptions subjectives.
+induction;Intermédiaire;2.67;2.62;0.47;0.42;Raisonnement qui consiste à rassembler une série d’observations spécifiques pour arriver à formuler une conclusion générale. — Voilà comme il répond toujours ! dit le curé, qui, au fond, doué d’une extrême bienveillance, et n’étant pas fâché de voir souvent un homme instruit pour lui faire part d...
+légitimer;Intermédiaire;2.67;2.28;0.47;0.19;Reconnaître comme conforme aux lois, aux règles ou à la raison.
+pérorer;Intermédiaire;2.67;1.85;0.47;0.07;Parler avec emphase et de manière prétentieuse devant un public.
+exorde;Intermédiaire;2.67;1.00;0.47;0.01;Première partie d'un discours classique destiné à capter l'attention de l'auditoire.
+axiome;Intermédiaire;2.61;2.00;0.41;0.10;Vérité évidente par elle-même qui ne nécessite aucune démonstration.
+corroborer;Intermédiaire;2.61;2.84;0.41;0.69;Confirmer ou fortifier une théorie ou une déclaration par de nouvelles preuves.
+fustiger;Intermédiaire;2.61;1.70;0.41;0.05;Critiquer avec une extrême violence ou condamner sévèrement.
+arguer;Intermédiaire;2.61;1.70;0.41;0.05;Tirer argument de quelque chose, ou prétendre.
+pertinent;Intermédiaire;2.61;3.04;0.41;1.10;Qui est tel qu’il convient, qui est approprié, qui est en rapport avec le sujet. Raisons pertinentes.
+corrélativement;Intermédiaire;2.53;0.00;0.34;0.00;D’une manière corrélative. Et peut-être n’était-elle jamais apparue, n’avait-elle jamais existé que corrélativement à mon drame, comme une simple tache d’encre entre deux répliques. — (Driss Chraïbi, Les Boucs, Folio, 1972, p. 46)
+digression;Intermédiaire;2.53;1.78;0.34;0.06;Action de s'écarter du sujet principal dans un discours ou un écrit.
+réfutation;Intermédiaire;2.53;2.34;0.34;0.22;Définition non renseignée
+pragmatique;Intermédiaire;2.53;2.63;0.34;0.43;Définition non renseignée
+antinomie;Intermédiaire;2.43;0.00;0.27;0.00;Contradiction réelle ou apparente entre deux lois, deux principes ou deux idées.
+pléonasme;Intermédiaire;2.43;2.23;0.27;0.17;Répétition de termes ayant le même sens (ex: monter en haut).
+ergoter;Intermédiaire;2.43;2.20;0.27;0.16;Chicaner sur des détails insignifiants dans une discussion.
+tendancieux;Intermédiaire;2.43;2.45;0.27;0.28;Définition non renseignée
+erroné;Intermédiaire;2.43;2.73;0.27;0.54;Définition non renseignée
+girondin;Intermédiaire;2.32;0.00;0.21;0.00;Partisan d'une autonomie locale forte et d'une structure étatique décentralisée ou fédérale.
+subséquemment;Intermédiaire;2.30;2.36;0.20;0.23;Définition non renseignée
+causalité;Intermédiaire;2.30;2.36;0.20;0.23;Définition non renseignée
+corrélation;Intermédiaire;2.30;2.23;0.20;0.17;Définition non renseignée
+sophisme;Intermédiaire;2.30;2.46;0.20;0.29;Raisonnement qui présente une apparence de logique mais qui est volontairement trompeur ou fallacieux.
+litote;Intermédiaire;2.30;1.48;0.20;0.03;Figure de rhétorique qui consiste à dire moins pour faire entendre plus (ex: ce n'est pas mauvais).
+hyperbole;Intermédiaire;2.30;1.95;0.20;0.09;Exagération extrême visant à frapper les esprits.
+alléguer;Intermédiaire;2.30;0.00;0.20;0.00;Définition non renseignée
+conjecturer;Intermédiaire;2.30;2.15;0.20;0.14;Supposer ou faire des hypothèses sur la base de probabilités.
+irréfragable;Intermédiaire;2.30;1.85;0.20;0.07;Définition non renseignée
+univoque;Intermédiaire;2.30;2.40;0.20;0.25;Définition non renseignée
+panégyrique;Intermédiaire;2.30;2.34;0.20;0.22;Définition non renseignée
+syllogisme;Intermédiaire;2.15;2.11;0.14;0.13;Raisonnement logique composé de trois propositions (deux prémisses et une conclusion) tel que la conclusion découle nécessairement des prémisses.
+tautologie;Intermédiaire;2.15;1.00;0.14;0.01;Proposition qui répète la même chose sous des formes différentes, raisonnement circulaire.
+synecdoque;Intermédiaire;2.15;0.00;0.14;0.00;Type de métonymie consistant à prendre la partie pour le tout, ou le tout pour la partie.
+subodorer;Intermédiaire;2.15;2.04;0.14;0.11;Pressentir ou deviner quelque chose par intuition.
+élucubrer;Intermédiaire;2.15;1.00;0.14;0.01;Créer des théories ou des écrits extravagants à force de réflexions laborieuses.
+spécieux;Intermédiaire;2.15;1.78;0.14;0.06;Définition non renseignée
+réformiste;Intermédiaire;2.15;2.58;0.14;0.38;Partisan de réformes graduelles et pacifiques au sein du cadre législatif existant.
+prémisse;Intermédiaire;1.85;1.70;0.07;0.05;Définition non renseignée
+allégation;Intermédiaire;1.85;2.45;0.07;0.28;Affirmation que l'on produit pour soutenir une cause ou un fait, souvent sans preuve immédiate.
+métonymie;Intermédiaire;1.85;0.00;0.07;0.00;Figure par laquelle on remplace un mot par un autre lié par un rapport de contiguïté (ex: boire un verre).
+inférer;Intermédiaire;1.85;0.00;0.07;0.00;Tirer une conséquence d'un principe ou d'un fait.
+vilipender;Intermédiaire;1.85;2.18;0.07;0.15;Dénigrer ou rabaisser quelqu'un avec mépris.
+infirmer;Intermédiaire;1.85;1.85;0.07;0.07;Affaiblir ou contredire une hypothèse ou une décision antérieure.
+captieux;Intermédiaire;1.85;0.00;0.07;0.00;Définition non renseignée
+jacobin;Intermédiaire;1.85;2.00;0.07;0.10;Partisan d'une centralisation étatique stricte et d'un pouvoir républicain unitaire.
+dichotomie;Expert;0.00;2.30;0.00;0.20;Division de quelque chose en deux parties souvent opposées.
+chiasme;Expert;0.00;1.00;0.00;0.01;Figure de style croisant des éléments de manière symétrique (ex: Il faut manger pour vivre et non vivre pour manger).
+oxymore;Expert;0.00;1.48;0.00;0.03;Alliance de deux mots de sens opposés dans un même groupe syntaxique (ex: un silence éloquent).
+invalider;Expert;0.00;2.00;0.00;0.10;Rendre nul ou priver de valeur légale ou scientifique.
+réfutable;Expert;0.00;1.00;0.00;0.01;Définition non renseignée
+infondé;Expert;0.00;1.70;0.00;0.05;Définition non renseignée
