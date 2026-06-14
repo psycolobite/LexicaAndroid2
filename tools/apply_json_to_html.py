@@ -427,6 +427,21 @@ def apply_json_to_html(json_path: Path, html_path: Path) -> None:
             for j, tab_data in enumerate(cat.get("tabs", [])):
                 ensure_tab_elements(soup, cat_id, color_class, tab_data, j)
 
+    # 1.5. S'assurer que chaque sous-branche (colonne 4) possède le bouton add-sub-btn
+    for sub_branch in soup.find_all("div", class_="category-branch"):
+        if sub_branch.get("id", "").endswith("-sub-branch"):
+            cat_id = sub_branch["id"].replace("-sub-branch", "")
+            add_btn = sub_branch.find(class_="add-sub-btn")
+            if not add_btn:
+                print(f"  [GEN] Ajout du bouton d'ajout d'onglet au conteneur #{sub_branch['id']}")
+                add_btn = soup.new_tag("button", attrs={
+                    "class": "add-sub-btn",
+                    "onclick": f"addTab('card-{cat_id}')",
+                    "title": "Ajouter un onglet"
+                })
+                add_btn.string = "＋"
+                sub_branch.append(add_btn)
+
     # 2. Injecter les données textuelles à jour
     print("\n--- Ingestion des Textes & Mises à Jour ---")
     total_updates = apply_global_notes(soup, data)
