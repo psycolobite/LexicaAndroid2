@@ -115,6 +115,14 @@ def main():
     corpus = load_corpus()
     print(f"Corpus actuel : {len(corpus)} chansons chargées.")
     
+    # Lire la limite de chansons par artiste depuis la ligne de commande (par défaut 15)
+    limit = 15
+    if len(sys.argv) > 1:
+        try:
+            limit = int(sys.argv[1])
+        except ValueError:
+            pass
+            
     for artist_name in ARTISTS:
         print(f"\nRecherche de l'artiste : {artist_name}...")
         artist_id, real_name = get_artist_id(artist_name)
@@ -123,8 +131,8 @@ def main():
             continue
             
         print(f"  ✓ Trouvé : {real_name} (ID: {artist_id})")
-        songs = get_artist_songs(artist_id, limit=15)
-        print(f"  ✓ {len(songs)} chansons trouvées pour cet artiste.")
+        songs = get_artist_songs(artist_id, limit=limit)
+        print(f"  ✓ {len(songs)} chansons trouvées pour cet artiste (limite: {limit}).")
         
         new_downloads = 0
         for song in songs:
