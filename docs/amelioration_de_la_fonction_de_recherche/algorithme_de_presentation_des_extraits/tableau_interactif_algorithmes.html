@@ -954,7 +954,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-15 19:06 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-15 19:16 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -989,7 +989,9 @@ Les 5 catégories structurant l'application correspondent directement aux choix 
 - Domaine Spécifique (C5) : Rentrer et travailler le jargon d'une profession ou passion spécifique (ex: cuisine, médecine, droit).</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>2. [FAIT] Délimitation de la Base de Données du Corpus :</strong><br/>
 Le périmètre et la constitution du corpus (Pipeline B) sont désormais fixés et documentés. Il comprend le projet Gutenberg (via Gutendex), les retranscriptions de vidéos YouTube (Amixem, Squeezie, conférences INA, Top Chef), les articles Wikipédia, les datasets Twitter épurés et les dialogues de films (base OPUS OpenSubtitles).</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>3. [FAIT] Affinement du Scoring :</strong><br/>
 La logique et les formules de scoring pour la sélection d'extraits ont été consolidées. Elles s'appuient sur la densité littéraire/sémantique, la similarité de contexte par rapport aux centroïdes (embeddings), la détection syntaxique des connecteurs logiques, l'oralité, ainsi qu'un bonus gaussien de longueur.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>4. [CONCEPTION] Progression &amp; Difficulté Inclusive (Bonification) :</strong><br/>
-La difficulté est la seule catégorie de caractéristique fonctionnant par bonification (inclusif). L'algorithme cherche à maintenir l'utilisateur dans sa zone optimale de progression (zone proximale de développement) et applique un bonus de score. Il nous faut définir précisément la notion de difficulté, notamment en opérationnalisant la caractéristique d'abstraction des mots.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>5. [FAIT] Périmètre de recherche &amp; Filtrage de sens (12 juin 2026) :</strong><br/>
+La difficulté est la seule catégorie de caractéristique fonctionnant par bonification (inclusif). L'algorithme cherche à maintenir l'utilisateur dans sa zone optimale de progression (zone proximale de développement) et applique un bonus de score. Il nous faut définir précisément la notion de difficulté, notamment en opérationnalisant la caractéristique d'abstraction des mots.
+
+- Intégration Desrochers : Utilisation des indices de Concrétude (pour l'abstraction), d'Imagerie et d'Âge d'Acquisition (AoA) comme signaux de calibration de la difficulté.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>5. [FAIT] Périmètre de recherche &amp; Filtrage de sens (12 juin 2026) :</strong><br/>
 La stratégie de désambiguïsation sémantique a été validée en R&amp;D. Pour éviter les faux-sens sur les homonymes (ex: « partant »), le système exploite une priorisation de dictionnaire local, calcule la similarité cosinus sur les embeddings des définitions Wiktionnaire, et applique un filtrage sémantique sur l'extrait complet du corpus par rapport au centroïde thématique.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>6. [TODO] Programme d'apprentissage systémique de l'univers politique (12 juin 2026) :</strong><br/>
 Dans la sous-catégorie des qualifications d'orientation idéologique ou sociétale (C2), l'objectif à long terme dépasse l'apprentissage lexical brut. Il s'agit de construire un programme pédagogique permettant à l'utilisateur de développer une compréhension globale de l'horizon politique contemporain. Plutôt que d'accumuler des définitions encyclopédiques froides, le système cherchera à faire appréhender l'univers mental et le système de valeurs de chaque sensibilité (ex: gaulliste, jacobin, souverainiste, réactionnaire).
 
@@ -1021,14 +1023,18 @@ La présentation des mots et extraits repose sur un algorithme d'exclusion néga
 
 - Exclusion négative : L'application n'essaie pas de bonifier ce que l'utilisateur aime, mais élimine ce qu'il rejette systématiquement (au niveau des objectifs et des caractéristiques comme le genre poésie ou le thème art).
 - Système d'hypothèses : Évite les fausses conclusions. Si un mot 'art' est rejeté plusieurs fois, l'algorithme vérifie s'il s'agit d'un rejet du thème 'art' ou de la difficulté 'novice' en proposant un mot 'art' de niveau 'expert'.
-- Mots non proposés ajoutés : Si l'utilisateur ajoute un mot surligné dans l'extrait qui n'était pas le mot cible proposé, ce mot est enregistré dans une liste spécifique pour être traité et partagé avec des utilisateurs ayant le même profil.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>13. [TODO] Boucle d'Engagement Journalière &amp; Médias (Section G) :</strong><br/>
+- Mots non proposés ajoutés : Si l'utilisateur ajoute un mot surligné dans l'extrait qui n'était pas le mot cible proposé, ce mot est enregistré dans une liste spécifique pour être traité et partagé avec des utilisateurs ayant le même profil.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>13. [TODO] Boucle d'Engagement Journalière &amp; Médias (Section G) :</strong><br/>
 Pistes d'innovation pour l'engagement quotidien de l'utilisateur :
 
 - Notification 'Mot du jour' : Envoi quotidien du mot le plus pertinent du profil.
 - Focus Word Défi : Sélection aléatoire d'un favori ou mot à travailler avec un défi d'usage en conversation réelle ou écriture.
 - Bibliothèque &amp; Filmothèque Médias : Lecteur intégré de livres/films avec sélection de mots au clic pour ajout direct.
 - Capture Photo (OCR) : Prendre un texte en photo et sélectionner les mots à importer.
-- Importation de livres : Parser l'intégralité d'un ouvrage pour générer des extraits et flashcards ciblés.</p></div>
+- Importation de livres : Parser l'intégralité d'un ouvrage pour générer des extraits et flashcards ciblés.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>14. [CONCEPTION] Clés primaires et ID Mots/Extraits (Désambiguïsation) :</strong><br/>
+L'utilisation d'identifiants uniques (IDs) pour les mots et les extraits est essentielle en base de données mobile (Room SQLite) :
+
+- Résolution de la polysémie : Un même mot textuel (ex: 'blanchir') possède plusieurs IDs distincts en fonction de ses acceptions (cuisine vs finance). Cela permet d'associer un extrait à l'ID de la définition exacte sans créer de confusion.
+- Optimisation des index : Les jointures SQL s'effectuent sur des clés numériques (IDs), évitant des comparaisons de chaînes de caractères lentes et sensibles à la casse/accents.</p></div>
 </div>
 <div class="main-layout">
 <!-- ================= LEFT: MIND MAP VISUAL ================= -->
@@ -1367,7 +1373,8 @@ Objectifs Utilisateur : Les mots de cette catégorie ont pour but d'aider
 **Extraits (Excerpts) :**
 - **Niveau de pertinence** : Dynamique (note de pertinence). Exemple : directement donné par la note moyenne de l'extrait convertie en pourcentage (note moyenne de 2.5/5 = pertinence de 50%). La pertinence commence à être calculée à partir de 100 notations.
 - **Nature de l'extrait** : audio, vidéo, textuel.
-- **Type d'extrait** : interview, ouvrage de littérature (livre), scène de théâtre, cinéma.</div>
+- **Type d'extrait** : interview, ouvrage de littérature (livre), scène de théâtre, cinéma.
+- **ID des extraits** : Clé unique (primaire) pour chaque extrait, permettant au cache local d'éviter de le présenter à nouveau.</div>
 </div>
 <!-- TAB 2: ALGORITHME & FILTRES -->
 <div class="tab-content">
@@ -1539,7 +1546,10 @@ La re-présentation d'un mot non ajouté est possible sous certaines conditions 
 - **Notation continue (UX)** : La notation se fait via un slider d'étoiles continu (permettant des notes décimales, ex: 2.74/5), stocké en base de données.
 - **Homographes &amp; Doublons** : Gestion des homographes via désambiguïsation ou liste manuelle. Mémorisation des extraits déjà proposés pour éviter la répétition d'un même extrait contenant plusieurs mots cibles.
 - **Favoris vs Mots à travailler** : L'utilisateur peut ajouter un mot en favori sans l'inclure dans sa liste d'apprentissage active.
-- **Écran de chargement culturel** : En cas de chargement, affichage de citations inspirantes (ex: Marcel Pagnol ou Bible : 'Au commencement était le verbe').</div>
+- **Écran de chargement culturel** : En cas de chargement, affichage de citations inspirantes (ex: Marcel Pagnol ou Bible : 'Au commencement était le verbe').
+
+**7. Base Psycholinguistique Desrochers (Reste à définir)**
+- Intégrer les indices d'Abstraction, d'Imagerie et d'Âge d'Acquisition (AoA) dans le calcul continu de la difficulté des mots.</div>
 </div>
 <!-- Calibration par niveau -->
 <div class="algo-section">
@@ -4572,7 +4582,7 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
   {
     "id": 4,
     "title": "4. [CONCEPTION] Progression & Difficulté Inclusive (Bonification) :",
-    "content": "La difficulté est la seule catégorie de caractéristique fonctionnant par bonification (inclusif). L'algorithme cherche à maintenir l'utilisateur dans sa zone optimale de progression (zone proximale de développement) et applique un bonus de score. Il nous faut définir précisément la notion de difficulté, notamment en opérationnalisant la caractéristique d'abstraction des mots."
+    "content": "La difficulté est la seule catégorie de caractéristique fonctionnant par bonification (inclusif). L'algorithme cherche à maintenir l'utilisateur dans sa zone optimale de progression (zone proximale de développement) et applique un bonus de score. Il nous faut définir précisément la notion de difficulté, notamment en opérationnalisant la caractéristique d'abstraction des mots.\n\n- Intégration Desrochers : Utilisation des indices de Concrétude (pour l'abstraction), d'Imagerie et d'Âge d'Acquisition (AoA) comme signaux de calibration de la difficulté."
   },
   {
     "id": 5,
@@ -4618,6 +4628,11 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
     "id": 13,
     "title": "13. [TODO] Boucle d'Engagement Journalière & Médias (Section G) :",
     "content": "Pistes d'innovation pour l'engagement quotidien de l'utilisateur :\n\n- Notification 'Mot du jour' : Envoi quotidien du mot le plus pertinent du profil.\n- Focus Word Défi : Sélection aléatoire d'un favori ou mot à travailler avec un défi d'usage en conversation réelle ou écriture.\n- Bibliothèque & Filmothèque Médias : Lecteur intégré de livres/films avec sélection de mots au clic pour ajout direct.\n- Capture Photo (OCR) : Prendre un texte en photo et sélectionner les mots à importer.\n- Importation de livres : Parser l'intégralité d'un ouvrage pour générer des extraits et flashcards ciblés."
+  },
+  {
+    "id": 14,
+    "title": "14. [CONCEPTION] Clés primaires et ID Mots/Extraits (Désambiguïsation) :",
+    "content": "L'utilisation d'identifiants uniques (IDs) pour les mots et les extraits est essentielle en base de données mobile (Room SQLite) :\n\n- Résolution de la polysémie : Un même mot textuel (ex: 'blanchir') possède plusieurs IDs distincts en fonction de ses acceptions (cuisine vs finance). Cela permet d'associer un extrait à l'ID de la définition exacte sans créer de confusion.\n- Optimisation des index : Les jointures SQL s'effectuent sur des clés numériques (IDs), évitant des comparaisons de chaînes de caractères lentes et sensibles à la casse/accents."
   }
 ]</script></body>
 <script src="moz-extension://5695a441-4282-4bc7-b5b5-bdca6b530bb6/content_scripts/api.js"></script>
