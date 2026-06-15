@@ -179,8 +179,85 @@ Ce système permet une synchronisation transparente dans les deux sens :
 *   **Scoring d'Extraits C3** : Bonus substantiel de popularité appliqué conditionnellement si l'utilisateur s'intéresse à la catégorie C3 (argot/populaire) pour prioriser les mots à forte croissance.
 *   **Longueur des extraits** : Pas d'exclusion stricte, mais bonification gaussienne mineure (autour de 300 caractères).
 *   **Classification C1 Littéraire** : Automatisée via `tools/classify_book_difficulty.py` sur la base de la longueur des phrases, de la richesse lexicale (TTR) et des occurrences de mots rares (Zipf < 2.0).
-*   **Sourcing Vidéo & Transcription** : Intégration de vidéos INA, Top Chef (cuisine), conférences universitaires et radios via l'API YouTube Data et l'extraction de sous-titres (`youtube-transcript-api`). La transcription dynamique permet à l'utilisateur de cliquer sur un mot pour suspendre la lecture, lire sa définition et l'ajouter à sa Word Reserve.
-*   **Persistance locale** : Modélisation dans Room via les tables `CorpusDocument` et `CorpusExcerpt` connectées à la `WordReserve`.
+*   **Sourcing Vidéo & Transcription** : Intégra
+---
 
+## 8. Logique Métier de Présentation & de Sélection (Pipeline A)
 
+Cette section décrit les spécifications fonctionnelles et techniques relatives à la sélection et à la présentation des mots et des extraits pour l'utilisateur, en se concentrant sur la logique d'exclusion et de test d'hypothèses.
 
+### A. Terminologie
+*   **Objectif utilisateur** : L'un des 5 types d'objectifs (C1 à C5) choisis par l'utilisateur (ex. : Vocabulaire Littéraire, Rhétorique & Débats).
+*   **Catégorie de caractéristiques** : Les axes de classification des mots ou des extraits (ex. : classification sémantique, registre, nature de l'extrait, type d'extrait).
+*   **Caractéristique** : Les valeurs ou modalités concrètes au sein d'une catégorie (ex. : théâtre, poésie, roman, audio, vidéo).
+
+### B. Classification et Taxonomie pour la Catégorie C1 (Vocabulaire Littéraire)
+Chaque élément de la Pipeline A doit être qualifié selon les caractéristiques suivantes :
+
+#### 1. Caractéristiques des Mots (Word Reserve)
+*   **Catégorie de littérature** : *théâtre, poésie, roman (ou livre), nouvelle, littérature moderne, littérature classique, essais, critiques*. (Liste extensible).
+*   **Classification sémantique** : *arts et langage, esprit et caractère, nature et cosmos, philosophie et idées, sentiments et psyché* (5 pôles définis).
+*   **Score de difficulté** : *Débutant, Intermédiaire, Avancé, Expert* (seul axe régi par un mécanisme inclusif et de bonification).
+*   **Registre** : *burlesque, comédie, tragédie, standard, descriptif*.
+*   **Niveau de pertinence** : Dynamique, défini de manière itérative par le taux d'ajout global de ce mot par les utilisateurs.
+
+#### 2. Caractéristiques des Extraits (Excerpts)
+*   **Niveau de pertinence** : Dynamique, calculé à partir de la note moyenne de pertinence attribuée par les utilisateurs à l'extrait.
+*   **Nature de l'extrait** : *audio, vidéo, textuel*.
+*   **Type d'extrait** : *interview, ouvrage de littérature (livre), scène de théâtre (texte ou vidéo), cinéma*.
+
+---
+
+### C. Algorithme de Présentation Négatif et Hypothétique
+L'algorithme de recommandation des mots et des extraits utilise une logique d'**exclusion progressive** (négative) plutôt que de bonification (à l'exception de la difficulté).
+
+```mermaid
+graph TD
+    A[Sélection Initiale] --> B{Rejet de mots ou d'extraits ?}
+    B -- Oui --> C[Émettre une hypothèse d'exclusion]
+    C --> D[Proposer des cas tests pour isoler les variables]
+    D --> E{Hypothèse confirmée ?}
+    E -- Oui --> F[Exclure temporairement la caractéristique]
+    E -- Non --> G[Conserver la caractéristique]
+    B -- Non --> H[Conserver le flux standard]
+```
+
+#### 1. Niveaux d'Exclusion
+*   **Niveau 1 : Objectifs Utilisateur**  
+    L'utilisateur choisit initialement ses objectifs (ex: C1, C2, C3). Si l'on constate qu'il n'ajoute jamais aucun mot provenant d'un objectif spécifique (ex. : l'argot C3), cet objectif est progressivement exclu des propositions de l'application.
+*   **Niveau 2 : Catégories & Caractéristiques**  
+    À l'intérieur d'un objectif, si l'utilisateur n'ajoute jamais de mots liés à une caractéristique particulière (ex. : le thème *arts et langage* ou le genre *théâtre*), cette caractéristique est exclue.
+
+#### 2. Système d'Hypothèses (Méthode Scientifique)
+Pour éviter les fausses exclusions causées par la confusion de variables :
+*   Si un utilisateur rejette systématiquement des mots ayant la caractéristique *arts et langage*, l'algorithme ne l'exclut pas immédiatement. 
+*   Il émet l'hypothèse que le rejet pourrait être dû à un autre facteur (ex. : la difficulté *novice* trop faible).
+*   L'algorithme va alors proposer spécifiquement des mots *arts et langage* de niveau *expert* pour valider ou invalider l'hypothèse. Si ces derniers sont également rejetés, l'exclusion est confirmée.
+
+#### 3. Mécanisme d'Exploration (Distribution 80/20)
+*   **Exploration Inter-Objectifs (20%)** : L'algorithme propose 80% d'extraits issus des objectifs choisis et 20% d'extraits issus d'objectifs non sélectionnés pour éveiller de nouveaux intérêts.
+*   **Exploration Intra-Catégorie** : L'algorithme injecte périodiquement des extraits comportant des caractéristiques précédemment exclues pour vérifier si le goût de l'utilisateur a changé ou s'il s'est lassé de sa configuration actuelle.
+
+#### 4. Exception : Le score de difficulté (Inclusif)
+La difficulté est la seule catégorie de caractéristique fonctionnant par **bonification (inclusif)**. L'algorithme cherche à maintenir l'utilisateur dans sa zone optimale de progression (sa zone proximale de développement) et applique un bonus de score pour orienter les propositions vers cette plage idéale de difficulté.
+
+#### 5. Collecte de Signaux & Retours
+*   **Notation de l'extrait** : L'utilisateur doit évaluer chaque extrait qu'il consulte. Cela permet d'affiner son profil sur la *nature*, le *type* d'extrait et la pertinence.
+*   **Ajout/Non-ajout de mots** : Ajouter un mot réactive ou protège ses caractéristiques associées contre l'exclusion. Le non-ajout récurrent déclenche la cascade d'exclusion négative.
+*   **Ajout de mots non proposés** : Les mots importants d'un extrait sont surlignés à l'écran. Si l'utilisateur clique sur un mot surligné non proposé initialement par l'application pour l'ajouter, ce mot est enregistré dans une liste spécifique. L'algorithme analysera cette liste pour enrichir les recommandations d'autres utilisateurs au profil similaire.
+
+---
+
+### D. Étapes de Génération et Présentation (Pipeline A)
+Le traitement de sélection et de présentation s'effectue dans l'ordre strict suivant :
+
+1.  **Sélection du Mot cible** :
+    *   L'algorithme cherche en priorité un mot dans la base de données locale (APK).
+    *   Si aucun mot ne correspond aux critères filtrés de l'utilisateur (à cause des exclusions actives), l'algorithme de recherche de nouveaux mots est exécuté, ciblé sur des candidats n'ayant pas les caractéristiques exclues.
+2.  **Recherche de l'Extrait associé** :
+    *   Une fois le mot défini, on cherche un extrait pertinent.
+    *   **Filtrage par source** : Pour la catégorie C1 (Littéraire), les extraits doivent provenir en priorité de conférences de personnalités littéraires, d'ouvrages littéraires (roman, poésie, théâtre), d'articles ou de critiques de journaux. Les blogs personnels sont proscrits.
+    *   **Filtrage par caractéristiques d'extrait** : L'extrait sélectionné doit respecter les contraintes de formats non exclus par l'utilisateur (ex. : pas de vidéo si l'utilisateur a exclu les extraits vidéo).
+3.  **Gestion de l'épuisement de la base locale** :
+    *   Si la base d'extraits locale ne contient plus d'extraits valides, l'appareil lance un algorithme de recherche dynamique en ligne.
+    *   Puisque cette logique est peu consommatrice en processeur, elle s'exécute directement sur l'appareil. En cas de blocage ou d'impossibilité, une alerte est transmise au tableau de contrôle du développeur pour enrichir manuellement les bases de données distantes.
