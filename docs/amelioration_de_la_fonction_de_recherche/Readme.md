@@ -224,12 +224,13 @@ Chaque élément de la Pipeline A doit être qualifié selon les caractéristiqu
 *   **Score de difficulté** : *Débutant, Intermédiaire, Avancé, Expert* (seul axe régi par un mécanisme inclusif et de bonification).
 *   **Registre** : *burlesque, comédie, tragédie, standard, descriptif*.
 *   **Niveau de pertinence** : Dynamique, défini de manière itérative par le taux d'ajout global de ce mot par les utilisateurs. exemple : 100 ajout sur 200 proposition pertinence = 50% (pertinence = nombre d'ajouts / nombre total de propositions). La pertinence commence à partir de 100 notations
+*   **ID des mots** : chaque mot doit avoir un ID. centralisé entre tout les utilisateur les bases de données et moi
 
 #### 2. Caractéristiques des Extraits (Excerpts)
 *   **Niveau de pertinence** : Dynamique, calculé à partir de la note moyenne de pertinence attribuée par les utilisateurs à l'extrait. exemple : directement donné par la moyenne de score de l'extrait, note moyenne de 2.5/5 = pertinence = 50%. La pertinence commence à partir de 100 notations.
 *   **Nature de l'extrait** : *audio, vidéo, textuel*.
 *   **Type d'extrait** : *interview, ouvrage de littérature (livre), scène de théâtre (texte ou vidéo), cinéma*.
-
+*   **ID des extraits** : chaque extrait doit avoir un ID pour permettre d'éviter de le presenter plusieurs fois s'il n'a pas à l'être. centralisé entre tout les utilisateur les bases de données et moi.
 ---
 
 ### C. Algorithme de Présentation Négatif et Hypothétique
@@ -303,7 +304,7 @@ Le traitement de sélection et de présentation s'effectue dans l'ordre strict s
 * Définir plus précisément comment on fait pour proposer des extraits vidéo ou audio...
 * définir les sources relatives à chaques catégories de caractéristiques pour chaques objectifs.
 * trouver un système pour permettre la purge du stockage local de l'utilisateur tout en s'assurant que les extraits déjà présenté et qui n'ont pas à être représenté ne le soit pas.
-* 
+* voir comment on peut intégrer Desrochers aux algo.
 
 ### F. précision
 * Lorsqu'un objectif, ou la caractéristique d'une catégorie est exclue, elle est directement investie du mode exploratoire qui distribue les 20% aux domaines exclues. L'utilisateur n'est pas notifié des exclusion ni d'aucuns des fonctionnements de la logique métier.
@@ -323,7 +324,7 @@ Le traitement de sélection et de présentation s'effectue dans l'ordre strict s
 * tout les jours "focus sur un mot" : sélection d'un mot au hazard dans les favoris ou dans les mots à travailler, et défi spécifique : l'utiliser dans une conversation dans la journée, écrire une phrase avec...
 * pouvoir prnedre nu text en photo et selectionner des mots à l'interieur pour les ajouter.
 * dans les livres de la bibliothèque pouvoir soit les lires soit demander la création d'une liste de flascards ou la selection d'extraits spécifiquement dans le livre. donc parsage intégrale du livre et proposition de tout les extraits selectionné contenant des mots potentiellement interressant.
-*
+* potentiels pépites ; Pépite 1 : La Base Manulex (Lété, Sprenger-Charolles & Colé) ; Pépite 2 : Les Modèles HLR (Half-Life Regression) pour la répétition espacée (SRS) ;  Pépite 3 : Les Indices de Valence Émotionnelle et d'Arousal (Base FAN / Bonin et al.) ; 💡 Pépite 4 : Le Voisinage Orthographique (Voisinage de Coltheart & Distance de Levenshtein)
 
     
 ## 99999 Prompt de structure pas pour les IA, c'est pour moi ça TOUCHE PAS A CA
