@@ -954,7 +954,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-15 18:42 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-15 19:06 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -1012,12 +1012,23 @@ Suite aux tests réels menés sur C1-C5, plusieurs ajustements ont été identif
 - Dilution sémantique (ex: « partant » dans son sens de 'par conséquent') : Les phrases très longues ou contenant un vocabulaire riche diluent la similarité cosinus. Solution : comparer la définition avec une fenêtre glissante réduite (5 à 10 mots) autour du mot cible plutôt qu'avec la phrase entière, ou abaisser le seuil à 0.30 pour les connecteurs logiques.
 - Écart de style argotique (ex: « seum », « moula ») : La définition académique et les phrases d'exemples familières souffrent d'un décalage stylistique important. Solution : calibrer le seuil de similarité dynamique selon la catégorie (ex: seuil abaissé à 0.25 pour l'argot C3).
 - Faux positifs des sous-sens proches (ex: « blanchir » en cuisine) : Différencier « blanchir un chou » (ébouillanter) et « blanchir des jaunes d'œufs » (fouetter) est trop subtil pour un embedding générique. Solution : ajouter des règles d'exclusion de mots-clés ou des filtres syntaxiques complémentaires.
-- Fallback par corpus ciblé : Pour les termes spécialisés sans exemples en ligne (ex: « emphytéose »), interroger les documents de la catégorie correspondante dans lexica_corpus.db (ou Gutenberg) en mode 'Control+F' pour extraire des phrases d'exemples locales.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>12. [CONCEPTION] Logique Métier d'Exclusion &amp; Système d'Hypothèses :</strong><br/>
+- Fallback par corpus ciblé : Pour les termes spécialisés sans exemples en ligne (ex: « emphytéose »), interroger les documents de la catégorie correspondante dans lexica_corpus.db (ou Gutenberg) en mode 'Control+F' pour extraire des phrases d'exemples locales.
+
+- Notation continue UX : Remplacement de la notation binaire par un slider continu de notation d'extraits (notes décimales stockées).
+- Buffer de sécurité : Toujours pré-charger 10 mots/extraits d'avance. Procédure d'urgence si vide : envoi de mots/extraits hors-critères pour éviter le blocage UI.
+- Anti-répétition : L'application garde en mémoire l'historique des extraits affichés pour ne jamais les re-proposer pour d'autres mots cibles.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>12. [CONCEPTION] Logique Métier d'Exclusion &amp; Système d'Hypothèses :</strong><br/>
 La présentation des mots et extraits repose sur un algorithme d'exclusion négative et de vérification d'hypothèses :
 
 - Exclusion négative : L'application n'essaie pas de bonifier ce que l'utilisateur aime, mais élimine ce qu'il rejette systématiquement (au niveau des objectifs et des caractéristiques comme le genre poésie ou le thème art).
 - Système d'hypothèses : Évite les fausses conclusions. Si un mot 'art' est rejeté plusieurs fois, l'algorithme vérifie s'il s'agit d'un rejet du thème 'art' ou de la difficulté 'novice' en proposant un mot 'art' de niveau 'expert'.
-- Mots non proposés ajoutés : Si l'utilisateur ajoute un mot surligné dans l'extrait qui n'était pas le mot cible proposé, ce mot est enregistré dans une liste spécifique pour être traité et partagé avec des utilisateurs ayant le même profil.</p></div>
+- Mots non proposés ajoutés : Si l'utilisateur ajoute un mot surligné dans l'extrait qui n'était pas le mot cible proposé, ce mot est enregistré dans une liste spécifique pour être traité et partagé avec des utilisateurs ayant le même profil.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>13. [TODO] Boucle d'Engagement Journalière &amp; Médias (Section G) :</strong><br/>
+Pistes d'innovation pour l'engagement quotidien de l'utilisateur :
+
+- Notification 'Mot du jour' : Envoi quotidien du mot le plus pertinent du profil.
+- Focus Word Défi : Sélection aléatoire d'un favori ou mot à travailler avec un défi d'usage en conversation réelle ou écriture.
+- Bibliothèque &amp; Filmothèque Médias : Lecteur intégré de livres/films avec sélection de mots au clic pour ajout direct.
+- Capture Photo (OCR) : Prendre un texte en photo et sélectionner les mots à importer.
+- Importation de livres : Parser l'intégralité d'un ouvrage pour générer des extraits et flashcards ciblés.</p></div>
 </div>
 <div class="main-layout">
 <!-- ================= LEFT: MIND MAP VISUAL ================= -->
@@ -1521,7 +1532,14 @@ La re-présentation d'un mot non ajouté est possible sous certaines conditions 
 - Interdit lors d'une même session (l'utilisateur doit avoir fermé l'application au moins une fois).
 - L'extrait associé doit être différent (un extrait proposé n'est jamais représenté).
 - Limité aux mots de la liste initiale ou aux mots ayant une pertinence &gt; 50%.
-- Jamais dans un cadre exploratoire.</div>
+- Jamais dans un cadre exploratoire.
+
+**6. Gestion du cache &amp; Sécurité d'UX (Section F &amp; G)**
+- **Buffer de Sécurité (10 d'avance)** : Le système doit pré-calculer et stocker au moins 10 extraits d'avance pour éviter la latence réseau ou LLM. En cas d'épuisement total (procédure d'urgence), le système propose temporairement des extraits ou des mots hors-critères pour ne pas bloquer l'interface.
+- **Notation continue (UX)** : La notation se fait via un slider d'étoiles continu (permettant des notes décimales, ex: 2.74/5), stocké en base de données.
+- **Homographes &amp; Doublons** : Gestion des homographes via désambiguïsation ou liste manuelle. Mémorisation des extraits déjà proposés pour éviter la répétition d'un même extrait contenant plusieurs mots cibles.
+- **Favoris vs Mots à travailler** : L'utilisateur peut ajouter un mot en favori sans l'inclure dans sa liste d'apprentissage active.
+- **Écran de chargement culturel** : En cas de chargement, affichage de citations inspirantes (ex: Marcel Pagnol ou Bible : 'Au commencement était le verbe').</div>
 </div>
 <!-- Calibration par niveau -->
 <div class="algo-section">
@@ -4589,12 +4607,17 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
   {
     "id": 11,
     "title": "11. [R&D] Retours d'évaluation & Améliorations de l'algorithme d'extraits (15 juin 2026) :",
-    "content": "Suite aux tests réels menés sur C1-C5, plusieurs ajustements ont été identifiés :\n\n- Signalement utilisateur : Ajouter un bouton « signaler cet extrait » dans l'interface de lecture de l'application mobile pour permettre aux utilisateurs de flagger les extraits erronés ou inappropriés.\n- Dilution sémantique (ex: « partant » dans son sens de 'par conséquent') : Les phrases très longues ou contenant un vocabulaire riche diluent la similarité cosinus. Solution : comparer la définition avec une fenêtre glissante réduite (5 à 10 mots) autour du mot cible plutôt qu'avec la phrase entière, ou abaisser le seuil à 0.30 pour les connecteurs logiques.\n- Écart de style argotique (ex: « seum », « moula ») : La définition académique et les phrases d'exemples familières souffrent d'un décalage stylistique important. Solution : calibrer le seuil de similarité dynamique selon la catégorie (ex: seuil abaissé à 0.25 pour l'argot C3).\n- Faux positifs des sous-sens proches (ex: « blanchir » en cuisine) : Différencier « blanchir un chou » (ébouillanter) et « blanchir des jaunes d'œufs » (fouetter) est trop subtil pour un embedding générique. Solution : ajouter des règles d'exclusion de mots-clés ou des filtres syntaxiques complémentaires.\n- Fallback par corpus ciblé : Pour les termes spécialisés sans exemples en ligne (ex: « emphytéose »), interroger les documents de la catégorie correspondante dans lexica_corpus.db (ou Gutenberg) en mode 'Control+F' pour extraire des phrases d'exemples locales."
+    "content": "Suite aux tests réels menés sur C1-C5, plusieurs ajustements ont été identifiés :\n\n- Signalement utilisateur : Ajouter un bouton « signaler cet extrait » dans l'interface de lecture de l'application mobile pour permettre aux utilisateurs de flagger les extraits erronés ou inappropriés.\n- Dilution sémantique (ex: « partant » dans son sens de 'par conséquent') : Les phrases très longues ou contenant un vocabulaire riche diluent la similarité cosinus. Solution : comparer la définition avec une fenêtre glissante réduite (5 à 10 mots) autour du mot cible plutôt qu'avec la phrase entière, ou abaisser le seuil à 0.30 pour les connecteurs logiques.\n- Écart de style argotique (ex: « seum », « moula ») : La définition académique et les phrases d'exemples familières souffrent d'un décalage stylistique important. Solution : calibrer le seuil de similarité dynamique selon la catégorie (ex: seuil abaissé à 0.25 pour l'argot C3).\n- Faux positifs des sous-sens proches (ex: « blanchir » en cuisine) : Différencier « blanchir un chou » (ébouillanter) et « blanchir des jaunes d'œufs » (fouetter) est trop subtil pour un embedding générique. Solution : ajouter des règles d'exclusion de mots-clés ou des filtres syntaxiques complémentaires.\n- Fallback par corpus ciblé : Pour les termes spécialisés sans exemples en ligne (ex: « emphytéose »), interroger les documents de la catégorie correspondante dans lexica_corpus.db (ou Gutenberg) en mode 'Control+F' pour extraire des phrases d'exemples locales.\n\n- Notation continue UX : Remplacement de la notation binaire par un slider continu de notation d'extraits (notes décimales stockées).\n- Buffer de sécurité : Toujours pré-charger 10 mots/extraits d'avance. Procédure d'urgence si vide : envoi de mots/extraits hors-critères pour éviter le blocage UI.\n- Anti-répétition : L'application garde en mémoire l'historique des extraits affichés pour ne jamais les re-proposer pour d'autres mots cibles."
   },
   {
     "id": 12,
     "title": "12. [CONCEPTION] Logique Métier d'Exclusion & Système d'Hypothèses :",
     "content": "La présentation des mots et extraits repose sur un algorithme d'exclusion négative et de vérification d'hypothèses :\n\n- Exclusion négative : L'application n'essaie pas de bonifier ce que l'utilisateur aime, mais élimine ce qu'il rejette systématiquement (au niveau des objectifs et des caractéristiques comme le genre poésie ou le thème art).\n- Système d'hypothèses : Évite les fausses conclusions. Si un mot 'art' est rejeté plusieurs fois, l'algorithme vérifie s'il s'agit d'un rejet du thème 'art' ou de la difficulté 'novice' en proposant un mot 'art' de niveau 'expert'.\n- Mots non proposés ajoutés : Si l'utilisateur ajoute un mot surligné dans l'extrait qui n'était pas le mot cible proposé, ce mot est enregistré dans une liste spécifique pour être traité et partagé avec des utilisateurs ayant le même profil."
+  },
+  {
+    "id": 13,
+    "title": "13. [TODO] Boucle d'Engagement Journalière & Médias (Section G) :",
+    "content": "Pistes d'innovation pour l'engagement quotidien de l'utilisateur :\n\n- Notification 'Mot du jour' : Envoi quotidien du mot le plus pertinent du profil.\n- Focus Word Défi : Sélection aléatoire d'un favori ou mot à travailler avec un défi d'usage en conversation réelle ou écriture.\n- Bibliothèque & Filmothèque Médias : Lecteur intégré de livres/films avec sélection de mots au clic pour ajout direct.\n- Capture Photo (OCR) : Prendre un texte en photo et sélectionner les mots à importer.\n- Importation de livres : Parser l'intégralité d'un ouvrage pour générer des extraits et flashcards ciblés."
   }
 ]</script></body>
 <script src="moz-extension://5695a441-4282-4bc7-b5b5-bdca6b530bb6/content_scripts/api.js"></script>
