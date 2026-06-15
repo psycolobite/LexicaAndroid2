@@ -182,7 +182,31 @@ Ce système permet une synchronisation transparente dans les deux sens :
 *   **Sourcing Vidéo & Transcription** : Intégra
 ---
 
-## 8. Logique Métier de Présentation & de Sélection (Pipeline A)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 8. Description précise de la logique métier V2 15-06-2026 (pipelin A uniquement)
 
 Cette section décrit les spécifications fonctionnelles et techniques relatives à la sélection et à la présentation des mots et des extraits pour l'utilisateur, en se concentrant sur la logique d'exclusion et de test d'hypothèses.
 
@@ -199,10 +223,10 @@ Chaque élément de la Pipeline A doit être qualifié selon les caractéristiqu
 *   **Classification sémantique** : *arts et langage, esprit et caractère, nature et cosmos, philosophie et idées, sentiments et psyché* (5 pôles définis).
 *   **Score de difficulté** : *Débutant, Intermédiaire, Avancé, Expert* (seul axe régi par un mécanisme inclusif et de bonification).
 *   **Registre** : *burlesque, comédie, tragédie, standard, descriptif*.
-*   **Niveau de pertinence** : Dynamique, défini de manière itérative par le taux d'ajout global de ce mot par les utilisateurs.
+*   **Niveau de pertinence** : Dynamique, défini de manière itérative par le taux d'ajout global de ce mot par les utilisateurs. exemple : 100 ajout sur 200 proposition pertinence = 50% (pertinence = nombre d'ajouts / nombre total de propositions). La pertinence commence à partir de 100 notations
 
 #### 2. Caractéristiques des Extraits (Excerpts)
-*   **Niveau de pertinence** : Dynamique, calculé à partir de la note moyenne de pertinence attribuée par les utilisateurs à l'extrait.
+*   **Niveau de pertinence** : Dynamique, calculé à partir de la note moyenne de pertinence attribuée par les utilisateurs à l'extrait. exemple : directement donné par la moyenne de score de l'extrait, note moyenne de 2.5/5 = pertinence = 50%. La pertinence commence à partir de 100 notations.
 *   **Nature de l'extrait** : *audio, vidéo, textuel*.
 *   **Type d'extrait** : *interview, ouvrage de littérature (livre), scène de théâtre (texte ou vidéo), cinéma*.
 
@@ -236,28 +260,48 @@ Pour éviter les fausses exclusions causées par la confusion de variables :
 
 #### 3. Mécanisme d'Exploration (Distribution 80/20)
 *   **Exploration Inter-Objectifs (20%)** : L'algorithme propose 80% d'extraits issus des objectifs choisis et 20% d'extraits issus d'objectifs non sélectionnés pour éveiller de nouveaux intérêts.
-*   **Exploration Intra-Catégorie** : L'algorithme injecte périodiquement des extraits comportant des caractéristiques précédemment exclues pour vérifier si le goût de l'utilisateur a changé ou s'il s'est lassé de sa configuration actuelle.
+*   **Exploration Intra-Catégorie** : L'algorithme injecte périodiquement des extraits comportant des caractéristiques précédemment exclues pour vérifier si le goût de l'utilisateur a changé ou s'il s'est lassé de sa configuration actuelle. lorsque des catégories commencerons à être exclu, si c'est le cas, alors les 20% d'exploration seront distribué entre exploration inter objectif et l'exploration intra catégorie.
+* Si aucunes catégories ni aucuns objectifs ne sont exclu alors il n'y a pas d'exploration (logique)
 
 #### 4. Exception : Le score de difficulté (Inclusif)
-La difficulté est la seule catégorie de caractéristique fonctionnant par **bonification (inclusif)**. L'algorithme cherche à maintenir l'utilisateur dans sa zone optimale de progression (sa zone proximale de développement) et applique un bonus de score pour orienter les propositions vers cette plage idéale de difficulté.
+La difficulté est la seule catégorie de caractéristique fonctionnant par **bonification (inclusif)**. L'algorithme cherche à maintenir l'utilisateur dans sa zone optimale de progression (sa zone proximale de développement) et applique un bonus de score pour orienter les propositions vers cette plage idéale de difficulté. Il nous faut définir précisément la notion de difficultée, notamment en opérationnalisant la caractéristique d'abstraction des mots.
 
 #### 5. Collecte de Signaux & Retours
 *   **Notation de l'extrait** : L'utilisateur doit évaluer chaque extrait qu'il consulte. Cela permet d'affiner son profil sur la *nature*, le *type* d'extrait et la pertinence.
 *   **Ajout/Non-ajout de mots** : Ajouter un mot réactive ou protège ses caractéristiques associées contre l'exclusion. Le non-ajout récurrent déclenche la cascade d'exclusion négative.
-*   **Ajout de mots non proposés** : Les mots importants d'un extrait sont surlignés à l'écran. Si l'utilisateur clique sur un mot surligné non proposé initialement par l'application pour l'ajouter, ce mot est enregistré dans une liste spécifique. L'algorithme analysera cette liste pour enrichir les recommandations d'autres utilisateurs au profil similaire.
+*   **Ajout de mots non proposés** : Les mots proposé (issu de la reserve de mots, l'extrait est construit à partir de ceux-ci) d'un extrait sont surlignés à l'écran. Si l'utilisateur clique sur un mot non surligné (et donc non proposé initialement par l'application) pour l'ajouter, ce mot est enregistré dans une liste spécifique. L'algorithme analysera cette liste pour enrichir les recommandations d'autres utilisateurs au profil similaire..
+*   **présentation du même mots plusieurs fois** : la re présentation d'un mot non ajouté à la liste des mots de l'utilisateur est possible sous certaines conditions. 1. Pas sur une même session de recherche d'extrait, l'utilisateur doit avoir fermé  l'application au moins 1 fois. 2. L'extraits doit être différent (un extrait proposé n'est jamais représenté). 3. uniquement pour les mots de la data liste initial ou les mots ayant une pertinence supérieur à 50%.  4. jamais dans un cadre exploratoire. 
 
 ---
 
-### D. Étapes de Génération et Présentation (Pipeline A)
+### D. Étapes de Génération et Présentation (Pipeline A) :
 Le traitement de sélection et de présentation s'effectue dans l'ordre strict suivant :
 
 1.  **Sélection du Mot cible** :
-    *   L'algorithme cherche en priorité un mot dans la base de données locale (APK).
+    *   L'algorithme cherche en priorité un mot dans la base de données locale (APK) répondant aux critères.
     *   Si aucun mot ne correspond aux critères filtrés de l'utilisateur (à cause des exclusions actives), l'algorithme de recherche de nouveaux mots est exécuté, ciblé sur des candidats n'ayant pas les caractéristiques exclues.
+    *   Soit le mot possède déjà une définition dans la base de donnée, pertinente au regard de l'objectif utilisateur, soit n'est pas présente ou non pertinente (non pertinence peu probable et vérifiable au moyen du test emmbeddings contextuels). Ces deux possibilité auront une incidence sur l'étape 2. 
+
 2.  **Recherche de l'Extrait associé** :
-    *   Une fois le mot défini, on cherche un extrait pertinent.
+    *   Si le mot possède une définition pertinente (étape 1), on cherche un extrait pertinent, c'est à dire qui dans lequel l'utilisation du mot en question prend le sens qui nous interesse (embedding contextuel). 
+    * si le mot ne possède pas de définition, l'extrait est cherché dans un dommaine pertinent au regard de l'objectif utilisateur (pour C1 ou cherche dans des ouvrages de références en littérature ) et la définition est déterminé en fonction de l'extrait, gràce au wiktionnaire. Un test embeddings contextuels permettra  de selectionner la bonne définition wiktionnaire, si aucunes défintions ne correspond, un modèle LLM est appelé pour générer une définition sur mesure.
     *   **Filtrage par source** : Pour la catégorie C1 (Littéraire), les extraits doivent provenir en priorité de conférences de personnalités littéraires, d'ouvrages littéraires (roman, poésie, théâtre), d'articles ou de critiques de journaux. Les blogs personnels sont proscrits.
     *   **Filtrage par caractéristiques d'extrait** : L'extrait sélectionné doit respecter les contraintes de formats non exclus par l'utilisateur (ex. : pas de vidéo si l'utilisateur a exclu les extraits vidéo).
+    *   **création d'une flashcard pour l'entrainement** : un des objectifs principal de l'app est de permettre à l'utilisateur de permettre à l'utilisateur de s'entrainer grace à des flashcards, donc lorsqu'un mot est ajouté, la logique métier actuel (qu'utilise actuellement l'app)permettant la génération d'une flashcard doit se mettre en route
+        
 3.  **Gestion de l'épuisement de la base locale** :
     *   Si la base d'extraits locale ne contient plus d'extraits valides, l'appareil lance un algorithme de recherche dynamique en ligne.
     *   Puisque cette logique est peu consommatrice en processeur, elle s'exécute directement sur l'appareil. En cas de blocage ou d'impossibilité, une alerte est transmise au tableau de contrôle du développeur pour enrichir manuellement les bases de données distantes.
+
+### E. reste à définire 
+* définir précisément chaque caractéristique de chaque catégorie pour chaques objectif de manière exhaustive.
+* définir l'algorytmhe exacte qui permettra une recherche de mots depuis le téléphone utilisateur si la base de donnée n'en contient pas répondant aux critères (caractéristiques exclue). et le tester pour chaques cas possible (chaques combinaisons de caractéristiques exclues dans chaques objectifs).
+* définir l'algorytmhe exacte qui permettra une recherche d'extrait contenant le mot cibler si la base de donnée n'en contient pas répondant aux critères (caractéristiques exclues). et le tester pour chaques cas possible (chaques combinaisons de caractéristiques exclues dans chaques objectifs).
+* définir la logique métier de la pipeline B. 
+* opérationnaliser l'algorythme d'hypothèse exclusive. Et le tester en situation réels simulées.
+* Il nous faut définir précisément la notion de difficultée, notamment en opérationnalisant la caractéristique d'abstraction des mots.
+* Définir plus précisément comment on fait pour proposer des extraits vidéo ou audio...
+* définir les sources relatives à chaques catégories de caractéristiques pour chaques objectifs.
+*
+### F. petites infos supp
+* depuis la page d'extraits l'utilisateur doit pouvoir ajouter un mot à ses favoris sans l'ajouter à sa liste de mots a travailler.
