@@ -96,6 +96,31 @@
             box-shadow: 0 0 20px rgba(52, 211, 153, 0.4);
         }
 
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--text-color);
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .btn-sync-active {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .btn-sync-active:hover {
+            border-color: #059669;
+            color: #34d399;
+            box-shadow: 0 0 10px rgba(52, 211, 153, 0.2);
+        }
+
+
         .main-layout {
             display: grid;
             grid-template-columns: 1.2fr 1fr;
@@ -937,6 +962,7 @@
                 (Pipeline B)</p>
 </div>
 <div class="actions">
+<button class="btn btn-outline" id="btn-direct-sync" onclick="triggerDirectSyncSetup()" style="display: none;">📁 Configurer synchro directe</button>
 <button class="btn btn-success" onclick="exportWithJSON()">Exporter / Sauvegarder les notes</button>
 <span id="autosave-indicator" style="font-size:0.75rem; color:#34d399; opacity:0.7; margin-left:6px;">✓ Sauvegardé <span id="autosave-time"></span></span>
 </div>
@@ -4276,8 +4302,138 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
         // Premier save au chargement (après 3s)
         setTimeout(autoSaveToStorage, 3000);
 
+        // ============================================================
+        // SYSTÈME DE SYNCHRONISATION DIRECTE VIA FILE SYSTEM ACCESS API
+        // ============================================================
+        const DB_NAME = 'lexica_filesystem_db';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'handles';
+        const HANDLE_KEY = 'tableau_data_json_handle';
+
+        function getDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    db.createObjectStore(STORE_NAME);
+                };
+                request.onsuccess = (e) => resolve(e.target.result);
+                request.onerror = (e) => reject(e.target.error);
+            });
+        }
+
+        async function getSavedHandle() {
+            try {
+                const db = await getDB();
+                return new Promise((resolve, reject) => {
+                    const transaction = db.transaction(STORE_NAME, 'readonly');
+                    const store = transaction.objectStore(STORE_NAME);
+                    const request = store.get(HANDLE_KEY);
+                    request.onsuccess = () => resolve(request.result);
+                    request.onerror = () => reject(request.error);
+                });
+            } catch(e) {
+                console.warn('Could not read handle from IndexedDB:', e);
+                return null;
+            }
+        }
+
+        async function saveHandle(handle) {
+            try {
+                const db = await getDB();
+                return new Promise((resolve, reject) => {
+                    const transaction = db.transaction(STORE_NAME, 'readwrite');
+                    const store = transaction.objectStore(STORE_NAME);
+                    const request = store.put(handle, HANDLE_KEY);
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject(request.error);
+                });
+            } catch(e) {
+                console.error('Could not save handle to IndexedDB:', e);
+            }
+        }
+
+        async function verifyPermission(fileHandle, withWrite) {
+            const opts = {};
+            if (withWrite) opts.mode = 'readwrite';
+            if ((await fileHandle.queryPermission(opts)) === 'granted') {
+                return true;
+            }
+            if ((await fileHandle.requestPermission(opts)) === 'granted') {
+                return true;
+            }
+            return false;
+        }
+
+        // Initialize UI status
+        let localJsonFileHandle = null;
+
+        async function initDirectSyncStatus() {
+            const isSupported = 'showOpenFilePicker' in window;
+            const btn = document.getElementById('btn-direct-sync');
+            if (!isSupported) {
+                if (btn) btn.style.display = 'none';
+                return;
+            }
+
+            if (btn) btn.style.display = 'inline-block';
+            localJsonFileHandle = await getSavedHandle();
+            updateSyncButtonUI();
+        }
+
+        function updateSyncButtonUI() {
+            const btn = document.getElementById('btn-direct-sync');
+            if (!btn) return;
+            if (localJsonFileHandle) {
+                btn.className = 'btn btn-sync-active';
+                btn.innerHTML = '🟢 Synchro directe : Actif (' + localJsonFileHandle.name + ')';
+            } else {
+                btn.className = 'btn btn-outline';
+                btn.innerHTML = '📁 Lier au fichier JSON du projet';
+            }
+        }
+
+        async function triggerDirectSyncSetup() {
+            try {
+                const [handle] = await window.showOpenFilePicker({
+                    types: [{
+                        description: 'Fichier JSON de configuration Lexica',
+                        accept: { 'application/json': ['.json'] }
+                    }],
+                    excludeAcceptAllOption: true,
+                    multiple: false
+                });
+                if (handle) {
+                    localJsonFileHandle = handle;
+                    await saveHandle(handle);
+                    updateSyncButtonUI();
+                    showToastMsg('Fichier lié avec succès ! ✓');
+                }
+            } catch(e) {
+                console.warn('Sélection de fichier annulée ou en erreur:', e);
+            }
+        }
+
+        async function writeJsonDirectly(jsonText) {
+            if (!localJsonFileHandle) return false;
+            try {
+                const hasPermission = await verifyPermission(localJsonFileHandle, true);
+                if (!hasPermission) {
+                    showToastMsg('Permission d\'écriture refusée par le navigateur. ❌');
+                    return false;
+                }
+                const writable = await localJsonFileHandle.createWritable();
+                await writable.write(jsonText);
+                await writable.close();
+                return true;
+            } catch(e) {
+                console.error('Erreur lors de l\'écriture directe du JSON:', e);
+                return false;
+            }
+        }
+
         // ── Export HTML + JSON
-        function exportWithJSON() {
+        async function exportWithJSON() {
             // 1. Export HTML (ancien comportement)
             exportHTML();
 
@@ -4285,14 +4441,37 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
             try {
                 const data = extractDataToJson();
                 const json = JSON.stringify(data, null, 2);
-                const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'tableau_data.json';
-                document.body.appendChild(a);
-                setTimeout(() => { a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }, 600);
-            } catch(e) { console.error('JSON export failed:', e); }
+
+                let directSuccess = false;
+                if (localJsonFileHandle) {
+                    directSuccess = await writeJsonDirectly(json);
+                } else if ('showOpenFilePicker' in window) {
+                    // Prompt setup if they click export and it's not set up yet
+                    if (confirm('La synchronisation directe n\'est pas encore configurée. Voulez-vous lier le fichier JSON du projet maintenant pour sauvegarder directement sans téléchargement ?')) {
+                        await triggerDirectSyncSetup();
+                        if (localJsonFileHandle) {
+                            directSuccess = await writeJsonDirectly(json);
+                        }
+                    }
+                }
+
+                if (directSuccess) {
+                    showToastMsg('Sauvegarde directe réussie dans ' + localJsonFileHandle.name + ' ! ✓');
+                } else {
+                    // Fallback to manual download
+                    const blob = new Blob([json], { type: 'application/json;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'tableau_data.json';
+                    document.body.appendChild(a);
+                    setTimeout(() => { a.click(); document.body.removeChild(a); URL.revokeObjectURL(url); }, 600);
+                    showToastMsg('Fichier JSON téléchargé (déplacement manuel requis) ⚠️');
+                }
+            } catch(e) {
+                console.error('JSON export failed:', e);
+                showToastMsg('Erreur lors de l\'exportation JSON. ❌');
+            }
         }
 
         // ── Toast helper
@@ -4307,11 +4486,16 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
         // ── Init au chargement
         document.addEventListener('DOMContentLoaded', function() {
             initAddTabButtons();
+            initDirectSyncStatus();
         });
-        // Fallback si DOMContentLoaded d\u00e9j\u00e0 pass\u00e9
+        // Fallback si DOMContentLoaded déjà passé
         if (document.readyState !== 'loading') {
-            setTimeout(initAddTabButtons, 100);
+            setTimeout(() => {
+                initAddTabButtons();
+                initDirectSyncStatus();
+            }, 100);
         }
+
         </script>
 <div id="grammalecte_menu_main_button_shadow_host" style="width: 0px; height: 0px;"></div>
 <script id="sync-documentation-data" type="application/json">{
