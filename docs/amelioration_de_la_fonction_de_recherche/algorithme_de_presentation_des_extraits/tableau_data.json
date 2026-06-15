@@ -363,13 +363,13 @@
     },
     {
       "id": 2,
-      "title": "2. [TODO] Délimitation de la Base de Données du Corpus :",
-      "content": "Il reste indispensable de définir plus rigoureusement le périmètre et la constitution de notre base de données locale et distante. Il faudra délimiter précisément quelles sources de textes (œuvres littéraires libres de droits, retranscriptions de conférences formelles, de débats) y seront intégrées pour alimenter de manière fiable la Pipeline B."
+      "title": "2. [FAIT] Délimitation de la Base de Données du Corpus :",
+      "content": "Le périmètre et la constitution du corpus (Pipeline B) sont désormais fixés et documentés. Il comprend le projet Gutenberg (via Gutendex), les retranscriptions de vidéos YouTube (Amixem, Squeezie, conférences INA, Top Chef), les articles Wikipédia, les datasets Twitter épurés et les dialogues de films (base OPUS OpenSubtitles)."
     },
     {
       "id": 3,
-      "title": "3. [TODO] Affinement du Scoring :",
-      "content": "Les algorithmes de scoring et le calcul des scores (visant à identifier les éléments pertinents pouvant intéresser l'utilisateur) devront être ajustés et affinés au fur et à mesure de l'avancement de l'intégration et des retours d'usage."
+      "title": "3. [FAIT] Affinement du Scoring :",
+      "content": "La logique et les formules de scoring pour la sélection d'extraits ont été consolidées. Elles s'appuient sur la densité littéraire/sémantique, la similarité de contexte par rapport aux centroïdes (embeddings), la détection syntaxique des connecteurs logiques, l'oralité, ainsi qu'un bonus gaussien de longueur."
     },
     {
       "id": 4,
@@ -378,8 +378,8 @@
     },
     {
       "id": 5,
-      "title": "5. [TODO] Périmètre de recherche & Filtrage de sens (12 juin 2026) :",
-      "content": "Pour le moment, l'implémentation s'est focalisée exclusivement sur la génération de la Word Reserve (listes de mots et classification de difficulté). La recherche effective de ces mots dans le corpus d'extraits textuels (Pipeline B et phase de matching) n'a pas encore été abordée. À terme, pour les mots homonymes ou polysémiques (ex: « partant »), un filtre sémantique par embeddings calculera la proximité entre l'extrait entier et le pôle sémantique thématique (ex: Rhétorique) afin de rejeter les extraits utilisant le mot dans un sens inadéquat (ex: rejeter « Il est partant pour... » au profit de « ... et partant, la conclusion... »)."
+      "title": "5. [FAIT] Périmètre de recherche & Filtrage de sens (12 juin 2026) :",
+      "content": "La stratégie de désambiguïsation sémantique a été validée en R&D. Pour éviter les faux-sens sur les homonymes (ex: « partant »), le système exploite une priorisation de dictionnaire local, calcule la similarité cosinus sur les embeddings des définitions Wiktionnaire, et applique un filtrage sémantique sur l'extrait complet du corpus par rapport au centroïde thématique."
     },
     {
       "id": 6,
@@ -388,8 +388,8 @@
     },
     {
       "id": 7,
-      "title": "7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :",
-      "content": "Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter."
+      "title": "7. [FAIT] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :",
+      "content": "La logique de recherche et de sélection contextuelle d'un extrait pour un mot ciblé est intégrée à la R&D de la Pipeline B. Elle combine la détection morphologique, la validation syntaxique et le filtrage d'embeddings pour garantir la pertinence de l'association mot-extrait."
     },
     {
       "id": 8,
