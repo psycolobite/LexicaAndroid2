@@ -954,7 +954,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-15 14:00 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-15 14:03 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -994,8 +994,9 @@ La stratégie de désambiguïsation sémantique a été validée en R&amp;D. Pou
 Dans la sous-catégorie des qualifications d'orientation idéologique ou sociétale (C2), l'objectif à long terme dépasse l'apprentissage lexical brut. Il s'agit de construire un programme pédagogique permettant à l'utilisateur de développer une compréhension globale de l'horizon politique contemporain. Plutôt que d'accumuler des définitions encyclopédiques froides, le système cherchera à faire appréhender l'univers mental et le système de valeurs de chaque sensibilité (ex: gaulliste, jacobin, souverainiste, réactionnaire).
 
 Ne disposant pas du temps matériel pour effectuer des entretiens de psychologie qualitative avec un panel de militants, cette compréhension s'appuiera sur la modélisation des comportements et des attitudes typiques envers des objets sociaux ou des représentations collectives clés (la souveraineté nationale, le rôle de l'État, le marché, l'autorité, la laïcité, etc.). Pour chaque affiliation politique, l'algorithme ou le contenu pédagogique devra modéliser comment ses partisans investissent ces représentations (adhésion, rejet, méfiance) afin de donner à l'utilisateur une vision relationnelle et vivante des forces en présence.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>7. [FAIT] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :</strong><br/>
-La logique de recherche et de sélection contextuelle d'un extrait pour un mot ciblé est intégrée à la R&amp;D de la Pipeline B. Elle combine la détection morphologique, la validation syntaxique et le filtrage d'embeddings pour garantir la pertinence de l'association mot-extrait.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>8. [TODO] Gestion de la bibliothèque de livres :</strong><br/>
-Concevoir et développer l'interface et la logique de gestion de la bibliothèque de livres locaux et distants de l'utilisateur (affichage des couvertures, progression de lecture, téléchargement asynchrone des chapitres et intégration des extraits dans le pool d'apprentissage).</p></div>
+La logique de recherche et de sélection contextuelle d'un extrait pour un mot ciblé est intégrée à la R&amp;D de la Pipeline B. Elle combine la détection morphologique, la validation syntaxique et le filtrage d'embeddings pour garantir la pertinence de l'association mot-extrait.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>8. [TODO] Gestion de la bibliothèque de livres :</strong><br/>
+Concevoir et développer l'interface et la logique de gestion de la bibliothèque de livres locaux et distants de l'utilisateur (affichage des couvertures, progression de lecture, téléchargement asynchrone des chapitres et intégration des extraits dans le pool d'apprentissage).</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>9. [TODO] Recherche et validation d'extraits pour les mots de la Pipeline A :</strong><br/>
+Déterminer comment trouver des extraits pertinents pour les mots de la Pipeline A. Il convient de s'appuyer sur la fonction existante « trouver des exemples d'utilisation du mot » et de la faire évoluer. Il faudra valider grâce aux embeddings que le mot est employé dans son sens exact au sein de l'extrait identifié. De plus, il conviendra de repérer les cas où certains mots ne trouvent aucun extrait dans le corpus actuel afin d'élargir ou d'améliorer les sources de données.</p></div>
 </div>
 <div class="main-layout">
 <!-- ================= LEFT: MIND MAP VISUAL ================= -->
@@ -4545,6 +4546,11 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
     "id": 8,
     "title": "8. [TODO] Gestion de la bibliothèque de livres :",
     "content": "Concevoir et développer l'interface et la logique de gestion de la bibliothèque de livres locaux et distants de l'utilisateur (affichage des couvertures, progression de lecture, téléchargement asynchrone des chapitres et intégration des extraits dans le pool d'apprentissage)."
+  },
+  {
+    "id": 9,
+    "title": "9. [TODO] Recherche et validation d'extraits pour les mots de la Pipeline A :",
+    "content": "Déterminer comment trouver des extraits pertinents pour les mots de la Pipeline A. Il convient de s'appuyer sur la fonction existante « trouver des exemples d'utilisation du mot » et de la faire évoluer. Il faudra valider grâce aux embeddings que le mot est employé dans son sens exact au sein de l'extrait identifié. De plus, il conviendra de repérer les cas où certains mots ne trouvent aucun extrait dans le corpus actuel afin d'élargir ou d'améliorer les sources de données."
   }
 ]</script></body>
 <script src="moz-extension://5695a441-4282-4bc7-b5b5-bdca6b530bb6/content_scripts/api.js"></script>

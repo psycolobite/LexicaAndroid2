@@ -395,6 +395,11 @@
       "id": 8,
       "title": "8. [TODO] Gestion de la bibliothèque de livres :",
       "content": "Concevoir et développer l'interface et la logique de gestion de la bibliothèque de livres locaux et distants de l'utilisateur (affichage des couvertures, progression de lecture, téléchargement asynchrone des chapitres et intégration des extraits dans le pool d'apprentissage)."
+    },
+    {
+      "id": 9,
+      "title": "9. [TODO] Recherche et validation d'extraits pour les mots de la Pipeline A :",
+      "content": "Déterminer comment trouver des extraits pertinents pour les mots de la Pipeline A. Il convient de s'appuyer sur la fonction existante « trouver des exemples d'utilisation du mot » et de la faire évoluer. Il faudra valider grâce aux embeddings que le mot est employé dans son sens exact au sein de l'extrait identifié. De plus, il conviendra de repérer les cas où certains mots ne trouvent aucun extrait dans le corpus actuel afin d'élargir ou d'améliorer les sources de données."
     }
   ]
 }
