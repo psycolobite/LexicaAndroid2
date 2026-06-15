@@ -954,7 +954,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-14 20:47 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-15 13:55 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -993,8 +993,9 @@ Chaque mot dans la Word Reserve (Pipeline A) possède désormais un niveau de di
 Pour le moment, l'implémentation s'est focalisée exclusivement sur la génération de la Word Reserve (listes de mots et classification de difficulté). La recherche effective de ces mots dans le corpus d'extraits textuels (Pipeline B et phase de matching) n'a pas encore été abordée. À terme, pour les mots homonymes ou polysémiques (ex: « partant »), un filtre sémantique par embeddings calculera la proximité entre l'extrait entier et le pôle sémantique thématique (ex: Rhétorique) afin de rejeter les extraits utilisant le mot dans un sens inadéquat (ex: rejeter « Il est partant pour... » au profit de « ... et partant, la conclusion... »).</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>6. [TODO] Programme d'apprentissage systémique de l'univers politique (12 juin 2026) :</strong><br/>
 Dans la sous-catégorie des qualifications d'orientation idéologique ou sociétale (C2), l'objectif à long terme dépasse l'apprentissage lexical brut. Il s'agit de construire un programme pédagogique permettant à l'utilisateur de développer une compréhension globale de l'horizon politique contemporain. Plutôt que d'accumuler des définitions encyclopédiques froides, le système cherchera à faire appréhender l'univers mental et le système de valeurs de chaque sensibilité (ex: gaulliste, jacobin, souverainiste, réactionnaire).
 
-Ne disposant pas du temps matériel pour effectuer des entretiens de psychologie qualitative avec un panel de militants, cette compréhension s'appuiera sur la modélisation des comportements et des attitudes typiques envers des objets sociaux ou des représentations collectives clés (la souveraineté nationale, le rôle de l'État, le marché, l'autorité, la laïcité, etc.). Pour chaque affiliation politique, l'algorithme ou le contenu pédagogique devra modéliser comment ses partisans investissent ces représentations (adhésion, rejet, méfiance) afin de donner à l'utilisateur une vision relationnelle et vivante des forces en présence.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :</strong><br/>
-Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter.</p></div>
+Ne disposant pas du temps matériel pour effectuer des entretiens de psychologie qualitative avec un panel de militants, cette compréhension s'appuiera sur la modélisation des comportements et des attitudes typiques envers des objets sociaux ou des représentations collectives clés (la souveraineté nationale, le rôle de l'État, le marché, l'autorité, la laïcité, etc.). Pour chaque affiliation politique, l'algorithme ou le contenu pédagogique devra modéliser comment ses partisans investissent ces représentations (adhésion, rejet, méfiance) afin de donner à l'utilisateur une vision relationnelle et vivante des forces en présence.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px"><strong>7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :</strong><br/>
+Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter.</p><p contenteditable="true" spellcheck="false" style="font-size: 0.92rem; line-height: 1.6; white-space: pre-wrap; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 16px; margin-top: 16px; margin-bottom: 0"><strong>8. [TODO] Gestion de la bibliothèque de livres :</strong><br/>
+Concevoir et développer l'interface et la logique de gestion de la bibliothèque de livres locaux et distants de l'utilisateur (affichage des couvertures, progression de lecture, téléchargement asynchrone des chapitres et intégration des extraits dans le pool d'apprentissage).</p></div>
 </div>
 <div class="main-layout">
 <!-- ================= LEFT: MIND MAP VISUAL ================= -->
@@ -3346,7 +3347,8 @@ Schéma des Tables :
 
 ● BASE DE DONNÉES EMBARQUÉE CLIENT (Room SQLite)
 - Starter Pack : L'APK Android contient une version allégée pré-remplie servant de socle local.
-- Cache Room : Cache local dynamique sur le téléphone de l'utilisateur qui stocke les documents et extraits au fil de l'eau.</div></div><div class="tab-content"><div class="editable-area" contenteditable="true" spellcheck="false">● IMPORTATION AUTOMATIQUE
+- Cache Room : Cache local dynamique sur le téléphone de l'utilisateur qui stocke les documents et extraits au fil de l'eau.
+- Ravitaillement du pool : Chaque fois que la base de données locale contient moins de 100 extraits et qu'une connexion Internet est détectée, l'appareil lance un ravitaillement automatique asynchrone.</div></div><div class="tab-content"><div class="editable-area" contenteditable="true" spellcheck="false">● IMPORTATION AUTOMATIQUE
 Le script tools/consolidate_words_to_db.py importe les 1458 mots de référence des CSV des catégories C1 à C5 vers la base SQLite centralisée. Il résout les problèmes d'encodage (BOM utf-8-sig).
 
 ● FIN DES FICHIERS DISPERSÉS
@@ -4538,6 +4540,11 @@ Traduire les scripts de classification (classify_book_difficulty.py) et de déco
     "id": 7,
     "title": "7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :",
     "content": "Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter."
+  },
+  {
+    "id": 8,
+    "title": "8. [TODO] Gestion de la bibliothèque de livres :",
+    "content": "Concevoir et développer l'interface et la logique de gestion de la bibliothèque de livres locaux et distants de l'utilisateur (affichage des couvertures, progression de lecture, téléchargement asynchrone des chapitres et intégration des extraits dans le pool d'apprentissage)."
   }
 ]</script></body>
 <script src="moz-extension://5695a441-4282-4bc7-b5b5-bdca6b530bb6/content_scripts/api.js"></script>

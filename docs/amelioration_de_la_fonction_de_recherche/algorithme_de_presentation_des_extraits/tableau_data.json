@@ -311,7 +311,7 @@
           "tabs": [
             {
               "title": "1. Organisation & Schéma",
-              "content": "● BASE DE DONNÉES DE R&D (lexica_corpus.db)\nCentralise l'ensemble des données locales de l'équipe R&D pour simplifier l'intégration et éviter le désordre de multiples fichiers CSV/JSON.\n\nSchéma des Tables :\n1. words : Vocabulaire candidat de la Word Reserve (C1-C5)\n   - champs : id, word, category, difficulty, zipf, similarity, source, wiktionary_def\n2. documents : Métadonnées du corpus (œuvres de Gutenberg, transcripts YouTube, articles Wikipédia)\n   - champs : id, title, author, category, difficulty, ttr, avg_sentence_len, zipf_rare_ratio, source_url\n3. excerpts : Extraits textuels scorés et rattachés aux mots\n   - champs : id, document_id, word_id, content, orality_score, argumentative_score, difficulty\n\n● BASE DE DONNÉES EMBARQUÉE CLIENT (Room SQLite)\n- Starter Pack : L'APK Android contient une version allégée pré-remplie servant de socle local.\n- Cache Room : Cache local dynamique sur le téléphone de l'utilisateur qui stocke les documents et extraits au fil de l'eau."
+              "content": "● BASE DE DONNÉES DE R&D (lexica_corpus.db)\nCentralise l'ensemble des données locales de l'équipe R&D pour simplifier l'intégration et éviter le désordre de multiples fichiers CSV/JSON.\n\nSchéma des Tables :\n1. words : Vocabulaire candidat de la Word Reserve (C1-C5)\n   - champs : id, word, category, difficulty, zipf, similarity, source, wiktionary_def\n2. documents : Métadonnées du corpus (œuvres de Gutenberg, transcripts YouTube, articles Wikipédia)\n   - champs : id, title, author, category, difficulty, ttr, avg_sentence_len, zipf_rare_ratio, source_url\n3. excerpts : Extraits textuels scorés et rattachés aux mots\n   - champs : id, document_id, word_id, content, orality_score, argumentative_score, difficulty\n\n● BASE DE DONNÉES EMBARQUÉE CLIENT (Room SQLite)\n- Starter Pack : L'APK Android contient une version allégée pré-remplie servant de socle local.\n- Cache Room : Cache local dynamique sur le téléphone de l'utilisateur qui stocke les documents et extraits au fil de l'eau.\n- Ravitaillement du pool : Chaque fois que la base de données locale contient moins de 100 extraits et qu'une connexion Internet est détectée, l'appareil lance un ravitaillement automatique asynchrone."
             },
             {
               "title": "2. Consolidation & Centralisation",
@@ -390,6 +390,11 @@
       "id": 7,
       "title": "7. [TODO] Recherche d'extraits contextualisés à partir d'un mot d'intérêt :",
       "content": "Comment pouvons-nous rechercher efficacement des extraits pertinents (dans notre corpus ou sur le web) à partir d'un mot de notre liste ? Il est indispensable de s'assurer que le mot cible est bien employé dans le sens exact qui nous intéresse (ex: éliminer les homonymes ou les glissements de sens inappropriés pour l'objectif de la catégorie). Cette vérification sémantique de contexte constitue une étape clé à concevoir et à implémenter."
+    },
+    {
+      "id": 8,
+      "title": "8. [TODO] Gestion de la bibliothèque de livres :",
+      "content": "Concevoir et développer l'interface et la logique de gestion de la bibliothèque de livres locaux et distants de l'utilisateur (affichage des couvertures, progression de lecture, téléchargement asynchrone des chapitres et intégration des extraits dans le pool d'apprentissage)."
     }
   ]
 }
