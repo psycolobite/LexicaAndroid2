@@ -352,20 +352,20 @@ def get_fallback_zipf(word_lower, lexique, pageviews, difficulty_abstraction, re
                 if inherited_zipf > best_zipf:
                     best_zipf = inherited_zipf
                     
-    # AJUSTEMENT DYNAMIQUE (BUZZWORDS) - FORMULE V2.7 :
+    # AJUSTEMENT DYNAMIQUE (BUZZWORDS) - FORMULE V2.8 :
     # Si le mot a un nombre élevé de pageviews, on simule une fréquence moderne accrue.
     # Les mots archaïques ou classiques ne bénéficient pas de ce boost (recherche motivée par la curiosité).
     views = pageviews.get(word_lower, 0)
-    if views > 200:
+    if views > 1000:
         is_archaic = (registre == "ARCHAIQUE_RECHERCHE" or epoque == "CLASSIQUE_17_18")
-        if ff > 0.0 and not is_archaic:
-            boost = math.log10(views / 200.0) * 2.2
-            coef = max(0.1, 1.3 - difficulty_abstraction)
-            base = best_zipf if best_zipf > 0 else 1.0
+        if registre == "LITTERAIRE_STANDARD" and not is_archaic:
+            boost = math.log10(views / 1000.0) * 1.5
+            coef = max(0.1, 1.2 - difficulty_abstraction)
+            base = max(best_zipf, 2.2)
             dynamic_zipf = base + boost * coef
         else:
             # Très léger boost pour les mots purement livresques ou archaïques populaires en recherche
-            boost = math.log10(views / 200.0) * 0.4
+            boost = math.log10(views / 1000.0) * 0.2
             base = best_zipf if best_zipf > 0 else 1.0
             dynamic_zipf = base + boost
             
