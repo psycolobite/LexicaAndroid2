@@ -85,8 +85,8 @@ def classify_word(word: str, theme: str, lexique: dict, pageviews: dict, desroch
         w, pole, registre, epoque, lexique, pageviews, desrochers
     )
 
-    # 8. Pertinence (dynamique, initialisée à 0.50)
-    pertinence = 0.50
+    # 8. Pertinence (dynamique, initialisée à 0.00 — cold start sans données)
+    pertinence = 0.00
 
     return {
         "word": word,
@@ -138,7 +138,7 @@ def main():
         writer = csv.writer(f, delimiter=";")
         writer.writerow([
             "Mot", "Pole_Semantique", "Domaine_Ecriture", "Registre_Tonalite",
-            "Profil_Emotionnel", "Epoque", "Difficulte", "Difficulte_Abstraction",
+            "Profil_Emotionnel", "Epoque", "Difficulte",
             "Pertinence", "Origine_Geographique",
         ])
         for item in classified_list:
@@ -150,7 +150,6 @@ def main():
                 item["emotion"],
                 item["epoque"],
                 f"{item['difficulty']:.3f}",
-                f"{item['difficulty_abstraction']:.3f}",
                 f"{item['pertinence']:.2f}",
                 item["origine_geographique"],
             ])
