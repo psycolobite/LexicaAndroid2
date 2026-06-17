@@ -477,6 +477,23 @@ def guess_origine_geographique(word_lower):
         'trépas', 'vergogne'
     ]
 
+    greek_latin_roots = [
+        'aède', 'codex', 'aphorisme', 'aphoristique', 'apophtegme', 'calice', 'patène', 'rhapsode', 
+        'dichotomie', 'heuristique', 'ontologie', 'paradigme', 'solipsisme', 'syllogisme', 'diatribe', 
+        'soliloque', 'vaticination', 'élégiaque', 'élégie', 'assonance', 'allitération', 'césure', 
+        'cantilène', 'lyrisme', 'mélopée', 'apologie', 'panégyrique', 'anachorète', 'atrabilaire', 
+        'cénobite', 'ilote', 'potentat', 'thaumaturge', 'ataraxie', 'abnégation', 'commisération', 
+        'équanimité', 'contingence', 'dogme', 'hermétique', 'immanence', 'intrinsèque', 'noumène', 
+        'sophisme', 'syncrétisme', 'sérendipité', 'transcendance', 'truisme', 'apogée', 'cataclysme', 
+        'épigone', 'métaphysique', 'téléologique', 'casuistique', 'garrulité', 'faconde', 'laconique', 
+        'loquace', 'prolixe', 'ratiociner', 'acrimonie', 'caustique', 'circonspect', 'clémence', 
+        'connivence', 'flegmatique', 'ignominie', 'impudence', 'magnanime', 'mansuétude', 'obséquieux', 
+        'ostracisme', 'parjure', 'probe', 'pugnace', 'pusillanime', 'sardonique', 'taciturne', 
+        'thuriféraire', 'turpitude', 'urbanité', 'velléité', 'vilipender', 'azur', 'bucolique', 
+        'céruléen', 'effluve', 'empyrée', 'firmament', 'nadir', 'nébuleux', 'pétrichor', 'sidéral', 
+        'solstice', 'zénith', 'éthéré', 'ade', 'patne'
+    ]
+
     if word_lower in slavic_words:
         return 'RUSSE'
     if word_lower in italian_words:
@@ -490,11 +507,11 @@ def guess_origine_geographique(word_lower):
         
     # Classical suffixes typically greco-latin
     greek_latin_suffixes = ['isme', 'logie', 'phie', 'ique', 'iste', 'graphe', 'ode', 'ite', 'ance', 'ence', 'tion', 'ité', 'ude', 'ise']
-    if any(word_lower.endswith(s) for s in greek_latin_suffixes):
+    if any(word_lower.endswith(s) for s in greek_latin_suffixes) or word_lower in greek_latin_roots:
         return 'GREC_LATIN'
         
-    # Default to GREC_LATIN for standard literary terms
-    return 'GREC_LATIN'
+    # Default to FRANCAIS for standard words that don't match classical rules
+    return 'FRANCAIS'
 
 def guess_epoque_v2(word_lower, registre, lexique, pageviews):
     # 1. Graines explicites de mots contemporains et modernes
@@ -571,14 +588,18 @@ def classify_word(word, theme, lexique, pageviews, desrochers):
             
     # 5. Origine Géographique & Époque d'apparition (Dynamique)
     origine_geographique = guess_origine_geographique(word_lower)
-    base_epoque = guess_epoque_v2(word_lower, registre, lexique, pageviews)
     
-    if base_epoque in ["MODERNE_20", "CONTEMPORAIN_21"]:
-        epoque = base_epoque
-    elif origine_geographique == "GREC_LATIN":
+    # Listes des mots d'antiquité explicites (mythologie, antiquité romaine/grecque)
+    antiquite_words = [
+        'aède', 'codex', 'ilote', 'rhapsode', 'haruspice', 'pythonisse', 'thaumaturge',
+        'dryade', 'nymphe', 'sylphide', 'ondine', 'stichomythie', 'apophtegme', 'patène',
+        'ostensoir', 'libation', 'ade', 'patne', 'vate'
+    ]
+    
+    if word_lower in antiquite_words or (origine_geographique == "GREC_LATIN" and registre == "ARCHAIQUE_RECHERCHE"):
         epoque = "ANTIQUITE"
     else:
-        epoque = base_epoque
+        epoque = guess_epoque_v2(word_lower, registre, lexique, pageviews)
             
     # 6. Abstraction (calculée en premier car nécessaire pour Zipf modulé)
     difficulty_abstraction = calculate_abstraction(word_lower, pole, lexique, desrochers)
