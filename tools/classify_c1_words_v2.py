@@ -458,6 +458,44 @@ def calculate_abstraction(word_lower, pole, lexique, desrochers):
     abs_score = base_abs + suffix_boost - concrete_penalty
     return max(0.0, min(1.0, round(abs_score, 3)))
 
+def guess_origine_geographique(word_lower):
+    slavic_words = ['moujik', 'tsar', 'steppes']
+    italian_words = ['dilettante', 'condottiere', 'estocade', 'imbroglio', 'quiproquo', 'fiasco', 'incognito', 'pantalon', 'bouffon', 'carrousel', 'balcon']
+    english_words = ['spleen', 'masterclass', 'queer', 'non-binaire', 'cisgenre', 'intersectionnel', 'sérendipité', 'chiller', 'chilling', 'dwich']
+    german_words = ['leitmotiv', 'diktat', 'kafkaïen', 'nickel', 'oblique']
+    
+    # Pure French words or romance words that aren't classically felt loans
+    french_words = [
+        'abattement', 'accablement', 'achèvement', 'allégresse', 'atermoiement', 'bonhomie',
+        'daron', 'daronne', 'effervescence', 'flâneur', 'flemme', 'foucade', 'frémissement',
+        'gredin', 'hargne', 'mignonne', 'murmure', 'noctambule', 'opiniâtre', 'outrecuidance',
+        'pataquès', 'quiétude', 'sillage', 'simagrée', 'somnambule', 'turlupiner', 'affliction',
+        'amertume', 'angoisse', 'attachement', 'attendrissement', 'attirance', 'bannissement',
+        'blâme', 'bouderie', 'chagrin', 'clarté', 'commère', 'courroux', 'courtisan', 'crépuscule',
+        'décombre', 'désobligeance', 'enlumineur', 'feintise', 'frisson', 'grivoiserie', 'idylle',
+        'langueur', 'morgue', 'ombrageux', 'ombrage', 'pénombre', 'renégat', 'scélérat', 'solitaire',
+        'trépas', 'vergogne'
+    ]
+
+    if word_lower in slavic_words:
+        return 'RUSSE'
+    if word_lower in italian_words:
+        return 'ITALIEN'
+    if word_lower in english_words:
+        return 'ANGLAIS'
+    if word_lower in german_words:
+        return 'ALLEMAND'
+    if word_lower in french_words:
+        return 'FRANCAIS'
+        
+    # Classical suffixes typically greco-latin
+    greek_latin_suffixes = ['isme', 'logie', 'phie', 'ique', 'iste', 'graphe', 'ode', 'ite', 'ance', 'ence', 'tion', 'ité', 'ude', 'ise']
+    if any(word_lower.endswith(s) for s in greek_latin_suffixes):
+        return 'GREC_LATIN'
+        
+    # Default to GREC_LATIN for standard literary terms
+    return 'GREC_LATIN'
+
 def guess_epoque_v2(word_lower, registre, lexique, pageviews):
     # 1. Graines explicites de mots contemporains et modernes
     contemporary_seeds = ['masterclass', 'demisexuel', 'queer', 'non-binaire', 'cisgenre', 'intersectionnel']
@@ -531,8 +569,16 @@ def classify_word(word, theme, lexique, pageviews, desrochers):
             emotion = emo
             break
             
-    # 5. Époque d'apparition (Dynamique)
-    epoque = guess_epoque_v2(word_lower, registre, lexique, pageviews)
+    # 5. Origine Géographique & Époque d'apparition (Dynamique)
+    origine_geographique = guess_origine_geographique(word_lower)
+    base_epoque = guess_epoque_v2(word_lower, registre, lexique, pageviews)
+    
+    if base_epoque in ["MODERNE_20", "CONTEMPORAIN_21"]:
+        epoque = base_epoque
+    elif origine_geographique == "GREC_LATIN":
+        epoque = "ANTIQUITE"
+    else:
+        epoque = base_epoque
             
     # 6. Abstraction (calculée en premier car nécessaire pour Zipf modulé)
     difficulty_abstraction = calculate_abstraction(word_lower, pole, lexique, desrochers)
@@ -559,8 +605,6 @@ def classify_word(word, theme, lexique, pageviews, desrochers):
         suffix_bonus = 0.05
         
     # Malus dynamique basé sur les pageviews Wiktionnaire (buzzword)
-    # Dans la V2.7, le dynamic_zipf gère l'essentiel, mais on garde un léger malus buzz 
-    # pour les mots consultés de façon modérée
     buzz_malus = 0.0
     views = pageviews.get(word_lower, 0)
     if zipf < 2.5 and views > 1000:
@@ -581,7 +625,8 @@ def classify_word(word, theme, lexique, pageviews, desrochers):
         "epoque": epoque,
         "difficulty": difficulty,
         "difficulty_abstraction": difficulty_abstraction,
-        "pertinence": pertinence
+        "pertinence": pertinence,
+        "origine_geographique": origine_geographique
     }
 
 def main():
@@ -621,7 +666,7 @@ def main():
     os.makedirs(os.path.dirname(OUTPUT_CSV_PATH), exist_ok=True)
     with open(OUTPUT_CSV_PATH, mode='w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, delimiter=';')
-        writer.writerow(['Mot', 'Pole_Semantique', 'Domaine_Ecriture', 'Registre_Tonalite', 'Profil_Emotionnel', 'Epoque', 'Difficulte', 'Difficulte_Abstraction', 'Pertinence'])
+        writer.writerow(['Mot', 'Pole_Semantique', 'Domaine_Ecriture', 'Registre_Tonalite', 'Profil_Emotionnel', 'Epoque', 'Difficulte', 'Difficulte_Abstraction', 'Pertinence', 'Origine_Geographique'])
         for item in classified_list:
             writer.writerow([
                 item['word'],
@@ -632,7 +677,8 @@ def main():
                 item['epoque'],
                 f"{item['difficulty']:.3f}",
                 f"{item['difficulty_abstraction']:.3f}",
-                f"{item['pertinence']:.2f}"
+                f"{item['pertinence']:.2f}",
+                item['origine_geographique']
             ])
             
     print(f"Classification terminee avec succes. Fichier cree : {OUTPUT_CSV_PATH}")

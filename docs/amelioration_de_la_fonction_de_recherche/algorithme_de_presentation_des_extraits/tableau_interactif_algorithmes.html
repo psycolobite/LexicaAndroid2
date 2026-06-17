@@ -954,7 +954,7 @@
         }
     </style>
 </head>
-<body> Last JSON apply: 2026-06-17 16:30 | apply_json_to_html.py <header>
+<body> Last JSON apply: 2026-06-17 16:47 | apply_json_to_html.py <header>
 <div class="header-title">
 <h1 contenteditable="true" spellcheck="false">Lexica — Tableau de Bord des Algorithmes</h1>
 <p contenteditable="true" spellcheck="false">Conception métier croisée : Sourcing de la Word Reserve
@@ -1373,7 +1373,8 @@ Objectifs Utilisateur : Les mots de cette catégorie ont pour but d'aider
 - **Pôle Sémantique** (Mutuellement exclusif) : ARTS_ET_LANGAGE, ESPRIT_ET_CARACTERE, NATURE_ET_COSMOS, PHILOSOPHIE_ET_IDEES, SENTIMENTS_ET_PSYCHE (similarité cosinus max avec centroïdes).
 - **Registre &amp; Tonalité** (Mutuellement exclusif) : LITTERAIRE_STANDARD, POETIQUE_LYRIQUE, ARCHAIQUE_RECHERCHE, TRAGIQUE_DRAMATIQUE, COMIC_BURLESQUE (étiquettes Wiktionnaire + valence).
 - **Profil Émotionnel (Valence/Arousal)** (Mutuellement exclusif) : POSITIF_EXCITANT, NEGATIF_EXCITANT, POSITIF_CALME, NEGATIF_CALME, NEUTRE (indices Valence/Arousal base FAN/Bonin).
-- **Époque d'apparition / usage** (Mutuellement exclusif) : CLASSIQUE_17_18, ROMANTIQUE_19, MODERNE_20, CONTEMPORAIN_21 (datation étymologique + pic d'usage).
+- **Époque d'apparition / usage** (Mutuellement exclusif) : ANTIQUITE, CLASSIQUE_17_18, ROMANTIQUE_19, MODERNE_20, CONTEMPORAIN_21 (datation étymologique + pic d'usage).
+- **Origine Géographique** (Mutuellement exclusif) : FRANCAIS, RUSSE, ITALIEN, ANGLAIS, ALLEMAND, GREC_LATIN (emprunts linguistiques directs ou origines classiques).
 - **Difficulté** (Continue de 0.00 à 1.00) : Mesure continue de complexité intrinsèque (Zipf + Abstraction Desrochers + Voisinage orthographique).
 - **Niveau de pertinence** (Continue de 0.00 à 1.00, Dynamique) : Calculé en continu (nombre d'ajouts / propositions, à partir de 100 notations).
 
@@ -1382,6 +1383,7 @@ Objectifs Utilisateur : Les mots de cette catégorie ont pour but d'aider
 - **Nature du Format** (Mutuellement exclusif) : TEXTUEL, AUDIO, VIDEO.
 - **Type de Source** (Mutuellement exclusif) : OUVRAGE_ROMAN, SCENE_THEATRE, RECUEIL_POESIE, CRITIQUE_JOURNAL, CONFERENCE_DISCOURS, PODCAST, INTERVIEW, JOURNAL_TV, SITE_INTERNET, AUTRE (qualification du type de support).
 - **Époque de Référence** (Mutuellement exclusif) : ANCIEN_16, CLASSIQUE_17_18, ROMANTIQUE_REALISTE_19, MODERNE_20, CONTEMPORAIN_21 (publication d'origine).
+- **Pays d'Origine de l'Auteur** (Mutuellement exclusif) : FRANCE, RUSSIE, ROYAUME_UNI, TCHEQUIE, ITALIE, ALLEMAGNE, GRECE, etc. (nationalité biographique d'origine de l'auteur).
 - **Difficulté globale** (Continue de 0.00 à 1.00) : Longueur des phrases, complexité syntaxique, ratio Zipf moyen.
 - **Niveau de pertinence** (Continue de 0.00 à 1.00, Dynamique) : Note moyenne de l'extrait convertie en pourcentage (note moyenne de 2.5/5 = pertinence de 50%).</div>
 </div>
