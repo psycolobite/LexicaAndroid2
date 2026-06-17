@@ -275,72 +275,45 @@ def get_fallback_zipf(word_lower, lexique):
             
     fallbacks = []
     
-    # -issement -> -ir (bannissement -> bannir)
+    # 1. Noms en -issement -> verbe en -ir (ex. bannissement -> bannir)
     if word_lower.endswith("issement"):
         fallbacks.append(word_lower[:-8] + "ir")
-    # -ement -> -er (achèvement -> achever)
+    # Noms en -ement -> verbe en -er (ex. achèvement -> achever)
     elif word_lower.endswith("ement") and not word_lower.endswith("issement"):
         fallbacks.append(word_lower[:-5] + "er")
         
-    # -ation -> -er, -e, -é (séquestration -> séquestrer, séquestre, séquestré)
+    # 2. Noms en -ation -> verbe en -er ou formes courtes (ex. séquestration -> séquestrer/séquestre/séquestré)
     if word_lower.endswith("ation"):
         fallbacks.append(word_lower[:-5] + "er")
         fallbacks.append(word_lower[:-5] + "e")
         fallbacks.append(word_lower[:-5] + "é")
-    # -tion -> -er, -e, -é
-    elif word_lower.endswith("tion") and not word_lower.endswith("ation"):
-        fallbacks.append(word_lower[:-4] + "er")
-        fallbacks.append(word_lower[:-4] + "e")
-        fallbacks.append(word_lower[:-4] + "é")
         
-    # -ateur / -atrice -> -er
-    if word_lower.endswith("ateur"):
-        fallbacks.append(word_lower[:-5] + "er")
-    elif word_lower.endswith("atrice"):
-        fallbacks.append(word_lower[:-6] + "er")
-        
-    # -eur -> -er, -ure (enlumineur -> enluminer / enluminure)
-    if word_lower.endswith("eur") and not word_lower.endswith("ateur"):
-        fallbacks.append(word_lower[:-3] + "er")
-        fallbacks.append(word_lower[:-3] + "ure")
-        
-    # -able -> -er, -ir (périssable -> périr)
+    # 3. Adjectifs en -able/-issable -> verbe en -er/-ir (ex. périssable -> périr)
     if word_lower.endswith("able"):
-        fallbacks.append(word_lower[:-4] + "er")
-        fallbacks.append(word_lower[:-4] + "ir")
         if word_lower.endswith("issable"):
             fallbacks.append(word_lower[:-7] + "ir")
+        else:
+            fallbacks.append(word_lower[:-4] + "er")
+            fallbacks.append(word_lower[:-4] + "ir")
             
-    # -eux -> -in, -e, "" (venimeux -> venin, fielleux -> fiel)
-    if word_lower.endswith("eux"):
-        fallbacks.append(word_lower[:-3] + "in")
-        fallbacks.append(word_lower[:-3] + "e")
-        fallbacks.append(word_lower[:-3])
-    # -imeux -> -in (venimeux -> venin)
+    # 4. Adjectifs spécifiques en -imeux -> nom en -in (ex. venimeux -> venin)
     if word_lower.endswith("imeux"):
         fallbacks.append(word_lower[:-5] + "in")
             
-    # -ibilité -> -ible
+    # 5. Mots en -icité / -ibilité / -ité spécifique
     if word_lower.endswith("ibilité"):
         fallbacks.append(word_lower[:-7] + "ible")
-    # -icité -> -ique, -ice (causticité -> caustique, complicité -> complice)
     elif word_lower.endswith("icité"):
         fallbacks.append(word_lower[:-5] + "ique")
         fallbacks.append(word_lower[:-5] + "ice")
-    # -ité -> -ace, -ique, -e, "" (loquacité -> loquace)
     elif word_lower.endswith("ité"):
-        fallbacks.append(word_lower[:-3])
-        fallbacks.append(word_lower[:-3] + "e")
-        fallbacks.append(word_lower[:-3] + "ique")
-        fallbacks.append(word_lower[:-3] + "ace")
+        if word_lower.endswith("acité"):
+            fallbacks.append(word_lower[:-5] + "ace")
         
-    # -ique -> -isme, -e, -étique -> "" (aphoristique -> aphorisme)
+    # 6. Suffixes d'adjectifs en -ique spécifique (ex. aphoristique -> aphorisme)
     if word_lower.endswith("ique"):
         if word_lower.endswith("istique"):
             fallbacks.append(word_lower[:-7] + "isme")
-        fallbacks.append(word_lower[:-4] + "e")
-        if word_lower.endswith("étique"):
-            fallbacks.append(word_lower[:-6])
             
     for fb in fallbacks:
         if fb in lexique:
@@ -400,7 +373,7 @@ def calculate_abstraction(word_lower, pole):
     abs_score = base_abs + suffix_boost - concrete_penalty
     return max(0.0, min(1.0, round(abs_score, 3)))
 
-def classify_word(word, theme, lexique):
+def classify_word(word, theme, lexique, pageviews):
     word_lower = word.lower().strip()
     
     # 1. Pôle sémantique
@@ -457,10 +430,14 @@ def classify_word(word, theme, lexique):
     if any(word_lower.endswith(s) for s in ['phisme', 'logie', 'trique', 'phie', 'isme']):
         suffix_bonus = 0.05
         
-    # Pénalité de lettres rares : SUPPRIMÉE complètement
-    rare_letters_bonus = 0.0
+    # Malus dynamique basé sur les pageviews Wiktionnaire (buzzword)
+    # Appliqué uniquement aux mots rares historiquement (Zipf < 2.5) pour éviter de fausser les mots littéraires recherchés
+    buzz_malus = 0.0
+    views = pageviews.get(word_lower, 0)
+    if zipf < 2.5 and views > 1000:
+        buzz_malus = min(0.25, math.log10(views / 1000.0) * 0.15)
         
-    difficulty = diff_base + len_bonus + suffix_bonus + rare_letters_bonus
+    difficulty = diff_base + len_bonus + suffix_bonus - buzz_malus
     difficulty = max(0.0, min(1.0, round(difficulty, 3)))
     
     # 7. Difficulté continue basée sur l'Abstraction
@@ -494,11 +471,21 @@ def main():
     lexique = load_lexique()
     print(f"Lexique charge avec {len(lexique)} mots.")
     
+    # Chargement du cache des pageviews
+    PAGEVIEWS_PATH = os.path.join(TOOLS_DIR, "c1_wiktionary_pageviews.json")
+    if os.path.exists(PAGEVIEWS_PATH):
+        with open(PAGEVIEWS_PATH, "r", encoding="utf-8") as f:
+            pageviews = json.load(f)
+        print(f"Cache des pageviews charge avec {len(pageviews)} mots.")
+    else:
+        pageviews = {}
+        print("Warning: c1_wiktionary_pageviews.json introuvable. Aucun malus buzz ne sera applique.")
+    
     classified_list = []
     for item in words_data:
         word = item["mot"]
         theme = item["theme"]
-        res = classify_word(word, theme, lexique)
+        res = classify_word(word, theme, lexique, pageviews)
         classified_list.append(res)
         
     # Écriture du fichier de sortie CSV
