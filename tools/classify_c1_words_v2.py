@@ -20,7 +20,7 @@ DESROCHERS_TSV_PATH = os.path.join(TOOLS_DIR, "FreqSub_Imag_3600.tsv")
 OUTPUT_CSV_PATH = os.path.join(
     os.path.dirname(TOOLS_DIR),
     "docs", "amelioration_de_la_fonction_de_recherche",
-    "algorithme_de_presentation_des_extraits", "classified_c1_words.csv"
+    "algorithme_de_presentation_des_extraits", "classified_c1_words_v2.csv"
 )
 
 # Chargement de la base Desrochers (FreqSub_Imag_3600)
