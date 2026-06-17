@@ -458,6 +458,50 @@ def calculate_abstraction(word_lower, pole, lexique, desrochers):
     abs_score = base_abs + suffix_boost - concrete_penalty
     return max(0.0, min(1.0, round(abs_score, 3)))
 
+def guess_epoque_v2(word_lower, registre, lexique, pageviews):
+    # 1. Graines explicites de mots contemporains et modernes
+    contemporary_seeds = ['masterclass', 'demisexuel', 'queer', 'non-binaire', 'cisgenre', 'intersectionnel']
+    if any(s in word_lower for s in contemporary_seeds):
+        return 'CONTEMPORAIN_21'
+        
+    modern_seeds = ['résilience', 'procrastiner', 'procrastination', 'neurasthénie']
+    if word_lower in modern_seeds:
+        return 'MODERNE_20'
+
+    # Suffixes contemporains
+    if any(word_lower.endswith(s) for s in ['ing', 'queer', 'genre', 'binaire']):
+        return 'CONTEMPORAIN_21'
+
+    # Vérification archaïque / classique d'abord pour bloquer le boost moderne
+    is_historically_classic = (registre == "ARCHAIQUE_RECHERCHE" or any(word_lower in words for ep, words in EPOQUE_WORDS.items() if ep == "CLASSIQUE_17_18"))
+
+    # Récupération des statistiques Lexique383
+    fl = 0.0
+    ff = 0.0
+    if word_lower in lexique:
+        fl = lexique[word_lower]['freqlivres']
+        ff = lexique[word_lower]['freqfilms']
+        
+    views = pageviews.get(word_lower, 0)
+    
+    if not is_historically_classic:
+        # 2. Popularité Moderne OU Oralité (Priorité Haute)
+        if views > 8000 or (fl > 0 and ff / fl > 8.0 and ff > 0.5):
+            return 'CONTEMPORAIN_21'
+        elif views > 3000 or (fl > 0 and ff / fl > 3.0 and ff > 0.2) or (ff > 0 and fl == 0 and (ff > 1.0 or views > 2000)):
+            return 'MODERNE_20'
+        
+    # 3. Ratios Littéraires Historiques (Écrit Classique)
+    if (fl > 0 and ff > 0 and fl / ff > 15.0 and fl > 1.0) or (fl > 2.0 and ff == 0) or is_historically_classic:
+        return 'CLASSIQUE_17_18'
+        
+    # 4. Registre Lexical (En repli de dernier recours)
+    if registre == "POETIQUE_LYRIQUE":
+        return "ROMANTIQUE_19"
+
+    # 5. Valeur par défaut
+    return 'ROMANTIQUE_19'
+
 def classify_word(word, theme, lexique, pageviews, desrochers):
     word_lower = word.lower().strip()
     
@@ -487,12 +531,8 @@ def classify_word(word, theme, lexique, pageviews, desrochers):
             emotion = emo
             break
             
-    # 5. Époque d'apparition
-    epoque = "ROMANTIQUE_19" # Par défaut
-    for ep, words in EPOQUE_WORDS.items():
-        if word_lower in words:
-            epoque = ep
-            break
+    # 5. Époque d'apparition (Dynamique)
+    epoque = guess_epoque_v2(word_lower, registre, lexique, pageviews)
             
     # 6. Abstraction (calculée en premier car nécessaire pour Zipf modulé)
     difficulty_abstraction = calculate_abstraction(word_lower, pole, lexique, desrochers)
