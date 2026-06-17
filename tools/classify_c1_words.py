@@ -2,6 +2,7 @@
 """
 Script de classification automatique et assistée par règles des 407 mots de C1
 selon la taxonomie scientifique (mutuellement exclusive).
+Ajoute également une colonne Difficulte_Abstraction pour comparaison.
 """
 
 import os
@@ -254,6 +255,51 @@ EPOQUE_WORDS = {
     ]
 }
 
+# Liste explicite d'objets ou êtres concrets (physiques) pour baisser l'abstraction
+CONCRETE_OBJECTS = [
+    "calice", "codex", "grimoire", "patène", "psautier", "vélin", "alcyon",
+    "chrysanthème", "constellation", "corolle", "dryade", "labyrinthe",
+    "nymphe", "ondine", "parvis", "pistil", "pétale", "sépale", "solstice",
+    "sylphide", "zodiaque", "étamine", "marmiton", "brigand", "condottiere",
+    "estafette", "flibustier", "grognard", "larron", "malandrin", "maraudeur",
+    "moujik", "paladin", "palefrenier", "satyre", "sbire", "sicaire",
+    "spadassin", "chaume", "décombre", "arène", "glèbe", "ostensoir"
+]
+
+def calculate_abstraction(word_lower, pole):
+    """
+    Calcule un score d'abstraction continu (0.00 = très concret, 1.00 = extrêmement abstrait).
+    Basé sur le pôle sémantique et des heuristiques morphologiques/lexicales.
+    """
+    # Base par pôle sémantique
+    if pole == "PHILOSOPHIE_ET_IDEES":
+        base_abs = 0.85
+    elif pole == "SENTIMENTS_ET_PSYCHE":
+        base_abs = 0.75
+    elif pole == "ESPRIT_ET_CARACTERE":
+        base_abs = 0.60
+    elif pole == "ARTS_ET_LANGAGE":
+        base_abs = 0.50
+    else: # NATURE_ET_COSMOS
+        base_abs = 0.20
+        
+    # Boost de suffixes d'abstraction typiques (-isme, -logie, -ence, -té, -ité, -tion, -ance)
+    suffix_boost = 0.0
+    if any(word_lower.endswith(s) for s in ['isme', 'logie', 'ence', 'tence', 'té', 'ité', 'tion', 'ance', 'ude']):
+        suffix_boost = 0.15
+    elif any(word_lower.endswith(s) for s in ['ique', 'iste', 'aire', 'el']):
+        suffix_boost = 0.05
+        
+    # Pénalité de concrétitude (si c'est un objet physique, un lieu ou un être vivant concret)
+    concrete_penalty = 0.0
+    if word_lower in CONCRETE_OBJECTS:
+        concrete_penalty = 0.35
+    elif pole == "NATURE_ET_COSMOS" and any(word_lower.endswith(s) for s in ['e', 'a', 'on']):
+        concrete_penalty = 0.15
+        
+    abs_score = base_abs + suffix_boost - concrete_penalty
+    return max(0.0, min(1.0, round(abs_score, 3)))
+
 def classify_word(word, theme, lexique):
     word_lower = word.lower().strip()
     
@@ -290,7 +336,7 @@ def classify_word(word, theme, lexique):
             epoque = ep
             break
             
-    # 6. Difficulté continue
+    # 6. Difficulté continue classique (Zipf + Morphologie)
     zipf = 0.0
     if word_lower in lexique:
         fl = lexique[word_lower]['freqlivres']
@@ -305,7 +351,6 @@ def classify_word(word, theme, lexique):
     else:
         diff_base = 0.75
         
-    # Ajustements de complexité
     len_bonus = max(0.0, min(0.15, (len(word_lower) - 5) * 0.02))
     
     suffix_bonus = 0.0
@@ -319,7 +364,10 @@ def classify_word(word, theme, lexique):
     difficulty = diff_base + len_bonus + suffix_bonus + rare_letters_bonus
     difficulty = max(0.0, min(1.0, round(difficulty, 3)))
     
-    # 7. Niveau de Pertinence (Dynamique)
+    # 7. Difficulté continue basée sur l'Abstraction
+    difficulty_abstraction = calculate_abstraction(word_lower, pole)
+    
+    # 8. Niveau de Pertinence (Dynamique)
     pertinence = 0.50
     
     return {
@@ -328,8 +376,9 @@ def classify_word(word, theme, lexique):
         "domaine": domaine,
         "registre": registre,
         "emotion": emotion,
-        "epoque": eoque if 'eoque' in locals() else epoque, # Fix possible variable typo
+        "epoque": epoque,
         "difficulty": difficulty,
+        "difficulty_abstraction": difficulty_abstraction,
         "pertinence": pertinence
     }
 
@@ -357,7 +406,7 @@ def main():
     os.makedirs(os.path.dirname(OUTPUT_CSV_PATH), exist_ok=True)
     with open(OUTPUT_CSV_PATH, mode='w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f, delimiter=';')
-        writer.writerow(['Mot', 'Pole_Semantique', 'Domaine_Ecriture', 'Registre_Tonalite', 'Profil_Emotionnel', 'Epoque', 'Difficulte', 'Pertinence'])
+        writer.writerow(['Mot', 'Pole_Semantique', 'Domaine_Ecriture', 'Registre_Tonalite', 'Profil_Emotionnel', 'Epoque', 'Difficulte', 'Difficulte_Abstraction', 'Pertinence'])
         for item in classified_list:
             writer.writerow([
                 item['word'],
@@ -367,6 +416,7 @@ def main():
                 item['emotion'],
                 item['epoque'],
                 f"{item['difficulty']:.3f}",
+                f"{item['difficulty_abstraction']:.3f}",
                 f"{item['pertinence']:.2f}"
             ])
             
