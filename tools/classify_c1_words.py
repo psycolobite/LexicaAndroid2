@@ -1,0 +1,389 @@
+# -*- coding: utf-8 -*-
+"""
+Script de classification automatique et assistée par règles des 407 mots de C1
+selon la taxonomie scientifique (mutuellement exclusive).
+"""
+
+import os
+import json
+import csv
+import math
+import zipfile
+
+# Chemins
+TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
+WORDS_JSON_PATH = os.path.join(TOOLS_DIR, "consolidated_literary_words.json")
+ZIP_LEXIQUE_PATH = os.path.join(TOOLS_DIR, "Lexique383.zip")
+
+OUTPUT_CSV_PATH = os.path.join(
+    os.path.dirname(TOOLS_DIR),
+    "docs", "amelioration_de_la_fonction_de_recherche",
+    "algorithme_de_presentation_des_extraits", "classified_c1_words.csv"
+)
+
+# Chargement du Lexique
+def load_lexique():
+    lexique = {}
+    if not os.path.exists(ZIP_LEXIQUE_PATH):
+        print("Lexique383.zip introuvable, utilisation de valeurs de repli.")
+        return {}
+    with zipfile.ZipFile(ZIP_LEXIQUE_PATH, 'r') as z:
+        tsv_name = next((name for name in z.namelist() if name.endswith(('.tsv', '.txt'))), None)
+        if not tsv_name:
+            return {}
+        with z.open(tsv_name) as f:
+            content = (line.decode('utf-8', errors='ignore') for line in f)
+            reader = csv.DictReader(content, delimiter='\t')
+            for row in reader:
+                word = row['ortho'].lower().strip()
+                if not word:
+                    continue
+                try:
+                    freqlivres = float(row['freqlivres'])
+                except ValueError:
+                    freqlivres = 0.0
+                try:
+                    freqfilms = float(row['freqfilms2'])
+                except ValueError:
+                    freqfilms = 0.0
+                if word in lexique:
+                    lexique[word]['freqlivres'] += freqlivres
+                    lexique[word]['freqfilms'] += freqfilms
+                else:
+                    lexique[word] = {'freqlivres': freqlivres, 'freqfilms': freqfilms}
+    return lexique
+
+# RÈGLES DE MAPPING
+POLE_MAP = {
+    "Art & Langage": "ARTS_ET_LANGAGE",
+    "Esprit & Caractère": "ESPRIT_ET_CARACTERE",
+    "Nature & Cosmos": "NATURE_ET_COSMOS",
+    "Philosophie & Idées": "PHILOSOPHIE_ET_IDEES",
+    "Sentiments & Psyché": "SENTIMENTS_ET_PSYCHE"
+}
+
+# Mappings explicites pour Lumière & Ombres et Temps & Éphémère
+THEMES_SPECIFIC_MAP = {
+    # Lumière & Ombres
+    "aurore": "NATURE_ET_COSMOS",
+    "clair-obscur": "ARTS_ET_LANGAGE",
+    "coruscant": "NATURE_ET_COSMOS",
+    "crépuscule": "NATURE_ET_COSMOS",
+    "diaphane": "NATURE_ET_COSMOS",
+    "exsangue": "SENTIMENTS_ET_PSYCHE",
+    "fuligineux": "PHILOSOPHIE_ET_IDEES",
+    "incandescent": "NATURE_ET_COSMOS",
+    "irisé": "NATURE_ET_COSMOS",
+    "luminescence": "NATURE_ET_COSMOS",
+    "nimbe": "ARTS_ET_LANGAGE",
+    "opalin": "NATURE_ET_COSMOS",
+    "phosphorescence": "NATURE_ET_COSMOS",
+    "purpurine": "ARTS_ET_LANGAGE",
+    "pénombre": "NATURE_ET_COSMOS",
+    "ténébreux": "SENTIMENTS_ET_PSYCHE",
+    "vespéral": "NATURE_ET_COSMOS",
+    # Temps & Éphémère
+    "ancestral": "PHILOSOPHIE_ET_IDEES",
+    "antédiluvien": "PHILOSOPHIE_ET_IDEES",
+    "apogée": "PHILOSOPHIE_ET_IDEES",
+    "caduc": "PHILOSOPHIE_ET_IDEES",
+    "caducité": "PHILOSOPHIE_ET_IDEES",
+    "célérité": "ESPRIT_ET_CARACTERE",
+    "déliquescence": "PHILOSOPHIE_ET_IDEES",
+    "désuet": "ARTS_ET_LANGAGE",
+    "fugace": "SENTIMENTS_ET_PSYCHE",
+    "hécatombe": "PHILOSOPHIE_ET_IDEES",
+    "imminent": "PHILOSOPHIE_ET_IDEES",
+    "immuable": "PHILOSOPHIE_ET_IDEES",
+    "immémorial": "PHILOSOPHIE_ET_IDEES",
+    "inexorable": "PHILOSOPHIE_ET_IDEES",
+    "intemporel": "PHILOSOPHIE_ET_IDEES",
+    "jadis": "PHILOSOPHIE_ET_IDEES",
+    "millénaire": "PHILOSOPHIE_ET_IDEES",
+    "obsolescence": "PHILOSOPHIE_ET_IDEES",
+    "obsolète": "PHILOSOPHIE_ET_IDEES",
+    "précurseur": "PHILOSOPHIE_ET_IDEES",
+    "prémices": "NATURE_ET_COSMOS",
+    "périssable": "PHILOSOPHIE_ET_IDEES",
+    "réminiscence": "SENTIMENTS_ET_PSYCHE",
+    "sénescence": "NATURE_ET_COSMOS",
+    "transitoire": "PHILOSOPHIE_ET_IDEES",
+    "trépas": "PHILOSOPHIE_ET_IDEES",
+    "vicissitude": "PHILOSOPHIE_ET_IDEES",
+    "éphémère": "SENTIMENTS_ET_PSYCHE",
+    "évanescent": "SENTIMENTS_ET_PSYCHE"
+}
+
+# Dictionnaires de mots-clés pour inférer le Domaine d'Écriture Cible
+DOMAINE_WORDS = {
+    "THEATRE": [
+        "stichomythie", "quiproquo", "tirade", "réplique", "faconde", "harangue",
+        "loquace", "prolixe", "soliloque", "invective", "sardonique", "goguenard",
+        "simagrée", "potentat", "courroux", "tragedie", "comédie", "tragique",
+        "burlesque", "cabotin", "dramaturge", "masque", "chiasme", "tautologie",
+        "pérorer", "ergoter", "fripon", "gredin", "grivois", "grivoiserie",
+        "imbroglio", "insolence", "irrévérence", "larron", "satyre", "sbire",
+        "spadassin", "tintamarre", "pataquès"
+    ],
+    "POESIE": [
+        "allitération", "assonance", "aède", "calligramme", "cantilène", "césure",
+        "élégiaque", "élégie", "lyrisme", "mélopée", "rhapsode", "rhapsodie",
+        "azur", "céruléen", "effluve", "empyrée", "firmament", "zéphyr", "aurore",
+        "crépuscule", "diaphane", "opalin", "vespéral", "évanescent", "spleen",
+        "volupté", "ondine", "sylphide", "nymphe", "nacré", "irisé", "diaphanéité",
+        "frémissement", "murmure", "psalmodie", "psalmodier", "flâneur", "noctambule",
+        "mignonne", "ménestrel", "métrique", "troubadour", "vate", "éolien"
+    ],
+    "ESSAI_PHILOSOPHIQUE": [
+        "aphorisme", "apophtegme", "ratiociner", "vaticination", "gnomique",
+        "contingence", "dogme", "hermétique", "heuristique", "immanence",
+        "intrinsèque", "noumène", "ontologie", "paradigme", "solipsisme",
+        "sophisme", "syllogisme", "syncrétisme", "sérendipité", "transcendance",
+        "truisme", "maxime", "ontologique", "métaphysique", "téléologique",
+        "éclectisme", "solipsiste", "casuistique", "conjecture", "dirimant",
+        "infrangible", "substantifique", "ataraxie", "cénobite", "ilote",
+        "paria", "pernicieux", "prodigalité", "érémitique", "oblation"
+    ],
+    "CRITIQUE_MEMOIRES": [
+        "cénacle", "diatribe", "laudateur", "liminaire", "panégyrique",
+        "acrimonie", "anachorète", "atermoiement", "atrabilaire", "bonhomie",
+        "caustique", "causticité", "circonspect", "clémence", "connivence",
+        "flegmatique", "ignominie", "impudence", "intransigeance", "magnanime",
+        "mansuétude", "obséquieux", "opiniâtre", "ostracisme", "outrecuidance",
+        "parangon", "parjure", "probe", "pugnace", "pusillanime", "taciturne",
+        "thuriféraire", "turpitude", "urbanité", "velléité", "vilipender",
+        "collusion", "incurie", "impéritie", "procrastination", "sycophante",
+        "dilettante", "esthète", "soporifique", "épigone", "condottiere",
+        "estafette", "grognard", "impertinence", "impérieux", "indocile",
+        "insidieux", "insoumis", "intègre", "libidineux", "licencieux",
+        "mentor", "moujik", "méticuleux", "ombrageux", "ostentatoire",
+        "outrageux", "patricien", "plébéien", "pointilleux", "préséance",
+        "renégat", "scabreux", "scrupuleux", "sourcilleux", "valétudinaire",
+        "vergogne", "égrotant"
+    ]
+}
+
+# Listes pour le Registre et la Tonalité
+REGISTRE_WORDS = {
+    "ARCHAIQUE_RECHERCHE": [
+        "aède", "calice", "codex", "héraut", "libation", "oblation", "ostensoir",
+        "patène", "psautier", "rhapsode", "vélin", "vate", "anachorète",
+        "atrabilaire", "cénobite", "estafette", "famélique", "ilote", "larron",
+        "malandrin", "moujik", "preux", "sicaire", "spadassin", "sycophante",
+        "viateur", "chthonien", "haruspice", "pythonisse", "thaumaturge",
+        "aboulie", "noévie", "entéléchie", "cacochyme", "glèbe", "feintise",
+        "caduc", "trépas", "vergogne", "condottiere", "potantat", "marmiton",
+        "palefrenier", "sbire", "suzerain", "haruspice", "scholastique", "oblation",
+        "patène"
+    ],
+    "POETIQUE_LYRIQUE": [
+        "allitération", "assonance", "cantilène", "élégiaque", "élégie",
+        "lyrisme", "mélopée", "aurore", "crépuscule", "diaphane", "irisé",
+        "luminescence", "nimbe", "opalin", "phosphorescence", "pénombre",
+        "vespéral", "alcyon", "arachnéen", "azur", "bocage", "céruléen",
+        "effluve", "empyrée", "firmament", "nymphe", "ondine", "sylphide",
+        "zéphyr", "éthéré", "onirique", "allégresse", "ataraxie", "félicité",
+        "idylle", "indolence", "langueur", "lascif", "mélancolie", "quiétude",
+        "spleen", "sérénité", "torpeur", "volupté", "éphémère", "évanescent",
+        "frémissement", "murmure", "psalmodie", "flâneur", "noctambule", "mignonne",
+        "ménestrel", "troubadour", "viateur"
+    ],
+    "TRAGIQUE_DRAMATIQUE": [
+        "diatribe", "estocade", "invective", "acrimonie", "fielleux", "ignominie",
+        "ostracisme", "parjure", "sardonique", "scélérat", "turpitude",
+        "vilipender", "vitriolique", "exsangue", "fuligineux", "ténébreux",
+        "anathème", "némésis", "abattement", "accablement", "affliction",
+        "anémie", "courroux", "morose", "neurasthénie", "stupeur", "trépas",
+        "hécatombe", "inexorable", "déliquescence", "périssable"
+    ],
+    "COMIC_BURLESQUE": [
+        "amphigourique", "faconde", "garrulité", "pataquès", "quiproquo",
+        "soliloque", "verbeux", "volubile", "facétieux", "goguenard", "grivois",
+        "grivoiserie", "imbroglio", "narquois", "simagrée", "ubuesque",
+        "kafkaïen", "turlupiner", "foucade"
+    ]
+}
+
+# Listes pour le Profil Émotionnel
+EMOTION_WORDS = {
+    "POSITIF_EXCITANT": [
+        "alacrité", "allégresse", "effervescence", "exaltaion", "exaltation",
+        "extase", "ferveur", "jubilation", "pétulant", "exultation", "enthousiasme"
+    ],
+    "NEGATIF_EXCITANT": [
+        "acrimonie", "courroux", "diatribe", "invective", "fustiger",
+        "vindicatif", "acrimonieux", "hargne", "invective", "blâme", "collusion",
+        "ignominie", "tumulte"
+    ],
+    "POSITIF_CALME": [
+        "bonhomie", "clémence", "félicité", "quiétude", "sérénité", "tempérance",
+        "mansuétude", "volupté", "limpide", "lustral", "sérénité", "placidité"
+    ],
+    "NEGATIF_CALME": [
+        "abattement", "accablement", "affliction", "apathie", "atonie",
+        "désabusé", "indolence", "langueur", "lascif", "léthargie", "morose",
+        "mélancolie", "neurasthénie", "spleen", "torpeur", "évanescent",
+        "fugace", "déliquescence", "exsangue", "caducité", "morosité"
+    ]
+}
+
+# Époque d'apparition / usage
+EPOQUE_WORDS = {
+    "CLASSIQUE_17_18": [
+        "aède", "apophtegme", "ratiociner", "libation", "oblation", "ostensoir",
+        "patène", "psautier", "cénobite", "condottiere", "ilote", "potentat",
+        "preux", "suzerain", "haruspice", "scholastique", "courroux", "trépas",
+        "soliloque", "faconde", "harangue", "magnanime", "mansuétude", "probe",
+        "taciturne", "urbanité", "vergogne", "maxime", "patène", "cénobite",
+        "ilote", "preux", "sbire", "spadassin"
+    ],
+    "ROMANTIQUE_19": [
+        "spleen", "mélancolie", "céruléen", "empyrée", "nébuleux", "crépuscule",
+        "diaphane", "exsangue", "opalin", "pénombre", "ténébreux", "bucolique",
+        "zéphyr", "chimère", "onirique", "volupté", "élégiaque", "élégie",
+        "lyrisme", "mélopée", "langueur", "lascif", "torpeur", "évanescent",
+        "flâneur", "funambule", "cénacle", "diatribe"
+    ],
+    "MODERNE_20": [
+        "neurasthénie", "résilience", "apathie", "obsolescence", "paria",
+        "paradigme", "sérendipité", "synesthésie", "procrastination"
+    ],
+    "CONTEMPORAIN_21": [
+        "masterclass", "demisexuel", "queer", "non-binaire", "cisgenre",
+        "intersectionnel"
+    ]
+}
+
+def classify_word(word, theme, lexique):
+    word_lower = word.lower().strip()
+    
+    # 1. Pôle sémantique
+    pole = THEMES_SPECIFIC_MAP.get(word_lower)
+    if not pole:
+        pole = POLE_MAP.get(theme, "PHILOSOPHIE_ET_IDEES")
+        
+    # 2. Domaine d'écriture
+    domaine = "ROMANESQUE" # Par défaut
+    for dom, words in DOMAINE_WORDS.items():
+        if word_lower in words:
+            domaine = dom
+            break
+            
+    # 3. Registre & Tonalité
+    registre = "LITTERAIRE_STANDARD"
+    for reg, words in REGISTRE_WORDS.items():
+        if word_lower in words:
+            registre = reg
+            break
+            
+    # 4. Profil émotionnel
+    emotion = "NEUTRE"
+    for emo, words in EMOTION_WORDS.items():
+        if word_lower in words:
+            emotion = emo
+            break
+            
+    # 5. Époque d'apparition
+    epoque = "ROMANTIQUE_19" # Par défaut
+    for ep, words in EPOQUE_WORDS.items():
+        if word_lower in words:
+            epoque = ep
+            break
+            
+    # 6. Difficulté continue
+    zipf = 0.0
+    if word_lower in lexique:
+        fl = lexique[word_lower]['freqlivres']
+        ff = lexique[word_lower]['freqfilms']
+        freq = max(fl, ff)
+        if freq > 0:
+            zipf = math.log10(freq) + 3.0
+            
+    if zipf > 0:
+        diff_base = (4.3 - zipf) / (4.3 - 1.5)
+        diff_base = max(0.0, min(1.0, diff_base))
+    else:
+        diff_base = 0.75
+        
+    # Ajustements de complexité
+    len_bonus = max(0.0, min(0.15, (len(word_lower) - 5) * 0.02))
+    
+    suffix_bonus = 0.0
+    if any(word_lower.endswith(s) for s in ['phisme', 'tence', 'ation', 'logie', 'trique', 'phie', 'isme', 'ique', 'iste', 'gence']):
+        suffix_bonus = 0.10
+        
+    rare_letters_bonus = 0.0
+    if any(c in word_lower for c in ['y', 'z', 'k', 'x', 'w']):
+        rare_letters_bonus = 0.05
+        
+    difficulty = diff_base + len_bonus + suffix_bonus + rare_letters_bonus
+    difficulty = max(0.0, min(1.0, round(difficulty, 3)))
+    
+    # 7. Niveau de Pertinence (Dynamique)
+    pertinence = 0.50
+    
+    return {
+        "word": word,
+        "pole": pole,
+        "domaine": domaine,
+        "registre": registre,
+        "emotion": emotion,
+        "epoque": eoque if 'eoque' in locals() else epoque, # Fix possible variable typo
+        "difficulty": difficulty,
+        "pertinence": pertinence
+    }
+
+def main():
+    print("Chargement des mots de C1...")
+    if not os.path.exists(WORDS_JSON_PATH):
+        print(f"Erreur: {WORDS_JSON_PATH} introuvable.")
+        return
+        
+    with open(WORDS_JSON_PATH, "r", encoding="utf-8") as f:
+        words_data = json.load(f)
+        
+    print(f"{len(words_data)} mots charges.")
+    lexique = load_lexique()
+    print(f"Lexique charge avec {len(lexique)} mots.")
+    
+    classified_list = []
+    for item in words_data:
+        word = item["mot"]
+        theme = item["theme"]
+        res = classify_word(word, theme, lexique)
+        classified_list.append(res)
+        
+    # Écriture du fichier de sortie CSV
+    os.makedirs(os.path.dirname(OUTPUT_CSV_PATH), exist_ok=True)
+    with open(OUTPUT_CSV_PATH, mode='w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f, delimiter=';')
+        writer.writerow(['Mot', 'Pole_Semantique', 'Domaine_Ecriture', 'Registre_Tonalite', 'Profil_Emotionnel', 'Epoque', 'Difficulte', 'Pertinence'])
+        for item in classified_list:
+            writer.writerow([
+                item['word'],
+                item['pole'],
+                item['domaine'],
+                item['registre'],
+                item['emotion'],
+                item['epoque'],
+                f"{item['difficulty']:.3f}",
+                f"{item['pertinence']:.2f}"
+            ])
+            
+    print(f"Classification terminee avec succes. Fichier cree : {OUTPUT_CSV_PATH}")
+    
+    # Statistiques rapides
+    stats = {"pole": {}, "domaine": {}, "registre": {}, "emotion": {}, "epoque": {}}
+    for item in classified_list:
+        for k in stats.keys():
+            val = item[k]
+            stats[k][val] = stats[k].get(val, 0) + 1
+            
+    print("\n--- STATISTIQUES DE CLASSIFICATION ---")
+    for category, dist in stats.items():
+        print(f"\nDistribution {category.capitalize()} :")
+        for val, count in sorted(dist.items(), key=lambda x: x[1], reverse=True):
+            print(f"  - {val} : {count} ({count/len(classified_list)*100:.1f}%)")
+
+if __name__ == "__main__":
+    main()
