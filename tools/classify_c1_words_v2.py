@@ -459,40 +459,22 @@ def calculate_abstraction(word_lower, pole, lexique, desrochers):
     return max(0.0, min(1.0, round(abs_score, 3)))
 
 def guess_origine_geographique(word_lower):
+    """
+    Détermine l'origine géographique d'un mot.
+    Seules les origines géographiques réelles sont retenues :
+    RUSSE, ITALIEN, ANGLAIS, ALLEMAND, FRANCAIS.
+    Les mots à racines gréco-latines assimilés au français sont classifiés FRANCAIS.
+    """
     slavic_words = ['moujik', 'tsar', 'steppes']
-    italian_words = ['dilettante', 'condottiere', 'estocade', 'imbroglio', 'quiproquo', 'fiasco', 'incognito', 'pantalon', 'bouffon', 'carrousel', 'balcon']
-    english_words = ['spleen', 'masterclass', 'queer', 'non-binaire', 'cisgenre', 'intersectionnel', 'sérendipité', 'chiller', 'chilling', 'dwich']
-    german_words = ['leitmotiv', 'diktat', 'kafkaïen', 'nickel', 'oblique']
-    
-    # Pure French words or romance words that aren't classically felt loans
-    french_words = [
-        'abattement', 'accablement', 'achèvement', 'allégresse', 'atermoiement', 'bonhomie',
-        'daron', 'daronne', 'effervescence', 'flâneur', 'flemme', 'foucade', 'frémissement',
-        'gredin', 'hargne', 'mignonne', 'murmure', 'noctambule', 'opiniâtre', 'outrecuidance',
-        'pataquès', 'quiétude', 'sillage', 'simagrée', 'somnambule', 'turlupiner', 'affliction',
-        'amertume', 'angoisse', 'attachement', 'attendrissement', 'attirance', 'bannissement',
-        'blâme', 'bouderie', 'chagrin', 'clarté', 'commère', 'courroux', 'courtisan', 'crépuscule',
-        'décombre', 'désobligeance', 'enlumineur', 'feintise', 'frisson', 'grivoiserie', 'idylle',
-        'langueur', 'morgue', 'ombrageux', 'ombrage', 'pénombre', 'renégat', 'scélérat', 'solitaire',
-        'trépas', 'vergogne'
+    italian_words = [
+        'dilettante', 'condottiere', 'estocade', 'imbroglio', 'quiproquo',
+        'fiasco', 'incognito', 'pantalon', 'bouffon', 'carrousel', 'balcon'
     ]
-
-    greek_latin_roots = [
-        'aède', 'codex', 'aphorisme', 'aphoristique', 'apophtegme', 'calice', 'patène', 'rhapsode', 
-        'dichotomie', 'heuristique', 'ontologie', 'paradigme', 'solipsisme', 'syllogisme', 'diatribe', 
-        'soliloque', 'vaticination', 'élégiaque', 'élégie', 'assonance', 'allitération', 'césure', 
-        'cantilène', 'lyrisme', 'mélopée', 'apologie', 'panégyrique', 'anachorète', 'atrabilaire', 
-        'cénobite', 'ilote', 'potentat', 'thaumaturge', 'ataraxie', 'abnégation', 'commisération', 
-        'équanimité', 'contingence', 'dogme', 'hermétique', 'immanence', 'intrinsèque', 'noumène', 
-        'sophisme', 'syncrétisme', 'sérendipité', 'transcendance', 'truisme', 'apogée', 'cataclysme', 
-        'épigone', 'métaphysique', 'téléologique', 'casuistique', 'garrulité', 'faconde', 'laconique', 
-        'loquace', 'prolixe', 'ratiociner', 'acrimonie', 'caustique', 'circonspect', 'clémence', 
-        'connivence', 'flegmatique', 'ignominie', 'impudence', 'magnanime', 'mansuétude', 'obséquieux', 
-        'ostracisme', 'parjure', 'probe', 'pugnace', 'pusillanime', 'sardonique', 'taciturne', 
-        'thuriféraire', 'turpitude', 'urbanité', 'velléité', 'vilipender', 'azur', 'bucolique', 
-        'céruléen', 'effluve', 'empyrée', 'firmament', 'nadir', 'nébuleux', 'pétrichor', 'sidéral', 
-        'solstice', 'zénith', 'éthéré', 'ade', 'patne'
+    english_words = [
+        'spleen', 'masterclass', 'queer', 'non-binaire', 'cisgenre',
+        'intersectionnel', 'sérendipité', 'chiller', 'chilling'
     ]
+    german_words = ['leitmotiv', 'diktat', 'kafkaïen', 'nickel']
 
     if word_lower in slavic_words:
         return 'RUSSE'
@@ -502,15 +484,9 @@ def guess_origine_geographique(word_lower):
         return 'ANGLAIS'
     if word_lower in german_words:
         return 'ALLEMAND'
-    if word_lower in french_words:
-        return 'FRANCAIS'
-        
-    # Classical suffixes typically greco-latin
-    greek_latin_suffixes = ['isme', 'logie', 'phie', 'ique', 'iste', 'graphe', 'ode', 'ite', 'ance', 'ence', 'tion', 'ité', 'ude', 'ise']
-    if any(word_lower.endswith(s) for s in greek_latin_suffixes) or word_lower in greek_latin_roots:
-        return 'GREC_LATIN'
-        
-    # Default to FRANCAIS for standard words that don't match classical rules
+
+    # Par défaut : FRANCAIS (inclut tous les mots d'origine gréco-latine
+    # assimilés, ainsi que les mots purement français)
     return 'FRANCAIS'
 
 def guess_epoque_v2(word_lower, registre, lexique, pageviews):
@@ -596,7 +572,7 @@ def classify_word(word, theme, lexique, pageviews, desrochers):
         'ostensoir', 'libation', 'ade', 'patne', 'vate'
     ]
     
-    if word_lower in antiquite_words or (origine_geographique == "GREC_LATIN" and registre == "ARCHAIQUE_RECHERCHE"):
+    if word_lower in antiquite_words:
         epoque = "ANTIQUITE"
     else:
         epoque = guess_epoque_v2(word_lower, registre, lexique, pageviews)
