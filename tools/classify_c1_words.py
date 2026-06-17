@@ -246,14 +246,114 @@ EPOQUE_WORDS = {
         "flâneur", "funambule", "cénacle", "diatribe"
     ],
     "MODERNE_20": [
-        "neurasthénie", "résilience", "apathie", "obsolescence", "paria",
-        "paradigme", "sérendipité", "synesthésie", "procrastination"
+        "neurasthénie", "résilience"
     ],
     "CONTEMPORAIN_21": [
         "masterclass", "demisexuel", "queer", "non-binaire", "cisgenre",
         "intersectionnel"
     ]
 }
+
+MODERN_BUZZWORDS = {
+    "procrastination": 3.6,
+    "procrastiner": 3.4,
+    "résilience": 3.8,
+    "résilient": 3.5
+}
+
+def get_fallback_zipf(word_lower, lexique):
+    if word_lower in MODERN_BUZZWORDS:
+        return MODERN_BUZZWORDS[word_lower]
+        
+    best_zipf = 0.0
+    if word_lower in lexique:
+        fl = lexique[word_lower]['freqlivres']
+        ff = lexique[word_lower]['freqfilms']
+        freq = max(fl, ff)
+        if freq > 0:
+            best_zipf = math.log10(freq) + 3.0
+            
+    fallbacks = []
+    
+    # -issement -> -ir (bannissement -> bannir)
+    if word_lower.endswith("issement"):
+        fallbacks.append(word_lower[:-8] + "ir")
+    # -ement -> -er (achèvement -> achever)
+    elif word_lower.endswith("ement") and not word_lower.endswith("issement"):
+        fallbacks.append(word_lower[:-5] + "er")
+        
+    # -ation -> -er, -e, -é (séquestration -> séquestrer, séquestre, séquestré)
+    if word_lower.endswith("ation"):
+        fallbacks.append(word_lower[:-5] + "er")
+        fallbacks.append(word_lower[:-5] + "e")
+        fallbacks.append(word_lower[:-5] + "é")
+    # -tion -> -er, -e, -é
+    elif word_lower.endswith("tion") and not word_lower.endswith("ation"):
+        fallbacks.append(word_lower[:-4] + "er")
+        fallbacks.append(word_lower[:-4] + "e")
+        fallbacks.append(word_lower[:-4] + "é")
+        
+    # -ateur / -atrice -> -er
+    if word_lower.endswith("ateur"):
+        fallbacks.append(word_lower[:-5] + "er")
+    elif word_lower.endswith("atrice"):
+        fallbacks.append(word_lower[:-6] + "er")
+        
+    # -eur -> -er, -ure (enlumineur -> enluminer / enluminure)
+    if word_lower.endswith("eur") and not word_lower.endswith("ateur"):
+        fallbacks.append(word_lower[:-3] + "er")
+        fallbacks.append(word_lower[:-3] + "ure")
+        
+    # -able -> -er, -ir (périssable -> périr)
+    if word_lower.endswith("able"):
+        fallbacks.append(word_lower[:-4] + "er")
+        fallbacks.append(word_lower[:-4] + "ir")
+        if word_lower.endswith("issable"):
+            fallbacks.append(word_lower[:-7] + "ir")
+            
+    # -eux -> -in, -e, "" (venimeux -> venin, fielleux -> fiel)
+    if word_lower.endswith("eux"):
+        fallbacks.append(word_lower[:-3] + "in")
+        fallbacks.append(word_lower[:-3] + "e")
+        fallbacks.append(word_lower[:-3])
+    # -imeux -> -in (venimeux -> venin)
+    if word_lower.endswith("imeux"):
+        fallbacks.append(word_lower[:-5] + "in")
+            
+    # -ibilité -> -ible
+    if word_lower.endswith("ibilité"):
+        fallbacks.append(word_lower[:-7] + "ible")
+    # -icité -> -ique, -ice (causticité -> caustique, complicité -> complice)
+    elif word_lower.endswith("icité"):
+        fallbacks.append(word_lower[:-5] + "ique")
+        fallbacks.append(word_lower[:-5] + "ice")
+    # -ité -> -ace, -ique, -e, "" (loquacité -> loquace)
+    elif word_lower.endswith("ité"):
+        fallbacks.append(word_lower[:-3])
+        fallbacks.append(word_lower[:-3] + "e")
+        fallbacks.append(word_lower[:-3] + "ique")
+        fallbacks.append(word_lower[:-3] + "ace")
+        
+    # -ique -> -isme, -e, -étique -> "" (aphoristique -> aphorisme)
+    if word_lower.endswith("ique"):
+        if word_lower.endswith("istique"):
+            fallbacks.append(word_lower[:-7] + "isme")
+        fallbacks.append(word_lower[:-4] + "e")
+        if word_lower.endswith("étique"):
+            fallbacks.append(word_lower[:-6])
+            
+    for fb in fallbacks:
+        if fb in lexique:
+            fl = lexique[fb]['freqlivres']
+            ff = lexique[fb]['freqfilms']
+            freq = max(fl, ff)
+            if freq > 0:
+                fb_zipf = math.log10(freq) + 3.0
+                inherited_zipf = fb_zipf - 0.1
+                if inherited_zipf > best_zipf:
+                    best_zipf = inherited_zipf
+                    
+    return best_zipf
 
 # Liste explicite d'objets ou êtres concrets (physiques) pour baisser l'abstraction
 CONCRETE_OBJECTS = [
@@ -283,7 +383,7 @@ def calculate_abstraction(word_lower, pole):
     else: # NATURE_ET_COSMOS
         base_abs = 0.20
         
-    # Boost de suffixes d'abstraction typiques (-isme, -logie, -ence, -té, -ité, -tion, -ance)
+    # Boost de suffixes d'abstraction typiques (-isme, -logie, -ence, -tence, -té, -ité, -tion, -ance)
     suffix_boost = 0.0
     if any(word_lower.endswith(s) for s in ['isme', 'logie', 'ence', 'tence', 'té', 'ité', 'tion', 'ance', 'ude']):
         suffix_boost = 0.15
@@ -336,30 +436,29 @@ def classify_word(word, theme, lexique):
             epoque = ep
             break
             
-    # 6. Difficulté continue classique (Zipf + Morphologie)
-    zipf = 0.0
-    if word_lower in lexique:
-        fl = lexique[word_lower]['freqlivres']
-        ff = lexique[word_lower]['freqfilms']
-        freq = max(fl, ff)
-        if freq > 0:
-            zipf = math.log10(freq) + 3.0
-            
-    if zipf > 0:
-        diff_base = (4.3 - zipf) / (4.3 - 1.5)
-        diff_base = max(0.0, min(1.0, diff_base))
-    else:
-        diff_base = 0.75
-        
-    len_bonus = max(0.0, min(0.15, (len(word_lower) - 5) * 0.02))
+    # 6. Difficulté continue classique recalibrée (avec replis morphologiques et surcharges)
+    zipf = get_fallback_zipf(word_lower, lexique)
     
-    suffix_bonus = 0.0
-    if any(word_lower.endswith(s) for s in ['phisme', 'tence', 'ation', 'logie', 'trique', 'phie', 'isme', 'ique', 'iste', 'gence']):
-        suffix_bonus = 0.10
+    # Zipf bounds recalibrated so Zipf >= 3.3 (common words) has 0.0 base difficulty
+    zipf_max = 3.3
+    zipf_min = 1.2
+    if zipf >= zipf_max:
+        diff_base = 0.0
+    elif zipf <= zipf_min:
+        diff_base = 1.0
+    else:
+        diff_base = (zipf_max - zipf) / (zipf_max - zipf_min)
         
+    # Pénalité de longueur réduite : +0.01 par lettre au-delà de 5 (max +0.08)
+    len_bonus = max(0.0, min(0.08, (len(word_lower) - 5) * 0.01))
+    
+    # Suffixes techniques : seulement les plus complexes, bonus réduit à 0.05
+    suffix_bonus = 0.0
+    if any(word_lower.endswith(s) for s in ['phisme', 'logie', 'trique', 'phie', 'isme']):
+        suffix_bonus = 0.05
+        
+    # Pénalité de lettres rares : SUPPRIMÉE complètement
     rare_letters_bonus = 0.0
-    if any(c in word_lower for c in ['y', 'z', 'k', 'x', 'w']):
-        rare_letters_bonus = 0.05
         
     difficulty = diff_base + len_bonus + suffix_bonus + rare_letters_bonus
     difficulty = max(0.0, min(1.0, round(difficulty, 3)))
