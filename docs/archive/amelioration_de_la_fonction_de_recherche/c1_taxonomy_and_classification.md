@@ -11,8 +11,8 @@ Chaque mot de la Word Reserve C1 est caractérisé de manière unique et exclusi
 1.  **Domaine d'Écriture Cible** (`ROMANESQUE`, `THEATRE`, `POESIE`, `ESSAI_PHILOSOPHIQUE`, `CRITIQUE_MEMOIRES`)
 2.  **Pôle Sémantique** (`ARTS_ET_LANGAGE`, `ESPRIT_ET_CARACTERE`, `NATURE_ET_COSMOS`, `PHILOSOPHIE_ET_IDEES`, `SENTIMENTS_ET_PSYCHE`)
 3.  **Registre & Tonalité** (`LITTERAIRE_STANDARD`, `POETIQUE_LYRIQUE`, `ARCHAIQUE_RECHERCHE`, `TRAGIQUE_DRAMATIQUE`, `COMIC_BURLESQUE`)
-4.  **Profil Émotionnel (Valence/Arousal)** (`POSITIF_EXCITANT`, `NEGATIF_EXCITANT`, `POSITIF_CALME`, `NEGATIF_CALME`, `NEUTRE`)
-5.  **Époque d'apparition / usage** (`CLASSIQUE_17_18`, `ROMANTIQUE_19`, `MODERNE_20`, `CONTEMPORAIN_21`)
+4.  **Époque d'apparition / usage** (`ANTIQUITE`, `CLASSIQUE_17_18`, `ROMANTIQUE_19`, `MODERNE_20`, `CONTEMPORAIN_21`)
+5.  **Origine Géographique** (`FRANCAIS`, `RUSSE`, `ITALIEN`, `ANGLAIS`, `ALLEMAND`)
 6.  **Difficulté** (Continue de `0.00` à `1.00`)
 7.  **Niveau de Pertinence** (Continue de `0.00` à `1.00` — Dynamique)
 
@@ -34,10 +34,9 @@ Déterminé par des groupes de mots-clés typologiques. En l'absence de correspo
 - **ESSAI_PHILOSOPHIQUE** : Termes d'abstraction ou d'argumentation théorique (ex: *heuristique*, *contingence*, *solipsisme*).
 - **CRITIQUE_MEMOIRES** : Termes décrivant les vices, vertus, et attitudes humaines ou les structures sociales (ex: *acrimonie*, *probité*, *obséquieux*).
 
-### C. Registre, Émotion & Époque
+### C. Registre & Époque
 - **Registre** : Inféré via la présence dans des listes ciblées (ex: *sycophante* $\rightarrow$ `ARCHAIQUE_RECHERCHE` ; *spleen* $\rightarrow$ `POETIQUE_LYRIQUE` ; *déliquescence* $\rightarrow$ `TRAGIQUE_DRAMATIQUE`).
-- **Profil Émotionnel** : Cartographie des indices de Valence (positif/négatif) et d'Arousal (actif/passif) à partir du lexique psycholinguistique FAN / Bonin.
-- **Époque** : Catégorisation temporelle par siècle de première attestation d'usage prédominant (XVII-XVIIIe pour `CLASSIQUE_17_18`, XIXe pour `ROMANTIQUE_19` [par défaut], XXe pour `MODERNE_20`).
+- **Époque** : Algorithme 5 couches (dict étymologique explicite, détecteurs morphologiques, registre, corpus Lexique383+pageviews, défaut). Voir `classifier/classifier_epoque.py`.
 
 ### D. Difficulté Continue
 Calculée via une formule composite normalisée :

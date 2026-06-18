@@ -1,0 +1,225 @@
+Mot	Justification C1	Pole Sémantique	Registre
+ekphrasis	Description littéraire d'une œuvre d'art — très littéraire	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+péripétie	Retournement dramatique — fondamental en récit	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+anagnorisis	Reconnaissance dramatique (Aristote)	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+hyperbole	Figure de style incontournable	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+oxymore	Figure de style C1 par excellence	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+prosopopée	Figure rhétorique (personnification d'absents)	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+chiasme	Figure de style — croisement syntaxique	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+anacoluthe	Rupture syntaxique — très littéraire	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+épanalepse	Reprise en tête/queue de phrase	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+syllepse	Accord par le sens — courant en poésie	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+diégèse	Récit/univers narratif — critique littéraire	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+focalisation	Point de vue narratif	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+incipit	Ouverture d'une œuvre	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+excipit	Clôture d'une œuvre	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+paratexte	Éléments autour du texte (titres, notes)	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+déclamation	Art de réciter avec emphase	ARTS_ET_LANGAGE	THEATRAL_DRAMATIQUE
+prosopopée	Figure rhétorique classique	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+synecdoque	Figure de substitution partie/tout	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+métonymie	Figure de substitution contiguïté	ARTS_ET_LANGAGE	LITTERAIRE_STANDARD
+parataxe	Juxtaposition sans conjonction	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+hypotaxe	Subordination complexe	ARTS_ET_LANGAGE	ARCHAIQUE_RECHERCHE
+mélopée	déjà présent ✓		
+poème en prose	Genre littéraire clé XIXe	ARTS_ET_LANGAGE	POETIQUE_LYRIQUE
+laïus	Long discours ennuyeux	ARTS_ET_LANGAGE	COMIC_BURLESQUE
+logorrhée	Flux de paroles incontrôlé	ARTS_ET_LANGAGE	COMIC_BURLESQUE
+joute (oratoire)	Combat de mots — théâtral	ARTS_ET_LANGAGE	TRAGIQUE_DRAMATIQUE
+Mot	Justification C1	Registre
+histrion	Comédien de bas étage, charlatan	ARCHAIQUE_RECHERCHE
+matamore	Faux brave, fanfaron — littérature classique	COMIC_BURLESQUE
+benêt	Niais aimable	COMIC_BURLESQUE
+dadais	Garçon gauche et niais	COMIC_BURLESQUE
+faquin	Homme méprisable (Molière)	ARCHAIQUE_RECHERCHE
+impavide	Impassible face au danger	LITTERAIRE_STANDARD
+intempérant	Sans modération	LITTERAIRE_STANDARD
+tempérant	Modéré, sobre	LITTERAIRE_STANDARD
+belliqueux	Porté à la guerre/querelle	LITTERAIRE_STANDARD
+vénal	Corruptible par l'argent	LITTERAIRE_STANDARD
+vénérable	Digne de respect (vieillesse, sagesse)	LITTERAIRE_STANDARD
+circonvenir	Tromper par ruse	ARCHAIQUE_RECHERCHE
+manigancer	Intriguer secrètement	LITTERAIRE_STANDARD
+roué	Homme sans scrupules, libertin calculateur	ARCHAIQUE_RECHERCHE
+coquin	Fripon plaisant (synonyme + nuance)	COMIC_BURLESQUE
+rodomont	Vantard outrecuidant	ARCHAIQUE_RECHERCHE
+imposteur	Faux personnage — très littéraire	LITTERAIRE_STANDARD
+hypocrite	Figure récurrente (Tartuffe…)	LITTERAIRE_STANDARD
+cupide	Avide d'argent	LITTERAIRE_STANDARD
+clairvoyant	Qui voit clairement, perspicace	LITTERAIRE_STANDARD
+lucide	Clairvoyance sans illusion	LITTERAIRE_STANDARD
+obtus	Borné, lent d'esprit	LITTERAIRE_STANDARD
+perspicace	Doué de sagacité	LITTERAIRE_STANDARD
+sagace	Perspicace (C1 classique)	LITTERAIRE_STANDARD
+candide	Naïf et pur (Voltaire!)	LITTERAIRE_STANDARD
+cynique	Qui méprise les convenances	LITTERAIRE_STANDARD
+misanthrope	Qui fuit les hommes (Molière)	TRAGIQUE_DRAMATIQUE
+marécage	Paysage romantique — littérature gothique
+lande	Étendue sauvage — motif romantique
+cime	Sommet — motif poétique récurrent
+grotte	Lieu mystérieux — littérature romantique
+précipice	Gouffre, danger — usage métaphorique riche
+torrent	Force naturelle — romantisme
+frondaison	Feuillage dense — poétique
+givre	Gel, hiver — imagery poétique
+houle	Vague profonde — mer romantique
+écume	Mousse des vagues — très littéraire
+rivage	Bord de mer — motif poétique
+aurora borealis / aurore boréale	Phénomène lumineux sublime
+couchant	Coucher de soleil — synonyme poétique
+embrasement	Feu du ciel — romantique
+méandre	Détour sinueux d'une rivière
+estuaire	Embouchure — géographie poétique
+savane	Paysage exotique — littérature coloniale
+jungle	Espace sauvage — exotisme romantique
+toundra	Paysage hostile — littérature d'aventure
+arborescences	Ramifications — botanique poétique
+accablement	déjà présent ✓
+désarroi	Trouble profond, très courant en prose
+amertume	Ressentiment amer — narratif
+sérénité	déjà présent ✓
+volupté	déjà présent ✓
+liesse	Joie collective — littéraire
+allégresse	déjà présent ✓
+affliction	déjà présent ✓
+véhémence	Violence passionnée des sentiments
+recueillement	État contemplatif (Baudelaire!)
+componction	Regret sincère et douloureux
+componction	-
+exécration	Haine profonde — tragique
+jubilation	déjà présent ✓
+torpeur	déjà présent ✓
+volupté	déjà présent ✓
+prostration	Effondrement physique/moral
+épanchement	Débordement des sentiments
+effusion	Débordement chaleureux
+constance	Fermeté dans les sentiments
+inconstance	Versatilité sentimentale — classique
+ravissement	Extase, émerveillement
+émoi	Trouble affectif léger — très littéraire
+ardeur	Feu intérieur, passion
+fougue	Élan passionné
+vénération	Respect profond, quasi-religieux
+contrition	Regret de ses fautes
+repentir	Remords actif — moral/religieux
+résignation	Acceptation passive du destin
+désenchantement	Perte des illusions — romantique
+déréliction	Abandon absolu, solitude existentielle
+aporie	Impasse philosophique — très C1
+dialectique	Dialogue philosophique
+dichotomie	Division en deux parties opposées
+exégèse	Interprétation de textes — critique littéraire
+herméneutique	Science de l'interprétation
+parabole	Récit symbolique — littérature religieuse
+allégorie	Représentation symbolique — incontournable
+eschatologie	Fin des temps — littérature apocalyptique
+eschatologique	—
+fatalité	Force inexorable du destin — tragédie
+déterminisme	Philosophie du destin fixé
+nihilisme	Négation de toute valeur
+rédemption	Rachat moral — littérature chrétienne
+épiphanie	Révélation soudaine (Joyce!)
+catharsis	Purification par l'art (Aristote)
+hubris	Démesure orgueilleuse — tragédie grecque
+nemesis	déjà présent (némésis) ✓
+immanence	déjà présent ✓
+vanité	Vide de toute chose — littérature morale
+vanitas	Thème pictural/littéraire baroque
+caducité	déjà présent ✓
+
+NOUVEAUX_MOTS = [
+    # ═══ RHÉTORIQUE & FORMES LITTÉRAIRES ════════════════════════════════════
+    # Figures de style absentes
+    "oxymore", "chiasme", "anacoluthe", "parataxe", "hypotaxe",
+    "synecdoque", "métonymie", "anaphore", "épiphore", "symploque",
+    "hypallage", "hypotypose", "prétérition", "métalepse",
+    "analepse", "prolepse", "épanalepse", "anadiplose",
+    "polyptote", "épizeuxe", "zeugme", "hendiadys",
+    "correctio", "recusatio", "amplification", "antiphrase",
+    "périphrase", "apostrophe", "litote", "euphémisme",
+    # Narratologie
+    "diégèse", "incipit", "excipit", "focalisation", "paratexte",
+    "mise en abyme", "péripétie", "anagnorisis", "ekphrasis",
+    "leitmotiv", "in medias res", "dénouement", "prolégomènes",
+    # Genres et formes poétiques
+    "épopée", "allégorie", "parabole", "apologue", "prosopopée",
+    "dithyrambe", "thrène", "thrénodie", "épicède", "nénie",
+    "épithalame", "épître", "madrigal", "villanelle", "sestine",
+    "chantefable", "lai", "fabliau", "hagiographie", "picaresque",
+    "pastiche", "libelle", "pamphlétaire", "complainte", "aubade",
+    "cantique", "bacchanale",
+    # Termes de rhétorique et de critique
+    "logorrhée", "laïus", "persiflage", "brocard", "boutade",
+    "badinage", "conciliabule", "jérémiade", "palinodie",
+    "poncif", "galimatias", "chicanerie", "tergiversation",
+    "divagation", "errance", "pérégrination",
+    # ═══ PERSONNAGES & CARACTÈRES ════════════════════════════════════════════
+    # Archétypes de personnages
+    "misanthrope", "histrion", "matamore", "faquin", "rodomont",
+    "pédant", "cuistre", "fantoche", "pantin", "sacripant",
+    "polisson", "espiègle", "pleutre", "jocrisse", "béjaune",
+    "butor", "manant", "libertin", "fanfaron", "bravache",
+    "bellâtre", "imposteur", "poltron", "béotien",
+    "contempteur", "iconoclaste", "frondeur", "factieux",
+    "séditieux", "prosélyte", "zélote", "pythie",
+    # Adjectifs de caractère (forte valeur littéraire)
+    "candide", "roué", "cynique", "altier", "faraud",
+    "rébarbatif", "acariâtre", "irascible", "impétueux",
+    "cauteleux", "retors", "félon", "perfide", "fourbe",
+    "virago", "panache",
+    # Défauts & qualités rares
+    "flagornerie", "forfanterie", "bouffonnerie", "pédanterie",
+    "servilité", "vénalité", "prévarication", "pharisaïsme",
+    "pudibonderie", "arrogance", "suffisance", "outrecuidance",
+    # (outrecuidance déjà présent mais garder pour check)
+    "propension", "impavide", "magnanime",
+    # ═══ SENTIMENTS & PSYCHÉ ═════════════════════════════════════════════════
+    # Émotions absentes
+    "désarroi", "amertume", "liesse", "véhémence", "recueillement",
+    "componction", "prostration", "épanchement", "effusion",
+    "inconstance", "ravissement", "émoi", "ardeur", "fougue",
+    "vénération", "contrition", "résignation", "désenchantement",
+    "déréliction", "hébétude", "frénésie", "concupiscence",
+    "répugnance", "abjection", "affres", "délectation", "béatitude",
+    "catalepsie", "sidération", "félonie", "rancœur", "lassitude",
+    "acédie", "opprobre", "vitupération", "imprécation",
+    "griserie", "nonchalance", "mortification", "fulgurance",
+    "errance", "exécration", "flagrant",
+    # Nuances psychologiques
+    "tergiversation", "dissimulation", "divagation", "introspection",
+    "vacuité", "mollesse", "puérilité", "frivolité", "extravagance",
+    "gémissement", "travestissement", "mystification",
+    "mascarade", "gémonies", "avanie",
+    # ═══ NATURE & COSMOS ═════════════════════════════════════════════════════
+    # Paysages littéraires
+    "marécage", "lande", "anfractuosité", "promontoire",
+    "sylve", "futaie", "hallier", "tourbière", "tanière", "antre",
+    "gouffre", "précipice", "estran", "couchant", "embrasement",
+    "frondaison", "givre", "houle", "écume", "mugissement",
+    "bruissement", "ruissellement", "cataracte", "déferlante",
+    "toundra", "méandre", "bruyère", "crypte", "estuaire",
+    "boréal", "abîme", "bourbier", "limon", "frimas",
+    "végétation", "maëlstrom", "chaos", "rift", "solfatare",
+    "géiser", "moraine", "névé", "sérac", "cirque",
+    "falaise", "grotte", "caverne", "corniche",
+    "taillis", "maquis", "garrigue", "genêt",
+    # ═══ PHILOSOPHIE & IDÉES ═════════════════════════════════════════════════
+    # Grands concepts absents
+    "catharsis", "hubris", "épiphanie", "aporie", "herméneutique",
+    "eschatologie", "rédemption", "nihilisme", "vanitas",
+    "palingénésie", "cosmogonie", "théurgie", "dialectique",
+    "dichotomie", "exégèse", "antinomie", "apothéose",
+    "axiologie", "anagogie", "fatalisme", "quiétisme",
+    "jansénisme", "illuminisme", "occultisme", "libertinage",
+    # Termes mystiques et ésotériques
+    "arcane", "augure", "apocryphe", "codicille", "cabale",
+    "néant", "iconoclasme", "hérésie", "idolâtrie",
+    "impiété", "iniquité", "millénarisme", "perdition",
+    "profanation", "providentialisme", "cogitation",
+    "conflagration", "cénotaphe", "avanie", "aménité",
+    # Concepts moraux et politiques
+    "métamorphose", "maléfice", "mystification", "opprobre",
+    "ébullition", "dissipation", "duplicité", "calomnie",
+    "démagogie", "dérision", "dissension", "dégénérescence",
+    "épanouissement", "engouement", "émulation",
+    "flagornerie", "déférence", "décorum",
+]

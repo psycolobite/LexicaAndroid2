@@ -93,3 +93,13 @@ build_log.txt
 build_output.txt
 stderr.txt
 stdout.txt
+
+# Python
+__pycache__/
+*.pyc
+
+# Backups and archives
+*.bak*
+*.zip
+.idea/studiobot.xml
+

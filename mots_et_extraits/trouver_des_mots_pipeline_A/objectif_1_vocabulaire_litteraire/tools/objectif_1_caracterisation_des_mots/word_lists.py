@@ -3,14 +3,13 @@
 word_lists.py — Toutes les constantes et listes de mots utilisées par les classifieurs.
 
 Organisation :
-  - POLE_MAP / THEMES_SPECIFIC_MAP      : Pôle sémantique
-  - DOMAINE_WORDS                        : Domaine d'écriture
-  - REGISTRE_WORDS                       : Registre & Tonalité
-  - EMOTION_WORDS                        : Profil émotionnel
-  - CONCRETE_OBJECTS                     : Objets concrets (aide à l'abstraction)
-  - EPOQUE_EXPLICITE                     : Dict étymologique étendu (priorité absolue)
-  - EPOQUE_SEEDS_*                       : Listes heuristiques par époque
-  - ORIGINE_*                            : Listes d'origines géographiques
+  - POLE_MAP / THEMES_SPECIFIC_MAP      : Pole semantique
+  - DOMAINE_WORDS                        : Domaine d'ecriture
+  - REGISTRE_WORDS                       : Registre & Tonalite
+  - CONCRETE_OBJECTS                     : Objets concrets (aide a l'abstraction)
+  - EPOQUE_EXPLICITE                     : Dict etymologique etendu (priorite absolue)
+  - EPOQUE_SEEDS_*                       : Listes heuristiques par epoque
+  - ORIGINE_*                            : Listes d'origines geographiques
 """
 
 # ---------------------------------------------------------------------------
@@ -167,31 +166,6 @@ REGISTRE_WORDS = {
         "amphigourique", "faconde", "garrulité", "pataquès", "quiproquo",
         "soliloque", "verbeux", "volubile", "facétieux", "goguenard", "grivois",
         "grivoiserie", "imbroglio", "narquois", "simagrée",
-    ],
-}
-
-# ---------------------------------------------------------------------------
-# PROFIL ÉMOTIONNEL
-# ---------------------------------------------------------------------------
-
-EMOTION_WORDS = {
-    "POSITIF_EXCITANT": [
-        "alacrité", "allégresse", "effervescence", "exaltation",
-        "extase", "ferveur", "jubilation", "pétulant",
-    ],
-    "NEGATIF_EXCITANT": [
-        "acrimonie", "courroux", "diatribe", "invective",
-        "collusion", "ignominie", "tumulte",
-    ],
-    "POSITIF_CALME": [
-        "bonhomie", "clémence", "félicité", "quiétude", "sérénité",
-        "mansuétude", "volupté", "limpide", "lustral", "placidité",
-    ],
-    "NEGATIF_CALME": [
-        "abattement", "accablement", "affliction", "apathie",
-        "désabusé", "indolence", "langueur", "lascif", "léthargie", "morose",
-        "mélancolie", "neurasthénie", "spleen", "torpeur", "évanescent",
-        "fugace", "déliquescence", "exsangue", "caducité",
     ],
 }
 

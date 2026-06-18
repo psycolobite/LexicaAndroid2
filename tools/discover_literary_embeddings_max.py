@@ -45,8 +45,7 @@ EXCLUSIONS = {
     "nourrisson", "muraille", "commune", "gouffre", "faction",
     "favori", "prospère", "circonstanciel", "confondre",
     "couronner", "modérateur", "physionomiste", "arrière-neveux",
-    "aboutissant", "accidenter", "aliénation", "alentour", "amante",
-    "amphitryon", "annales", "altitude",
+    "aboutissant", "accidenter", "aliénation", "alentour", "amante", "annales", "altitude",
 }
 
 # ─── UTILITAIRES ──────────────────────────────────────────────────────────────
