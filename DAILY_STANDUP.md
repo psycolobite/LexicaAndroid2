@@ -1831,3 +1831,37 @@ Build:              ✅ Compilation OK
   - récupérer l’URL finale publique HTTPS
   - confirmer l’e-mail support public final avant publication
 
+---
+
+## 📅 2026-08-22 — Refonte ProfileScreen & Nouvel Icône App
+
+### ✅ Accompli
+- **Audit de parité LexicaAndroid2 vs LexicaAndroidV1** :
+  - Comparaison byte-à-byte des 38+ fichiers de logique de session (`ReviewSessionEngine`, `ReviewSessionPlanner`, `ReviewIntervalEngine`, `ReviewViewModel`, modèles, mappers, tests).
+  - Confirmation que le portage du moteur de session Polo-1 est 100% complet et identique.
+- **Refonte moderne de `ProfileScreen.kt`** :
+  - *Hero Header* avec avatar, initiales, badge de niveau et **anneau XP circulaire animé**.
+  - Ligne de statistiques récapitulatives : XP total, série (streak 🔥), et XP restant vers le niveau suivant.
+  - Grille de 4 mini-cartes statistiques compactes (Mots, Aujourd'hui, Taux 7j, Record) pour éliminer les problèmes de mise en page de l'ancien tableau.
+  - Graphique d'activité sur 7 jours avec barres arrondies et compteurs au-dessus de chaque barre.
+  - Section mini-jeux épurée avec emojis dédiés (affichée conditionnellement si des parties ont été jouées).
+  - Regroupement des actions de compte dans un conteneur dédié avec zone sensible (réinitialisation, suppression de compte).
+- **Nouvelle identité visuelle — Icône de l'application (Option C - « Les Flashcards »)** :
+  - Mise en place du vecteur `ic_launcher_background.xml` (dégradé bleu nuit profond avec halo central).
+  - Mise en place du vecteur `ic_launcher_foreground.xml` (flashcards blanches superposées, ruban marque-page doré, lettrage « L » moderne).
+  - Génération des déclinaisons raster `ic_launcher.webp` et `ic_launcher_round.webp` sur toutes les densités d'écran (`mdpi`, `hdpi`, `xhdpi`, `xxhdpi`, `xxxhdpi`).
+- **Déploiement et validations** :
+  - Compilation complète (`assembleDebug`) réussie.
+  - Déploiement et lancement direct sur appareil physique (Samsung Galaxy S9).
+  - Commits Git :
+    - `c8369e0` (*feat: refonte complète de ProfileScreen*)
+    - `a81b34e` (*feat(branding): mise en place du nouvel icone d'application*)
+
+### 📊 Statut Global
+```
+Moteur de session:  ✅ 100% porté & validé (parité V2/V1)
+Page Profil:        ✅ Refonte complète moderne & animée
+Icône App:          ✅ Option C (Flashcards & ruban doré) intégrée (Adaptive + WebP)
+Déploiement S9:     ✅ Installé & fonctionnel sur appareil
+```
+
