@@ -53,6 +53,7 @@ class ReviewViewModel(
     private val reviewSessionSnapshotRepository: ReviewSessionSnapshotRepository? = null,
     private val isAdminUserProvider: (() -> Boolean)? = null,
     private val onSessionXpAwarded: (Int) -> Unit = {},
+    private val onSessionCompleted: () -> Unit = {},
     private val semanticModelCachedProvider: (() -> Boolean)? = null,
     private val semanticValidatorProvider: (() -> SemanticValidator)? = null,
     private val random: Random = Random.Default
@@ -979,6 +980,7 @@ class ReviewViewModel(
         )
         clearPersistedSessionSnapshot()
         _snackbarEvents.trySend("Session terminée")
+        onSessionCompleted()
     }
 
     fun undoLastAnswer() {
@@ -1960,6 +1962,7 @@ class ReviewViewModelFactory(
     private val reviewSessionSnapshotRepository: ReviewSessionSnapshotRepository? = null,
     private val isAdminUserProvider: (() -> Boolean)? = null,
     private val onSessionXpAwarded: (Int) -> Unit = {},
+    private val onSessionCompleted: () -> Unit = {},
     private val semanticModelCachedProvider: (() -> Boolean)? = null,
     private val semanticValidatorProvider: (() -> SemanticValidator)? = null
 ) : ViewModelProvider.Factory {
@@ -1976,6 +1979,7 @@ class ReviewViewModelFactory(
                 reviewSessionSnapshotRepository = reviewSessionSnapshotRepository,
                 isAdminUserProvider = isAdminUserProvider,
                 onSessionXpAwarded = onSessionXpAwarded,
+                onSessionCompleted = onSessionCompleted,
                 semanticModelCachedProvider = semanticModelCachedProvider,
                 semanticValidatorProvider = semanticValidatorProvider
             ) as T

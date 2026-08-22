@@ -189,6 +189,7 @@ class ReviewSessionPlannerTest {
         override suspend fun updateCardContent(card: Flashcard) = Unit
         override suspend fun setFavorite(cardId: String, isFavorite: Boolean) = Unit
         override suspend fun deleteCard(cardId: String) = Unit
+        override suspend fun appendReviewAnswerSyncEvent(event: com.example.lexicaandroid2.domain.model.ReviewAnswerSyncEvent) = Unit
         override suspend fun getStatsByState(): Map<String, Int> = emptyMap()
         override suspend fun getAllCards(): List<Flashcard> = emptyList()
         override suspend fun deleteAllCards() = Unit

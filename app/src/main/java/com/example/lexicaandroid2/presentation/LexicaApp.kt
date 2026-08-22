@@ -5,11 +5,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import com.example.lexicaandroid2.features.sync.SyncConflictKind
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -177,7 +181,28 @@ fun LexicaApp(
         SyncConfirmDialog(
             conflictState = pendingConflict,
             onKeepLocal = { syncViewModel?.keepLocal(pendingConflict.uid) },
-            onReplaceLocal = { syncViewModel?.confirmReplaceWithCloud(pendingConflict.uid, pendingConflict.cloud) }
+            onReplaceLocal = {
+                when (pendingConflict.kind) {
+                    SyncConflictKind.EMPTY_CLOUD_ACCOUNT -> syncViewModel?.startFreshOnEmptyCloudAccount(pendingConflict.uid)
+                    SyncConflictKind.CLOUD_VS_LOCAL -> pendingConflict.cloud?.let {
+                        syncViewModel?.confirmReplaceWithCloud(pendingConflict.uid, it)
+                    }
+                }
+            }
+        )
+    }
+
+    val syncMessage = syncUiState as? SyncUiState.Message
+    if (syncMessage != null) {
+        AlertDialog(
+            onDismissRequest = { syncViewModel?.dismissMessage() },
+            title = { Text("Synchronisation") },
+            text = { Text(syncMessage.text) },
+            confirmButton = {
+                Button(onClick = { syncViewModel?.dismissMessage() }) {
+                    Text("OK")
+                }
+            }
         )
     }
 

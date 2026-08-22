@@ -23,9 +23,15 @@
   - Mise en place du panneau **« 🚀 Bientôt disponible »** axé sur le transfert d'apprentissage (passer de la mémorisation "par cœur" des flashcards à l'usage actif réel).
   - Présentation des 4 futurs défis interactifs : *Focus Mot du jour*, *Défi Rédaction contextuelle*, *Défi Conversation réelle*, *Défi Nuances & Reformulation*.
   - Boutons d'action directs pour s'entraîner aux flashcards et consulter ses mots.
+- [x] **Portage complet de la synchronisation robuste local/cloud & gestion des conflits (LexicaAndroid2)** :
+  - Création des entités & DAOs Room : `FlashcardSyncState` (timestamps & modifications), `ReviewAnswerSyncEvent` (journal des réponses SM-2), `UserStatsSyncEvent` (gains XP & streaks) et `SyncResetMetadata` (traçabilité des resets).
+  - Migration incrémentale de la base Room `LexicaDatabase` (v8 -> v12).
+  - Portage du moteur central `SyncManager` et de `FirestoreSyncRepository` : fusion différentielle sans perte (préservation du SM-2 le plus avancé, conservation des cartes créées/modifiées, cumul d'XP), résolution silencieuse des divergences au démarrage, push automatique en fin de session de révision et lors du passage en arrière-plan (`onStop`).
+  - Gestion des conflits au login avec `SyncViewModel` et dialogue comparatif détaillé (`SyncConfirmDialog`).
+  - Suite de tests unitaires complète validée (`SyncManagerTest`, `ReviewSessionPlannerTest`, `WordListViewModelTest` -> 100% succès).
 - [x] **Validation & Déploiement** :
   - Compilation Gradle et exécution des tests unitaires (`BUILD SUCCESSFUL`).
-  - Déploiement et validation du lancement sur Samsung Galaxy S9 (processus actif sans crash).
+  - Déploiement et validation du lancement sur Samsung Galaxy S9 (PID 31238, 0 crash/erreur dans logcat).
 
 ---
 

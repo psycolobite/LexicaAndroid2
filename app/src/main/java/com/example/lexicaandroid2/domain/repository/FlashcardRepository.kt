@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.domain.repository
 
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewAnswerSyncEvent
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.Sm2Stats
 
@@ -24,6 +25,7 @@ interface FlashcardRepository {
     suspend fun updateCardContent(card: Flashcard)
     suspend fun setFavorite(cardId: String, isFavorite: Boolean)
     suspend fun deleteCard(cardId: String)
+    suspend fun appendReviewAnswerSyncEvent(event: ReviewAnswerSyncEvent)
     suspend fun getStatsByState(): Map<String, Int>
     suspend fun getAllCards(): List<Flashcard>
 

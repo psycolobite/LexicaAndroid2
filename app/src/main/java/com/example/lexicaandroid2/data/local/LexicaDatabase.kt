@@ -7,22 +7,39 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.lexicaandroid2.features.gamification.data.UserStatsDao
 import com.example.lexicaandroid2.features.gamification.data.UserStatsEntity
+import com.example.lexicaandroid2.features.gamification.data.UserStatsSyncEventDao
+import com.example.lexicaandroid2.features.gamification.data.UserStatsSyncEventEntity
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStat
 import com.example.lexicaandroid2.features.gamification.data.DailyReviewStatDao
 
 @Database(
-    entities = [FlashcardEntity::class, WordReserveEntity::class, UserStatsEntity::class, DailyReviewStat::class, ReviewQuestionProgressEntity::class, ReviewSessionSnapshotEntity::class],
-    version = 8,
+    entities = [
+        FlashcardEntity::class,
+        WordReserveEntity::class,
+        UserStatsEntity::class,
+        DailyReviewStat::class,
+        ReviewQuestionProgressEntity::class,
+        ReviewSessionSnapshotEntity::class,
+        FlashcardSyncStateEntity::class,
+        ReviewAnswerSyncEventEntity::class,
+        UserStatsSyncEventEntity::class,
+        SyncResetMetadataEntity::class
+    ],
+    version = 12,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class LexicaDatabase : RoomDatabase() {
     abstract fun flashcardDao(): FlashcardDao
     abstract fun reviewQuestionDao(): ReviewQuestionDao
+    abstract fun flashcardSyncStateDao(): FlashcardSyncStateDao
+    abstract fun reviewAnswerSyncEventDao(): ReviewAnswerSyncEventDao
+    abstract fun syncResetMetadataDao(): SyncResetMetadataDao
     @Suppress("unused")
     abstract fun reviewSessionSnapshotDao(): ReviewSessionSnapshotDao
     abstract fun wordReserveDao(): WordReserveDao
     abstract fun userStatsDao(): UserStatsDao
+    abstract fun userStatsSyncEventDao(): UserStatsSyncEventDao
     abstract fun dailyReviewStatDao(): DailyReviewStatDao
 
     companion object {
@@ -275,6 +292,91 @@ abstract class LexicaDatabase : RoomDatabase() {
             override fun migrate(db: SupportSQLiteDatabase) {
                 db.execSQL(
                     "ALTER TABLE review_question_progress ADD COLUMN pendingReplacementChallengeKind TEXT"
+                )
+            }
+        }
+
+        @Suppress("unused")
+        val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS flashcard_sync_state (
+                        cardId TEXT NOT NULL PRIMARY KEY,
+                        lastModifiedAt INTEGER NOT NULL DEFAULT 0,
+                        favoriteUpdatedAt INTEGER NOT NULL DEFAULT 0,
+                        deletedAt INTEGER
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_flashcard_sync_state_deletedAt ON flashcard_sync_state(deletedAt)"
+                )
+            }
+        }
+
+        @Suppress("unused")
+        val MIGRATION_9_10 = object : Migration(9, 10) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS review_answer_sync_events (
+                        eventId TEXT NOT NULL PRIMARY KEY,
+                        sessionId TEXT NOT NULL,
+                        questionId TEXT NOT NULL,
+                        cardId TEXT NOT NULL,
+                        questionType TEXT NOT NULL,
+                        answer TEXT NOT NULL,
+                        answeredAt INTEGER NOT NULL,
+                        challengeKind TEXT
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_review_answer_sync_events_answeredAt ON review_answer_sync_events(answeredAt)"
+                )
+                db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_review_answer_sync_events_cardId ON review_answer_sync_events(cardId)"
+                )
+            }
+        }
+
+        @Suppress("unused")
+        val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS user_stats_sync_events (
+                        eventId TEXT NOT NULL PRIMARY KEY,
+                        eventType TEXT NOT NULL,
+                        occurredAt INTEGER NOT NULL,
+                        xpDelta INTEGER,
+                        levelValue INTEGER,
+                        streakValue INTEGER,
+                        lastLoginDateValue INTEGER
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    "CREATE INDEX IF NOT EXISTS index_user_stats_sync_events_occurredAt ON user_stats_sync_events(occurredAt)"
+                )
+            }
+        }
+
+        @Suppress("unused")
+        val MIGRATION_11_12 = object : Migration(11, 12) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS sync_reset_metadata (
+                        userId TEXT NOT NULL PRIMARY KEY,
+                        resetAt INTEGER NOT NULL DEFAULT 0,
+                        resetGeneration INTEGER NOT NULL DEFAULT 0
+                    )
+                    """.trimIndent()
+                )
+                db.execSQL(
+                    "INSERT OR IGNORE INTO sync_reset_metadata(userId, resetAt, resetGeneration) VALUES('currentUser', 0, 0)"
                 )
             }
         }

@@ -97,10 +97,22 @@ class MainActivity : ComponentActivity() {
     private val installTtsDataLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) {
+        checkFrenchTtsVoiceAvailability()
+    }
+
+    private var syncViewModelRef: SyncViewModel? = null
+
+    override fun onResume() {
+        super.onResume()
         if (!hasRecheckedFrenchTtsAfterInstall) {
             hasRecheckedFrenchTtsAfterInstall = true
             checkFrenchTtsVoiceAvailability()
         }
+    }
+
+    override fun onStop() {
+        syncViewModelRef?.requestImmediateSyncIfAuthenticated("app-background")
+        super.onStop()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -113,7 +125,17 @@ class MainActivity : ComponentActivity() {
             LexicaDatabase::class.java,
             "lexica.db"
         )
-            .addMigrations(LexicaDatabase.MIGRATION_3_4, LexicaDatabase.MIGRATION_4_5, LexicaDatabase.MIGRATION_5_6, LexicaDatabase.MIGRATION_6_7, LexicaDatabase.MIGRATION_7_8)
+            .addMigrations(
+                LexicaDatabase.MIGRATION_3_4,
+                LexicaDatabase.MIGRATION_4_5,
+                LexicaDatabase.MIGRATION_5_6,
+                LexicaDatabase.MIGRATION_6_7,
+                LexicaDatabase.MIGRATION_7_8,
+                LexicaDatabase.MIGRATION_8_9,
+                LexicaDatabase.MIGRATION_9_10,
+                LexicaDatabase.MIGRATION_10_11,
+                LexicaDatabase.MIGRATION_11_12
+            )
             .fallbackToDestructiveMigration()
             .build()
         val dao = database.flashcardDao()
@@ -122,17 +144,30 @@ class MainActivity : ComponentActivity() {
         val reserveDao = database.wordReserveDao()
         val userStatsDao = database.userStatsDao()
         val dailyReviewStatDao = database.dailyReviewStatDao()
+        val flashcardSyncStateDao = database.flashcardSyncStateDao()
+        val reviewAnswerSyncEventDao = database.reviewAnswerSyncEventDao()
+        val syncResetMetadataDao = database.syncResetMetadataDao()
+        val userStatsSyncEventDao = database.userStatsSyncEventDao()
 
-        val repository = FlashcardRepositoryImpl(dao, reviewQuestionDao)
+        val repository = FlashcardRepositoryImpl(
+            dao = dao,
+            reviewQuestionDao = reviewQuestionDao,
+            flashcardSyncStateDao = flashcardSyncStateDao,
+            reviewAnswerSyncEventDao = reviewAnswerSyncEventDao
+        )
         val reviewSessionSnapshotRepository = ReviewSessionSnapshotRepositoryImpl(reviewSessionSnapshotDao)
         val dictionaryService = DictionaryServiceImpl()
         val reserveRepository = WordReserveRepositoryImpl(reserveDao, dao, reviewQuestionDao, dictionaryService)
-        val userStatsRepository = UserStatsRepositoryImpl(userStatsDao)
+        val userStatsRepository = UserStatsRepositoryImpl(
+            dao = userStatsDao,
+            userStatsSyncEventDao = userStatsSyncEventDao
+        )
         val resetProgressUseCase = ResetProgressUseCase(
             flashcardRepository = repository,
             reviewSessionSnapshotDao = reviewSessionSnapshotDao,
             userStatsRepository = userStatsRepository,
-            dailyReviewStatDao = dailyReviewStatDao
+            dailyReviewStatDao = dailyReviewStatDao,
+            syncResetMetadataDao = syncResetMetadataDao
         )
         val gamificationViewModel = GamificationViewModel(userStatsRepository)
         val dailyChallengeViewModel = DailyChallengeViewModel(userStatsRepository)
@@ -162,13 +197,22 @@ class MainActivity : ComponentActivity() {
         // SyncManager partagé entre SyncViewModel et ProfileViewModel (pour invalidation post-reset)
         val syncManager = SyncManager(
             firestoreSyncRepository = com.example.lexicaandroid2.features.sync.FirestoreSyncRepository(),
+            flashcardDao = dao,
+            reviewQuestionDao = reviewQuestionDao,
+            flashcardSyncStateDao = flashcardSyncStateDao,
+            reviewAnswerSyncEventDao = reviewAnswerSyncEventDao,
+            reviewSessionSnapshotDao = reviewSessionSnapshotDao,
+            syncResetMetadataDao = syncResetMetadataDao,
             userStatsDao = userStatsDao,
+            userStatsSyncEventDao = userStatsSyncEventDao,
             userStatsRepository = userStatsRepository,
-            flashcardRepository = repository
+            flashcardRepository = repository,
+            dailyReviewStatDao = dailyReviewStatDao
         )
         val syncViewModel = ViewModelProvider(
             this, SyncViewModelFactory(authRepository, syncManager)
         )[SyncViewModel::class.java]
+        syncViewModelRef = syncViewModel
 
         val reviewFactory = ReviewViewModelFactory(
             repository,
@@ -180,7 +224,10 @@ class MainActivity : ComponentActivity() {
             isAdminUserProvider = {
                 AdminConfig.isAdmin(FirebaseAuth.getInstance().currentUser?.email)
             },
-            onSessionXpAwarded = { amount -> gamificationViewModel.addXp(amount) }
+            onSessionXpAwarded = { amount -> gamificationViewModel.addXp(amount) },
+            onSessionCompleted = {
+                syncViewModel.requestImmediateSyncIfAuthenticated("review-session-completed")
+            }
         )
         val reviewViewModel = ViewModelProvider(this, reviewFactory)[ReviewViewModel::class.java]
 

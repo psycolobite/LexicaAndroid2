@@ -44,6 +44,9 @@ interface FlashcardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(flashcards: List<FlashcardEntity>)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertAll(flashcards: List<FlashcardEntity>)
+
     @Query("SELECT COUNT(*) FROM flashcards")
     suspend fun count(): Int
 

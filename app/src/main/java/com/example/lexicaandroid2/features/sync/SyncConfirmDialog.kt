@@ -37,11 +37,17 @@ fun SyncConfirmDialog(
     onKeepLocal: () -> Unit,
     onReplaceLocal: () -> Unit
 ) {
+    val isEmptyCloudAccount = conflictState.kind == SyncConflictKind.EMPTY_CLOUD_ACCOUNT
+    val cloud = conflictState.cloud
     AlertDialog(
-        onDismissRequest = onKeepLocal, // Tap en dehors = conserver local (sécurité)
+        onDismissRequest = onKeepLocal,
         title = {
             Text(
-                text = "⚠️ Progression existante détectée",
+                text = if (isEmptyCloudAccount) {
+                    "☁️ Ce compte n'a pas encore de progression"
+                } else {
+                    "⚠️ Progressions différentes détectées"
+                },
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             )
@@ -49,8 +55,11 @@ fun SyncConfirmDialog(
         text = {
             Column {
                 Text(
-                    text = "Ce compte a une progression sauvegardée dans le cloud. " +
-                            "Elle diffère de votre progression locale.",
+                    text = if (isEmptyCloudAccount) {
+                        "Ce compte est vide pour le moment. Tu peux repartir à zéro sur ce compte ou y envoyer ta progression locale actuelle."
+                    } else {
+                        "Ce compte a déjà une progression cloud différente de celle actuellement présente sur l'appareil. Choisis laquelle doit devenir la référence."
+                    },
                     style = MaterialTheme.typography.bodyMedium
                 )
 
@@ -58,22 +67,26 @@ fun SyncConfirmDialog(
                 HorizontalDivider()
                 Spacer(Modifier.height(12.dp))
 
-                // Progression cloud
-                ProgressionRow(
-                    label = "☁️ Cloud",
-                    level = conflictState.cloud.level,
-                    xp = conflictState.cloud.xp,
-                    streak = conflictState.cloud.streak
-                )
+                if (!isEmptyCloudAccount && cloud != null) {
+                    ProgressionRow(
+                        label = "☁️ Compte",
+                        level = cloud.level,
+                        xp = cloud.xp,
+                        streak = cloud.streak,
+                        cardCount = cloud.flashcards.size,
+                        startedQuestionCount = cloud.reviewQuestionProgress.count { it.firstAnsweredAt != null }
+                    )
 
-                Spacer(Modifier.height(8.dp))
+                    Spacer(Modifier.height(8.dp))
+                }
 
-                // Progression locale
                 ProgressionRow(
                     label = "📱 Locale",
-                    level = conflictState.localLevel,
-                    xp = conflictState.localXp,
-                    streak = null // Non connue sans nouvelle DB call — omis pour simplicité
+                    level = conflictState.local.level,
+                    xp = conflictState.local.xp,
+                    streak = conflictState.local.streak,
+                    cardCount = conflictState.local.cardCount,
+                    startedQuestionCount = conflictState.local.startedQuestionCount
                 )
 
                 Spacer(Modifier.height(12.dp))
@@ -81,7 +94,11 @@ fun SyncConfirmDialog(
                 Spacer(Modifier.height(8.dp))
 
                 Text(
-                    text = "⚠️ Remplacer écrasera définitivement votre progression locale.",
+                    text = if (isEmptyCloudAccount) {
+                        "⚠️ Repartir à zéro supprimera la progression locale actuelle sur cet appareil pour aligner ce compte vide."
+                    } else {
+                        "⚠️ Charger la progression du compte écrasera la progression locale actuelle sur cet appareil."
+                    },
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error
                 )
@@ -94,12 +111,24 @@ fun SyncConfirmDialog(
                     contentColor = MaterialTheme.colorScheme.error
                 )
             ) {
-                Text("Remplacer ma progression locale")
+                Text(
+                    if (isEmptyCloudAccount) {
+                        "Repartir à zéro sur ce compte"
+                    } else {
+                        "Charger la progression du compte"
+                    }
+                )
             }
         },
         dismissButton = {
             TextButton(onClick = onKeepLocal) {
-                Text("Conserver ma progression locale")
+                Text(
+                    if (isEmptyCloudAccount) {
+                        "Envoyer ma progression locale"
+                    } else {
+                        "Envoyer ma progression locale"
+                    }
+                )
             }
         }
     )
@@ -110,7 +139,9 @@ private fun ProgressionRow(
     label: String,
     level: Int,
     xp: Long,
-    streak: Int?
+    streak: Int?,
+    cardCount: Int,
+    startedQuestionCount: Int
 ) {
     Row(
         modifier = Modifier
@@ -127,6 +158,11 @@ private fun ProgressionRow(
             Text(
                 text = "Niveau $level — $xp XP",
                 style = MaterialTheme.typography.bodyMedium
+            )
+            Text(
+                text = "$cardCount mot(s) — $startedQuestionCount question(s) déjà commencée(s)",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             if (streak != null) {
                 Text(
