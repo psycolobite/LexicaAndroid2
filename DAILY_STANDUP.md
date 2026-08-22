@@ -1848,14 +1848,16 @@ Build:              ✅ Compilation OK
   - Regroupement des actions de compte dans un conteneur dédié avec zone sensible (réinitialisation, suppression de compte).
 - **Nouvelle identité visuelle — Icône de l'application (Option C - « Les Flashcards »)** :
   - Mise en place du vecteur `ic_launcher_background.xml` (dégradé bleu nuit profond avec halo central).
-  - Mise en place du vecteur `ic_launcher_foreground.xml` (flashcards blanches superposées, ruban marque-page doré, lettrage « L » moderne).
-  - Génération des déclinaisons raster `ic_launcher.webp` et `ic_launcher_round.webp` sur toutes les densités d'écran (`mdpi`, `hdpi`, `xhdpi`, `xxhdpi`, `xxxhdpi`).
+  - Mise en place du vecteur `ic_launcher_foreground.xml` (flashcards blanches superposées, ruban marque-page doré, lettrage « L » moderne) avec respect strict de la **safe-zone 66dp** pour éviter tout rognage/zoom sur les lanceurs Samsung One UI.
+  - Création de `ic_splash_logo.xml` (160dp centré) et fond bleu nuit `#0F172A` pour un écran de démarrage (Splash Screen) propre, net et sans zoom excessif.
+  - Génération des déclinaisons raster `ic_launcher.webp` et `ic_launcher_round.webp` sur toutes les densités d'écran (`mdpi`, `hdpi`, `xhdpi`, `xxhdpi`, `xxxhdpi`) avec padding anti-zoom.
 - **Déploiement et validations** :
   - Compilation complète (`assembleDebug`) réussie.
   - Déploiement et lancement direct sur appareil physique (Samsung Galaxy S9).
   - Commits Git :
     - `c8369e0` (*feat: refonte complète de ProfileScreen*)
     - `a81b34e` (*feat(branding): mise en place du nouvel icone d'application*)
+    - `e3ffdb6` (*fix(branding): ajustement de l'echelle de l'icone (safe-zone 66dp) et creation d'un splash screen dedie non zoome*)
 
 ### 📊 Statut Global
 ```
