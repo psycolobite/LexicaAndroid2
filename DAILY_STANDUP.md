@@ -9,9 +9,10 @@
 ## 📅 2026-08-22 — Base de réserve de mots, Liste de mots & Refonte Onglet Usage
 
 ### ✅ Accompli
-- [x] **Consolidation de la base de réserve de mots (`mots_rares.json`)** :
-  - Fusion dédupliquée de 639 mots qualifiés (définitions complètes, exemples d'usage, synonymes, étymologies et catégories grammaticales) issus de `beautiful_literary_words.json`, `rhetoric_candidates_v1.csv`, `candidates_jargon.csv` et de la base originale.
-  - Mise à niveau de `DataImporter` et `MainActivity` pour garantir l'import et la mise à jour dynamique de la réserve Room (`word_reserve`).
+- [x] **Consolidation complète de la base de réserve de mots (`mots_rares.json`)** :
+  - **1 384 mots uniques qualifiés** intégrés (100% des 903 mots de `objectif_1_liste1_mots_caracterise.csv` + `beautiful_literary_words.json` + `rhetoric_candidates_v1.csv` + `candidates_jargon.csv` + `candidates_slang_trending.csv` + `candidates_rhetoric_politics.csv` + base initiale).
+  - Pour les 605 mots du CSV C1 qui n'avaient pas encore de définition, extraction automatique via l'API MediaWiki Wiktionnaire (définition, étymologie, catégorie grammaticale, exemples et synonymes).
+  - Import et mise à niveau automatique de la réserve Room (`word_reserve`) confirmés dans logcat : **1 384 mots chargés avec succès**.
   - Amélioration de `AddWordsViewModel` : rechargement automatique à l'ouverture de l'écran et exclusion des mots déjà présents dans les flashcards de l'utilisateur.
 - [x] **Mise à niveau de la liste des mots & fiches détaillées (Portage LexicaAndroid2)** :
   - Intégration de `WordEditComponents.kt` et création de `EditWordScreen.kt` pour permettre l'édition complète d'un mot (définition, synonymes, exemples, étymologie, catégorie).
