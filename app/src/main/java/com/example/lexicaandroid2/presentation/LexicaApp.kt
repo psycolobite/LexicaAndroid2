@@ -35,6 +35,9 @@ import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModel
 import com.example.lexicaandroid2.presentation.wordlist.WordDetailViewModelFactory
 import com.example.lexicaandroid2.presentation.addwords.AddWordsScreen
 import com.example.lexicaandroid2.presentation.addwords.AddWordsViewModel
+import com.example.lexicaandroid2.presentation.editword.EditWordScreen
+import com.example.lexicaandroid2.presentation.editword.EditWordViewModel
+import com.example.lexicaandroid2.presentation.editword.EditWordViewModelFactory
 import com.example.lexicaandroid2.presentation.games.MiniGamesScreen
 import com.example.lexicaandroid2.presentation.games.matching.MatchingScreen
 import com.example.lexicaandroid2.presentation.games.qcm.QcmScreen
@@ -140,6 +143,7 @@ fun LexicaApp(
         Screen.Utilisation.route -> "Utilisation"
         Screen.Online.route -> "Mode En Ligne"
         Screen.DrivingMode.route -> "Mode voiture"
+        Screen.EditWord().route -> "Modifier mon mot"
         else -> if (currentRoute?.startsWith("word/") == true) "Détail du mot" else "Lexica"
     }
 
@@ -324,7 +328,10 @@ fun LexicaApp(
                 }
 
                 WordListScreen(
-                    viewModel = wordListViewModel
+                    viewModel = wordListViewModel,
+                    onEditCard = { card ->
+                        navController.navigate(Screen.EditWord().createRoute(card.id))
+                    }
                 )
             }
             composable(
@@ -531,7 +538,26 @@ fun LexicaApp(
                 WordDetailScreen(
                     cardId = cardId,
                     viewModel = detailViewModel,
-                    onBack = { navController.navigateUp() }
+                    onBack = { navController.navigateUp() },
+                    onEditCard = { card ->
+                        navController.navigate(Screen.EditWord().createRoute(card.id))
+                    }
+                )
+            }
+            composable(
+                route = Screen.EditWord().route,
+                arguments = listOf(navArgument("cardId") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val cardId = backStackEntry.arguments?.getString("cardId") ?: return@composable
+                val factory = EditWordViewModelFactory(cardId, repository)
+                val editViewModel: EditWordViewModel = androidx.lifecycle.viewmodel.compose.viewModel(factory = factory)
+                EditWordScreen(
+                    viewModel = editViewModel,
+                    onSaved = {
+                        wordListViewModel.loadWords()
+                        navController.navigateUp()
+                    },
+                    onCancel = { navController.navigateUp() }
                 )
             }
             composable(route = Screen.DailyChallenge.route) {

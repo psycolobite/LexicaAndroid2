@@ -21,6 +21,7 @@ interface FlashcardRepository {
         motVersDef: Sm2Stats,
         defVersMot: Sm2Stats
     )
+    suspend fun updateCardContent(card: Flashcard)
     suspend fun setFavorite(cardId: String, isFavorite: Boolean)
     suspend fun deleteCard(cardId: String)
     suspend fun getStatsByState(): Map<String, Int>

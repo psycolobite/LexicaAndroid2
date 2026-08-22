@@ -187,7 +187,7 @@ class MainActivity : ComponentActivity() {
         val dashboardFactory = DashboardViewModelFactory(repository)
         val dashboardViewModel = ViewModelProvider(this, dashboardFactory)[DashboardViewModel::class.java]
 
-        val wordListFactory = WordListViewModelFactory(repository, dictionaryService)
+        val wordListFactory = WordListViewModelFactory(repository)
         val wordListViewModel = ViewModelProvider(this, wordListFactory)[WordListViewModel::class.java]
 
         val addWordsFactory = AddWordsViewModelFactory(
@@ -198,15 +198,16 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
+                val importer = DataImporter(applicationContext, dao, reviewQuestionDao, reserveDao)
                 if (dao.count() == 0) {
-                    val importer = DataImporter(applicationContext, dao, reviewQuestionDao, reserveDao)
                     Log.d("DATA_IMPORT", "Starting import...")
                     importer.importFromAssets()
                     importer.importReserve()
                     Log.d("DATA_IMPORT", "Import complete")
-                } else if (reserveDao.count() == 0) {
-                     val importer = DataImporter(applicationContext, dao, reviewQuestionDao, reserveDao)
-                     importer.importReserve()
+                } else if (reserveDao.count() < 100) {
+                    Log.d("DATA_IMPORT", "Updating word reserve...")
+                    importer.importReserve()
+                    Log.d("DATA_IMPORT", "Word reserve updated")
                 }
             } catch (e: Exception) {
                 Log.e("DATA_IMPORT", "Import FAILED: $e", e)

@@ -28,7 +28,6 @@ class WordListViewModelTest {
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private lateinit var repository: FlashcardRepository
-    private lateinit var dictionaryService: DictionaryService
     private lateinit var viewModel: WordListViewModel
 
     private val card1 = Flashcard(id = "1", recto = "abscisse", verso = "coordonnee horizontale")
@@ -52,8 +51,7 @@ class WordListViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         repository = mock()
-        dictionaryService = mock()
-        viewModel = WordListViewModel(repository, dictionaryService)
+        viewModel = WordListViewModel(repository)
         runBlocking {
             whenever(repository.getAllQuestionProgress()).thenReturn(emptyList())
         }

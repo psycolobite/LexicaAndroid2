@@ -30,6 +30,9 @@ sealed class Screen(val route: String) {
     data class WordDetail(val cardId: String = "") : Screen("word/{cardId}") {
         fun createRoute(cardId: String) = "word/$cardId"
     }
+    data class EditWord(val cardId: String = "") : Screen("word/edit/{cardId}") {
+        fun createRoute(cardId: String) = "word/edit/$cardId"
+    }
 }
 
 /** Routes de jeux individuels sur lesquelles la barre doit être masquée. */

@@ -3,10 +3,9 @@ package com.example.lexicaandroid2.presentation.wordlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.lexicaandroid2.data.remote.DictionaryService
-import com.example.lexicaandroid2.data.remote.model.WordResult
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.ReviewCardProgressSummary
+import com.example.lexicaandroid2.domain.model.Sm2Stats
 import com.example.lexicaandroid2.domain.repository.FlashcardRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,14 +20,14 @@ data class WordListUiState(
     val searchQuery: String = "",
     val isLoading: Boolean = false,
     val selectedFilter: String? = null,
-    val apiSearchResults: List<WordResult> = emptyList(),
-    val isApiLoading: Boolean = false,
-    val apiError: String? = null
-)
+    val selectedCardIds: Set<String> = emptySet()
+) {
+    val isSelectionMode: Boolean get() = selectedCardIds.isNotEmpty()
+    val selectedCount: Int get() = selectedCardIds.size
+}
 
 class WordListViewModel(
-    private val repository: FlashcardRepository,
-    private val dictionaryService: DictionaryService
+    private val repository: FlashcardRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(WordListUiState())
@@ -42,32 +41,51 @@ class WordListViewModel(
                 cards = allCards,
                 questionProgress = repository.getAllQuestionProgress()
             )
-            _uiState.update {
-                it.copy(
+            _uiState.update { state ->
+                state.withCards(
                     cards = allCards,
-                    filteredCards = applyFilters(allCards, it.searchQuery, it.selectedFilter, progressByCardId),
-                    progressByCardId = progressByCardId,
-                    isLoading = false
+                    progressByCardId = progressByCardId
                 )
             }
         }
     }
 
     fun onSearchQueryChanged(query: String) {
-        _uiState.update {
-            it.copy(
-                searchQuery = query,
-                filteredCards = applyFilters(it.cards, query, it.selectedFilter, it.progressByCardId)
+        _uiState.update { state ->
+            state.withFilters(
+                query = query,
+                filter = state.selectedFilter
             )
         }
     }
 
     fun onFilterSelected(filter: String?) {
-        _uiState.update {
-            it.copy(
-                selectedFilter = filter,
-                filteredCards = applyFilters(it.cards, it.searchQuery, filter, it.progressByCardId)
+        _uiState.update { state ->
+            state.withFilters(
+                query = state.searchQuery,
+                filter = filter
             )
+        }
+    }
+
+    fun toggleCardSelection(cardId: String) {
+        _uiState.update { state ->
+            val updatedSelection = state.selectedCardIds.toMutableSet().apply {
+                if (!add(cardId)) {
+                    remove(cardId)
+                }
+            }
+            state.copy(selectedCardIds = updatedSelection)
+        }
+    }
+
+    fun clearSelection() {
+        _uiState.update { it.copy(selectedCardIds = emptySet()) }
+    }
+
+    fun selectAllVisible() {
+        _uiState.update { state ->
+            state.copy(selectedCardIds = state.filteredCards.mapTo(linkedSetOf()) { it.id })
         }
     }
 
@@ -85,53 +103,47 @@ class WordListViewModel(
         }
     }
 
-    // API Search Logic
-    fun searchOnline(query: String) {
-        if (query.isBlank()) return
+    fun deleteSelectedCards() {
+        val cardIds = _uiState.value.selectedCardIds.toList()
+        if (cardIds.isEmpty()) return
 
         viewModelScope.launch {
-            _uiState.update { it.copy(isApiLoading = true, apiError = null, apiSearchResults = emptyList()) }
-            try {
-                val results = dictionaryService.searchWord(query)
-                _uiState.update {
-                    it.copy(
-                        isApiLoading = false,
-                        apiSearchResults = results,
-                        apiError = if (results.isEmpty()) "Aucun résultat trouvé pour '$query'" else null
-                    )
+            cardIds.forEach { repository.deleteCard(it) }
+            _uiState.update { it.copy(selectedCardIds = emptySet()) }
+            loadWords()
+        }
+    }
+
+    fun favoriteSelectedCards() {
+        val selectedCards = _uiState.value.cards.filter { it.id in _uiState.value.selectedCardIds }
+        if (selectedCards.isEmpty()) return
+
+        viewModelScope.launch {
+            selectedCards.forEach { card ->
+                if (!card.favori) {
+                    repository.setFavorite(card.id, true)
                 }
-            } catch (e: Exception) {
-                 _uiState.update { it.copy(isApiLoading = false, apiError = "Erreur: ${e.message}") }
             }
+            _uiState.update { it.copy(selectedCardIds = emptySet()) }
+            loadWords()
         }
     }
 
-    fun clearApiResults() {
-        _uiState.update { it.copy(apiSearchResults = emptyList(), apiError = null) }
-    }
+    fun resetProgressForSelectedCards() {
+        val cardIds = _uiState.value.selectedCardIds.toList()
+        if (cardIds.isEmpty()) return
 
-    // Add logic from API result
-    fun addWordFromApi(result: WordResult) {
         viewModelScope.launch {
-            val card = Flashcard(
-                id = java.util.UUID.randomUUID().toString(),
-                recto = result.mot,
-                verso = result.definition,
-                categorieGrammaticale = result.categorieGrammaticale,
-                exemples = result.exemples,
-                synonymes = result.synonymes,
-                dateAjout = System.currentTimeMillis()
-            )
-            repository.saveCard(card)
-            loadWords() // Refresh list
-            clearApiResults()
+            cardIds.forEach { cardId ->
+                repository.updateCardProgress(
+                    cardId = cardId,
+                    motVersDef = Sm2Stats(),
+                    defVersMot = Sm2Stats()
+                )
+            }
+            _uiState.update { it.copy(selectedCardIds = emptySet()) }
+            loadWords()
         }
-    }
-
-    // Add new card logic will come later with API
-    suspend fun addCard(card: Flashcard) {
-         repository.saveCard(card)
-         loadWords()
     }
 
     private fun applyFilters(
@@ -142,31 +154,84 @@ class WordListViewModel(
     ): List<Flashcard> {
         var result = cards
 
-        if (query.isNotBlank()) {
-            result = result.filter {
-                it.recto.contains(query, ignoreCase = true) ||
-                it.verso.contains(query, ignoreCase = true)
-            }
-        }
-
         if (filter != null) {
             result = result.filter {
                 progressByCardId[it.id]?.matchesFilter(filter) == true
             }
         }
 
+        if (query.isNotBlank()) {
+            val normalizedQuery = query.trim()
+            result = result
+                .mapNotNull { card ->
+                    card.searchMatchPriority(normalizedQuery)?.let { priority -> card to priority }
+                }
+                .sortedWith(
+                    compareBy<Pair<Flashcard, Int>>(
+                        { it.second },
+                        { it.first.recto.lowercase() },
+                        { it.first.verso.lowercase() },
+                        { it.first.id }
+                    )
+                )
+                .map { it.first }
+            return result
+        }
+
         return result.sortedBy { it.recto }
+    }
+
+    private fun Flashcard.searchMatchPriority(query: String): Int? {
+        if (query.isBlank()) return null
+
+        return when {
+            recto.contains(query, ignoreCase = true) -> 0
+            verso.contains(query, ignoreCase = true) -> 1
+            synonymes.any { it.contains(query, ignoreCase = true) } ||
+                exemples.any { it.contains(query, ignoreCase = true) } ||
+                categorieGrammaticale.contains(query, ignoreCase = true) ||
+                registre.contains(query, ignoreCase = true) ||
+                etymologie.contains(query, ignoreCase = true) ||
+                notesPersonnelles.contains(query, ignoreCase = true) -> 2
+            else -> null
+        }
+    }
+
+    private fun WordListUiState.withCards(
+        cards: List<Flashcard>,
+        progressByCardId: Map<String, ReviewCardProgressSummary>
+    ): WordListUiState {
+        val filteredCards = applyFilters(cards, searchQuery, selectedFilter, progressByCardId)
+        return copy(
+            cards = cards,
+            filteredCards = filteredCards,
+            progressByCardId = progressByCardId,
+            isLoading = false,
+            selectedCardIds = selectedCardIds.intersect(filteredCards.mapTo(linkedSetOf()) { it.id })
+        )
+    }
+
+    private fun WordListUiState.withFilters(
+        query: String,
+        filter: String?
+    ): WordListUiState {
+        val filteredCards = applyFilters(cards, query, filter, progressByCardId)
+        return copy(
+            searchQuery = query,
+            selectedFilter = filter,
+            filteredCards = filteredCards,
+            selectedCardIds = selectedCardIds.intersect(filteredCards.mapTo(linkedSetOf()) { it.id })
+        )
     }
 }
 
 class WordListViewModelFactory(
-    private val repository: FlashcardRepository,
-    private val dictionaryService: DictionaryService
+    private val repository: FlashcardRepository
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(WordListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return WordListViewModel(repository, dictionaryService) as T
+            return WordListViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -69,6 +69,22 @@ class FlashcardRepositoryImpl(
         reviewQuestionDao.insertAll(updated.toReviewQuestionProgressEntities())
     }
 
+    override suspend fun updateCardContent(card: com.example.lexicaandroid2.domain.model.Flashcard) {
+        val existing = dao.getById(card.id) ?: return
+        val updated = existing.copy(
+            mot = card.recto,
+            definition = card.verso,
+            synonymes = card.synonymes,
+            exemples = card.exemples,
+            categorieGrammaticale = card.categorieGrammaticale,
+            registre = card.registre,
+            etymologie = card.etymologie,
+            notesPersonnelles = card.notesPersonnelles
+        )
+        dao.update(updated)
+        reviewQuestionDao.insertAll(updated.toReviewQuestionProgressEntities())
+    }
+
     override suspend fun setFavorite(cardId: String, isFavorite: Boolean) {
         val existing = dao.getById(cardId) ?: return
         dao.update(existing.copy(favori = isFavorite))

@@ -1,26 +1,34 @@
 package com.example.lexicaandroid2.presentation.wordlist
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.border
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -44,10 +52,12 @@ import androidx.compose.ui.unit.dp
 import com.example.lexicaandroid2.domain.model.Flashcard
 import com.example.lexicaandroid2.domain.model.ReviewCardAggregateState
 import com.example.lexicaandroid2.domain.model.ReviewCardProgressSummary
+import com.example.lexicaandroid2.presentation.common.EditWordIconButton
 
 @Composable
 fun WordListScreen(
-    viewModel: WordListViewModel
+    viewModel: WordListViewModel,
+    onEditCard: (Flashcard) -> Unit
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var selectedCard by remember { mutableStateOf<Flashcard?>(null) }
@@ -56,27 +66,36 @@ fun WordListScreen(
         viewModel.loadWords()
     }
 
+    LaunchedEffect(uiState.isSelectionMode) {
+        if (uiState.isSelectionMode) {
+            selectedCard = null
+        }
+    }
+
     selectedCard?.let { card ->
         WordDetailDialog(
             card = card,
+            progressSummary = uiState.progressByCardId[card.id]
+                ?: ReviewCardProgressSummary.fromFlashcard(card, System.currentTimeMillis()),
             onDismiss = { selectedCard = null },
-            onToggleFavorite = {
-                viewModel.toggleFavorite(card)
-                selectedCard = card.copy(favori = !card.favori)
-            },
+            onToggleFavorite = { viewModel.toggleFavorite(card) },
             onDeleteCard = {
                 viewModel.deleteCard(card.id)
                 selectedCard = null
+            },
+            onEditCard = {
+                selectedCard = null
+                onEditCard(card)
             }
         )
     }
 
     Scaffold(
         topBar = {
-             // Search within MY words (filtering)
              SearchBar(
                  query = uiState.searchQuery,
-                 onQueryChange = viewModel::onSearchQueryChanged
+                 onQueryChange = viewModel::onSearchQueryChanged,
+                 onClearClick = { viewModel.onSearchQueryChanged("") }
              )
         }
     ) { padding ->
@@ -84,33 +103,83 @@ fun WordListScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(Color(0xFFFAFAFA)) // Updated background to match Dashboard
+                .background(Color(0xFFFAFAFA))
         ) {
+            FilterChips(
+                selectedFilter = uiState.selectedFilter,
+                onFilterSelected = viewModel::onFilterSelected
+            )
+
+            if (uiState.isLoading) {
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(16.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    item {
+                        CircularProgressIndicator()
+                    }
+                }
+                return@Scaffold
+            }
+
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+                contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(uiState.filteredCards) { card ->
+                items(uiState.filteredCards, key = { it.id }) { card ->
                     WordItem(
                         card = card,
                         progressSummary = uiState.progressByCardId[card.id]
                             ?: ReviewCardProgressSummary.fromFlashcard(card, System.currentTimeMillis()),
-                        onCardClick = { selectedCard = card },
+                        isSelected = card.id in uiState.selectedCardIds,
+                        onCardClick = {
+                            if (uiState.isSelectionMode) {
+                                viewModel.toggleCardSelection(card.id)
+                            } else {
+                                selectedCard = card
+                            }
+                        },
+                        onCardLongClick = {
+                            viewModel.toggleCardSelection(card.id)
+                        },
                         onToggleFavorite = { viewModel.toggleFavorite(card) },
-                        onDeleteCard = { viewModel.deleteCard(card.id) }
+                        onDeleteCard = { viewModel.deleteCard(card.id) },
+                        onEditCard = { onEditCard(card) }
                     )
+                }
+
+                if (
+                    uiState.searchQuery.isNotBlank() &&
+                    uiState.filteredCards.isEmpty()
+                ) {
+                    item {
+                        Surface(
+                            shape = RoundedCornerShape(12.dp),
+                            color = Color.White,
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(
+                                text = "Aucun mot trouvé dans ta collection pour cette recherche.",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray,
+                                modifier = Modifier.padding(14.dp)
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-
 @Composable
 fun SearchBar(
     query: String,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onClearClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
@@ -125,21 +194,74 @@ fun SearchBar(
                 .padding(16.dp),
             placeholder = { Text("Rechercher un mot...") },
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
+            trailingIcon = {
+                if (query.isNotBlank()) {
+                    IconButton(onClick = onClearClick) {
+                        Icon(Icons.Default.Clear, contentDescription = "Effacer")
+                    }
+                }
+            },
             singleLine = true
         )
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun FilterChips(
+    selectedFilter: String?,
+    onFilterSelected: (String?) -> Unit
+) {
+    val filters = listOf(
+        "FAVORIS" to "Favoris",
+        "TO_WORK" to "À travailler",
+        "IN_PROGRESS" to "En cours",
+        "KNOWN" to "Connus"
+    )
+
+    FlowRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        FilterChip(
+            selected = selectedFilter == null,
+            onClick = { onFilterSelected(null) },
+            label = { Text("Tous") },
+            colors = FilterChipDefaults.filterChipColors(
+                selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        )
+
+        filters.forEach { (key, label) ->
+            FilterChip(
+                selected = selectedFilter == key,
+                onClick = { onFilterSelected(if (selectedFilter == key) null else key) },
+                label = { Text(label) },
+                colors = FilterChipDefaults.filterChipColors(
+                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @Composable
 fun WordItem(
     card: Flashcard,
     progressSummary: ReviewCardProgressSummary,
+    isSelected: Boolean,
     onCardClick: () -> Unit,
+    onCardLongClick: () -> Unit,
     onToggleFavorite: () -> Unit,
-    onDeleteCard: () -> Unit
+    onDeleteCard: () -> Unit,
+    onEditCard: () -> Unit
 ) {
-    val (stateText, stateColor) = progressSummary.aggregateState.toLabelAndColor()
-
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
     if (showDeleteConfirm) {
@@ -167,69 +289,79 @@ fun WordItem(
 
     Surface(
         shape = RoundedCornerShape(12.dp),
-        color = Color.White,
+        color = if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.White,
         shadowElevation = 2.dp,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(
+                width = if (isSelected) 1.5.dp else 0.dp,
+                color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                shape = RoundedCornerShape(12.dp)
+            )
     ) {
         Row(
             modifier = Modifier
-                .clickable { onCardClick() }
-                .padding(16.dp)
+                .combinedClickable(
+                    onClick = onCardClick,
+                    onLongClick = onCardLongClick
+                )
+                .padding(horizontal = 14.dp, vertical = 12.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.Top
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
+            ) {
                 Text(
                     text = card.recto,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = card.verso,
                     style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 2,
+                    maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
                     color = Color.Gray
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                Row(
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(6.dp),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     QuestionStateChip(
-                        label = "Mot → Définition",
+                        label = "la définition",
                         state = progressSummary.wordToDefinitionState
                     )
                     QuestionStateChip(
-                        label = "Définition → Mot",
+                        label = "le mot",
                         state = progressSummary.definitionToWordState
                     )
                 }
             }
 
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(4.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Surface(
-                    color = stateColor.copy(alpha = 0.1f),
-                    shape = RoundedCornerShape(16.dp),
-                    modifier = Modifier.padding(start = 8.dp)
-                ) {
-                    Text(
-                        text = stateText,
-                        color = stateColor,
-                        style = MaterialTheme.typography.labelSmall,
-                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                if (isSelected) {
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = "Sélectionné",
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .padding(top = 7.dp)
+                            .size(18.dp)
                     )
                 }
 
                 IconButton(
                     onClick = onToggleFavorite,
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
                         imageVector = if (card.favori) Icons.Filled.Star else Icons.Outlined.Star,
@@ -241,7 +373,7 @@ fun WordItem(
 
                 IconButton(
                     onClick = { showDeleteConfirm = true },
-                    modifier = Modifier.size(40.dp)
+                    modifier = Modifier.size(36.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Default.Delete,
@@ -250,6 +382,8 @@ fun WordItem(
                         modifier = Modifier.size(20.dp)
                     )
                 }
+
+                EditWordIconButton(onClick = onEditCard)
             }
         }
     }
@@ -279,4 +413,3 @@ private fun ReviewCardAggregateState.toLabelAndColor(): Pair<String, Color> = wh
     ReviewCardAggregateState.IN_PROGRESS -> label to Color(0xFFD35400)
     ReviewCardAggregateState.KNOWN -> label to Color(0xFF27AE60)
 }
-

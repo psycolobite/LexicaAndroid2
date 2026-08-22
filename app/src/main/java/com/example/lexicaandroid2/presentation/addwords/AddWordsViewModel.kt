@@ -58,25 +58,30 @@ class AddWordsViewModel(
     private var allCards: List<Flashcard> = emptyList()
 
     init {
-        loadProposedWords()
-        loadAllCards()
+        loadAllCardsAndProposed()
     }
 
-    // ── Chargement initial ────────────────────────────────────────────────────
+    // ── Chargement initial et rafraîchissement ───────────────────────────────
 
-    private fun loadProposedWords() {
+    fun refreshProposedWords() {
+        loadAllCardsAndProposed()
+    }
+
+    private fun loadAllCardsAndProposed() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoadingProposed = true) }
-            runCatching { wordReserveRepository.getProposedWords(50) }
-                .onSuccess { words -> _uiState.update { it.copy(proposedWords = words, isLoadingProposed = false) } }
-                .onFailure { _uiState.update { it.copy(isLoadingProposed = false) } }
-        }
-    }
-
-    private fun loadAllCards() {
-        viewModelScope.launch {
-            runCatching { flashcardRepository.getAllCards() }
-                .onSuccess { cards -> allCards = cards }
+            runCatching {
+                val cards = flashcardRepository.getAllCards()
+                allCards = cards
+                val existingWords = cards.map { it.recto.trim().lowercase() }.toSet()
+                val words = wordReserveRepository.getProposedWords(100)
+                    .filter { it.mot.trim().lowercase() !in existingWords }
+                words
+            }.onSuccess { words ->
+                _uiState.update { it.copy(proposedWords = words, isLoadingProposed = false) }
+            }.onFailure {
+                _uiState.update { it.copy(isLoadingProposed = false) }
+            }
         }
     }
 

@@ -38,6 +38,10 @@ private val PurpleLight = Color(0xFFEDE7F6)
 fun AddWordsScreen(viewModel: AddWordsViewModel) {
     val uiState by viewModel.uiState.collectAsState()
 
+    androidx.compose.runtime.LaunchedEffect(Unit) {
+        viewModel.refreshProposedWords()
+    }
+
     // ── AlertDialog doublon ───────────────────────────────────────────────────
     if (uiState.duplicateCandidate != null) {
         DuplicateDialog(

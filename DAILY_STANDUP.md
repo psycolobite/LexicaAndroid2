@@ -6,6 +6,28 @@
 
 ---
 
+## 📅 2026-08-22 — Base de réserve de mots, Liste de mots & Refonte Onglet Usage
+
+### ✅ Accompli
+- [x] **Consolidation de la base de réserve de mots (`mots_rares.json`)** :
+  - Fusion dédupliquée de 639 mots qualifiés (définitions complètes, exemples d'usage, synonymes, étymologies et catégories grammaticales) issus de `beautiful_literary_words.json`, `rhetoric_candidates_v1.csv`, `candidates_jargon.csv` et de la base originale.
+  - Mise à niveau de `DataImporter` et `MainActivity` pour garantir l'import et la mise à jour dynamique de la réserve Room (`word_reserve`).
+  - Amélioration de `AddWordsViewModel` : rechargement automatique à l'ouverture de l'écran et exclusion des mots déjà présents dans les flashcards de l'utilisateur.
+- [x] **Mise à niveau de la liste des mots & fiches détaillées (Portage LexicaAndroid2)** :
+  - Intégration de `WordEditComponents.kt` et création de `EditWordScreen.kt` pour permettre l'édition complète d'un mot (définition, synonymes, exemples, étymologie, catégorie).
+  - Modernisation de `WordListScreen.kt` & `WordListViewModel.kt` : filtres de progression (Favoris, À travailler, En cours, Connus), mode sélection multiple, suppression par lot, favorisation par lot et reset SM-2.
+  - Mise à jour de `WordDetailScreen.kt` avec raccourci direct vers l'édition du mot.
+  - Câblage des routes dans `Screen.kt` et `LexicaApp.kt`.
+- [x] **Refonte de l'onglet "Usage" (`UtilisationScreen.kt`)** :
+  - Mise en place du panneau **« 🚀 Bientôt disponible »** axé sur le transfert d'apprentissage (passer de la mémorisation "par cœur" des flashcards à l'usage actif réel).
+  - Présentation des 4 futurs défis interactifs : *Focus Mot du jour*, *Défi Rédaction contextuelle*, *Défi Conversation réelle*, *Défi Nuances & Reformulation*.
+  - Boutons d'action directs pour s'entraîner aux flashcards et consulter ses mots.
+- [x] **Validation & Déploiement** :
+  - Compilation Gradle et exécution des tests unitaires (`BUILD SUCCESSFUL`).
+  - Déploiement et validation du lancement sur Samsung Galaxy S9 (processus actif sans crash).
+
+---
+
 ## 📅 2026-04-08 — Vision future : thèmes, sources de contenu, nouveau type de question
 
 ### ✅ Accompli
