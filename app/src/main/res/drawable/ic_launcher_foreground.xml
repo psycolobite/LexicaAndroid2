@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Foreground Lexica - Option C (Flashcards & Golden Bookmark)
-    Vector design épuré et centré dans la zone sécurisée 108x108 (safe zone: 18..90)
+    Redimensionné avec marges de sécurité (safe-zone 66dp) pour éviter tout effet de zoom/rognage sur Samsung One UI et lanceurs Android
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -9,63 +9,64 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Ombre douce de la carte arrière -->
+    <!-- ================= CARTE ARRIÈRE ================= -->
     <group
-        android:pivotX="44"
+        android:pivotX="47"
         android:pivotY="54"
-        android:rotation="-11">
+        android:rotation="-12">
+        <!-- Ombre de la carte arrière -->
         <path
-            android:pathData="M26,30 A5,5 0 0,1 31,25 L58,25 A5,5 0 0,1 63,30 L63,77 A5,5 0 0,1 58,82 L31,82 A5,5 0 0,1 26,77 Z"
-            android:fillColor="#22000000" />
-        <!-- Carte arrière blanche / blanc perle -->
+            android:pathData="M33,35 A4,4 0 0,1 37,31 L57,31 A4,4 0 0,1 61,35 L61,73 A4,4 0 0,1 57,77 L37,77 A4,4 0 0,1 33,73 Z"
+            android:fillColor="#28000000" />
+        <!-- Carte arrière blanc perle -->
         <path
-            android:pathData="M26,28 A5,5 0 0,1 31,23 L58,23 A5,5 0 0,1 63,28 L63,75 A5,5 0 0,1 58,80 L31,80 A5,5 0 0,1 26,75 Z"
-            android:fillColor="#FFE2E8F0" />
+            android:pathData="M33,33 A4,4 0 0,1 37,29 L57,29 A4,4 0 0,1 61,33 L61,71 A4,4 0 0,1 57,75 L37,75 A4,4 0 0,1 33,71 Z"
+            android:fillColor="#FFE8EDF5" />
     </group>
 
-    <!-- Groupe de la carte avant -->
+    <!-- ================= CARTE AVANT ================= -->
     <group
-        android:pivotX="56"
+        android:pivotX="57"
         android:pivotY="54"
-        android:rotation="2">
+        android:rotation="3">
 
         <!-- Ombre portée de la carte avant -->
         <path
-            android:pathData="M37,29 A6,6 0 0,1 43,23 L72,23 A6,6 0 0,1 78,29 L78,79 A6,6 0 0,1 72,85 L43,85 A6,6 0 0,1 37,79 Z"
-            android:fillColor="#33000000" />
+            android:pathData="M43,33 A5,5 0 0,1 48,28 L70,28 A5,5 0 0,1 75,33 L75,75 A5,5 0 0,1 70,80 L48,80 A5,5 0 0,1 43,75 Z"
+            android:fillColor="#3A000000" />
 
         <!-- Carte avant blanc pur -->
         <path
-            android:pathData="M37,27 A6,6 0 0,1 43,21 L72,21 A6,6 0 0,1 78,27 L78,77 A6,6 0 0,1 72,83 L43,83 A6,6 0 0,1 37,77 Z"
+            android:pathData="M43,31 A5,5 0 0,1 48,26 L70,26 A5,5 0 0,1 75,31 L75,73 A5,5 0 0,1 70,78 L48,78 A5,5 0 0,1 43,73 Z"
             android:fillColor="#FFFFFFFF" />
 
-        <!-- Liseré subtil autour de la carte avant -->
+        <!-- Liseré subtil autour de la carte -->
         <path
-            android:pathData="M37,27 A6,6 0 0,1 43,21 L72,21 A6,6 0 0,1 78,27 L78,77 A6,6 0 0,1 72,83 L43,83 A6,6 0 0,1 37,77 Z"
-            android:strokeColor="#0D000000"
-            android:strokeWidth="0.8" />
+            android:pathData="M43,31 A5,5 0 0,1 48,26 L70,26 A5,5 0 0,1 75,31 L75,73 A5,5 0 0,1 70,78 L48,78 A5,5 0 0,1 43,73 Z"
+            android:strokeColor="#12000000"
+            android:strokeWidth="0.6" />
 
         <!-- Ruban marque-page doré (bookmark) -->
-        <!-- Ombre sous le ruban -->
+        <!-- Ombre du ruban -->
         <path
-            android:pathData="M63,23 L72,23 L72,42 L67.5,38 L63,42 Z"
+            android:pathData="M63,27 L70,27 L70,43 L66.5,40 L63,43 Z"
             android:fillColor="#22000000" />
         <!-- Ruban doré principal -->
         <path
-            android:pathData="M63,21 L72,21 L72,40 L67.5,36 L63,40 Z"
+            android:pathData="M63,26 L70,26 L70,42 L66.5,39 L63,42 Z"
             android:fillColor="#FFF59E0B" />
-        <!-- Lueur dorée sur le ruban -->
+        <!-- Reflet clair sur le ruban -->
         <path
-            android:pathData="M64,21 L67.5,21 L67.5,36 L64,39.5 Z"
-            android:fillColor="#26FFFFFF" />
-        <!-- Repli supérieur du ruban -->
+            android:pathData="M63.5,26 L66.5,26 L66.5,39 L63.5,41.5 Z"
+            android:fillColor="#33FFFFFF" />
+        <!-- Repli haut du ruban -->
         <path
-            android:pathData="M63,20 A1,1 0 0,1 64,19 L71,19 A1,1 0 0,1 72,20 L72,21 L63,21 Z"
+            android:pathData="M63,25 A1,1 0 0,1 64,24 L69,24 A1,1 0 0,1 70,25 L70,26 L63,26 Z"
             android:fillColor="#FFD97706" />
 
-        <!-- Lettre « L » bleue élégante et moderne au centre de la carte -->
+        <!-- Lettre « L » bleu royal moderne et centrée -->
         <path
-            android:pathData="M52,43 L56.5,43 L56.5,60.5 L65.5,60.5 L65.5,64.5 L52,64.5 Z"
+            android:pathData="M54,43 L58,43 L58,58 L65.5,58 L65.5,61.5 L54,61.5 Z"
             android:fillColor="#FF1E3A8A" />
 
     </group>

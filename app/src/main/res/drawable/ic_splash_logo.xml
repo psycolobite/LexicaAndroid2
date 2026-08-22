@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Logo d'écran de démarrage (Splash Screen)
+    Proportionné selon les spécifications Android 12+ SplashScreen (160dp avec zone centrale 80dp)
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="160dp"
+    android:viewportWidth="160"
+    android:viewportHeight="160">
+
+    <!-- ================= CARTE ARRIÈRE ================= -->
+    <group
+        android:pivotX="70"
+        android:pivotY="80"
+        android:rotation="-12">
+        <path
+            android:pathData="M52,55 A5,5 0 0,1 57,50 L83,50 A5,5 0 0,1 88,55 L88,105 A5,5 0 0,1 83,110 L57,110 A5,5 0 0,1 52,105 Z"
+            android:fillColor="#22000000" />
+        <path
+            android:pathData="M52,52 A5,5 0 0,1 57,47 L83,47 A5,5 0 0,1 88,52 L88,102 A5,5 0 0,1 83,107 L57,107 A5,5 0 0,1 52,102 Z"
+            android:fillColor="#FFE2E8F0" />
+    </group>
+
+    <!-- ================= CARTE AVANT ================= -->
+    <group
+        android:pivotX="85"
+        android:pivotY="80"
+        android:rotation="3">
+
+        <!-- Ombre portée -->
+        <path
+            android:pathData="M66,51 A6,6 0 0,1 72,45 L102,45 A6,6 0 0,1 108,51 L108,107 A6,6 0 0,1 102,113 L72,113 A6,6 0 0,1 66,107 Z"
+            android:fillColor="#35000000" />
+
+        <!-- Carte blanche -->
+        <path
+            android:pathData="M66,49 A6,6 0 0,1 72,43 L102,43 A6,6 0 0,1 108,49 L108,105 A6,6 0 0,1 102,111 L72,111 A6,6 0 0,1 66,105 Z"
+            android:fillColor="#FFFFFFFF" />
+
+        <!-- Liseré de contour -->
+        <path
+            android:pathData="M66,49 A6,6 0 0,1 72,43 L102,43 A6,6 0 0,1 108,49 L108,105 A6,6 0 0,1 102,111 L72,111 A6,6 0 0,1 66,105 Z"
+            android:strokeColor="#12000000"
+            android:strokeWidth="0.8" />
+
+        <!-- Ruban marque-page doré (bookmark) -->
+        <path
+            android:pathData="M92,44 L102,44 L102,66 L97,62 L92,66 Z"
+            android:fillColor="#22000000" />
+        <path
+            android:pathData="M92,43 L102,43 L102,65 L97,61 L92,65 Z"
+            android:fillColor="#FFF59E0B" />
+        <path
+            android:pathData="M93,43 L97,43 L97,61 L93,64.5 Z"
+            android:fillColor="#33FFFFFF" />
+        <path
+            android:pathData="M92,42 A1,1 0 0,1 93,41 L101,41 A1,1 0 0,1 102,42 L102,43 L92,43 Z"
+            android:fillColor="#FFD97706" />
+
+        <!-- Lettre « L » bleu royal -->
+        <path
+            android:pathData="M81,66 L86,66 L86,85 L96,85 L96,89.5 L81,89.5 Z"
+            android:fillColor="#FF1E3A8A" />
+
+    </group>
+
+</vector>
