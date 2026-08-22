@@ -1,6 +1,7 @@
 package com.example.lexicaandroid2.domain.logic
 
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.domain.model.ReviewAnswerSyncEvent
 import com.example.lexicaandroid2.domain.model.ReviewQuestionProgress
 import com.example.lexicaandroid2.domain.model.ReviewQuestionType
 import com.example.lexicaandroid2.domain.model.Sm2Stats
@@ -87,6 +88,22 @@ class ReviewSessionPlannerTest {
 
         assertEquals(selected.map { it.questionId }.sorted(), sessionOrder.map { it.questionId }.sorted())
         assertTrue(sessionOrder.zipWithNext().none { (left, right) -> left.cardId == right.cardId })
+    }
+
+    @Test
+    fun buildSessionOrderKeepsTwoOtherQuestionsBetweenSameCardWhenPossible() {
+        val planner = ReviewSessionPlanner(FakeFlashcardRepository(), Random(0))
+        val selected = listOf(
+            question(cardId = "card-a", type = ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 0),
+            question(cardId = "card-a", type = ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 1),
+            question(cardId = "card-b", type = ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 2),
+            question(cardId = "card-c", type = ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 3)
+        )
+
+        val sessionOrder = planner.buildSessionOrder(selected)
+        val indicesByCardId = sessionOrder.withIndex().groupBy({ it.value.cardId }, { it.index })
+
+        assertEquals(listOf(0, 3), indicesByCardId.getValue("card-a"))
     }
 
     @Test
@@ -189,7 +206,7 @@ class ReviewSessionPlannerTest {
         override suspend fun updateCardContent(card: Flashcard) = Unit
         override suspend fun setFavorite(cardId: String, isFavorite: Boolean) = Unit
         override suspend fun deleteCard(cardId: String) = Unit
-        override suspend fun appendReviewAnswerSyncEvent(event: com.example.lexicaandroid2.domain.model.ReviewAnswerSyncEvent) = Unit
+        override suspend fun appendReviewAnswerSyncEvent(event: ReviewAnswerSyncEvent) = Unit
         override suspend fun getStatsByState(): Map<String, Int> = emptyMap()
         override suspend fun getAllCards(): List<Flashcard> = emptyList()
         override suspend fun deleteAllCards() = Unit

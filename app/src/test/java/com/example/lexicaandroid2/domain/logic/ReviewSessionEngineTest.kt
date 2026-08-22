@@ -61,6 +61,45 @@ class ReviewSessionEngineTest {
     }
 
     @Test
+    fun extraSpellingSuccessValidatesImmediatelyWithGotItLongTermAnswer() {
+        val question = question("card-a", ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 0)
+        var state = ReviewSessionEngine.start(singleQuestionPlan(question))
+
+        state = ReviewSessionEngine.validateCurrentQuestionFromExtraSpelling(state, answeredAt = 1_000L)
+
+        val questionState = state.questionStates.getValue(question.questionId)
+        assertTrue(state.isFinished)
+        assertTrue(questionState.isValidated)
+        assertEquals(ReviewSessionValidationReason.EXTRA_SPELLING_SUCCESS, questionState.validationReason)
+        assertEquals(ReviewAnswer.GOT_IT, questionState.effectiveLongTermAnswer)
+    }
+
+    @Test
+    fun extraSpellingSuccessCanValidateTargetQuestionWithoutReplacingCurrentQuestion() {
+        val questionA = question("card-a", ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 0)
+        val questionB = question("card-b", ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 1, firstAnsweredAt = 1L)
+        val plan = ReviewSessionPlan(
+            selectedQuestions = listOf(questionA, questionB),
+            sessionOrder = listOf(questionA, questionB),
+            remainingQuestionsCount = 0
+        )
+
+        val state = ReviewSessionEngine.applyExtraSpellingSuccess(
+            state = ReviewSessionEngine.start(plan),
+            questionId = questionB.questionId,
+            answeredAt = 1_000L
+        )
+
+        assertEquals(questionA.questionId, state.currentQuestionId)
+        assertEquals(1, state.remainingQuestionsToValidate)
+        assertTrue(state.questionStates.getValue(questionB.questionId).isValidated)
+        assertEquals(
+            ReviewSessionValidationReason.EXTRA_SPELLING_SUCCESS,
+            state.questionStates.getValue(questionB.questionId).validationReason
+        )
+    }
+
+    @Test
     fun gotItOnFirstPresentationValidatesDirectlyWhenIntervalIsAboveT2() {
         val question = question(
             cardId = "card-a",
@@ -230,6 +269,47 @@ class ReviewSessionEngineTest {
 
         val updated = state.questionStates.getValue(question.questionId)
         assertNull(updated.progress.pendingReplacementChallengeKind)
+    }
+
+    @Test
+    fun answerCurrentQuestionSkipsSameCardFamilyWhenTwoOtherPresentationsAreNotYetPassed() {
+        val questionAWord = question("card-a", ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 0)
+        val questionBWord = question("card-b", ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 1)
+        val questionADef = question("card-a", ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 2)
+        val plan = ReviewSessionPlan(
+            selectedQuestions = listOf(questionAWord, questionBWord, questionADef),
+            sessionOrder = listOf(questionAWord, questionBWord, questionADef),
+            remainingQuestionsCount = 0
+        )
+
+        val state = ReviewSessionEngine.answerCurrentQuestion(
+            state = ReviewSessionEngine.start(plan),
+            answer = ReviewAnswer.GOT_IT,
+            answeredAt = 1_000L,
+            recentPresentationKeys = listOf("card:card-a", "card:card-a")
+        )
+
+        assertEquals(questionBWord.questionId, state.currentQuestionId)
+    }
+
+    @Test
+    fun answerCurrentQuestionAllowsSameCardFamilyWhenNoAlternativeExists() {
+        val questionAWord = question("card-a", ReviewQuestionType.WORD_TO_DEFINITION, globalOrder = 0)
+        val questionADef = question("card-a", ReviewQuestionType.DEFINITION_TO_WORD, globalOrder = 1)
+        val plan = ReviewSessionPlan(
+            selectedQuestions = listOf(questionAWord, questionADef),
+            sessionOrder = listOf(questionAWord, questionADef),
+            remainingQuestionsCount = 0
+        )
+
+        val state = ReviewSessionEngine.answerCurrentQuestion(
+            state = ReviewSessionEngine.start(plan),
+            answer = ReviewAnswer.GOT_IT,
+            answeredAt = 1_000L,
+            recentPresentationKeys = listOf("card:card-a", "card:card-a")
+        )
+
+        assertEquals(questionADef.questionId, state.currentQuestionId)
     }
 
     private fun singleQuestionPlan(question: ReviewQuestionProgress): ReviewSessionPlan = ReviewSessionPlan(

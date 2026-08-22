@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -20,8 +18,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -43,15 +41,16 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lexicaandroid2.domain.model.Flashcard
+import com.example.lexicaandroid2.presentation.common.EditWordIconButton
 import com.example.lexicaandroid2.presentation.common.lexicaPanelContainerColor
 
 @Composable
@@ -141,7 +140,11 @@ internal fun NormalQuestionContent(
                         onSpeak = onSpeakCurrentFace,
                         enabled = uiState.ttsReady,
                         textStyle = frontTextStyle,
-                        minHeight = minCardHeight
+                        minHeight = minCardHeight,
+                        canEditCard = canEditCard,
+                        isFavorite = isFavorite,
+                        onToggleFavorite = onToggleFavorite,
+                        onDelete = onDelete
                     )
                 } else if (!isBackContentUnlocked) {
                     ReviewBackFacePlaceholder(minHeight = minCardHeight)
@@ -202,18 +205,44 @@ internal fun ReviewFrontFace(
     onSpeak: () -> Unit,
     enabled: Boolean,
     textStyle: androidx.compose.ui.text.TextStyle,
-    minHeight: Dp
+    minHeight: Dp,
+    canEditCard: Boolean,
+    isFavorite: Boolean,
+    onToggleFavorite: () -> Unit,
+    onDelete: () -> Unit
 ) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
             .heightIn(min = minHeight)
-            .verticalScroll(rememberScrollState())
-            .padding(start = 10.dp, top = 12.dp, end = 10.dp, bottom = 12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
     ) {
-        AudioTextLine(text = text, onSpeak = onSpeak, enabled = enabled, textStyle = textStyle, fontWeight = FontWeight.Bold)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(start = 10.dp, top = 12.dp, end = 10.dp, bottom = 56.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            AudioTextLine(
+                text = text,
+                onSpeak = onSpeak,
+                enabled = enabled,
+                textStyle = textStyle,
+                fontWeight = FontWeight.Bold
+            )
+        }
+
+        if (canEditCard) {
+            ReviewCardActionButtons(
+                isFavorite = isFavorite,
+                onToggleFavorite = onToggleFavorite,
+                onDelete = onDelete,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 8.dp, bottom = 8.dp)
+            )
+        }
     }
 }
 
@@ -332,19 +361,40 @@ internal fun ReviewBackFace(
             }
 
             if (canEditCard) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onToggleFavorite) {
-                        if (isFavorite) {
-                            Icon(Icons.Filled.Favorite, contentDescription = "Retirer des favoris")
-                        } else {
-                            Icon(Icons.Outlined.FavoriteBorder, contentDescription = "Ajouter aux favoris")
-                        }
-                    }
-                    IconButton(onClick = onDelete) {
-                        Icon(Icons.Filled.Delete, contentDescription = "Supprimer la carte")
-                    }
-                }
+                ReviewCardActionButtons(
+                    isFavorite = isFavorite,
+                    onToggleFavorite = onToggleFavorite,
+                    onDelete = onDelete
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun ReviewCardActionButtons(
+    isFavorite: Boolean,
+    onToggleFavorite: () -> Unit,
+    onDelete: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = onToggleFavorite) {
+            Icon(
+                imageVector = if (isFavorite) Icons.Filled.Star else Icons.Outlined.Star,
+                contentDescription = if (isFavorite) "Retirer des favoris" else "Ajouter aux favoris",
+                tint = if (isFavorite) Color(0xFFFFB800) else Color.Gray
+            )
+        }
+        IconButton(onClick = onDelete) {
+            Icon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = "Supprimer la carte",
+                tint = MaterialTheme.colorScheme.error
+            )
         }
     }
 }
@@ -355,6 +405,7 @@ internal fun ReviewFixedBottomControls(
     showAudioOptions: Boolean,
     onShowAudioOptionsChange: (Boolean) -> Unit,
     onUndo: () -> Unit,
+    onEdit: () -> Unit,
     onToggleAutoSpeakWord: () -> Unit,
     onToggleAutoSpeakDefinition: () -> Unit,
     onReveal: () -> Unit,
@@ -372,45 +423,52 @@ internal fun ReviewFixedBottomControls(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                IconButton(
-                    onClick = onUndo,
-                    enabled = uiState.canUndo
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Annuler la dernière réponse"
-                    )
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+                    IconButton(
+                        onClick = onUndo,
+                        enabled = uiState.canUndo
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Annuler la dernière réponse"
+                        )
+                    }
                 }
 
-                Box {
-                    AudioSettingsButton(onClick = { onShowAudioOptionsChange(true) })
-                    DropdownMenu(
-                        expanded = showAudioOptions,
-                        onDismissRequest = { onShowAudioOptionsChange(false) }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("Lire le mot automatiquement") },
-                            trailingIcon = {
-                                Checkbox(
-                                    checked = uiState.autoSpeakWord,
-                                    onCheckedChange = { onToggleAutoSpeakWord() }
-                                )
-                            },
-                            onClick = { onToggleAutoSpeakWord() }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("Lire la définition automatiquement") },
-                            trailingIcon = {
-                                Checkbox(
-                                    checked = uiState.autoSpeakDefinition,
-                                    onCheckedChange = { onToggleAutoSpeakDefinition() }
-                                )
-                            },
-                            onClick = { onToggleAutoSpeakDefinition() }
-                        )
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.Center) {
+                    EditWordIconButton(onClick = onEdit)
+                }
+
+                Box(modifier = Modifier.weight(1f), contentAlignment = Alignment.CenterEnd) {
+                    Box {
+                        AudioSettingsButton(onClick = { onShowAudioOptionsChange(true) })
+                        DropdownMenu(
+                            expanded = showAudioOptions,
+                            onDismissRequest = { onShowAudioOptionsChange(false) }
+                        ) {
+                            DropdownMenuItem(
+                                text = { Text("Lire le mot automatiquement") },
+                                trailingIcon = {
+                                    Checkbox(
+                                        checked = uiState.autoSpeakWord,
+                                        onCheckedChange = { onToggleAutoSpeakWord() }
+                                    )
+                                },
+                                onClick = { onToggleAutoSpeakWord() }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("Lire la définition automatiquement") },
+                                trailingIcon = {
+                                    Checkbox(
+                                        checked = uiState.autoSpeakDefinition,
+                                        onCheckedChange = { onToggleAutoSpeakDefinition() }
+                                    )
+                                },
+                                onClick = { onToggleAutoSpeakDefinition() }
+                            )
+                        }
                     }
                 }
             }
