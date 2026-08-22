@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Background Lexica v4
-    Fond dégradé "Océan du Savoir"
-    Bleu royal (#1565C0) → Sarcelle profonde (#006064), diagonal.
-    Halo central subtil pour ancrer le regard.
+    Background Lexica - Option C (Flashcards & Deep Blue)
+    Dégradé élégant Bleu Nuit (#0D1B2A) → Bleu Royal (#1565C0)
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt"
@@ -12,30 +10,30 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Dégradé diagonal principal -->
+    <!-- Fond dégradé principal -->
     <path android:pathData="M0,0 L108,0 L108,108 L0,108 Z">
         <aapt:attr name="android:fillColor">
             <gradient
                 android:type="linear"
-                android:startX="0"
-                android:startY="0"
-                android:endX="108"
-                android:endY="108"
-                android:startColor="#FF1565C0"
-                android:endColor="#FF006064" />
+                android:startX="18"
+                android:startY="10"
+                android:endX="90"
+                android:endY="98"
+                android:startColor="#FF0F172A"
+                android:endColor="#FF1E40AF" />
         </aapt:attr>
     </path>
 
-    <!-- Halo central (profondeur) -->
-    <path android:pathData="M54,54 m-45,0 a45,45 0 1,0 90,0 a45,45 0 1,0 -90,0">
+    <!-- Halo lumineux central subtil -->
+    <path android:pathData="M54,54 m-42,0 a42,42 0 1,0 84,0 a42,42 0 1,0 -84,0">
         <aapt:attr name="android:fillColor">
             <gradient
                 android:type="radial"
                 android:centerX="54"
-                android:centerY="54"
-                android:gradientRadius="45"
-                android:startColor="#1AFFFFFF"
-                android:endColor="#00FFFFFF" />
+                android:centerY="50"
+                android:gradientRadius="44"
+                android:startColor="#3360A5FA"
+                android:endColor="#00000000" />
         </aapt:attr>
     </path>
 
