@@ -41,6 +41,7 @@ data class AddWordsUiState(
     val error: String? = null,
     // mots proposés (réserve locale, affichés quand pas de recherche)
     val proposedWords: List<WordReserveEntity> = emptyList(),
+    val hasMoreProposedWords: Boolean = false,
     val isLoadingProposed: Boolean = false
 )
 
@@ -56,6 +57,8 @@ class AddWordsViewModel(
 
     private var debounceJob: Job? = null
     private var allCards: List<Flashcard> = emptyList()
+    private var fullAvailablePool: List<WordReserveEntity> = emptyList()
+    private var displayedCount: Int = 50
 
     init {
         loadAllCardsAndProposed()
@@ -67,6 +70,18 @@ class AddWordsViewModel(
         loadAllCardsAndProposed()
     }
 
+    fun loadMoreProposedWords() {
+        if (displayedCount >= fullAvailablePool.size) return
+        displayedCount += 50
+        val nextWords = fullAvailablePool.take(displayedCount)
+        _uiState.update {
+            it.copy(
+                proposedWords = nextWords,
+                hasMoreProposedWords = fullAvailablePool.size > displayedCount
+            )
+        }
+    }
+
     private fun loadAllCardsAndProposed() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoadingProposed = true) }
@@ -76,9 +91,17 @@ class AddWordsViewModel(
                 val existingWords = cards.map { it.recto.trim().lowercase() }.toSet()
                 val availableWords = wordReserveRepository.getProposedWords(1000)
                     .filter { it.mot.trim().lowercase() !in existingWords }
-                availableWords.shuffled().take(50)
+                fullAvailablePool = availableWords.shuffled()
+                displayedCount = 50
+                fullAvailablePool.take(displayedCount)
             }.onSuccess { words ->
-                _uiState.update { it.copy(proposedWords = words, isLoadingProposed = false) }
+                _uiState.update {
+                    it.copy(
+                        proposedWords = words,
+                        hasMoreProposedWords = fullAvailablePool.size > displayedCount,
+                        isLoadingProposed = false
+                    )
+                }
             }.onFailure {
                 _uiState.update { it.copy(isLoadingProposed = false) }
             }
@@ -274,9 +297,12 @@ class AddWordsViewModel(
                         synonymes = word.synonymes, exemples = word.exemples,
                         categorieGrammaticale = word.categorieGrammaticale
                     )
+                    fullAvailablePool = fullAvailablePool.filter { it.id != word.id }
+                    val updatedList = fullAvailablePool.take(displayedCount)
                     _uiState.update { state ->
                         state.copy(
-                            proposedWords = state.proposedWords.filter { it.id != word.id },
+                            proposedWords = updatedList,
+                            hasMoreProposedWords = fullAvailablePool.size > displayedCount,
                             successMessage = "\"${word.mot}\" ajouté à ta liste !"
                         )
                     }

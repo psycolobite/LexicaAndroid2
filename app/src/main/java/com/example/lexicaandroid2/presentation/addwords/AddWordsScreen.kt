@@ -200,6 +200,23 @@ fun AddWordsScreen(viewModel: AddWordsViewModel) {
                             onAddClick = { viewModel.addWordFromReserve(word) }
                         )
                     }
+                    if (uiState.hasMoreProposedWords) {
+                        item {
+                            OutlinedButton(
+                                onClick = viewModel::loadMoreProposedWords,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = Purple)
+                            ) {
+                                Icon(Icons.Default.Refresh, contentDescription = null, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Charger 50 mots supplémentaires", fontWeight = FontWeight.SemiBold)
+                            }
+                        }
+                    }
                 }
             }
 
