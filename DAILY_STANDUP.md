@@ -18,6 +18,9 @@
   - **Refonte intégrale des antonymes (0 placeholder générique)** : Suppression complète de tous les substituts génériques (*« notion opposée », « contraire », « inverse »*). Intégration d'un résolveur sémantique polaire fournissant de véritables contraires contextualisés.
   - **Nettoyage et formatage des citations et exemples** : Suppression de toutes les balises et artefacts de wiki (`{{...}}`, `[[...]]`, `lang=fr`, `thumb`, `Citation/...`). Attribution systématique des citations aux auteurs canoniques (*Victor Hugo, Charles Baudelaire, Gustave Flaubert, Marcel Proust, Émile Zola, Guy de Maupassant, Molière, Voltaire, Jean Racine, Chateaubriand...*).
   - **Évaluation automatisée de la base** : Score de qualité parfait de **10.00 / 10** validé sur les 903 mots (100% de conformité sur Définitions, Synonymes, Antonymes, Étymologies et Exemples).
+- [x] **Chargement progressif par lots de 50 mots supplémentaires (`AddWordsViewModel.kt`, `AddWordsScreen.kt`)** :
+  - Ajout du bouton *"Charger 50 mots supplémentaires"* en bas de la liste des suggestions.
+  - Possibilité de charger par tranches successives (+50, +50, +50...) jusqu'à épuisement complet des 903 mots de la réserve locale.
 - [x] **Tirage de 50 mots suggérés garantis (`WordReserveDao.kt`, `AddWordsViewModel.kt`)** :
   - Modification de `WordReserveDao.getAvailableWords()` avec `ORDER BY RANDOM() LIMIT 1000`.
   - Modification de `AddWordsViewModel.loadAllCardsAndProposed()` : filtrage dynamique des cartes déjà possédées par l'utilisateur puis sélection aléatoire de **50 mots exacts** (`.shuffled().take(50)`), sans réduction du nombre de suggestions disponibles.
