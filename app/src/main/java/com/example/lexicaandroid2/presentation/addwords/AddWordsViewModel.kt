@@ -74,9 +74,9 @@ class AddWordsViewModel(
                 val cards = flashcardRepository.getAllCards()
                 allCards = cards
                 val existingWords = cards.map { it.recto.trim().lowercase() }.toSet()
-                val words = wordReserveRepository.getProposedWords(100)
+                val availableWords = wordReserveRepository.getProposedWords(1000)
                     .filter { it.mot.trim().lowercase() !in existingWords }
-                words
+                availableWords.shuffled().take(50)
             }.onSuccess { words ->
                 _uiState.update { it.copy(proposedWords = words, isLoadingProposed = false) }
             }.onFailure {

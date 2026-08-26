@@ -16,8 +16,8 @@ interface WordReserveDao {
     // we can manage it by deleting from reserve when moving to flashcards, OR keep them and check IDs.
     // Simpler approach: Delete from reserve when added.
 
-    @Query("SELECT * FROM word_reserve LIMIT :limit")
-    suspend fun getAvailableWords(limit: Int = 100): List<WordReserveEntity>
+    @Query("SELECT * FROM word_reserve ORDER BY RANDOM() LIMIT :limit")
+    suspend fun getAvailableWords(limit: Int = 1000): List<WordReserveEntity>
 
     @Query("SELECT COUNT(*) FROM word_reserve")
     suspend fun count(): Int

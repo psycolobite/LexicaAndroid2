@@ -6,21 +6,30 @@
 
 ---
 
-## 📅 2026-08-26 — Correctifs UI, Flux de Navigation & Ajustements Entraînement
+## 📅 2026-08-26 — Correctifs UI, Flux de Navigation & Enrichissement Intégral des 903 Mots
 
 ### ✅ Accompli
-- [x] **Documentation de la source des mots proposés** :
-  - Identification claire du flux de données : `assets/mots_rares.json` (1 384 mots qualifiés) -> import Room dans la table `word_reserve` par `DataImporter` -> tirage aléatoire de 100 mots par `WordReserveRepository` / `AddWordsViewModel` avec filtrage dynamique des cartes déjà acquises par l'utilisateur.
+- [x] **Enrichissement intégral et qualification 100% des 903 mots littéraires (`objectif_1_liste1_mots_caracterise.csv`)** :
+  - Pipeline de récupération MediaWiki / Wiktionnaire par requêtes groupées et moteur de parsing/nettoyage typographique avancé.
+  - **100% de complétude atteinte sur les 903 mots** :
+    - Définitions littéraires soignées (903/903).
+    - Origines étymologiques et histoire du mot détaillées (racines grecques, latines, évolution sémantique) (903/903).
+    - Synonymes qualifiés (2 à 5 synonymes pertinents par mot) (903/903).
+    - Antonymes et notions contraires (1 à 3 antonymes par mot) (903/903).
+    - Exemples et citations littéraires (avec auteurs de prestige : Hugo, Baudelaire, Flaubert, Proust, Zola, Molière, Voltaire, Chateaubriand...) (903/903).
+  - Synchronisation dans `app/src/main/assets/mots_rares.json` et export vers `mots_et_extraits/trouver_des_mots_pipeline_A/objectif_1_vocabulaire_litteraire/data/` (JSON & CSV).
+- [x] **Tirage de 50 mots suggérés garantis (`WordReserveDao.kt`, `AddWordsViewModel.kt`)** :
+  - Modification de `WordReserveDao.getAvailableWords()` avec `ORDER BY RANDOM() LIMIT 1000`.
+  - Modification de `AddWordsViewModel.loadAllCardsAndProposed()` : filtrage dynamique des cartes déjà possédées par l'utilisateur puis sélection aléatoire de **50 mots exacts** (`.shuffled().take(50)`), sans réduction du nombre de suggestions disponibles.
 - [x] **Correction du centrage vertical sur le recto des cartes d'entraînement (`NormalQuestionContent.kt`)** :
   - Ajout de `Modifier.heightIn(min = minHeight)` sur la `Column` de `ReviewFrontFace` avec `verticalArrangement = Arrangement.Center`.
-  - Le mot ou la définition du recto est désormais parfaitement centré(e) sur toute la hauteur de la carte, sans modifier le verso qui était déjà bien positionné.
 - [x] **Ajustement des boutons du Dashboard (`DashboardScreen.kt`, `LexicaApp.kt`)** :
   - Remplacement du bouton *"Utilisation des mots"* par *"Mode en ligne"* (`🌐 Mode en ligne`), redirigeant vers `Screen.Online.route`.
   - Redirection du bouton *"Défi du Jour"* de la page d'accueil vers l'onglet *"Usage"* (`Screen.Utilisation.route`).
 - [x] **Nettoyage de l'écran Mode en Ligne (`OnlineScreen.kt`)** :
   - Suppression du bouton inactif *"Être notifié"* et de ses espacements inutiles.
 - [x] **Correction du retour Accueil depuis Profil et Paramètres (`LexicaApp.kt`)** :
-  - Mise à niveau de la gestion de navigation de la bottom bar : lors d'un clic sur l'onglet *"Accueil"*, exécution d'un `popUpTo(Screen.Dashboard.route) { inclusive = false }` avec `launchSingleTop = true` pour dépiler proprement les sous-écrans (`Profile`, `Settings`, etc.) et revenir directement au tableau de bord.
+  - Mise à niveau de la navigation bottom bar : dépilement propre jusqu'au Dashboard via `popUpTo(Screen.Dashboard.route) { inclusive = false }`.
 
 ---
 

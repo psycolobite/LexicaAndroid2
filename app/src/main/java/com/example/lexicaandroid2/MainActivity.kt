@@ -251,7 +251,7 @@ class MainActivity : ComponentActivity() {
                     importer.importFromAssets()
                     importer.importReserve()
                     Log.d("DATA_IMPORT", "Import complete")
-                } else if (reserveDao.count() < 1300) {
+                } else {
                     Log.d("DATA_IMPORT", "Updating word reserve...")
                     importer.importReserve()
                     Log.d("DATA_IMPORT", "Word reserve updated")
