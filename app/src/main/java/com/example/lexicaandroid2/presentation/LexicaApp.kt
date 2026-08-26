@@ -257,10 +257,17 @@ fun LexicaApp(
                 LexicaBottomNavBar(
                     currentRoute = currentRoute,
                     onNavigate = { route ->
-                        navController.navigate(route) {
-                            popUpTo(navController.graph.findStartDestination().id) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
+                        if (route == Screen.Dashboard.route) {
+                            navController.navigate(Screen.Dashboard.route) {
+                                popUpTo(Screen.Dashboard.route) { inclusive = false }
+                                launchSingleTop = true
+                            }
+                        } else {
+                            navController.navigate(route) {
+                                popUpTo(Screen.Dashboard.route) { saveState = true }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     }
                 )
@@ -302,10 +309,10 @@ fun LexicaApp(
                         navController.navigate(Screen.MiniGames.route)
                     },
                     onNavigateToDailyChallenge = {
-                        navController.navigate(Screen.DailyChallenge.route)
-                    },
-                    onNavigateToUsage = {
                         navController.navigate(Screen.Utilisation.route)
+                    },
+                    onNavigateToOnline = {
+                        navController.navigate(Screen.Online.route)
                     }
                 )
             }

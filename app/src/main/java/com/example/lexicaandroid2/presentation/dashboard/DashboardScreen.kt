@@ -41,7 +41,7 @@ fun DashboardScreen(
     onNavigateToAddWords: () -> Unit,
     onNavigateToMiniGames: () -> Unit,
     onNavigateToDailyChallenge: () -> Unit = {},
-    onNavigateToUsage: () -> Unit = {}
+    onNavigateToOnline: () -> Unit = {}
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -66,7 +66,7 @@ fun DashboardScreen(
             onNavigateToAddWords = onNavigateToAddWords,
             onNavigateToMiniGames = onNavigateToMiniGames,
             onNavigateToDailyChallenge = onNavigateToDailyChallenge,
-            onNavigateToUsage = onNavigateToUsage
+            onNavigateToOnline = onNavigateToOnline
         )
     }
 }
@@ -81,7 +81,7 @@ private fun DashboardContent(
     onNavigateToAddWords: () -> Unit,
     onNavigateToMiniGames: () -> Unit,
     onNavigateToDailyChallenge: () -> Unit,
-    onNavigateToUsage: () -> Unit
+    onNavigateToOnline: () -> Unit
 ) {
     // Section titre : mes mots
     Text(
@@ -221,12 +221,12 @@ private fun DashboardContent(
     Spacer(modifier = Modifier.height(10.dp))
 
     OutlinedButton(
-        onClick = onNavigateToUsage,
+        onClick = onNavigateToOnline,
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
     ) {
-        Text(text = "🗣️ Utilisation des mots", fontWeight = FontWeight.Medium)
+        Text(text = "🌐 Mode en ligne", fontWeight = FontWeight.Medium)
     }
 
     Spacer(modifier = Modifier.height(10.dp))

@@ -6,6 +6,24 @@
 
 ---
 
+## 📅 2026-08-26 — Correctifs UI, Flux de Navigation & Ajustements Entraînement
+
+### ✅ Accompli
+- [x] **Documentation de la source des mots proposés** :
+  - Identification claire du flux de données : `assets/mots_rares.json` (1 384 mots qualifiés) -> import Room dans la table `word_reserve` par `DataImporter` -> tirage aléatoire de 100 mots par `WordReserveRepository` / `AddWordsViewModel` avec filtrage dynamique des cartes déjà acquises par l'utilisateur.
+- [x] **Correction du centrage vertical sur le recto des cartes d'entraînement (`NormalQuestionContent.kt`)** :
+  - Ajout de `Modifier.heightIn(min = minHeight)` sur la `Column` de `ReviewFrontFace` avec `verticalArrangement = Arrangement.Center`.
+  - Le mot ou la définition du recto est désormais parfaitement centré(e) sur toute la hauteur de la carte, sans modifier le verso qui était déjà bien positionné.
+- [x] **Ajustement des boutons du Dashboard (`DashboardScreen.kt`, `LexicaApp.kt`)** :
+  - Remplacement du bouton *"Utilisation des mots"* par *"Mode en ligne"* (`🌐 Mode en ligne`), redirigeant vers `Screen.Online.route`.
+  - Redirection du bouton *"Défi du Jour"* de la page d'accueil vers l'onglet *"Usage"* (`Screen.Utilisation.route`).
+- [x] **Nettoyage de l'écran Mode en Ligne (`OnlineScreen.kt`)** :
+  - Suppression du bouton inactif *"Être notifié"* et de ses espacements inutiles.
+- [x] **Correction du retour Accueil depuis Profil et Paramètres (`LexicaApp.kt`)** :
+  - Mise à niveau de la gestion de navigation de la bottom bar : lors d'un clic sur l'onglet *"Accueil"*, exécution d'un `popUpTo(Screen.Dashboard.route) { inclusive = false }` avec `launchSingleTop = true` pour dépiler proprement les sous-écrans (`Profile`, `Settings`, etc.) et revenir directement au tableau de bord.
+
+---
+
 ## 📅 2026-08-22 — Base de réserve de mots, Liste de mots & Refonte Onglet Usage
 
 ### ✅ Accompli

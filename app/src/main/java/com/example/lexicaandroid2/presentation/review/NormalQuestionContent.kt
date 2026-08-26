@@ -219,6 +219,7 @@ internal fun ReviewFrontFace(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .heightIn(min = minHeight)
                 .verticalScroll(rememberScrollState())
                 .padding(start = 10.dp, top = 12.dp, end = 10.dp, bottom = 56.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
