@@ -33,5 +33,8 @@ interface WordReserveDao {
 
     @Query("DELETE FROM word_reserve WHERE id = :id")
     suspend fun deleteById(id: String)
+
+    @Query("DELETE FROM word_reserve")
+    suspend fun deleteAll()
 }
 

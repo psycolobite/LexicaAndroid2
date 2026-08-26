@@ -40,6 +40,7 @@ class DataImporter(
         if (reserveDao == null) return
         Log.d(TAG, "Start importing reserve from $assetName...")
         try {
+            reserveDao.deleteAll()
             context.assets.open(assetName).use { stream ->
                 InputStreamReader(stream).use { reader ->
                     // Use streaming parser for large files
