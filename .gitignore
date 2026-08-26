@@ -93,3 +93,10 @@ build_log.txt
 build_output.txt
 stderr.txt
 stdout.txt
+
+# Keystore and signing credentials
+*.jks
+*.keystore
+keystore/
+keystore.properties
+

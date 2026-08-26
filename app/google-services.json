@@ -41,6 +41,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000182679544:android:d407f9c6371002325c780e",
+        "android_client_info": {
+          "package_name": "com.lexica.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000182679544-icurdn7uo4ol6rd5nh92sdfm547dkk29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-3DHBm9eOuc7FpDiTkUmc2Y6z9eqXcYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000182679544-icurdn7uo4ol6rd5nh92sdfm547dkk29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

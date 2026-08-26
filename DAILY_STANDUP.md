@@ -4,6 +4,25 @@
 **Fréquence:** Quotidienne  
 **Format:** SEUL fichier de suivi du projet (remplace tous les "etat_*.md", "rapport_*.md", etc.)
 
+## 📅 2026-08-26 — Préparation & Build Release pour le Google Play Store
+
+### ✅ Accompli
+- [x] **Configuration Technique & Signature Release (`build.gradle.kts`, `proguard-rules.pro`)** :
+  - Mise à niveau de l'`applicationId` en `com.lexica.app` (ID officiel de production) tout en conservant le namespace Kotlin existant.
+  - Génération de la clé de signature de production `keystore/lexica_release.jks` et configuration sécurisée via `keystore.properties` (fichiers exclus du suivi Git dans `.gitignore`).
+  - Configuration et durcissement des règles ProGuard/R8 (`proguard-rules.pro`) pour Room, Retrofit, Gson, Firebase, TensorFlow Lite, Coroutines et Navigation.
+  - Compilation et génération réussie du bundle de production signé `app/build/outputs/bundle/release/app-release.aab` (16.3 Mo, minifié et optimisé).
+- [x] **Politique de Confidentialité & Déploiement (`privacy-policy/`, `.github/workflows/`)** :
+  - Audit et vérification du contenu juridique de la politique de confidentialité (responsable : Paul Mottet, contact : `mottet2.paul6@outlook.fr`, gestion locale vs cloud).
+  - Validation du pipeline GitHub Pages configuré dans `.github/workflows/privacy-policy-pages.yml`.
+- [x] **Guide de Conformité Data Safety & Compte de Test (`docs/guides/PLAY_STORE_DATA_SAFETY.md`)** :
+  - Rédaction du guide pas-à-pas de déclaration des données pour la Play Console (traitement des données d'authentification, télémétrie/statistiques d'apprentissage anonymisées, chiffrement en transit, politique de suppression de compte).
+  - Configuration et notice pour le compte de test destiné aux modérateurs de Google Play.
+- [x] **Marketing ASO & Assets du Store (`docs/marketing/FICHE_PLAY_STORE.md`, `store_assets/`)** :
+  - Rédaction de la fiche Play Store complète optimisée pour le référencement (titre ≤ 30 car., description courte ≤ 80 car., description longue captivante avec émojis et sans décompte strict de mots).
+  - Génération de l'icône HD de l'application (512x512).
+  - Capture en haute résolution (1080x2220) des écrans réels de l'application depuis le smartphone physique connecté (`01_dashboard.png`, `02_entrainement.png`, `03_minijeux.png`, `04_addwords.png`, `05_wordlist.png`).
+
 ---
 
 ## 📅 2026-08-26 — Correctifs UI, Navigation & Relecture Complète du Jeu de Données (Score 10/10)
