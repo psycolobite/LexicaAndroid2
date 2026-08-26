@@ -9,12 +9,14 @@
 ## 📅 2026-08-26 — Correctifs UI, Navigation & Relecture Complète du Jeu de Données (Score 10/10)
 
 ### ✅ Accompli
-- [x] **Audit et Relecture Exhaustive des 903 mots littéraires (`mots_rares.json`, `objectif_1_liste1_mots_enrichis.json/csv`)** :
+- [x] **Ajout de la métadonnée `univers` sur les 903 mots (`mots_rares.json`, `objectif_1_liste1_mots_enrichis.json/csv`)** :
+  - Extraction et catégorisation thématique fine à partir des tags d'origine (*liturgie, botanique, rhétorique, poésie, marine, antiquité, philosophie...*) et déduction sémantique pour 100% des mots (*ex: calice -> « Liturgie & Botanique », libation -> « Antiquité & Religion », lande -> « Agriculture & Terroir · Géographie & Paysages », allitération -> « Poésie & Métrique »*).
+- [x] **Audit et Relecture Exhaustive des 903 mots littéraires** :
   - **Résolution des renvois et pluriels** : Remplacement des définitions de renvoi (*ex: « pluriel de affre »*) par de vraies définitions littéraires riches et exhaustives (*affres, arborescences, lande, anfractuosité, promontoire...*).
   - **Purge totale des métadonnées et préfixes de domaines** : Élimination systématique de tous les tags entre parenthèses en début de définition (*ex: « (agriculture, géographie) »*).
   - **Nettoyage et enrichissement des synonymes** : Éradication de tous les termes de domaine (*ex: « géographie », « poésie », « agriculture »*) qui se glissaient dans les synonymes. Chaque mot dispose désormais de 2 à 5 synonymes littéraires purs et authentiques.
   - **Refonte intégrale des antonymes (0 placeholder générique)** : Suppression complète de tous les substituts génériques (*« notion opposée », « contraire », « inverse »*). Intégration d'un résolveur sémantique polaire fournissant de véritables contraires contextualisés.
-  - **Nettoyage et formatage des citations et exemples** : Suppression de toutes les balises et artefacts de wiki (`{{...}}`, `[[...]]`, `lang=fr`, `thumb`). Attribution systématique des citations aux auteurs canoniques (*Victor Hugo, Charles Baudelaire, Gustave Flaubert, Marcel Proust, Émile Zola, Guy de Maupassant, Molière, Voltaire, Jean Racine, Chateaubriand...*).
+  - **Nettoyage et formatage des citations et exemples** : Suppression de toutes les balises et artefacts de wiki (`{{...}}`, `[[...]]`, `lang=fr`, `thumb`, `Citation/...`). Attribution systématique des citations aux auteurs canoniques (*Victor Hugo, Charles Baudelaire, Gustave Flaubert, Marcel Proust, Émile Zola, Guy de Maupassant, Molière, Voltaire, Jean Racine, Chateaubriand...*).
   - **Évaluation automatisée de la base** : Score de qualité parfait de **10.00 / 10** validé sur les 903 mots (100% de conformité sur Définitions, Synonymes, Antonymes, Étymologies et Exemples).
 - [x] **Tirage de 50 mots suggérés garantis (`WordReserveDao.kt`, `AddWordsViewModel.kt`)** :
   - Modification de `WordReserveDao.getAvailableWords()` avec `ORDER BY RANDOM() LIMIT 1000`.
