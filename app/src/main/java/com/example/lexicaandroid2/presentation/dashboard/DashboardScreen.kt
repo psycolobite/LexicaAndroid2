@@ -226,7 +226,7 @@ private fun DashboardContent(
             .fillMaxWidth()
             .height(48.dp)
     ) {
-        Text(text = "🌐 Mode en ligne", fontWeight = FontWeight.Medium)
+        Text(text = "🌐 Jeu en ligne", fontWeight = FontWeight.Medium)
     }
 
     Spacer(modifier = Modifier.height(10.dp))

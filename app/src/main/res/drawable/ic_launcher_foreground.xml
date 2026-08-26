@@ -9,66 +9,69 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- ================= CARTE ARRIÈRE ================= -->
-    <group
-        android:pivotX="47"
-        android:pivotY="54"
-        android:rotation="-12">
-        <!-- Ombre de la carte arrière -->
-        <path
-            android:pathData="M33,35 A4,4 0 0,1 37,31 L57,31 A4,4 0 0,1 61,35 L61,73 A4,4 0 0,1 57,77 L37,77 A4,4 0 0,1 33,73 Z"
-            android:fillColor="#28000000" />
-        <!-- Carte arrière blanc perle -->
-        <path
-            android:pathData="M33,33 A4,4 0 0,1 37,29 L57,29 A4,4 0 0,1 61,33 L61,71 A4,4 0 0,1 57,75 L37,75 A4,4 0 0,1 33,71 Z"
-            android:fillColor="#FFE8EDF5" />
-    </group>
+    <!-- Master group pour centrage vertical parfait (top margin 26, bottom margin 26) -->
+    <group android:translateY="2.0">
+        <!-- ================= CARTE ARRIÈRE ================= -->
+        <group
+            android:pivotX="47"
+            android:pivotY="54"
+            android:rotation="-12">
+            <!-- Ombre de la carte arrière -->
+            <path
+                android:pathData="M33,35 A4,4 0 0,1 37,31 L57,31 A4,4 0 0,1 61,35 L61,73 A4,4 0 0,1 57,77 L37,77 A4,4 0 0,1 33,73 Z"
+                android:fillColor="#28000000" />
+            <!-- Carte arrière blanc perle -->
+            <path
+                android:pathData="M33,33 A4,4 0 0,1 37,29 L57,29 A4,4 0 0,1 61,33 L61,71 A4,4 0 0,1 57,75 L37,75 A4,4 0 0,1 33,71 Z"
+                android:fillColor="#FFE8EDF5" />
+        </group>
 
-    <!-- ================= CARTE AVANT ================= -->
-    <group
-        android:pivotX="57"
-        android:pivotY="54"
-        android:rotation="3">
+        <!-- ================= CARTE AVANT ================= -->
+        <group
+            android:pivotX="57"
+            android:pivotY="54"
+            android:rotation="3">
 
-        <!-- Ombre portée de la carte avant -->
-        <path
-            android:pathData="M43,33 A5,5 0 0,1 48,28 L70,28 A5,5 0 0,1 75,33 L75,75 A5,5 0 0,1 70,80 L48,80 A5,5 0 0,1 43,75 Z"
-            android:fillColor="#3A000000" />
+            <!-- Ombre portée de la carte avant -->
+            <path
+                android:pathData="M43,33 A5,5 0 0,1 48,28 L70,28 A5,5 0 0,1 75,33 L75,75 A5,5 0 0,1 70,80 L48,80 A5,5 0 0,1 43,75 Z"
+                android:fillColor="#3A000000" />
 
-        <!-- Carte avant blanc pur -->
-        <path
-            android:pathData="M43,31 A5,5 0 0,1 48,26 L70,26 A5,5 0 0,1 75,31 L75,73 A5,5 0 0,1 70,78 L48,78 A5,5 0 0,1 43,73 Z"
-            android:fillColor="#FFFFFFFF" />
+            <!-- Carte avant blanc pur -->
+            <path
+                android:pathData="M43,31 A5,5 0 0,1 48,26 L70,26 A5,5 0 0,1 75,31 L75,73 A5,5 0 0,1 70,78 L48,78 A5,5 0 0,1 43,73 Z"
+                android:fillColor="#FFFFFFFF" />
 
-        <!-- Liseré subtil autour de la carte -->
-        <path
-            android:pathData="M43,31 A5,5 0 0,1 48,26 L70,26 A5,5 0 0,1 75,31 L75,73 A5,5 0 0,1 70,78 L48,78 A5,5 0 0,1 43,73 Z"
-            android:strokeColor="#12000000"
-            android:strokeWidth="0.6" />
+            <!-- Liseré subtil autour de la carte -->
+            <path
+                android:pathData="M43,31 A5,5 0 0,1 48,26 L70,26 A5,5 0 0,1 75,31 L75,73 A5,5 0 0,1 70,78 L48,78 A5,5 0 0,1 43,73 Z"
+                android:strokeColor="#12000000"
+                android:strokeWidth="0.6" />
 
-        <!-- Ruban marque-page doré (bookmark) -->
-        <!-- Ombre du ruban -->
-        <path
-            android:pathData="M63,27 L70,27 L70,43 L66.5,40 L63,43 Z"
-            android:fillColor="#22000000" />
-        <!-- Ruban doré principal -->
-        <path
-            android:pathData="M63,26 L70,26 L70,42 L66.5,39 L63,42 Z"
-            android:fillColor="#FFF59E0B" />
-        <!-- Reflet clair sur le ruban -->
-        <path
-            android:pathData="M63.5,26 L66.5,26 L66.5,39 L63.5,41.5 Z"
-            android:fillColor="#33FFFFFF" />
-        <!-- Repli haut du ruban -->
-        <path
-            android:pathData="M63,25 A1,1 0 0,1 64,24 L69,24 A1,1 0 0,1 70,25 L70,26 L63,26 Z"
-            android:fillColor="#FFD97706" />
+            <!-- Ruban marque-page doré (bookmark) -->
+            <!-- Ombre du ruban -->
+            <path
+                android:pathData="M63,27 L70,27 L70,43 L66.5,40 L63,43 Z"
+                android:fillColor="#22000000" />
+            <!-- Ruban doré principal -->
+            <path
+                android:pathData="M63,26 L70,26 L70,42 L66.5,39 L63,42 Z"
+                android:fillColor="#FFF59E0B" />
+            <!-- Reflet clair sur le ruban -->
+            <path
+                android:pathData="M63.5,26 L66.5,26 L66.5,39 L63.5,41.5 Z"
+                android:fillColor="#33FFFFFF" />
+            <!-- Repli haut du ruban -->
+            <path
+                android:pathData="M63,25 A1,1 0 0,1 64,24 L69,24 A1,1 0 0,1 70,25 L70,26 L63,26 Z"
+                android:fillColor="#FFD97706" />
 
-        <!-- Lettre « L » bleu royal moderne et centrée -->
-        <path
-            android:pathData="M54,43 L58,43 L58,58 L65.5,58 L65.5,61.5 L54,61.5 Z"
-            android:fillColor="#FF1E3A8A" />
+            <!-- Lettre « L » bleu royal moderne et centrée -->
+            <path
+                android:pathData="M54,43 L58,43 L58,58 L65.5,58 L65.5,61.5 L54,61.5 Z"
+                android:fillColor="#FF1E3A8A" />
 
+        </group>
     </group>
 
 </vector>
